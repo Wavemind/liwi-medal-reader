@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export default appSchema({
-  version: 7,
+  version: 8,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -50,7 +50,7 @@ export default appSchema({
     tableSchema({
       name: 'activities',
       columns: [
-        { name: 'stage', type: 'string' },
+        { name: 'step', type: 'string' },
         { name: 'clinician', type: 'string' },
         { name: 'nodes', type: 'string' },
         { name: 'mac_address', type: 'string' },

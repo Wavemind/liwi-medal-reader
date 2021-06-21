@@ -11,7 +11,7 @@ export default class ActivityModel extends Model {
     medicalCases: { type: 'belongs_to', key: 'medical_case_id' },
   }
 
-  @field('stage') stage
+  @field('step') step
   @field('clinician') clinician
   @field('nodes') nodes
   @field('mac_address') mac_address

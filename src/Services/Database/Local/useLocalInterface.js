@@ -48,26 +48,26 @@ const database = new Database({
 export default function () {
   /**
    * Create activities for a releated medical case
-   * @param { array } activities - List of activities to create
    * @param { integer } medicalCaseId
+   * @param { array } activities - List of activities to create
    * @private
    */
-  const _generateActivities = async (activities, medicalCaseId) => {
-    //   await database.action(async () => {
-    //     activities.map(async activity => {
-    //       await database.batch(
-    //         database.get('activities').prepareCreate(record => {
-    //           record._raw.id = activity.id
-    //           record.stage = activity.stage
-    //           record.clinician = activity.clinician
-    //           record.nodes = activity.nodes
-    //           record.mac_address = activity.mac_address
-    //           record.medical_case_id = medicalCaseId
-    //           record.fail_safe = activity.fail_safe
-    //         }),
-    //       )
-    //     })
-    //   }, 'generate activities')
+  const insertActivities = async (medicalCaseId, activities) => {
+    await database.action(async () => {
+      activities.map(async activity => {
+        await database.batch(
+          database.get('activities').prepareCreate(record => {
+            record._raw.id = activity.id
+            record.step = activity.step
+            record.clinician = activity.clinician
+            record.nodes = JSON.stringify(activity.nodes)
+            record.mac_address = activity.mac_address
+            record.medical_case_id = medicalCaseId
+            record.fail_safe = activity.fail_safe
+          }),
+        )
+      })
+    }, 'insert activities')
   }
 
   /**
@@ -225,7 +225,7 @@ export default function () {
       case 'Activity':
         return 'activities'
       default:
-        console.log("Watermelon table doesn't exist", model)
+        console.error("Watermelon table doesn't exist", model)
     }
   }
 
@@ -317,6 +317,7 @@ export default function () {
    */
   const getAll = async (model, page = 1, params, rawData = false) => {
     const collection = database.get(_mapModelToTable(model))
+    console.log(collection)
     let result = await collection.query().fetch()
 
     const queries = []
@@ -450,7 +451,6 @@ export default function () {
 
   const _buildMedicalCaseLight = async medicalCase => {
     const patient = await medicalCase.patient.fetch()
-    console.log(medicalCase)
     return {
       id: medicalCase.id,
       synchronizedAt: medicalCase.synchronizedAt?.getTime(),
@@ -550,7 +550,6 @@ export default function () {
     // if (architecture === 'client_server') {
     //   fields = { ...fields, fail_safe: true }
     // }
-    console.log(fields)
     await database.action(async () => {
       const object = await collection.find(id)
       fields.map(async field => {
@@ -600,6 +599,7 @@ export default function () {
 
   return {
     clearDatabase,
+    insertActivities,
     findBy,
     getAll,
     getConsentsFile,

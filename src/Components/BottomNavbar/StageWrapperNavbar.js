@@ -16,7 +16,9 @@ import { SquareButton } from '@/Components'
 import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
 import UpdateFieldPatient from '@/Store/Patient/UpdateField'
-import UpdateDataBaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
+import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
+import InsertDatabaseActivity from '@/Store/DatabaseActivity/Insert'
+import ClearActivitiesMedicalCase from '@/Store/MedicalCase/ClearActivities'
 import useDatabase from '@/Services/Database/useDatabase'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
@@ -37,6 +39,9 @@ const StageWrapperNavbar = ({ stageIndex }) => {
 
   const advancement = useSelector(state => state.medicalCase.item.advancement)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const medicalCase = useSelector(state => state.medicalCase.item)
+  const activities = useSelector(state => state.medicalCase.item.activities)
+
   const savedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
   )
@@ -94,6 +99,15 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     const medicalCaseState = navigationState.routes[navigationState.index].state
     const nextStep = advancement.step + direction
 
+
+// TODO
+// SAVE
+// CLOSE MEDICAL CASE
+// CLEAR CODE
+// FIX NAVIGATION
+// POP-IN lorsqu'on quit un cas médicale
+// 
+
     if (
       medicalCaseState !== undefined &&
       nextStep < medicalCaseState.routes.length &&
@@ -102,31 +116,49 @@ const StageWrapperNavbar = ({ stageIndex }) => {
       navigation.navigate(medicalCaseState.routes[nextStep].name)
     } else {
       const nextStage = stageIndex + direction
-      console.log(nextStage)
-      // update advancement
+
+      // Update medical case
       const medicalCaseUpdateAdvancement = await dispatch(
-        UpdateDataBaseMedicalCase.action({
+        UpdateDatabaseMedicalCase.action({
           medicalCaseId,
           fields: [
             { name: 'stage', value: nextStage },
             { name: 'step', value: 0 },
+            {
+              name: 'json',
+              value: JSON.stringify({
+                comment: medicalCase.comment,
+                consent: medicalCase.consent,
+                diagnosis: medicalCase.diagnosis,
+                nodes: medicalCase.nodes,
+              }),
+            },
           ],
         }),
       )
 
       if (isFulfilled(medicalCaseUpdateAdvancement)) {
-        navigation.navigate('StageWrapper', {
-          stageIndex: nextStage,
-        })
+        // Add activities
+        const addActivity = await dispatch(
+          InsertDatabaseActivity.action({
+            medicalCaseId,
+            activities,
+          }),
+        )
+
+        if (isFulfilled(addActivity)) {
+          // Remove sended activities
+          await dispatch(ClearActivitiesMedicalCase.action())
+
+          // Redirect to next stage
+          navigation.navigate('StageWrapper', {
+            stageIndex: nextStage,
+          })
+        }
       }
-
-      // TODO activities
-
-      // TODO: save medicalCase in database
-      // TODO: save and quit
     }
   }
-
+  console.log('Je render')
   if (medicalCaseUpdateError) {
     return (
       <View style={bottomNavbar.errorContainer}>
