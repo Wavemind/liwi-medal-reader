@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -12,10 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import { QuestionInfoButton } from '@/Components'
-import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
-import RemoveAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAgreedDiagnoses'
-import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnoses'
-import RemoveRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses'
+import { UpdateDiagnosis } from '@/Services/MedicalCase'
 
 const ProposedDiagnoses = () => {
   // Theme and style elements deconstruction
@@ -25,7 +22,6 @@ const ProposedDiagnoses = () => {
     Components: { booleanButton },
   } = useTheme()
 
-  const dispatch = useDispatch()
   const { t } = useTranslation()
 
   const algorithm = useSelector(state => state.algorithm.item)
@@ -34,65 +30,6 @@ const ProposedDiagnoses = () => {
   )
   const agreed = useSelector(state => state.medicalCase.item.diagnosis.agreed)
   const refused = useSelector(state => state.medicalCase.item.diagnosis.refused)
-
-  /**
-   * Updates the proposed diagnoses by sorting them into agreed or refused
-   * @param diagnosisId
-   * @param value
-   */
-  const updateDiagnosis = (diagnosisId, value) => {
-    const isInAgreed = Object.keys(agreed).includes(diagnosisId.toString())
-    const isInRefused = refused.includes(diagnosisId)
-
-    // From null to Agree
-    if (value && !isInAgreed) {
-      const currentNode = algorithm.nodes[diagnosisId]
-      dispatch(
-        AddAgreedDiagnoses.action({
-          diagnosisId,
-          diagnosisContent: {
-            id: diagnosisId,
-            managements: Object.values(currentNode.managements).map(
-              management => management.id,
-            ),
-            drugs: {
-              proposed: Object.values(currentNode.drugs).map(drug => drug.id),
-              agreed: {},
-              refused: [],
-              additional: {},
-            },
-          },
-        }),
-      )
-
-      // From Disagree to Agree
-      if (isInRefused) {
-        dispatch(
-          RemoveRefusedDiagnoses.action({
-            diagnosisId,
-          }),
-        )
-      }
-    }
-
-    // From null to Disagree
-    if (!value && !isInRefused) {
-      dispatch(
-        AddRefusedDiagnoses.action({
-          diagnosisId,
-        }),
-      )
-
-      // From Agree to Disagree
-      if (isInAgreed) {
-        dispatch(
-          RemoveAgreedDiagnoses.action({
-            diagnosisId,
-          }),
-        )
-      }
-    }
-  }
 
   return Object.keys(proposed).length === 0 ? (
     <View>
@@ -120,7 +57,7 @@ const ProposedDiagnoses = () => {
             <View style={booleanButton.buttonWrapper('left', isAgreed)}>
               <TouchableOpacity
                 style={Layout.center}
-                onPress={() => updateDiagnosis(diagnosisId, true)}
+                onPress={() => UpdateDiagnosis(diagnosisId, true)}
               >
                 <Text style={booleanButton.buttonText(isAgreed)}>
                   {t('containers.medical_case.common.agree')}
@@ -130,7 +67,7 @@ const ProposedDiagnoses = () => {
             <View style={booleanButton.buttonWrapper('right', isRefused)}>
               <TouchableOpacity
                 style={Layout.center}
-                onPress={() => updateDiagnosis(diagnosisId, false)}
+                onPress={() => UpdateDiagnosis(diagnosisId, false)}
               >
                 <Text style={booleanButton.buttonText(isRefused)}>
                   {t('containers.medical_case.common.disagree')}

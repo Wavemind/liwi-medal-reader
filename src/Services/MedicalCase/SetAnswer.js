@@ -10,6 +10,7 @@ import QuestionValidationService from '@/Services/Validation/Question'
 import { setNodeValue } from '@/Utils/Answers'
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
 import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
+import { UpdateActivitiesService } from '@/Services/MedicalCase/index'
 
 export default props => {
   const { nodeId, value } = props
@@ -43,6 +44,7 @@ export default props => {
       },
     }
   }
+
   // Set the new value to the current node
   newValues = setNodeValue(mcNode, node, value)
   newNodes[nodeId] = {
@@ -54,8 +56,15 @@ export default props => {
   newNodes = UpdateQuestionSequence({ nodeId: node.id, newNodes })
   newNodes = UpdateRelatedQuestion({ nodeId: node.id, newNodes })
 
+  const newActivities = UpdateActivitiesService({
+    medicalCase: newMedicalCase,
+    nodeId,
+    value,
+  })
+
   return {
     ...newMedicalCase,
+    activities: [...newActivities],
     nodes: {
       ...newNodes,
     },
