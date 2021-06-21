@@ -15,6 +15,8 @@ import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
 import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
+import SavePatientValues from '@/Store/DatabasePatientValues/Save'
+import useDatabase from '@/Services/Database/useDatabase'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -53,6 +55,10 @@ const StageWrapperNavbar = ({ stageIndex }) => {
       // TODO: Need patient id in medicalCase when it's created
       if (advancement.stage === 0) {
         await dispatch(InsertPatient.action())
+        await dispatch(SavePatientValues.action())
+        // TODO remove this when done testing
+        const { getAll } = useDatabase()
+        const newMedicalCases = await getAll('PatientValue', 1)
       }
       const medicalCaseState =
         navigationState.routes[navigationState.index].state
@@ -141,7 +147,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             icon="right-arrow"
             iconAfter
             iconSize={FontSize.regular}
-            onPress={() => handleNavigation(1)}
+            onPress={() => handleNavigation(1, true)}
           />
         </View>
       </View>

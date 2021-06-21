@@ -4,6 +4,7 @@
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
 import { Database, Q } from '@nozbe/watermelondb'
+import uuid from 'react-native-uuid'
 
 /**
  * The internal imports
@@ -53,21 +54,71 @@ export default function () {
    * @private
    */
   const _generateActivities = async (activities, medicalCaseId) => {
-    //   await database.action(async () => {
-    //     activities.map(async activity => {
-    //       await database.batch(
-    //         database.get('activities').prepareCreate(record => {
-    //           record._raw.id = activity.id
-    //           record.stage = activity.stage
-    //           record.clinician = activity.clinician
-    //           record.nodes = activity.nodes
-    //           record.mac_address = activity.mac_address
-    //           record.medical_case_id = medicalCaseId
-    //           record.fail_safe = activity.fail_safe
-    //         }),
-    //       )
-    //     })
-    //   }, 'generate activities')
+    // await database.action(async () => {
+    //   activities.map(async activity => {
+    //     await database.batch(
+    //       database.get('activities').prepareCreate(record => {
+    //         record._raw.id = activity.id
+    //         record.stage = activity.stage
+    //         record.clinician = activity.clinician
+    //         record.nodes = activity.nodes
+    //         record.mac_address = activity.mac_address
+    //         record.medical_case_id = medicalCaseId
+    //         record.fail_safe = activity.fail_safe
+    //       }),
+    //     )
+    //   })
+    // }, 'generate activities')
+  }
+
+  /**
+   * Saves the patient values to the DB.
+   * If the patient exists, it overwrites existing patient values
+   * If the patient does not exist, it creates a new set of patient values
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const savePatientValues = async (patientValues, patientId) => {
+    // TODO how to check if the patientValues exist already ?
+    if (true) {
+      console.log('edit')
+      await database.action(async () => {
+        await database.batch(
+          patientValues.map(patientValue => {
+            const patientValuesCollection = database.get('patient_values')
+            return patientValuesCollection.prepareUpdate(record => {
+              record._raw.id = uuid.v4()
+              record.patient_id = patientId
+              record.node_id = parseInt(patientValue.id, 10)
+              record.answer_id =
+                patientValue.answer === null
+                  ? null
+                  : parseInt(patientValue.answer, 10)
+              record.value = patientValue.value
+            })
+          }),
+        )
+      }, 'save patient values')
+    } else {
+      await database.action(async () => {
+        await database.batch(
+          patientValues.map(patientValue => {
+            const patientValuesCollection = database.get('patient_values')
+            return patientValuesCollection.prepareCreate(record => {
+              record._raw.id = uuid.v4()
+              record.patient_id = patientId
+              record.node_id = parseInt(patientValue.id, 10)
+              record.answer_id =
+                patientValue.answer === null
+                  ? null
+                  : parseInt(patientValue.answer, 10)
+              record.value = patientValue.value
+            })
+          }),
+        )
+      }, 'save patient values')
+    }
   }
 
   /**
@@ -163,18 +214,18 @@ export default function () {
    * @private
    */
   const _getMedicalCaseFromModel = async (model, object) => {
-    // switch (model) {
-    //   case 'MedicalCase':
-    //     return object
-    //   case 'Patient':
-    //     const medicalCases = await object.medicalCases
-    //     return _initClasses(
-    //       medicalCases[medicalCases.length - 1],
-    //       'MedicalCase',
-    //     )
-    //   default:
-    //     console.error('Wrong model :', model, object)
-    // }
+    switch (model) {
+      case 'MedicalCase':
+        return object
+      case 'Patient':
+        const medicalCases = await object.medicalCases
+        return _initClasses(
+          medicalCases[medicalCases.length - 1],
+          'MedicalCase',
+        )
+      default:
+        console.error('Wrong model :', model, object)
+    }
   }
 
   /**
@@ -236,34 +287,34 @@ export default function () {
    * @private
    */
   const _savePatientValue = async (model, object) => {
-    // const medicalCase = await _getMedicalCaseFromModel(model, object)
-    // // Will update the patient values based on activities so we only take the edits
-    // const activities = await medicalCase.activities
-    // const nodeActivities = JSON.parse(activities[activities.length - 1].nodes)
-    // if (nodeActivities.length > 0) {
-    //   await database.action(async () => {
-    //     database.batch(
-    //       ...nodeActivities.map(node => {
-    //         if (
-    //           [
-    //             Config.CATEGORIES.demographic,
-    //             Config.CATEGORIES.basicDemographic,
-    //           ].includes(medicalCase.nodes[node.id].category)
-    //         ) {
-    //           const patientValuesCollection = database.get('patient_values')
-    //           return patientValuesCollection.prepareCreate(record => {
-    //             record._raw.id = uuid.v4()
-    //             record.value = node.value
-    //             record.node_id = parseInt(node.id)
-    //             record.answer_id =
-    //               node.answer === null ? null : parseInt(node.answer)
-    //             record.patient_id = medicalCase.patient_id
-    //           })
-    //         }
-    //       }),
-    //     )
-    //   }, 'create patient values')
-    // }
+    const medicalCase = await _getMedicalCaseFromModel(model, object)
+    // Will update the patient values based on activities so we only take the edits
+    const activities = await medicalCase.activities
+    const nodeActivities = JSON.parse(activities[activities.length - 1].nodes)
+    if (nodeActivities.length > 0) {
+      await database.action(async () => {
+        await database.batch(
+          ...nodeActivities.map(node => {
+            if (
+              [
+                Config.CATEGORIES.demographic,
+                Config.CATEGORIES.basicDemographic,
+              ].includes(medicalCase.nodes[node.id].category)
+            ) {
+              const patientValuesCollection = database.get('patient_values')
+              return patientValuesCollection.prepareCreate(record => {
+                record._raw.id = uuid.v4()
+                record.value = node.value
+                record.node_id = parseInt(node.id, 10)
+                record.answer_id =
+                  node.answer === null ? null : parseInt(node.answer, 10)
+                record.patient_id = medicalCase.patient_id
+              })
+            }
+          }),
+        )
+      }, 'create patient values')
+    }
   }
 
   /**
@@ -318,6 +369,7 @@ export default function () {
   const getAll = async (model, page = 1, params, rawData = false) => {
     const collection = database.get(_mapModelToTable(model))
     let result = await collection.query().fetch()
+    // console.log(result)
 
     const queries = []
     // if (page === null) {
@@ -424,8 +476,7 @@ export default function () {
     }, 'create patient')
 
     // MedicalCase
-    //await _generateActivities(medicalCaseData.activities, medicalCaseData.id)
-    // await Promise.all([_savePatientValue('patients', patientData)])
+    await Promise.all([_savePatientValue('patients', patientData)])
   }
 
   const _buildPatient = async patient => {
@@ -597,6 +648,7 @@ export default function () {
     getAll,
     getConsentsFile,
     insertPatient,
+    savePatientValues,
     lockMedicalCase,
     push,
     unlockMedicalCase,
