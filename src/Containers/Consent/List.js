@@ -9,10 +9,9 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
-import { ConsentListItem, LoaderList, EmptyList } from '@/Components'
+import { ConsentListItem, LoaderList, EmptyList, Error } from '@/Components'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
-
 import GetAllPatientWithConsentDB from '@/Store/DatabasePatient/GetAllWithConsent'
 
 const ListConsentContainer = props => {
@@ -40,6 +39,9 @@ const ListConsentContainer = props => {
   )
   const patientConsentLoading = useSelector(
     state => state.databasePatient.getAllWithConsent.loading,
+  )
+  const patientConsentError = useSelector(
+    state => state.databasePatient.getAllWithConsent.error,
   )
 
   useEffect(() => {
@@ -70,6 +72,7 @@ const ListConsentContainer = props => {
 
   return (
     <View style={Layout.fill}>
+      {patientConsentError && <Error message={patientConsentError.message} />}
       <View style={consentList.headerTable}>
         <Text style={consentList.headerText}>
           {t('containers.patient.list.name')}
@@ -87,7 +90,7 @@ const ListConsentContainer = props => {
           renderItem={({ item }) => <ConsentListItem item={item} />}
           keyExtractor={item => item.id}
           ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
-          onRefresh={() => handleRefresh()}
+          onRefresh={handleRefresh}
           refreshing={patientConsentLoading}
           onEndReached={() => loadMore()}
           onEndReachedThreshold={0.1}
