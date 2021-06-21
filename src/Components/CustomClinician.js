@@ -139,6 +139,9 @@ const CustomClinician = ({ handleClinician }) => {
                 onPress={() => handleClinician(currentClinician)}
                 fullWidth={false}
                 filled
+                disabled={Object.values(currentClinician).some(
+                  clinician => clinician === '',
+                )}
               />
             </View>
           </View>

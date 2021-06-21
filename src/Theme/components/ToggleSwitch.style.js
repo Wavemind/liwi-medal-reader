@@ -18,10 +18,10 @@ export default function (props) {
       color: Colors.text,
     },
     switchContainer: {
+      ...Layout.justifyContentCenter,
       backgroundColor: Colors.secondary,
       height: hp(4.4),
       opacity: 1,
-      justifyContent: 'center',
       borderRadius: 10,
     },
   })
