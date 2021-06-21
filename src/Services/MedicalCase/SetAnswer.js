@@ -10,6 +10,7 @@ import QuestionValidationService from '@/Services/Validation/Question'
 import { setNodeValue } from '@/Utils/Answers'
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
 import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
+import { UpdateActivitiesService } from '@/Services/MedicalCase/index'
 
 export default props => {
   const { nodeId, value } = props
@@ -55,23 +56,10 @@ export default props => {
   newNodes = UpdateQuestionSequence({ nodeId: node.id, newNodes })
   newNodes = UpdateRelatedQuestion({ nodeId: node.id, newNodes })
 
-  // For the fucking life of me I couldn't find an easier way to do this shit
-  const newActivities = newMedicalCase.activities.map((activity, i) => {
-    if (i === newMedicalCase.activities.length - 1) {
-      return {
-        ...activity,
-        questions: [
-          ...activity.questions,
-          {
-            nodeId,
-            previousValue: newMedicalCase.nodes[nodeId].answer,
-            newValue: value,
-          },
-        ],
-      }
-    } else {
-      return activity
-    }
+  const newActivities = UpdateActivitiesService({
+    medicalCase: newMedicalCase,
+    nodeId,
+    value,
   })
 
   return {

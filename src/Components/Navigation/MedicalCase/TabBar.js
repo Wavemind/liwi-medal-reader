@@ -23,11 +23,12 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
   const scrollRef = useRef()
   const dispatch = useDispatch()
 
+  const stages = getStages()
+
   /**
    * Updates the activities array with the new stage and step
    */
   const updateMedicalCaseActivities = () => {
-    const stages = getStages()
     const stage = stages[stageIndex]
     const step = stage.steps[navigationState.index]
 
