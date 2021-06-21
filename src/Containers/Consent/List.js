@@ -19,6 +19,7 @@ const ListConsentContainer = props => {
   const dispatch = useDispatch()
 
   const {
+    Gutters,
     Layout,
     Fonts,
     Containers: { consentList },
@@ -49,7 +50,7 @@ const ListConsentContainer = props => {
   }, [fadeAnim])
 
   useEffect(() => {
-    dispatch(GetAllPatientWithConsentDB.action({ page }))
+    dispatch(GetAllPatientWithConsentDB.action({ page, reset: true }))
     setFirstLoading(false)
   }, [])
 
@@ -72,7 +73,9 @@ const ListConsentContainer = props => {
 
   return (
     <View style={Layout.fill}>
-      {patientConsentError && <Error message={patientConsentError.message} />}
+      <View style={[Gutters.regularHMargin, Gutters.smallVMargin]}>
+        {patientConsentError && <Error message={patientConsentError.message} />}
+      </View>
       <View style={consentList.headerTable}>
         <Text style={consentList.headerText}>
           {t('containers.patient.list.name')}

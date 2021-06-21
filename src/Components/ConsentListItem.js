@@ -41,7 +41,7 @@ const ConsentListItem = ({ item }) => {
           </Text>
         </View>
         <View style={consentListItem.dateWrapper}>
-          <Text style={Fonts.textCenter}>
+          <Text style={[Fonts.textCenter, Fonts.textSmall]}>
             {format(lastVisit, 'dd.MM.yyyy')}
           </Text>
         </View>
