@@ -18,7 +18,7 @@ export default async ({ page, reset = false }) => {
   } else {
     medicalCases = store
       .getState()
-      .database.medicalCase.getAll.item.data.concat(newMedicalCases)
+      .databaseMedicalCase.getAll.item.data.concat(newMedicalCases)
   }
 
   return {

@@ -16,7 +16,6 @@ export default async ({ algorithm, patientId }) => {
     diagnosis: {
       proposed: [],
       excluded: [],
-      diagnoses: [],
       additional: {},
       agreed: {},
       refused: [],

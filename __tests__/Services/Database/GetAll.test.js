@@ -10,7 +10,7 @@ import CreatePatient from '@/Store/Patient/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import useDatabase from '@/Services/Database/useDatabase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
-import InsertPatient from '@/Store/Database/Patient/Insert'
+import InsertPatient from '@/Store/DatabasePatient/Insert'
 
 import { store } from '@/Store/index'
 

@@ -3,6 +3,8 @@
  */
 import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import format from 'date-fns/format'
 
 /**
  * The internal imports
@@ -10,7 +12,7 @@ import { View, TouchableOpacity, Text } from 'react-native'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const ConsentListItem = props => {
+const ConsentListItem = ({ item }) => {
   // Theme and style elements deconstruction
   const {
     Components: { consentListItem },
@@ -18,19 +20,30 @@ const ConsentListItem = props => {
     Gutters,
     Fonts,
   } = useTheme()
+  const navigation = useNavigation()
+
+  // medicalCases already sorted by updatedAt (service call)
+  const lastVisit = item.medicalCases[item.medicalCases.length - 1].updatedAt
 
   return (
     <TouchableOpacity
       style={consentListItem.wrapper}
-      onPress={() => console.log('TODO')}
+      onPress={() =>
+        navigation.navigate('Preview', {
+          consent: item.consent_file,
+        })
+      }
     >
       <View style={consentListItem.container}>
         <View style={consentListItem.titleWrapper}>
-          <Text style={consentListItem.title}>Quentin Girard</Text>
-          <Text>02.03.1994</Text>
+          <Text style={consentListItem.title}>
+            {item.first_name} {item.last_name}
+          </Text>
         </View>
         <View style={consentListItem.dateWrapper}>
-          <Text style={Fonts.textCenter}>10.02.2021</Text>
+          <Text style={[Fonts.textCenter, Fonts.textSmall]}>
+            {format(lastVisit, 'dd.MM.yyyy')}
+          </Text>
         </View>
         <View style={[Gutters.regularLMargin, Layout.column]}>
           <Icon name="right-arrow" size={25} />

@@ -23,7 +23,7 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
-import GetAllMedicalCaseDB from '@/Store/Database/MedicalCase/GetAll'
+import GetAllMedicalCaseDB from '@/Store/DatabaseMedicalCase/GetAll'
 
 const IndexHomeContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
@@ -46,16 +46,16 @@ const IndexHomeContainer = ({ navigation }) => {
 
   const algorithm = useSelector(state => state.algorithm.item)
   const medicalCases = useSelector(
-    state => state.database.medicalCase.getAll.item.data,
+    state => state.databaseMedicalCase.getAll.item.data,
   )
   const isLastBatch = useSelector(
-    state => state.database.medicalCase.getAll.item.isLastBatch,
+    state => state.databaseMedicalCase.getAll.item.isLastBatch,
   )
   const medicalCasesLoading = useSelector(
-    state => state.database.medicalCase.getAll.loading,
+    state => state.databaseMedicalCase.getAll.loading,
   )
   const medicalCasesError = useSelector(
-    state => state.database.medicalCase.getAll.error,
+    state => state.databaseMedicalCase.getAll.error,
   )
 
   useEffect(() => {

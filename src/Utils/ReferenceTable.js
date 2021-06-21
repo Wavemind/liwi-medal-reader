@@ -79,7 +79,6 @@ export const calculateReference = (nodeId, newNodes) => {
   } else if (reference !== null && x !== null && y !== null && z !== null) {
     value = processReferenceTable3D(reference, x, y, z)
   }
-
   return value
 }
 
@@ -108,7 +107,6 @@ const processReferenceTable3D = (
     )
   } else {
     const scopedRange = Object.keys(referenceTable).sort((a, b) => a - b)
-
     if (scopedRange[0] > referenceX) {
       value = processReferenceTable(
         referenceTable[scopedRange[0]],
@@ -129,7 +127,7 @@ const processReferenceTable3D = (
 /**
  * Find value for a 2D reference table
  * @param referenceTable - Reference table available in frontend_service/api/...
- * @param referenceX - Z value to not exceed
+ * @param referenceX - X value to not exceed
  * @param referenceY - Y value to not exceed
  * @returns {null|*}
  */
@@ -141,7 +139,6 @@ const processReferenceTable = (referenceTable, referenceX, referenceY) => {
     value = findValueInReferenceTable(referenceTable[referenceX], referenceY)
   } else {
     const scopedRange = Object.keys(referenceTable).sort((a, b) => a - b)
-
     if (scopedRange[0] > referenceX) {
       value = findValueInReferenceTable(
         referenceTable[scopedRange[0]],
@@ -171,12 +168,12 @@ const findValueInReferenceTable = (referenceTable, reference) => {
 
   // If reference is smaller than the smallest value
   if (reference < referenceTable[scopedRange[0]]) {
-    return scopedRange[0]
+    return parseInt(scopedRange[0])
   }
 
   // If reference is bigger than the best value
   if (reference > referenceTable[scopedRange[scopedRange.length - 1]]) {
-    return scopedRange[scopedRange.length - 1]
+    return parseInt(scopedRange[scopedRange.length - 1])
   }
 
   scopedRange.some(key => {
