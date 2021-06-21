@@ -13,21 +13,19 @@ import getAllMedicalCaseService from '@/Services/MedicalCase/GetAll'
 
 export default {
   initialState: {
-    medicalCase: {
-      getAll: {
-        item: { data: [], isLastBatch: false },
-        loading: false,
-        error: null,
-      },
+    getAll: {
+      item: { data: [], isLastBatch: false },
+      loading: false,
+      error: null,
     },
   },
   action: buildAsyncActions(
-    'database/medicalCase/getAll',
+    'databaseMedicalCase/getAll',
     getAllMedicalCaseService,
   ),
   reducers: buildAsyncReducers({
-    itemKey: 'medicalCase.getAll.item',
-    errorKey: 'medicalCase.getAll.error',
-    loadingKey: 'medicalCase.getAll.loading',
+    itemKey: 'getAll.item',
+    errorKey: 'getAll.error',
+    loadingKey: 'getAll.loading',
   }),
 }

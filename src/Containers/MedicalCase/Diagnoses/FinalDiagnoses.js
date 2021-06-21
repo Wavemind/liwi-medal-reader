@@ -24,6 +24,7 @@ const FinalDiagnoses = () => {
   const dispatch = useDispatch()
 
   const { t } = useTranslation()
+
   useEffect(() => dispatch(SetDiagnoses.action({})), [])
   const versionName = useSelector(state => state.algorithm.item.version_name)
 
