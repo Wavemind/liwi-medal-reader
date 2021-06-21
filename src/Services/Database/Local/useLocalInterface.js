@@ -450,12 +450,13 @@ export default function () {
 
   const _buildMedicalCaseLight = async medicalCase => {
     const patient = await medicalCase.patient.fetch()
+    console.log(medicalCase)
     return {
       id: medicalCase.id,
       synchronizedAt: medicalCase.synchronizedAt?.getTime(),
       advancement: {
-        stage: medicalCase.advancement.stage,
-        step: medicalCase.advancement.step,
+        stage: medicalCase.stage,
+        step: medicalCase.step,
       },
       fail_safe: medicalCase.fail_safe,
       createdAt: medicalCase.createdAt.getTime(),
@@ -482,8 +483,8 @@ export default function () {
       json: '',
       synchronized_at: medicalCase.synchronizedAt,
       advancement: {
-        stage: medicalCase.advancement.stage,
-        step: medicalCase.advancement.step,
+        stage: medicalCase.stage,
+        step: medicalCase.step,
       },
       fail_safe: medicalCase.fail_safe,
       createdAt: medicalCase.createdAt.getTime(),
@@ -549,15 +550,13 @@ export default function () {
     // if (architecture === 'client_server') {
     //   fields = { ...fields, fail_safe: true }
     // }
-
+    console.log(fields)
     await database.action(async () => {
       const object = await collection.find(id)
       fields.map(async field => {
         await database.batch(
           object.prepareUpdate(record => {
-            // if (field.name !== 'patient' && field.name !== 'activities') {
-            record[field.name] = fields[field.value]
-            // }
+            record[field.name] = field.value
           }),
         )
       })

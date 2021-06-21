@@ -16,6 +16,7 @@ import { SquareButton } from '@/Components'
 import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
 import UpdateFieldPatient from '@/Store/Patient/UpdateField'
+import UpdateDataBaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
 import useDatabase from '@/Services/Database/useDatabase'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
@@ -35,15 +36,18 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   )
 
   const advancement = useSelector(state => state.medicalCase.item.advancement)
-  const medicalCaseId = useSelector(state => state.medicalCase.item.it)
+  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
   const savedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
   )
   const patientInsertError = useSelector(
-    state => state.database.patient.insert.error,
+    state => state.databasePatient.insert.error,
+  )
+  const medicalCaseUpdateError = useSelector(
+    state => state.databaseMedicalCase.update.error,
   )
   const patientInsertLoading = useSelector(
-    state => state.database.patient.insert.loading,
+    state => state.databasePatient.insert.loading,
   )
 
   const errors = useSelector(state => state.validation.item)
@@ -97,22 +101,40 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     ) {
       navigation.navigate(medicalCaseState.routes[nextStep].name)
     } else {
-      const { update } = useDatabase()
-
+      const nextStage = stageIndex + direction
+      console.log(nextStage)
       // update advancement
-      await update('MedicalCase', medicalCaseId, [
-        { name: 'stage', value: stageIndex + direction },
-      ])
+      const medicalCaseUpdateAdvancement = await dispatch(
+        UpdateDataBaseMedicalCase.action({
+          medicalCaseId,
+          fields: [
+            { name: 'stage', value: nextStage },
+            { name: 'step', value: 0 },
+          ],
+        }),
+      )
+
+      if (isFulfilled(medicalCaseUpdateAdvancement)) {
+        navigation.navigate('StageWrapper', {
+          stageIndex: nextStage,
+        })
+      }
 
       // TODO activities
-      
+
       // TODO: save medicalCase in database
       // TODO: save and quit
-
-      navigation.navigate('StageWrapper', {
-        stageIndex: stageIndex + direction,
-      })
     }
+  }
+
+  if (medicalCaseUpdateError) {
+    return (
+      <View style={bottomNavbar.errorContainer}>
+        <View style={[Layout.fill, Layout.row]}>
+          <Text style={bottomNavbar.errorText}>{medicalCaseUpdateError}</Text>
+        </View>
+      </View>
+    )
   }
 
   if (patientInsertError) {
