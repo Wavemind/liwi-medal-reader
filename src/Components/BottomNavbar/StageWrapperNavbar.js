@@ -118,7 +118,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
         const medicalCaseClosed = await CloseMedicalCaseService(nextStage)
 
         if (medicalCaseClosed) {
-          navigateAndSimpleReset('Home', { destroyMedicalCase: true })
+          navigateAndSimpleReset('Home', { destroyCurrentConsultation: true })
         }
       }
     }

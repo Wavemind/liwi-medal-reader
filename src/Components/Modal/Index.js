@@ -12,8 +12,7 @@ import Modal from 'react-native-modal'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
-import Emergency from '@/Components/Modal/Content/Emergency'
-import Lock from '@/Components/Modal/Content/Lock'
+import { Emergency, Lock, ExitMedicalCase } from '@/Components'
 
 const CustomModal = () => {
   // Theme and style elements deconstruction
@@ -42,6 +41,8 @@ const CustomModal = () => {
         return <Emergency />
       case 'lock':
         return <Lock />
+      case 'exitMedicalCase':
+        return <ExitMedicalCase />
       default:
         return null
     }
