@@ -20,7 +20,7 @@ const PhysicalExamMedicalCaseContainer = props => {
   const isFocused = useIsFocused()
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const medicalCase = useSelector(state => state.medicalCase.item)
+  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
 
   const [systems, setSystems] = useState(PhysicalExamQuestions())
 
@@ -31,7 +31,7 @@ const PhysicalExamMedicalCaseContainer = props => {
     if (!isEqual(physicalExamQuestions, systems)) {
       setSystems(physicalExamQuestions)
     }
-  }, [isFocused, medicalCase])
+  }, [isFocused, mcNodes])
   return (
     <SectionList
       sections={systems}
