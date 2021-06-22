@@ -465,12 +465,12 @@ export default function () {
       const nestedCollection = database.get('medical_cases')
       await nestedCollection.create(nestedRecord => {
         nestedRecord._raw.id = medicalCaseData.id
-        nestedRecord.json = {
+        nestedRecord.json = JSON.stringify({
           comment: medicalCaseData.comment,
           consent: medicalCaseData.consent,
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
-        }
+        })
         nestedRecord.synchronized_at = medicalCaseData.synchronized_at
         nestedRecord.stage = medicalCaseData.advancement.stage
         nestedRecord.step = medicalCaseData.advancement.step
@@ -528,14 +528,16 @@ export default function () {
 
   const _buildMedicalCase = async medicalCase => {
     const patient = await medicalCase.patient.fetch()
+    const parsedJson = JSON.parse(medicalCase.json)
+
     return {
       id: medicalCase.id,
       activities: [],
-      comment: medicalCase.json.comment,
-      consent: medicalCase.json.consent,
-      diagnosis: medicalCase.json.diagnosis,
-      nodes: medicalCase.json.nodes,
-      json: '',
+      comment: parsedJson.comment,
+      consent: parsedJson.consent,
+      diagnosis: parsedJson.diagnosis,
+      nodes: parsedJson.nodes,
+      json: parsedJson,
       synchronized_at: medicalCase.synchronizedAt,
       advancement: {
         stage: medicalCase.stage,
