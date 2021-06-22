@@ -4,6 +4,7 @@
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
 import { Database, Q } from '@nozbe/watermelondb'
+import uuid from 'react-native-uuid'
 
 /**
  * The internal imports
@@ -68,6 +69,61 @@ export default function () {
         )
       })
     }, 'insert activities')
+  }
+
+  /**
+   * Inserts the patient values to the DB.
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const insertPatientValues = async (patientValues, patientId) => {
+    const patientValuesCollection = database.get('patient_values')
+    await database.action(async () => {
+      await database.batch(
+        patientValues.map(patientValue => {
+          return patientValuesCollection.prepareCreate(record => {
+            record._raw.id = uuid.v4()
+            record.patient_id = patientId
+            record.node_id = parseInt(patientValue.id, 10)
+            record.answer_id =
+              patientValue.answer === null
+                ? null
+                : parseInt(patientValue.answer, 10)
+            record.value = patientValue.value
+          })
+        }),
+      )
+    }, 'insert patient values')
+  }
+
+  /**
+   * Updates the patient values in the DB.
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const updatePatientValues = async (patientValues, patientId) => {
+    const patientValuesCollection = database.get('patient_values')
+    await database.action(async () => {
+      const existingPatientValues = await patientValuesCollection
+        .query(Q.where('patient_id', patientId))
+        .fetch()
+      await database.batch(
+        existingPatientValues.map(patientValueRecord => {
+          return patientValueRecord.prepareUpdate(record => {
+            const patientValue = patientValues.find(
+              pv => record.node_id === pv.id,
+            )
+            record.answer_id =
+              patientValue.answer === null
+                ? null
+                : parseInt(patientValue.answer, 10)
+            record.value = patientValue.value
+          })
+        }),
+      )
+    }, 'update patient values')
   }
 
   /**
@@ -426,7 +482,7 @@ export default function () {
 
     // MedicalCase
     //await _generateActivities(medicalCaseData.activities, medicalCaseData.id)
-    // await Promise.all([_savePatientValue('patients', patientData)])
+    // await Promise.all([_savePatientValue('Patient', patientData)])
   }
 
   const _buildPatient = async patient => {
@@ -603,6 +659,8 @@ export default function () {
     getAll,
     getConsentsFile,
     insertPatient,
+    insertPatientValues,
+    updatePatientValues,
     lockMedicalCase,
     push,
     unlockMedicalCase,

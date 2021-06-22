@@ -13,13 +13,13 @@ import AddStepActivities from './AddStepActivities'
 import ClearActivities from './ClearActivities'
 
 // Final Diagnoses
-import SetDiagnoses from './Diagnoses/SetDiagnoses'
-import AddAdditionalDiagnoses from './Diagnoses/AddAdditionalDiagnoses'
-import RemoveAdditionalDiagnoses from './Diagnoses/RemoveAdditionalDiagnoses'
+import SetDiagnoses from '@/Store/MedicalCase/Diagnoses/SetDiagnoses'
+import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
+import RemoveAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAdditionalDiagnoses'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import RemoveAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAgreedDiagnoses'
 import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnoses'
-import RemoveRefusedDiagnoses from './Diagnoses/RemoveRefusedDiagnoses'
+import RemoveRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses'
 import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses'
 import RemoveCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveCustomDiagnoses'
 // Drugs
