@@ -55,6 +55,7 @@ export { default as AccordionItem } from './Accordion/Item'
 
 // OTHER
 export { default as BottomNavbar } from './BottomNavbar'
+export { default as ErrorNavBar } from './BottomNavbar/Error'
 export { default as Question } from './Question'
 export { default as ConsentListItem } from './ConsentListItem'
 export { default as MedicalCaseListItem } from './MedicalCase/ListItem'

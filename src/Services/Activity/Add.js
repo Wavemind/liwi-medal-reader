@@ -10,8 +10,8 @@ export default ({ medicalCase, nodeId, value }) => {
     if (i === medicalCase.activities.length - 1) {
       return {
         ...activity,
-        questions: [
-          ...activity.questions,
+        nodes: [
+          ...activity.nodes,
           {
             nodeId,
             previousValue: medicalCase.nodes[nodeId].answer,

@@ -28,7 +28,6 @@ export default () => {
   let questions = []
   let systems = []
 
-  // TODO: ARM CONTROL
   switch (navigation[stage].steps[step].label) {
     case 'registration':
       return RegistrationStepService(errors)
