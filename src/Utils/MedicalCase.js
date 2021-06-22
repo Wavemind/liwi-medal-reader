@@ -61,10 +61,11 @@ export const respectsCutOff = (cut_off_start, cut_off_end) => {
  * @param {Array<Instance>} instances : instances from the diagram we are handling
  * @returns {Array<Instance>} Instances without conditions
  */
-export const getTopConditions = instances => {
+export const getTopConditions = (instances, isFinalDiagnosis = false) => {
   return Object.values(instances).filter(
     instance =>
-      instance.conditions.length === 0 && instance.final_diagnosis_id === null,
+      instance.conditions.length === 0 &&
+      (isFinalDiagnosis || instance.final_diagnosis_id === null),
   )
 }
 /**
@@ -134,13 +135,19 @@ export const handleChildren = (
           addQuestion(instance.id, questionsToDisplay, categories)
         }
       }
+
+      const healthcareCategories = [
+        Config.CATEGORIES.drug,
+        Config.CATEGORIES.management,
+      ]
       const childrenInstance = instance.children
         .filter(
           childId =>
-            (nodes[childId].type !== Config.NODE_TYPES.finalDiagnosis &&
+            ((nodes[childId].type !== Config.NODE_TYPES.finalDiagnosis &&
               diagramType === Config.NODE_TYPES.diagnosis) ||
-            (diagramType === Config.NODE_TYPES.questionsSequence &&
-              childId !== diagramId),
+              (diagramType === Config.NODE_TYPES.questionsSequence &&
+                childId !== diagramId && [Config.CATEGORIES.drug])) &&
+            !healthcareCategories.includes(nodes[childId].category),
         )
         .map(childId => instances[childId])
       if (childrenInstance.length > 0) {
