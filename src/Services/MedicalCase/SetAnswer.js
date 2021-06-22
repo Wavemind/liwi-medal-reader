@@ -10,7 +10,7 @@ import QuestionValidationService from '@/Services/Validation/Question'
 import { setNodeValue } from '@/Utils/Answers'
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
 import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
-import { UpdateActivitiesService } from '@/Services/MedicalCase/index'
+import AddActivityService from '@/Services/Activity/Add'
 
 export default props => {
   const { nodeId, value } = props
@@ -56,7 +56,7 @@ export default props => {
   newNodes = UpdateQuestionSequence({ nodeId: node.id, newNodes })
   newNodes = UpdateRelatedQuestion({ nodeId: node.id, newNodes })
 
-  const newActivities = UpdateActivitiesService({
+  const newActivities = AddActivityService({
     medicalCase: newMedicalCase,
     nodeId,
     value,

@@ -24,8 +24,9 @@ import { fadeIn } from '@/Theme/Animation'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import GetAllMedicalCaseDB from '@/Store/DatabaseMedicalCase/GetAll'
+import DestroyMedicalCase from '@/Store/MedicalCase/Destroy'
 
-const IndexHomeContainer = ({ navigation }) => {
+const IndexHomeContainer = ({ navigation, route }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -40,11 +41,17 @@ const IndexHomeContainer = ({ navigation }) => {
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
+  // Destroy medical case in store after closing a medical case
+  if (route.params?.destroyMedicalCase) {
+    dispatch(DestroyMedicalCase.action())
+  }
+
   // Local state definition
   const [page, setPage] = useState(1)
   const [firstLoading, setFirstLoading] = useState(true)
 
   const algorithm = useSelector(state => state.algorithm.item)
+
   const medicalCases = useSelector(
     state => state.databaseMedicalCase.getAll.item.data,
   )
@@ -91,7 +98,7 @@ const IndexHomeContainer = ({ navigation }) => {
   const newPatient = async () => {
     await dispatch(
       CreatePatient.action({
-        idPatient: null,
+        patientId: null,
         newMedicalCase: true,
         facility: {
           study_id: 'Dynamic Tanzania',

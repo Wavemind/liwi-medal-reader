@@ -14,6 +14,7 @@ import {
 } from 'redux-persist'
 
 import algorithm from './Algorithm'
+import databaseActivity from './DatabaseActivity'
 import databaseMedicalCase from './DatabaseMedicalCase'
 import databasePatient from './DatabasePatient'
 import device from './Device'
@@ -31,6 +32,7 @@ import user from './User'
 
 const reducers = combineReducers({
   algorithm,
+  databaseActivity,
   databaseMedicalCase,
   databasePatient,
   device,

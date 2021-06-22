@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -16,6 +17,10 @@ const Header = props => {
     options: { title },
     navigation,
   } = props.descriptor
+
+  const architecture = useSelector(
+    state => state.healthFacility.item.architecture,
+  )
 
   // Theme and style elements deconstruction
   const {
@@ -33,7 +38,7 @@ const Header = props => {
         <Text style={header.title}>{title}</Text>
       </View>
       <View style={header.connectionStatusWrapper}>
-        <ConnectionStatus />
+        {architecture === 'client-server' && <ConnectionStatus />}
       </View>
     </View>
   )

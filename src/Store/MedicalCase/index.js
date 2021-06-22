@@ -6,7 +6,11 @@ import UpdateNodeField from './UpdateNodeField'
 import Load from './Load'
 import HandleComplaintCategories from './HandleComplaintCategories'
 import HandleDateFormulas from './HandleDateFormulas'
+import Destroy from './Destroy'
+
+// Activities
 import AddStepActivities from './AddStepActivities'
+import ClearActivities from './ClearActivities'
 
 // Final Diagnoses
 import SetDiagnoses from './Diagnoses/SetDiagnoses'
@@ -44,13 +48,16 @@ export default buildSlice(
   'medicalCase',
   [
     Create,
+    Destroy,
     ChangeAdvancement,
     HandleComplaintCategories,
     HandleDateFormulas,
     SetAnswer,
     UpdateNodeField,
     Load,
+    // Activities
     AddStepActivities,
+    ClearActivities,
     // Diagnoses
     SetDiagnoses,
     AddAdditionalDiagnoses,

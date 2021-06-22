@@ -33,7 +33,7 @@ describe('Scan QR code properly ', () => {
           study_id: 'Dynamic Tanzania',
           uid: 'e1a56e66-613c-49f7-9905-31e1e8943af0',
         },
-        idPatient: null,
+        patientId: null,
         newMedicalCase: true,
         otherFacility: {},
       },
@@ -100,7 +100,7 @@ describe('Scan QR code properly ', () => {
           study_id: 'Dynamic Tanzania',
           uid: 'e1a56e66-613c-49f7-9905-31e1e8943af0',
         },
-        idPatient: null,
+        patientId: null,
         newMedicalCase: true,
         otherFacility: {
           group_id: '10',
