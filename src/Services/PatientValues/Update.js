@@ -6,12 +6,8 @@ import { store } from '@/Store'
 import { RegistrationQuestions } from '@/Services/Steps'
 
 export default async () => {
-  const {
-    patient: { item: currentPatient },
-    medicalCase: {
-      item: { nodes: mcNodes },
-    },
-  } = store.getState()
+  const patient = store.getState().patient.item
+  const mcNodes = store.getState().medicalCase.item.nodes
 
   const { updatePatientValues } = useDatabase()
 
@@ -20,5 +16,5 @@ export default async () => {
     questions.includes(node.id),
   )
 
-  await updatePatientValues(patientValues, currentPatient.id)
+  await updatePatientValues(patientValues, patient.id)
 }
