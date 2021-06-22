@@ -13,12 +13,12 @@ export default async () => {
     },
   } = store.getState()
 
-  const { savePatientValues } = useDatabase()
+  const { insertPatientValues } = useDatabase()
 
   const questions = RegistrationQuestions()
   const patientValues = Object.values(mcNodes).filter(node =>
     questions.includes(node.id),
   )
 
-  await savePatientValues(patientValues, currentPatient.id)
+  await insertPatientValues(patientValues, currentPatient.id)
 }

@@ -22,8 +22,8 @@ import {
   CloseMedicalCaseService,
 } from '@/Services/MedicalCase'
 import { getStages } from '@/Utils/Navigation/GetStages'
-import SavePatientValues from '@/Store/DatabasePatientValues/Save'
-import useDatabase from '@/Services/Database/useDatabase'
+import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
+import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -54,9 +54,13 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   const patientInsertLoading = useSelector(
     state => state.databasePatient.insert.loading,
   )
+  const patientValuesInsertError = useSelector(
+    state => state.databasePatientValues.insert.error,
+  )
+  const patientValuesUpdateError = useSelector(
+    state => state.databasePatientValues.update.error,
+  )
   const errors = useSelector(state => state.validation.item)
-  const patient = useSelector(state => state.patient.item)
-  console.log(patient)
 
   /**
    * Pre check of validation and insert in database patient if we're at registration stage
@@ -76,7 +80,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     ) {
       if (advancement.stage === 0 && !savedInDatabase) {
         const patientInsert = await dispatch(InsertPatient.action())
-        await dispatch(SavePatientValues.action())
 
         if (isFulfilled(patientInsert)) {
           dispatch(
@@ -85,6 +88,14 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               value: !savedInDatabase,
             }),
           )
+          const insertPatientValues = await dispatch(InsertPatientValues.action())
+          if (isFulfilled(insertPatientValues)) {
+            handleNavigation(direction)
+          }
+        }
+      } else if (advancement.stage === 0 && savedInDatabase) {
+        const updatePatientValues = await dispatch(UpdatePatientValues.action())
+        if (isFulfilled(updatePatientValues)) {
           handleNavigation(direction)
         }
       } else {
@@ -130,11 +141,20 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   }
 
   if (medicalCaseUpdateError) {
-    return <ErrorNavBar message={medicalCaseUpdateError} />
+    return <ErrorNavBar message={medicalCaseUpdateError.toString()} />
   }
 
   if (patientInsertError) {
-    return <ErrorNavBar message={patientInsertError} />
+    return <ErrorNavBar message={patientInsertError.toString()} />
+  }
+
+  if (patientValuesInsertError) {
+    return <ErrorNavBar message={patientValuesInsertError.toString()} />
+  }
+
+  // console.log(patientValuesUpdateError)
+  if (patientValuesUpdateError) {
+    return <ErrorNavBar message={patientValuesUpdateError.toString()} />
   }
 
   if (Object.keys(errors).length > 0) {

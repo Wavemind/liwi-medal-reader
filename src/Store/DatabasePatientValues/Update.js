@@ -10,17 +10,17 @@ import {
 /**
  * The internal imports
  */
-import SavePatientValuesService from '@/Services/PatientValues/Save'
+import { UpdatePatientValuesService } from '@/Services/PatientValues'
 
 export default {
-  initialState: buildAsyncState('save'),
+  initialState: buildAsyncState('update'),
   action: buildAsyncActions(
-    'databasePatientValues/save',
-    SavePatientValuesService,
+    'databasePatientValues/update',
+    UpdatePatientValuesService,
   ),
   reducers: buildAsyncReducers({
     itemKey: null,
-    errorKey: 'save.error',
-    loadingKey: 'save.loading',
+    errorKey: 'update.error',
+    loadingKey: 'update.loading',
   }),
 }

@@ -72,54 +72,58 @@ export default function () {
   }
 
   /**
-   * Saves the patient values to the DB.
-   * If the patient exists, it overwrites existing patient values
-   * If the patient does not exist, it creates a new set of patient values
+   * Inserts the patient values to the DB.
    * @param patientValues
    * @param patientId
    * @returns {Promise<void>}
    */
-  const savePatientValues = async (patientValues, patientId) => {
+  const insertPatientValues = async (patientValues, patientId) => {
     const patientValuesCollection = database.get('patient_values')
-    const existingPatientValues = await patientValuesCollection
-      .query(Q.where('patient_id', patientId))
-      .fetch()
+    await database.action(async () => {
+      await database.batch(
+        patientValues.map(patientValue => {
+          return patientValuesCollection.prepareCreate(record => {
+            record._raw.id = uuid.v4()
+            record.patient_id = patientId
+            record.node_id = parseInt(patientValue.id, 10)
+            record.answer_id =
+              patientValue.answer === null
+                ? null
+                : parseInt(patientValue.answer, 10)
+            record.value = patientValue.value
+          })
+        }),
+      )
+    }, 'insert patient values')
+  }
 
-    if (existingPatientValues.length > 0) {
-      await database.action(async () => {
-        await database.batch(
-          patientValues.map(patientValue => {
-            return patientValuesCollection.prepareUpdate(record => {
-              if (record.node_id === parseInt(patientValue.id, 10)) {
-                record.answer_id =
-                  patientValue.answer === null
-                    ? null
-                    : parseInt(patientValue.answer, 10)
-                record.value = patientValue.value
-              }
-            })
-          }),
-        )
-      }, 'save patient values')
-    } else {
-      await database.action(async () => {
-        await database.batch(
-          patientValues.map(patientValue => {
-            const patientValuesCollection = database.get('patient_values')
-            return patientValuesCollection.prepareCreate(record => {
-              record._raw.id = uuid.v4()
-              record.patient_id = patientId
-              record.node_id = parseInt(patientValue.id, 10)
-              record.answer_id =
-                patientValue.answer === null
-                  ? null
-                  : parseInt(patientValue.answer, 10)
-              record.value = patientValue.value
-            })
-          }),
-        )
-      }, 'save patient values')
-    }
+  /**
+   * Updates the patient values in the DB.
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const updatePatientValues = async (patientValues, patientId) => {
+    const patientValuesCollection = database.get('patient_values')
+    await database.action(async () => {
+      const existingPatientValues = await patientValuesCollection
+        .query(Q.where('patient_id', patientId))
+        .fetch()
+      await database.batch(
+        existingPatientValues.map(patientValueRecord => {
+          return patientValueRecord.prepareUpdate(record => {
+            const patientValue = patientValues.find(
+              pv => record.node_id === pv.id,
+            )
+            record.answer_id =
+              patientValue.answer === null
+                ? null
+                : parseInt(patientValue.answer, 10)
+            record.value = patientValue.value
+          })
+        }),
+      )
+    }, 'update patient values')
   }
 
   /**
@@ -370,7 +374,6 @@ export default function () {
   const getAll = async (model, page = 1, params, rawData = false) => {
     const collection = database.get(_mapModelToTable(model))
     let result = await collection.query().fetch()
-    // console.log(result)
 
     const queries = []
     // if (page === null) {
@@ -656,7 +659,8 @@ export default function () {
     getAll,
     getConsentsFile,
     insertPatient,
-    savePatientValues,
+    insertPatientValues,
+    updatePatientValues,
     lockMedicalCase,
     push,
     unlockMedicalCase,

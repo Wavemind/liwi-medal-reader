@@ -17,6 +17,7 @@ import algorithm from './Algorithm'
 import databaseActivity from './DatabaseActivity'
 import databaseMedicalCase from './DatabaseMedicalCase'
 import databasePatient from './DatabasePatient'
+import databasePatientValues from './DatabasePatientValues'
 import device from './Device'
 import emergency from './Emergency'
 import healthFacility from './HealthFacility'
@@ -35,6 +36,7 @@ const reducers = combineReducers({
   databaseActivity,
   databaseMedicalCase,
   databasePatient,
+  databasePatientValues,
   device,
   emergency,
   healthFacility,
