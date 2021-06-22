@@ -46,7 +46,7 @@ const String = ({ questionId, editable = true }) => {
       style={string.input(editable)}
       onEndEditing={onEndEditing}
       onChangeText={setValue}
-      value={value}
+      value={value.toString()}
       keyboardType="default"
       editable={editable}
     />

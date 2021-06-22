@@ -19,7 +19,7 @@ const ErrorNavBar = ({ message }) => {
   return (
     <View style={bottomNavbar.errorContainer}>
       <View style={[Layout.fill, Layout.row]}>
-        <Text style={bottomNavbar.errorText}>{message}</Text>
+        <Text style={bottomNavbar.errorText}>{message.toString()}</Text>
       </View>
     </View>
   )

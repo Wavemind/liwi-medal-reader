@@ -22,6 +22,8 @@ import {
   CloseMedicalCaseService,
 } from '@/Services/MedicalCase'
 import { getStages } from '@/Utils/Navigation/GetStages'
+import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
+import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -52,6 +54,12 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   const patientInsertLoading = useSelector(
     state => state.databasePatient.insert.loading,
   )
+  const patientValuesInsertError = useSelector(
+    state => state.databasePatientValues.insert.error,
+  )
+  const patientValuesUpdateError = useSelector(
+    state => state.databasePatientValues.update.error,
+  )
   const errors = useSelector(state => state.validation.item)
 
   /**
@@ -80,6 +88,14 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               value: !savedInDatabase,
             }),
           )
+          const insertPatientValues = await dispatch(InsertPatientValues.action())
+          if (isFulfilled(insertPatientValues)) {
+            handleNavigation(direction)
+          }
+        }
+      } else if (advancement.stage === 0 && savedInDatabase) {
+        const updatePatientValues = await dispatch(UpdatePatientValues.action())
+        if (isFulfilled(updatePatientValues)) {
           handleNavigation(direction)
         }
       } else {
@@ -130,6 +146,14 @@ const StageWrapperNavbar = ({ stageIndex }) => {
 
   if (patientInsertError) {
     return <ErrorNavBar message={patientInsertError} />
+  }
+
+  if (patientValuesInsertError) {
+    return <ErrorNavBar message={patientValuesInsertError} />
+  }
+
+  if (patientValuesUpdateError) {
+    return <ErrorNavBar message={patientValuesUpdateError} />
   }
 
   if (Object.keys(errors).length > 0) {
