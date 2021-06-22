@@ -13,13 +13,15 @@ import { isFulfilled } from '@reduxjs/toolkit'
  */
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
 import UpdateFieldPatient from '@/Store/Patient/UpdateField'
-import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
-import InsertDatabaseActivity from '@/Store/DatabaseActivity/Insert'
-import ClearActivitiesMedicalCase from '@/Store/MedicalCase/ClearActivities'
-import useDatabase from '@/Services/Database/useDatabase'
+import {
+  SaveMedicalCaseService,
+  CloseMedicalCaseService,
+} from '@/Services/MedicalCase'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -36,12 +38,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   const navigationState = useNavigationState(
     state => state.routes[state.index].state,
   )
-
+  const stageNavigation = getStages()
   const advancement = useSelector(state => state.medicalCase.item.advancement)
-  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
-  const medicalCase = useSelector(state => state.medicalCase.item)
-  const activities = useSelector(state => state.medicalCase.item.activities)
-
   const savedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
   )
@@ -54,7 +52,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   const patientInsertLoading = useSelector(
     state => state.databasePatient.insert.loading,
   )
-
   const errors = useSelector(state => state.validation.item)
 
   /**
@@ -99,15 +96,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     const medicalCaseState = navigationState.routes[navigationState.index].state
     const nextStep = advancement.step + direction
 
-
-// TODO
-// SAVE
-// CLOSE MEDICAL CASE
-// CLEAR CODE
-// FIX NAVIGATION
-// POP-IN lorsqu'on quit un cas médicale
-// 
-
     if (
       medicalCaseState !== undefined &&
       nextStep < medicalCaseState.routes.length &&
@@ -117,48 +105,25 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     } else {
       const nextStage = stageIndex + direction
 
-      // Update medical case
-      const medicalCaseUpdateAdvancement = await dispatch(
-        UpdateDatabaseMedicalCase.action({
-          medicalCaseId,
-          fields: [
-            { name: 'stage', value: nextStage },
-            { name: 'step', value: 0 },
-            {
-              name: 'json',
-              value: JSON.stringify({
-                comment: medicalCase.comment,
-                consent: medicalCase.consent,
-                diagnosis: medicalCase.diagnosis,
-                nodes: medicalCase.nodes,
-              }),
-            },
-          ],
-        }),
-      )
+      // Test if nextStage exist. If not, save and close medical case
+      if (stageNavigation[nextStage] !== undefined) {
+        const medicalCaseSaved = await SaveMedicalCaseService(nextStage)
 
-      if (isFulfilled(medicalCaseUpdateAdvancement)) {
-        // Add activities
-        const addActivity = await dispatch(
-          InsertDatabaseActivity.action({
-            medicalCaseId,
-            activities,
-          }),
-        )
-
-        if (isFulfilled(addActivity)) {
-          // Remove sended activities
-          await dispatch(ClearActivitiesMedicalCase.action())
-
-          // Redirect to next stage
+        if (medicalCaseSaved) {
           navigation.navigate('StageWrapper', {
             stageIndex: nextStage,
           })
         }
+      } else {
+        const medicalCaseClosed = await CloseMedicalCaseService(nextStage)
+
+        if (medicalCaseClosed) {
+          navigateAndSimpleReset('Home', { destroyMedicalCase: true })
+        }
       }
     }
   }
-  console.log('Je render')
+
   if (medicalCaseUpdateError) {
     return (
       <View style={bottomNavbar.errorContainer}>
@@ -232,12 +197,12 @@ const StageWrapperNavbar = ({ stageIndex }) => {
         {advancement.stage > 0 && (
           <View style={bottomNavbar.actionButton}>
             <SquareButton
-              label={t('containers.medical_case.navigation.quit')}
+              label={t('containers.medical_case.navigation.save')}
               filled
               bgColor={Colors.grey}
               icon="save-quit"
               iconSize={FontSize.large}
-              onPress={() => console.log('TODO')}
+              onPress={() => SaveMedicalCaseService(0)}
             />
           </View>
         )}

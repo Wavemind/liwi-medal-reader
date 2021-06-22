@@ -75,7 +75,7 @@ export default {
       navigation: {
         back: 'Prev',
         next: 'Next',
-        quit: 'Quit',
+        save: 'Save',
       },
       stages: {
         registration: 'Registration',
@@ -83,6 +83,7 @@ export default {
         consultation: 'Consultation',
         assessments: 'Assessments',
         diagnoses: 'Diagnoses',
+        closed: 'Closed',
       },
       steps: {
         registration: 'Registration',

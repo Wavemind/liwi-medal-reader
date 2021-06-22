@@ -28,34 +28,39 @@ export default () => {
   let questions = []
   let systems = []
 
-  // TODO: ARM CONTROL
   switch (navigation[stage].steps[step].label) {
     case 'registration':
       return {}
-    // return RegistrationStepService(errors)
+      return RegistrationStepService(errors)
     case 'unique_triage_questions':
+      return {}
       return QuestionStepValidation(UniqueTriageQuestions(), errors)
     case 'complaint_categories':
       return {}
     case 'basic_measurements':
+      return {}
       return QuestionStepValidation(BasicMeasurementQuestions(), errors)
     case 'medical_history':
+      return {}
       systems = MedicalHistoryQuestions()
       systems.forEach(system => {
         questions = questions.concat(system.data)
       })
       return QuestionStepValidation(questions, errors)
     case 'physical_exams':
+      return {}
       systems = PhysicalExamQuestions()
       systems.forEach(system => {
         questions = questions.concat(system.data)
       })
       return QuestionStepValidation(questions, errors)
     case 'assessments':
+      return {}
       return QuestionStepValidation(AssessmentQuestions(), errors)
     case 'final_diagnoses':
       return {}
     case 'healthcare_questions':
+      return {}
       return QuestionStepValidation(errors)
     case 'medicines':
       return {}
@@ -64,6 +69,7 @@ export default () => {
     case 'summary':
       return {}
     case 'referral':
+      return {}
       if (algorithm.config.track_referral) {
         return QuestionStepValidation(ReferralQuestions(), errors)
       }

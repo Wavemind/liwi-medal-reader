@@ -38,9 +38,13 @@ const ListItem = ({ item }) => {
    * @returns {Promise<void>}
    */
   const handlePress = async () => {
-    await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
-    await dispatch(LoadPatient.action({ patientId: item.patient.id }))
-    navigation.navigate('StageWrapper')
+    if (item.closedAt > 0) {
+      console.log('TODO OPEN SUMMARY')
+    } else {
+      await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
+      await dispatch(LoadPatient.action({ patientId: item.patient.id }))
+      navigation.navigate('StageWrapper')
+    }
   }
 
   return (
@@ -61,11 +65,13 @@ const ListItem = ({ item }) => {
 
         <View style={patientListItem.statusWrapper}>
           <Text style={patientListItem.statusTitle}>
-            {t(
-              `containers.medical_case.stages.${
-                stages[item.advancement.stage].label
-              }`,
-            )}
+            {item.closedAt > 0
+              ? t('containers.medical_case.stages.closed')
+              : t(
+                  `containers.medical_case.stages.${
+                    stages[item.advancement.stage].label
+                  }`,
+                )}
           </Text>
           <View style={Layout.row}>
             {stages.map((stage, index) => (
@@ -73,7 +79,9 @@ const ListItem = ({ item }) => {
                 key={`${item.id}-icon-${stage.icon}`}
                 name={stage.icon}
                 size={FontSize.large}
-                style={patientListItem.icon(index === item.advancement.stage)}
+                style={patientListItem.icon(
+                  item.closedAt > 0 ? true : index === item.advancement.stage,
+                )}
               />
             ))}
           </View>

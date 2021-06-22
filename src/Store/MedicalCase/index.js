@@ -6,6 +6,7 @@ import UpdateNodeField from './UpdateNodeField'
 import Load from './Load'
 import HandleComplaintCategories from './HandleComplaintCategories'
 import HandleDateFormulas from './HandleDateFormulas'
+import Destroy from './Destroy'
 
 // Activities
 import AddStepActivities from './AddStepActivities'
@@ -47,6 +48,7 @@ export default buildSlice(
   'medicalCase',
   [
     Create,
+    Destroy,
     ChangeAdvancement,
     HandleComplaintCategories,
     HandleDateFormulas,

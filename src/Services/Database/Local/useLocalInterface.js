@@ -317,7 +317,6 @@ export default function () {
    */
   const getAll = async (model, page = 1, params, rawData = false) => {
     const collection = database.get(_mapModelToTable(model))
-    console.log(collection)
     let result = await collection.query().fetch()
 
     const queries = []
