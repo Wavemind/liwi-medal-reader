@@ -35,7 +35,7 @@ const PatientString = ({ field }) => {
    */
   const onEndEditing = e => {
     const newValue = e.nativeEvent.text
-    dispatch(f.action({ field, value: newValue }))
+    dispatch(UpdateField.action({ field, value: newValue }))
   }
 
   return (
