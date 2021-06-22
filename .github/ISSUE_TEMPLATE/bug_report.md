@@ -29,7 +29,7 @@ If applicable, add screenshots to help explain your problem.
 Birth date :
 
 ### Complaint Categories
-Please define what complaint categories where selected
+Please define what complaint categories were selected
 
 ### Basic Measurements
 Please define what basic measurement values
@@ -41,7 +41,7 @@ Please define what basic Medial History values
 Please define what basic Physical Exams values
 
 ### Assessments
-Please define what basic assesments values
+Please define what basic assessments values
 
 **Smartphone (please complete the following information):**
  - Device: [e.g. iPhone6]
