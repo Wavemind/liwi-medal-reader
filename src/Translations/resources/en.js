@@ -75,7 +75,6 @@ export default {
       navigation: {
         back: 'Prev',
         next: 'Next',
-        save: 'Save',
       },
       stages: {
         registration: 'Registration',

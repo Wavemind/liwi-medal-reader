@@ -12,7 +12,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { SquareButton } from '@/Components'
+import { SquareButton, ErrorNavBar } from '@/Components'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
@@ -125,23 +125,11 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   }
 
   if (medicalCaseUpdateError) {
-    return (
-      <View style={bottomNavbar.errorContainer}>
-        <View style={[Layout.fill, Layout.row]}>
-          <Text style={bottomNavbar.errorText}>{medicalCaseUpdateError}</Text>
-        </View>
-      </View>
-    )
+    return <ErrorNavBar message={medicalCaseUpdateError} />
   }
 
   if (patientInsertError) {
-    return (
-      <View style={bottomNavbar.errorContainer}>
-        <View style={[Layout.fill, Layout.row]}>
-          <Text style={bottomNavbar.errorText}>{patientInsertError}</Text>
-        </View>
-      </View>
-    )
+    return <ErrorNavBar message={patientInsertError} />
   }
 
   if (Object.keys(errors).length > 0) {
@@ -197,7 +185,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
         {advancement.stage > 0 && (
           <View style={bottomNavbar.actionButton}>
             <SquareButton
-              label={t('containers.medical_case.navigation.save')}
+              label={t('actions.save')}
               filled
               bgColor={Colors.grey}
               icon="save-quit"

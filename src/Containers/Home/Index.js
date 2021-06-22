@@ -96,6 +96,7 @@ const IndexHomeContainer = ({ navigation, route }) => {
    * Create patient without scanning QR code
    */
   const newPatient = async () => {
+    // TODO CHECK WITH ALAIN
     const patientId = uuid.v4()
     await dispatch(
       CreatePatient.action({
