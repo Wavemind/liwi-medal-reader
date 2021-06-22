@@ -5,6 +5,7 @@ import Load from './Load'
 
 const sliceInitialState = {
   item: {},
+  savedInDatabase: false,
 }
 
 export default buildSlice(

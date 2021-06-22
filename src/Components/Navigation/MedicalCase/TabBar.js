@@ -4,7 +4,8 @@
 import React, { useEffect, useRef } from 'react'
 import { View, ScrollView } from 'react-native'
 import { heightPercentageToDP } from 'react-native-responsive-screen'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import uuid from 'react-native-uuid'
 
 /**
  * The internal imports
@@ -12,8 +13,8 @@ import { useDispatch } from 'react-redux'
 import { useTheme } from '@/Theme'
 import TabBarItem from './TabBarItem'
 import ChangeAdvancement from '@/Store/MedicalCase/ChangeAdvancement'
-import { getStages } from '@/Utils/Navigation/GetStages'
 import AddStepActivities from '@/Store/MedicalCase/AddStepActivities'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
   const {
@@ -24,24 +25,36 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
   const dispatch = useDispatch()
 
   const stages = getStages()
+  const macAddress = useSelector(state => state.device.item.mac_address)
+  const clinician = useSelector(state => state.healthFacility.clinician)
+  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const medicalCaseFailSafe = useSelector(
+    state => state.medicalCase.item.fail_safe,
+  )
 
   /**
    * Updates the activities array with the new stage and step
+   * TODO: MOVE IT TO StageWrapperNavBar ?
    */
   const updateMedicalCaseActivities = () => {
     const stage = stages[stageIndex]
     const step = stage.steps[navigationState.index]
 
     const stepActivities = {
-      stage: stage.label,
+      id: uuid.v4(),
       step: step.label,
-      questions: [],
+      clinician: `${clinician.first_name} ${clinician.last_name}`,
+      mac_address: macAddress,
+      medical_case_id: medicalCaseId,
+      fail_safe: medicalCaseFailSafe,
+      nodes: [],
     }
     dispatch(AddStepActivities.action({ stepActivities }))
   }
 
   /**
    * Update the advancement in the store every time the step / stage changes
+   * TODO: MOVE IT TO StageWrapperNavBar ?
    */
   const updateMedicalCaseAdvancement = async () => {
     await dispatch(

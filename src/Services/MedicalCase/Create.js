@@ -2,12 +2,13 @@
  * The external imports
  */
 import uuid from 'react-native-uuid'
+
 /**
  * The internal imports
  */
 import { generateNodes } from '@/Services/Node'
 
-export default async ({ algorithm }) => {
+export default async ({ algorithm, patientId }) => {
   return {
     activities: [],
     comment: '',
@@ -22,6 +23,7 @@ export default async ({ algorithm }) => {
       custom: {},
     },
     id: uuid.v4(),
+    patient_id: patientId,
     nodes: generateNodes({ nodes: algorithm.nodes }),
     json: '',
     advancement: {
@@ -31,5 +33,6 @@ export default async ({ algorithm }) => {
     synchronizedAt: null,
     updatedAt: new Date().getTime(),
     versionId: algorithm.version_id,
+    fail_safe: false,
   }
 }

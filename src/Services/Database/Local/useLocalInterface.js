@@ -49,26 +49,26 @@ const database = new Database({
 export default function () {
   /**
    * Create activities for a releated medical case
-   * @param { array } activities - List of activities to create
    * @param { integer } medicalCaseId
+   * @param { array } activities - List of activities to create
    * @private
    */
-  const _generateActivities = async (activities, medicalCaseId) => {
-    // await database.action(async () => {
-    //   activities.map(async activity => {
-    //     await database.batch(
-    //       database.get('activities').prepareCreate(record => {
-    //         record._raw.id = activity.id
-    //         record.stage = activity.stage
-    //         record.clinician = activity.clinician
-    //         record.nodes = activity.nodes
-    //         record.mac_address = activity.mac_address
-    //         record.medical_case_id = medicalCaseId
-    //         record.fail_safe = activity.fail_safe
-    //       }),
-    //     )
-    //   })
-    // }, 'generate activities')
+  const insertActivities = async (medicalCaseId, activities) => {
+    await database.action(async () => {
+      activities.map(async activity => {
+        await database.batch(
+          database.get('activities').prepareCreate(record => {
+            record._raw.id = activity.id
+            record.step = activity.step
+            record.clinician = activity.clinician
+            record.nodes = JSON.stringify(activity.nodes)
+            record.mac_address = activity.mac_address
+            record.medical_case_id = medicalCaseId
+            record.fail_safe = activity.fail_safe
+          }),
+        )
+      })
+    }, 'insert activities')
   }
 
   /**
@@ -277,7 +277,7 @@ export default function () {
       case 'Activity':
         return 'activities'
       default:
-        console.log("Watermelon table doesn't exist", model)
+        console.error("Watermelon table doesn't exist", model)
     }
   }
 
@@ -294,7 +294,7 @@ export default function () {
     // const nodeActivities = JSON.parse(activities[activities.length - 1].nodes)
     // if (nodeActivities.length > 0) {
     //   await database.action(async () => {
-    //     await database.batch(
+    //     database.batch(
     //       ...nodeActivities.map(node => {
     //         if (
     //           [
@@ -306,9 +306,9 @@ export default function () {
     //           return patientValuesCollection.prepareCreate(record => {
     //             record._raw.id = uuid.v4()
     //             record.value = node.value
-    //             record.node_id = parseInt(node.id, 10)
+    //             record.node_id = parseInt(node.id)
     //             record.answer_id =
-    //               node.answer === null ? null : parseInt(node.answer, 10)
+    //               node.answer === null ? null : parseInt(node.answer)
     //             record.patient_id = medicalCase.patient_id
     //           })
     //         }
@@ -469,7 +469,8 @@ export default function () {
           nodes: medicalCaseData.nodes,
         }
         nestedRecord.synchronized_at = medicalCaseData.synchronized_at
-        nestedRecord.advancement = medicalCaseData.advancement
+        nestedRecord.stage = medicalCaseData.advancement.stage
+        nestedRecord.step = medicalCaseData.advancement.step
         nestedRecord.closedAt = null
         nestedRecord.fail_safe = false
         nestedRecord.patient.set(patient)
@@ -505,7 +506,10 @@ export default function () {
     return {
       id: medicalCase.id,
       synchronizedAt: medicalCase.synchronizedAt?.getTime(),
-      advancement: medicalCase.advancement,
+      advancement: {
+        stage: medicalCase.stage,
+        step: medicalCase.step,
+      },
       fail_safe: medicalCase.fail_safe,
       createdAt: medicalCase.createdAt.getTime(),
       updatedAt: medicalCase.updatedAt.getTime(),
@@ -520,7 +524,6 @@ export default function () {
   }
 
   const _buildMedicalCase = async medicalCase => {
-    console.log('medicalCase', medicalCase)
     const patient = await medicalCase.patient.fetch()
     return {
       id: medicalCase.id,
@@ -531,7 +534,10 @@ export default function () {
       nodes: medicalCase.json.nodes,
       json: '',
       synchronized_at: medicalCase.synchronizedAt,
-      advancement: medicalCase.advancement,
+      advancement: {
+        stage: medicalCase.stage,
+        step: medicalCase.step,
+      },
       fail_safe: medicalCase.fail_safe,
       createdAt: medicalCase.createdAt.getTime(),
       updatedAt: medicalCase.updatedAt.getTime(),
@@ -592,22 +598,20 @@ export default function () {
    * @returns { Collection } - Updated object
    */
   const update = async (model, id, fields, updatePatientValue) => {
-    // const collection = database.get(_mapModelToTable(model))
+    const collection = database.get(_mapModelToTable(model))
     // if (architecture === 'client_server') {
     //   fields = { ...fields, fail_safe: true }
     // }
-    // const object = await collection.find(id)
-    // await database.action(async () => {
-    //   Object.keys(fields).map(async field => {
-    //     await database.batch(
-    //       object.prepareUpdate(record => {
-    //         if (field !== 'patient' && field !== 'activities') {
-    //           record[field] = fields[field]
-    //         }
-    //       }),
-    //     )
-    //   })
-    // })
+    await database.action(async () => {
+      const object = await collection.find(id)
+      fields.map(async field => {
+        await database.batch(
+          object.prepareUpdate(record => {
+            record[field.name] = field.value
+          }),
+        )
+      })
+    })
     // // Update patient updated_at value
     // if (model === 'MedicalCase') {
     //   await database.action(async () => {
@@ -647,6 +651,7 @@ export default function () {
 
   return {
     clearDatabase,
+    insertActivities,
     findBy,
     getAll,
     getConsentsFile,

@@ -50,16 +50,23 @@ const IndexScanContainer = props => {
    */
   const openMedicalCase = async () => {
     if (scanData.navigate) {
-      const medicalCaseResult = await dispatch(
-        CreateMedicalCase.action({ algorithm }),
-      )
-      if (isFulfilled(medicalCaseResult)) {
+      if (scanData.navigationParams.newMedicalCase) {
         const patientResult = await dispatch(
           CreatePatient.action({ ...scanData.navigationParams }),
         )
         if (isFulfilled(patientResult)) {
-          navigation.navigate('StageWrapper', scanData.navigationParams)
+          const medicalCaseResult = await dispatch(
+            CreateMedicalCase.action({
+              algorithm,
+              patientId: patientResult.payload.id,
+            }),
+          )
+          if (isFulfilled(medicalCaseResult)) {
+            navigation.navigate('StageWrapper', scanData.navigationParams)
+          }
         }
+      } else {
+        // TODO CREATE NEW MEDICAL CASE FOR AN EXISTING PATIENT
       }
     }
   }
