@@ -36,6 +36,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
 
   const advancement = useSelector(state => state.medicalCase.item.advancement)
   const errors = useSelector(state => state.validation.item)
+  const patient = useSelector(state => state.patient.item)
+  console.log(patient)
 
   /**
    * Will navigate to the next step / Stage base on the current navigation State
@@ -57,8 +59,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
         await dispatch(InsertPatient.action())
         await dispatch(SavePatientValues.action())
         // TODO remove this when done testing
-        const { getAll } = useDatabase()
-        const newMedicalCases = await getAll('PatientValue', 1)
+        // const { getAll } = useDatabase()
+        // const newMedicalCases = await getAll('PatientValue', 1)
       }
       const medicalCaseState =
         navigationState.routes[navigationState.index].state
