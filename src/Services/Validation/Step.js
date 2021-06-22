@@ -30,8 +30,7 @@ export default () => {
 
   switch (navigation[stage].steps[step].label) {
     case 'registration':
-      return {}
-      // return RegistrationStepService(errors)
+      return RegistrationStepService(errors)
     case 'unique_triage_questions':
       return QuestionStepValidation(UniqueTriageQuestions(), errors)
     case 'complaint_categories':
