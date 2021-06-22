@@ -152,7 +152,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     return <ErrorNavBar message={patientValuesInsertError.toString()} />
   }
 
-  // console.log(patientValuesUpdateError)
   if (patientValuesUpdateError) {
     return <ErrorNavBar message={patientValuesUpdateError.toString()} />
   }
