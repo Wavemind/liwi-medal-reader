@@ -37,6 +37,7 @@ const ListItem = ({ item }) => {
   useEffect(() => {
     const medicalCase = item.medicalCases.find(mc => mc.closedAt === 0)
     setActiveMedicalCase(medicalCase)
+    console.log('item.updatedAt', item.updatedAt)
   }, [])
 
   /**
