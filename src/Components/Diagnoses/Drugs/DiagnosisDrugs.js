@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -12,12 +12,10 @@ import { useTranslation } from 'react-i18next'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import { AdditionalSelect, DrugBooleanButton } from '@/Components'
-import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
-import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
-import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
-import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
+import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
+import { useIsFocused } from '@react-navigation/native'
 
 const DiagnosisDrugs = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
@@ -29,69 +27,16 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
 
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
 
   const algorithm = useSelector(state => state.algorithm.item)
   const diagnoses = useSelector(
     state => state.medicalCase.item.diagnosis[diagnosisKey],
   )
 
-  /**
-   * Updates the proposed diagnoses by sorting them into agreed or refused
-   * @param diagnosisId
-   * @param drugId
-   * @param value
-   */
-  const updateDrugs = (diagnosisId, drugId, value) => {
-    const isInAgreed = Object.keys(
-      diagnoses[diagnosisId].drugs.agreed,
-    ).includes(drugId.toString())
-    const isInRefused = diagnoses[diagnosisId].drugs.refused.includes(drugId)
-
-    // From null to Agree
-    if (value && !isInAgreed) {
-      dispatch(
-        AddAgreedDrugs.action({
-          diagnosisKey,
-          diagnosisId,
-          drugId,
-        }),
-      )
-
-      // From Disagree to Agree
-      if (isInRefused) {
-        dispatch(
-          RemoveRefusedDrugs.action({
-            diagnosisKey,
-            diagnosisId,
-            drugId,
-          }),
-        )
-      }
-    }
-
-    // From null to Disagree
-    if (!value && !isInRefused) {
-      dispatch(
-        AddRefusedDrugs.action({
-          diagnosisKey,
-          diagnosisId,
-          drugId,
-        }),
-      )
-
-      // From Agree to Disagree
-      if (isInAgreed) {
-        dispatch(
-          RemoveAgreedDrugs.action({
-            diagnosisKey,
-            diagnosisId,
-            drugId,
-          }),
-        )
-      }
-    }
-  }
-
+  useEffect(() => {
+    dispatch(SetDrugs.action())
+  }, [isFocused])
   /**
    * Removes a single element from the additional diagnosis list
    * @param diagnosisId
@@ -161,7 +106,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
                 <DrugBooleanButton
                   diagnosis={diagnosis}
                   drugId={drugId}
-                  updateDrugs={updateDrugs}
+                  diagnosisKey={diagnosisKey}
                 />
               </View>
               <Text style={Fonts.textSmall}>

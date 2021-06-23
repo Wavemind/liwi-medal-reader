@@ -140,6 +140,7 @@ export const handleChildren = (
         Config.CATEGORIES.drug,
         Config.CATEGORIES.management,
       ]
+
       const childrenInstance = instance.children
         .filter(
           childId =>
@@ -206,7 +207,10 @@ export const excludedByCC = questionId => {
   const state = store.getState()
   const mcNodes = state.medicalCase.item.nodes
   const nodes = state.algorithm.item.nodes
-  if (nodes[questionId].type === Config.NODE_TYPES.finalDiagnosis) {
+  if (
+    nodes[questionId].type === Config.NODE_TYPES.finalDiagnosis ||
+    nodes[questionId].category === Config.CATEGORIES.drug
+  ) {
     return false
   }
   return nodes[questionId].conditioned_by_cc.some(
