@@ -42,6 +42,9 @@ export { default as PatientTabItem } from './Patient/TabItem'
 
 // MODALS
 export { default as CustomModal } from './Modal/Index'
+export { default as Emergency } from './Modal/Content/Emergency'
+export { default as Lock } from './Modal/Content/Lock'
+export { default as ExitMedicalCase } from './Modal/Content/ExitMedicalCase'
 
 // Media
 export { default as Media } from './Medias/Media'

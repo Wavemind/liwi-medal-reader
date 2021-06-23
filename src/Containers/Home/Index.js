@@ -25,6 +25,7 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import GetAllMedicalCaseDB from '@/Store/DatabaseMedicalCase/GetAll'
 import DestroyMedicalCase from '@/Store/MedicalCase/Destroy'
+import DestroyPatient from '@/Store/Patient/Destroy'
 
 const IndexHomeContainer = ({ navigation, route }) => {
   // Theme and style elements deconstruction
@@ -40,11 +41,6 @@ const IndexHomeContainer = ({ navigation, route }) => {
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
-
-  // Destroy medical case in store after closing a medical case
-  if (route.params?.destroyMedicalCase) {
-    dispatch(DestroyMedicalCase.action())
-  }
 
   // Local state definition
   const [page, setPage] = useState(1)
@@ -64,6 +60,12 @@ const IndexHomeContainer = ({ navigation, route }) => {
   const medicalCasesError = useSelector(
     state => state.databaseMedicalCase.getAll.error,
   )
+
+  // Destroy medical case in store after closing a medical case
+  useEffect(() => {
+    dispatch(DestroyMedicalCase.action())
+    dispatch(DestroyPatient.action())
+  }, [route.params?.destroyCurrentConsultation])
 
   useEffect(() => {
     fadeIn(fadeAnim)
