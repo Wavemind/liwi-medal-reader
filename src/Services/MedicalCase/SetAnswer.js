@@ -47,6 +47,7 @@ export default props => {
 
   // Set the new value to the current node
   newValues = setNodeValue(mcNode, node, value)
+
   newNodes[nodeId] = {
     ...mcNode,
     ...validation,
