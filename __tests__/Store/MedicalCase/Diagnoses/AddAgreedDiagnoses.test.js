@@ -2,6 +2,9 @@ import { store } from '@/Store'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
+import { getAvailableDrugs } from '@/Utils/Drug'
+import { debugNode } from '@/Utils/MedicalCase'
+import { setAnswer } from '../../../Utils/Answer'
 
 beforeAll(async () => {
   const algorithmFile = require('../../../algorithm.json')
@@ -19,7 +22,9 @@ describe('Handle agreed diagnosis addition', () => {
     const algorithm = store.getState().algorithm.item
     const nodeId = 60
     const node = algorithm.nodes[nodeId]
-
+    await setAnswer(50, 40)
+    await debugNode(38, store.getState().medicalCase.item.nodes)
+    const availableDrugs = getAvailableDrugs(node)
     store.dispatch(
       AddAgreedDiagnoses.action({
         diagnosisId: nodeId,
@@ -29,7 +34,7 @@ describe('Handle agreed diagnosis addition', () => {
             management => management.id,
           ),
           drugs: {
-            proposed: Object.values(node.drugs).map(drug => drug.id),
+            proposed: availableDrugs,
             agreed: {},
             refused: [],
             additional: {},
@@ -41,9 +46,9 @@ describe('Handle agreed diagnosis addition', () => {
     expect(store.getState().medicalCase.item.diagnosis.agreed).toStrictEqual({
       60: {
         id: 60,
-        managements: [1808, 3352, 3354],
+        managements: [1808, 3354],
         drugs: {
-          proposed: [1660, 1709, 3360, 3501],
+          proposed: [1660],
           agreed: {},
           refused: [],
           additional: {},
