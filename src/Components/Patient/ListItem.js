@@ -32,6 +32,7 @@ const ListItem = ({ item }) => {
       return mc.advancement.closedAt !== null
     })
     setActiveMedicalCase(medicalCase)
+    console.log('item.updatedAt', item.updatedAt)
   }, [])
 
   return (
@@ -55,7 +56,7 @@ const ListItem = ({ item }) => {
           <Text>{format(item.birth_date, 'dd.MM.yyyy')}</Text>
         </View>
         <View style={patientListItem.dateWrapper}>
-          <Text style={Fonts.textCenter}>
+          <Text style={Fonts.textSemiBold}>
             {format(item.updatedAt, 'dd.MM.yyyy')}
           </Text>
         </View>
@@ -67,7 +68,7 @@ const ListItem = ({ item }) => {
                 <Icon
                   key={`${item.id}-${stage.icon}`}
                   name={stage.icon}
-                  size={FontSize.large}
+                  size={FontSize.sectionHeader}
                   style={patientListItem.icon(
                     index === activeMedicalCase.advancement.stage,
                   )}
