@@ -63,9 +63,10 @@ const Autocomplete = ({ questionId }) => {
   /**
    * Save value in store
    */
-  const onEndEditing = () => {
-    if (question.value !== searchTerm) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value: searchTerm }))
+  const onEndEditing = event => {
+    const newValue = event.nativeEvent.text
+    if (question.value !== newValue) {
+      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
     }
   }
 

@@ -63,15 +63,13 @@ const PersonalInfoPatientContainer = () => {
         <SectionHeader
           label={t('containers.patient.personal_info.consultations_info')}
         />
-        {patient.patientValues.map(patientValue => {
-          return (
-            <PatientPersonalInfoItem
-              key={`patient_information_${patientValue.node_id}`}
-              label={translate(nodes[patientValue.node_id].label)}
-              value={renderAnswer(patientValue)}
-            />
-          )
-        })}
+        {patient.patientValues.map(patientValue => (
+          <PatientPersonalInfoItem
+            key={`patient_information_${patientValue.node_id}`}
+            label={translate(nodes[patientValue.node_id].label)}
+            value={renderAnswer(patientValue)}
+          />
+        ))}
       </View>
     </ScrollView>
   )
