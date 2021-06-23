@@ -1,8 +1,9 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { Animated, View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -14,14 +15,19 @@ import {
   BadgeBar,
   Autosuggest,
   Icon,
+  Error,
 } from '@/Components'
+import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
+import GetAllMedicalCasesDB from '@/Store/DatabaseMedicalCase/GetAll'
 
 const ListMedicalCaseContainer = props => {
   // Theme and style elements deconstruction
   const { navigation } = props
 
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+
   const {
     Layout,
     Fonts,
@@ -29,41 +35,62 @@ const ListMedicalCaseContainer = props => {
     FontSize,
     Colors,
     Components: { searchBar },
-    Containers: { medicalCaseList },
+    Containers: { medicalCaseList, global },
   } = useTheme()
 
+  // Define references
+  const fadeAnim = useRef(new Animated.Value(0)).current
+
   // Local state definition
-  const [data, setData] = useState([])
-  const [refreshing, setRefreshing] = useState(false)
+  const [page, setPage] = useState(1)
+  const [firstLoading, setFirstLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
 
-  useEffect(() => {
-    let timer = setTimeout(() => setData([]), 2 * 1000)
+  const medicalCases = useSelector(
+    state => state.databaseMedicalCase.getAll.item.data,
+  )
+  const isLastBatch = useSelector(
+    state => state.databaseMedicalCase.getAll.item.isLastBatch,
+  )
+  const medicalCasesLoading = useSelector(
+    state => state.databaseMedicalCase.getAll.loading,
+  )
+  const medicalCasesError = useSelector(
+    state => state.databaseMedicalCase.getAll.error,
+  )
 
-    return () => {
-      clearTimeout(timer)
-    }
+  useEffect(() => {
+    fadeIn(fadeAnim)
+  }, [fadeAnim])
+
+  useEffect(() => {
+    dispatch(GetAllMedicalCasesDB.action({ page, reset: true }))
+    setFirstLoading(false)
   }, [])
 
   /**
    * Reset filters and search terms. Fetch 15 latest patients
    */
   const handleRefresh = () => {
-    setRefreshing(true)
-    console.log('TODO: handle refresh')
-    setTimeout(() => setRefreshing(false), 2 * 1000)
+    dispatch(GetAllMedicalCasesDB.action({ page: 1, reset: true }))
+    setPage(1)
   }
 
   /**
    * Load more patients
    */
   const loadMore = () => {
-    console.log('TODO: load more')
-    setData(data.concat([]))
+    if (!isLastBatch) {
+      dispatch(GetAllMedicalCasesDB.action({ page: page + 1 }))
+      setPage(page + 1)
+    }
   }
 
   return (
-    <View style={Layout.fill}>
+    <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
+      <View style={[Gutters.regularHMargin, Gutters.smallVMargin]}>
+        {medicalCasesError && <Error message={medicalCasesError.message} />}
+      </View>
       <View style={Gutters.regularHMargin}>
         <View style={Layout.row}>
           <View style={[Layout.grow, Gutters.smallRMargin]}>
@@ -71,7 +98,6 @@ const ListMedicalCaseContainer = props => {
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               handleReset={() => setSearchTerm('')}
-              autofocus
             />
           </View>
           <TouchableOpacity
@@ -92,7 +118,6 @@ const ListMedicalCaseContainer = props => {
           showClearAll
         />
       </View>
-
       <View style={medicalCaseList.headerTable}>
         <Text style={medicalCaseList.headerText}>
           {t('containers.medicalCase.list.name')}
@@ -101,18 +126,17 @@ const ListMedicalCaseContainer = props => {
           {t('containers.medicalCase.list.status')}
         </Text>
       </View>
-
       <FlatList
-        data={data}
+        data={medicalCases}
         renderItem={({ item }) => <MedicalCaseListItem item={item} />}
         keyExtractor={item => item.id}
         ListEmptyComponent={<LoaderList />}
         onRefresh={() => handleRefresh()}
-        refreshing={refreshing}
+        refreshing={medicalCasesLoading}
         onEndReached={() => loadMore()}
         onEndReachedThreshold={0.1}
       />
-    </View>
+    </Animated.View>
   )
 }
 
