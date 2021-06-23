@@ -16,6 +16,7 @@ import {
   Autosuggest,
   Icon,
   Error,
+  EmptyList,
 } from '@/Components'
 import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
@@ -126,16 +127,20 @@ const ListMedicalCaseContainer = props => {
           {t('containers.medicalCase.list.status')}
         </Text>
       </View>
-      <FlatList
-        data={medicalCases}
-        renderItem={({ item }) => <MedicalCaseListItem item={item} />}
-        keyExtractor={item => item.id}
-        ListEmptyComponent={<LoaderList />}
-        onRefresh={() => handleRefresh()}
-        refreshing={medicalCasesLoading}
-        onEndReached={() => loadMore()}
-        onEndReachedThreshold={0.1}
-      />
+      {firstLoading ? (
+        <LoaderList />
+      ) : (
+        <FlatList
+          data={medicalCases}
+          renderItem={({ item }) => <MedicalCaseListItem item={item} />}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
+          onRefresh={() => handleRefresh()}
+          refreshing={medicalCasesLoading}
+          onEndReached={() => loadMore()}
+          onEndReachedThreshold={0.1}
+        />
+      )}
     </Animated.View>
   )
 }
