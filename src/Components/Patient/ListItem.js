@@ -62,13 +62,11 @@ const ListItem = ({ item }) => {
         {activeMedicalCase && (
           <View style={patientListItem.statusWrapper}>
             <Text style={patientListItem.statusTitle}>
-              {activeMedicalCase.closedAt > 0
-                ? t('containers.medical_case.stages.closed')
-                : t(
-                    `containers.medical_case.stages.${
-                      stages[activeMedicalCase.stage].label
-                    }`,
-                  )}
+              {t(
+                `containers.medical_case.stages.${
+                  stages[activeMedicalCase.stage].label
+                }`,
+              )}
             </Text>
             <View style={Layout.row}>
               {stages.map((stage, index) => (

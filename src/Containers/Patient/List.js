@@ -71,7 +71,6 @@ const ListPatientContainer = props => {
   }, [])
 
   useEffect(() => {
-    console.log(searchTerm)
     setCurrentPatients(
       searchTerm === ''
         ? patients
