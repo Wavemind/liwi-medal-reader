@@ -164,7 +164,7 @@ const ListPatientContainer = props => {
         <LoaderList />
       ) : (
         <FlatList
-          data={currentPatients}
+          data={patients}
           renderItem={({ item }) => <PatientListItem item={item} />}
           keyExtractor={item => `patient-${item.id}`}
           ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
