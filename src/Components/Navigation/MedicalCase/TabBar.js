@@ -54,7 +54,6 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
 
   /**
    * Update the advancement in the store every time the step / stage changes
-   * TODO: MOVE IT TO StageWrapperNavBar ?
    */
   const updateMedicalCaseAdvancement = async () => {
     await dispatch(
