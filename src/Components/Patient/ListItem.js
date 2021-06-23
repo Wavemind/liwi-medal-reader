@@ -29,10 +29,9 @@ const ListItem = ({ item }) => {
 
   useEffect(() => {
     const medicalCase = item.medicalCases.find(mc => {
-      return mc.advancement.closedAt !== null
+      return mc.closedAt !== null
     })
     setActiveMedicalCase(medicalCase)
-    console.log('item.updatedAt', item.updatedAt)
   }, [])
 
   return (
@@ -70,7 +69,7 @@ const ListItem = ({ item }) => {
                   name={stage.icon}
                   size={FontSize.sectionHeader}
                   style={patientListItem.icon(
-                    index === activeMedicalCase.advancement.stage,
+                    index === activeMedicalCase.stage,
                   )}
                 />
               ))}

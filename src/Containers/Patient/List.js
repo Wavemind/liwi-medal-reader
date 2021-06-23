@@ -45,6 +45,7 @@ const ListPatientContainer = props => {
   const [page, setPage] = useState(1)
   const [firstLoading, setFirstLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const [currentPatients, setCurrentPatients] = useState([])
   const [filters, setFilters] = useState([
     { filterBy: 'Gender', value: 'Female' },
     { filterBy: 'Age', value: '12' },
@@ -66,7 +67,25 @@ const ListPatientContainer = props => {
   useEffect(() => {
     dispatch(GetAllPatientDB.action({ page, reset: true }))
     setFirstLoading(false)
+    setCurrentPatients(patients)
   }, [])
+
+  useEffect(() => {
+    console.log(searchTerm)
+    setCurrentPatients(
+      searchTerm === ''
+        ? patients
+        : currentPatients.filter(
+            patient =>
+              patient.first_name
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+              patient.last_name
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()),
+          ),
+    )
+  }, [searchTerm])
 
   const resetFilters = () => {
     setSearchTerm('')
@@ -118,8 +137,6 @@ const ListPatientContainer = props => {
         <BadgeBar
           removeBadge={badge => {
             const index = filters.indexOf(badge)
-            console.log('BADGE', badge)
-            console.log('INDEX', index)
             setFilters(filters.filter((_, i) => i !== index))
             console.log('TODO Remove selected badge', badge)
           }}
@@ -145,7 +162,7 @@ const ListPatientContainer = props => {
         <LoaderList />
       ) : (
         <FlatList
-          data={patients}
+          data={currentPatients}
           renderItem={({ item }) => <PatientListItem item={item} />}
           keyExtractor={item => `patient-${item.id}`}
           ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
