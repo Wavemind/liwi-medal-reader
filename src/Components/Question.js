@@ -124,7 +124,7 @@ const Question = ({ questionId, disabled = false }) => {
             {additionalUnavailableAnswer ? (
               <>
                 {mcNode.answer !== additionalUnavailableAnswer.id && (
-                  <InputFactory questionId={questionId} emergency={emergency} />
+                  <InputFactory questionId={questionId} />
                 )}
                 <Checkbox
                   label={translate(additionalUnavailableAnswer.label)}
@@ -137,7 +137,7 @@ const Question = ({ questionId, disabled = false }) => {
             ) : isUnavailable ? (
               <Select questionId={questionId} />
             ) : (
-              <InputFactory questionId={questionId} emergency={emergency} />
+              <InputFactory questionId={questionId} />
             )}
             {currentNode.unavailable && !additionalUnavailableAnswer && (
               <Checkbox

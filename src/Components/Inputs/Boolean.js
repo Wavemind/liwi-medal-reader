@@ -15,7 +15,7 @@ import DefineType from '@/Store/Modal/DefineType'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const Boolean = ({ questionId, emergency, disabled = false }) => {
+const Boolean = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
   const {
     Components: { booleanButton },
