@@ -84,7 +84,7 @@ const ListItem = ({ item }) => {
                   name={stage.icon}
                   size={FontSize.sectionHeader}
                   style={patientListItem.icon(
-                    index === activeMedicalCase.advancement.stage,
+                    index === activeMedicalCase.stage,
                   )}
                 />
               ))}
