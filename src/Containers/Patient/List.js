@@ -45,7 +45,6 @@ const ListPatientContainer = props => {
   const [page, setPage] = useState(1)
   const [firstLoading, setFirstLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [currentPatients, setCurrentPatients] = useState([])
   const [filters, setFilters] = useState([
     { filterBy: 'Gender', value: 'Female' },
     { filterBy: 'Age', value: '12' },
@@ -67,23 +66,25 @@ const ListPatientContainer = props => {
   useEffect(() => {
     dispatch(GetAllPatientDB.action({ page, reset: true }))
     setFirstLoading(false)
-    setCurrentPatients(patients)
   }, [])
 
   useEffect(() => {
-    setCurrentPatients(
-      searchTerm === ''
-        ? patients
-        : currentPatients.filter(
-            patient =>
-              patient.first_name
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()) ||
-              patient.last_name
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()),
-          ),
-    )
+    if (searchTerm === '') {
+      dispatch(
+        GetAllPatientDB.action({
+          page,
+          reset: true,
+        }),
+      )
+    } else if (searchTerm.length >= 2) {
+      dispatch(
+        GetAllPatientDB.action({
+          page,
+          reset: true,
+          params: { terms: searchTerm },
+        }),
+      )
+    }
   }, [searchTerm])
 
   const resetFilters = () => {

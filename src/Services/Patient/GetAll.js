@@ -5,10 +5,10 @@ import useDatabase from '../Database/useDatabase'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
-export default async ({ page, reset = false }) => {
+export default async ({ page, reset = false, params }) => {
   const { getAll } = useDatabase()
 
-  const newPatients = await getAll('Patient', page)
+  const newPatients = await getAll('Patient', page, params)
 
   const isLastBatch = newPatients.length < Config.ELEMENT_PER_PAGE
 
