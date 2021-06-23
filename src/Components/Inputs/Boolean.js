@@ -42,7 +42,10 @@ const Boolean = ({ questionId, emergency, disabled = false }) => {
    * @param {integer} answerId
    */
   const setAnswer = async answerId => {
-    if (emergency && yesAnswer.id === answerId) {
+    if (
+      currentNode.emergency_status === 'emergency' &&
+      yesAnswer.id === answerId
+    ) {
       await dispatch(DefineType.action({ type: 'emergency' }))
       await dispatch(ToggleVisibility.action({}))
     }

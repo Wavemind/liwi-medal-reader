@@ -88,7 +88,9 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               value: !savedInDatabase,
             }),
           )
-          const insertPatientValues = await dispatch(InsertPatientValues.action())
+          const insertPatientValues = await dispatch(
+            InsertPatientValues.action(),
+          )
           if (isFulfilled(insertPatientValues)) {
             handleNavigation(direction)
           }
