@@ -39,6 +39,7 @@ export { default as TabBar } from './Navigation/MedicalCase/TabBar'
 export { default as PatientListItem } from './Patient/ListItem'
 export { default as PatientTabBar } from './Patient/TabBar'
 export { default as PatientTabItem } from './Patient/TabItem'
+export { default as PatientPersonalInfoItem } from './Patient/PersonalInfoItem'
 
 // MODALS
 export { default as CustomModal } from './Modal/Index'
