@@ -86,7 +86,7 @@ const CustomDrawerContent = props => {
             <CustomDrawerItem
               label={t('navigation.current_consultation')}
               routeName="StageWrapper"
-              routeParams={{ stageIndex: 0 }}
+              routeParams={{ stageIndex: 0, stepIndex: 0 }}
               iconName="summary"
               {...props}
             />

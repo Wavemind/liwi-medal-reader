@@ -43,7 +43,10 @@ const ListItem = ({ item }) => {
     } else {
       await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
-      navigation.navigate('StageWrapper')
+      navigation.navigate('StageWrapper', {
+        stageIndex: item.advancement.stage,
+        stepIndex: item.advancement.step,
+      })
     }
   }
 

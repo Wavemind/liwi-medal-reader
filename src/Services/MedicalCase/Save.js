@@ -20,8 +20,8 @@ export default async ({ nextStage }) => {
     UpdateDatabaseMedicalCase.action({
       medicalCaseId: medicalCase.id,
       fields: [
-        { name: 'stage', value: nextStage },
-        { name: 'step', value: 0 },
+        { name: 'stage', value: nextStage || medicalCase.advancement.stage },
+        { name: 'step', value: medicalCase.advancement.step },
         {
           name: 'json',
           value: JSON.stringify({

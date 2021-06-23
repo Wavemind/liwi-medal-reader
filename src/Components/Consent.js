@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
@@ -27,6 +27,10 @@ const Consent = props => {
     Colors,
   } = useTheme()
 
+  const patient = useSelector(state => state.patient.item)
+  console.log(patient)
+  const consentError = useSelector(state => state.validation.item.consent)
+
   /**
    * Change the value of the consent in the patient store
    * @param {bool} value : values to set in the store
@@ -34,9 +38,6 @@ const Consent = props => {
   const setPatientConsent = async value => {
     await dispatch(UpdateField.action({ field: 'consent', value }))
   }
-
-  const patient = useSelector(state => state.patient.item)
-  const consentError = useSelector(state => state.validation.item.consent)
 
   return (
     <View style={[Gutters.regularHPadding, Gutters.regularBMargin]}>

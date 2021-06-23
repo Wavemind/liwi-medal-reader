@@ -40,7 +40,7 @@ const ExitMedicalCase = () => {
    * Save in database current medical case and redirect user to home page and clear medical case store
    */
   const exitAndSave = async () => {
-    const medicalCaseSaved = await SaveMedicalCaseService(0)
+    const medicalCaseSaved = await SaveMedicalCaseService({})
     if (medicalCaseSaved) {
       await dispatch(ToggleVisibility.action({}))
       navigateAndSimpleReset('Home', { destroyCurrentConsultation: true })
