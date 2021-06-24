@@ -57,14 +57,14 @@ const Autocomplete = ({ questionId }) => {
   const handleOptionSelect = option => {
     setOptionSelected(true)
     setSearchTerm(option)
+    dispatch(SetAnswer.action({ nodeId: question.id, value: option }))
   }
 
   /**
    * Save value in store
-   * @param {Event} e
    */
-  const onEndEditing = e => {
-    const newValue = e.nativeEvent.text
+  const onEndEditing = event => {
+    const newValue = event.nativeEvent.text
     if (question.value !== newValue) {
       dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
     }

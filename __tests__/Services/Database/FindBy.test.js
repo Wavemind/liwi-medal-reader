@@ -47,6 +47,7 @@ describe('findBy should find an object based on a query', () => {
       'updatedAt',
       'fail_safe',
       'medicalCases',
+      'patientValues',
     ]
     const uid = uuid.v4()
     await store.dispatch(

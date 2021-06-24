@@ -487,12 +487,14 @@ export default function () {
 
   const _buildPatient = async patient => {
     const medicalCases = await patient.medicalCases.fetch()
+    const patientValues = await patient.patientValues.fetch()
     const newPatient = patient._raw
 
     const response = {
       createdAt: newPatient.created_at,
       updatedAt: newPatient.updated_at,
       medicalCases,
+      patientValues: patientValues.map(pv => pv._raw),
     }
     delete newPatient._changed
     delete newPatient._status

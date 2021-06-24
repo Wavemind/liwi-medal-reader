@@ -39,7 +39,8 @@ const ListItem = ({ item }) => {
    */
   const handlePress = async () => {
     if (item.closedAt > 0) {
-      console.log('TODO OPEN SUMMARY')
+      // TODO correcting this shit in new branch
+      navigation.navigate('MedicalCaseSummary')
     } else {
       await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
