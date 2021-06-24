@@ -6,6 +6,7 @@ import {
   getTopConditions,
   uniq,
   reduceConditions,
+  diagramConditionsValues,
 } from '@/Utils/MedicalCase'
 import { store } from '@/Store'
 import { Config } from '@/Config'
@@ -34,13 +35,20 @@ export const findProposedFinalDiagnoses = diagnosis => {
 const searchFinalDiagnoses = (instance, instances, finalDiagnoses = []) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
+  const mcNodes = state.medicalCase.item.nodes
 
   const instanceCondition = calculateCondition(instance)
 
   if (instanceCondition) {
     instance.children.forEach(childId => {
       if (nodes[childId].type === Config.NODE_TYPES.finalDiagnosis) {
-        finalDiagnoses.push(childId)
+        const finalDiagnosisCondition = reduceConditions(
+          diagramConditionsValues(childId, instance, mcNodes),
+        )
+
+        if (finalDiagnosisCondition === true) {
+          finalDiagnoses.push(childId)
+        }
       } else {
         searchFinalDiagnoses(instances[childId], instances, finalDiagnoses)
       }

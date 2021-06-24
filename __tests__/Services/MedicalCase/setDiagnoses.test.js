@@ -71,6 +71,8 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(40, 76) // Difficulty Breathing To Yes
     await setAnswer(2974, 2254) // Grunting To Yes
     await setAnswer(86, 145) // Unconscious To Yes
+    const test = store.getState().medicalCase.item.nodes[58]
+    console.info(test)
     const result = SetDiagnoses()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([60]))
   })
@@ -119,13 +121,14 @@ describe('Final diagnosis are included / excluded correctly', () => {
   it('Should not propose diagnosis that can be excluded', async () => {
     await setAnswer(39, 74) // Cough => Yes
     await setAnswer(18, 26) // Chest indrawing  => YES
-    await setAnswer(50, 39) // Axillary temperature   => > 38
+    await setAnswer(50, 38) // Axillary temperature   => > 38
     await setAnswer(1685, 752) // Convulsing now => No
     await setAnswer(88, 150) // Convulsion in present illness => No
     await setAnswer(86, 146) // Unconscious or Lethargic (Unusually sleepy) => No
     await setAnswer(3184, 2342) // Vomiting everything  => No
     await setAnswer(278, 491) // Unable to drink or breastfeed => No
-    await setAnswer(122, 229) // CRP => Unavailable
+    await setAnswer(122, 230) // CRP => Unavailable
+
     let result = SetDiagnoses()
     expect(result.diagnosis.proposed).not.toEqual(expect.arrayContaining([116]))
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 60 }))
@@ -134,6 +137,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 83 }))
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 123 }))
     result = SetDiagnoses()
+    expect(result.diagnosis.refused).toEqual(expect.arrayContaining([83, 123]))
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([116]))
   })
 
@@ -147,7 +151,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(86, 146) // Unconscious or Lethargic (Unusually sleepy) => No
     await setAnswer(3184, 2342) // Vomiting everything  => No
     await setAnswer(278, 491) // Unable to drink or breastfeed => No
-    await setAnswer(122, 229) // CRP => Unavailable
+    await setAnswer(122, 230) // CRP => Unavailable
     let result = SetDiagnoses()
     expect(result.diagnosis.proposed).not.toEqual(expect.arrayContaining([116]))
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 60 }))
@@ -176,8 +180,17 @@ describe('Final diagnosis are included / excluded correctly', () => {
   })
 
   it('Reference table - should include complicated severe acute malnutrition', async () => {
-    await setAnswer(97, 23) // CRP => Unavailable
+    await setAnswer(97, 10)
+    await setAnswer(3184, 2341)
+    await setAnswer(86, 146)
+    await setAnswer(1685, 752)
+    await setAnswer(7314, 5277)
     const result = SetDiagnoses()
-    expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([3804]))
+    expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([3806]))
+  })
+
+  it('No Final Diagnosis should be proposed if nothing is answered', async () => {
+    const result = SetDiagnoses()
+    expect(result.diagnosis.proposed).toEqual([8781]) // Only prevention and screening
   })
 })
