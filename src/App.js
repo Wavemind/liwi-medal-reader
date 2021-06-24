@@ -9,13 +9,23 @@ import { ApplicationNavigator } from '@/Navigators'
 
 import './Translations'
 
-const App = () => (
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <ApplicationNavigator />
-      <FlashMessage position="bottom" floating={true} icon="auto" />
-    </PersistGate>
-  </Provider>
-)
+const App = () => {
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ApplicationNavigator />
+        <FlashMessage
+          position="top"
+          floating={true}
+          icon="auto"
+          titleStyle={{
+            fontFamily: 'ZeitungPro-Bold',
+          }}
+          textStyle={{ fontFamily: 'ZeitungPro', fontSize: 18 }}
+        />
+      </PersistGate>
+    </Provider>
+  )
+}
 
 export default App

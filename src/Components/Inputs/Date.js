@@ -35,9 +35,13 @@ const DateInput = () => {
     Gutters,
   } = useTheme()
 
+  const birth_date_estimated = useSelector(
+    state => state.patient.item.birth_date_estimated,
+  )
+
   // Local state definition
   const [dateLanguage, setDateLanguage] = useState(enGB)
-  const [isEstimated, setIsEstimated] = useState(false)
+  const [isEstimated, setIsEstimated] = useState(birth_date_estimated)
 
   const [estimatedDateType, setEstimatedDateType] = useState(null)
   const [estimatedValue, setEstimatedValue] = useState('')

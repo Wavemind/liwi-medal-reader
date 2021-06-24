@@ -2,6 +2,7 @@
  * The external imports
  */
 import { isFulfilled } from '@reduxjs/toolkit'
+import { showMessage } from 'react-native-flash-message'
 
 /**
  * The internal imports
@@ -47,6 +48,13 @@ export default async (nextStage, nextStep) => {
     // Remove sended activities
     if (isFulfilled(addActivity)) {
       await store.dispatch(ClearActivitiesMedicalCase.action())
+
+      showMessage({
+        message: 'Save',
+        description: 'Medical case saved successfully',
+        type: 'success',
+        duration: 3000,
+      })
 
       return true
     }

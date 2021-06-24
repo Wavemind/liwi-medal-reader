@@ -20,6 +20,17 @@ const RegistrationHeader = () => {
     state => state.algorithm.item.config.consent_management,
   )
 
+  const patient = useSelector(
+    state => state.patient.item,
+  )
+
+  const medicalCase = useSelector(
+    state => state.medicalCase.item,
+  )
+
+  console.log(patient)
+  console.log(medicalCase)
+
   return (
     <>
       {consentManagement && <Consent />}

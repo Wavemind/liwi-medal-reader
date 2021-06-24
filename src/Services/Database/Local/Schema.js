@@ -23,6 +23,7 @@ export default appSchema({
         { name: 'first_name', type: 'string', isIndexed: true },
         { name: 'last_name', type: 'string', isIndexed: true },
         { name: 'birth_date', type: 'number', isIndexed: true },
+        { name: 'birth_date_estimated', type: 'boolean', isIndexed: true },
         { name: 'uid', type: 'string', isIndexed: true },
         { name: 'study_id', type: 'string' },
         { name: 'group_id', type: 'string' },
