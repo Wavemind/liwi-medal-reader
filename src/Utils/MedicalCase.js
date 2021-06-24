@@ -140,6 +140,7 @@ export const handleChildren = (
         Config.CATEGORIES.drug,
         Config.CATEGORIES.management,
       ]
+
       const childrenInstance = instance.children
         .filter(
           childId =>
@@ -206,7 +207,10 @@ export const excludedByCC = questionId => {
   const state = store.getState()
   const mcNodes = state.medicalCase.item.nodes
   const nodes = state.algorithm.item.nodes
-  if (nodes[questionId].type === Config.NODE_TYPES.finalDiagnosis) {
+  if (
+    nodes[questionId].type === Config.NODE_TYPES.finalDiagnosis ||
+    nodes[questionId].category === Config.CATEGORIES.drug
+  ) {
     return false
   }
   return nodes[questionId].conditioned_by_cc.some(
@@ -247,6 +251,28 @@ export const reduceConditions = conditionsValues =>
     },
     false,
   )
+
+/**
+ * Get the condition for an element at the bottom of a diagram final diagnosis / Question sequence
+ * @param {Integer} nodeId : the node we want to test
+ * @param {instance} mcNodes: the parent we are calling from
+ * @param {Array<mcNode>} mcNodes: current medical case state
+ * @returns
+ */
+export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
+  const nodes = store.getState().algorithm.item.nodes
+
+  return nodes[nodeId].conditions
+    .filter(condition => condition.node_id === instance.id)
+    .map(condition => {
+      if (mcNodes[condition.node_id].answer === null) {
+        return null
+      } else {
+        return mcNodes[condition.node_id].answer === condition.answer_id
+      }
+    })
+}
+
 /**
  * Show in the console where in what diagram a node need to be shown
  * @param {Integer} nodeId : Node Id we wanna have info on

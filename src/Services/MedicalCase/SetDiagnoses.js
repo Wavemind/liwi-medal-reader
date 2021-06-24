@@ -31,7 +31,6 @@ export default () => {
   mcDiagnosis.proposed = validDiagnoses
     .map(diagnosis => findProposedFinalDiagnoses(diagnosis))
     .flat()
-
   mcDiagnosis.proposed = mcDiagnosis.proposed.filter(finalDiagnosisId => {
     return !nodes[finalDiagnosisId].excluding_final_diagnoses.some(
       // Adds in exclusion if excluding final diagnosis is in agreed

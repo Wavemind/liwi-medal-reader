@@ -33,6 +33,7 @@ import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
 import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
+import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
 // Formulations
 import ChangeFormulations from '@/Store/MedicalCase/ChangeFormulations'
 // Arm Control
@@ -79,6 +80,7 @@ export default buildSlice(
     RemoveCustomDrugs,
     ChangeAdditionalDrugDuration,
     ChangeCustomDrugDuration,
+    SetDrugs,
     // Formulations
     ChangeFormulations,
     // Arm Control

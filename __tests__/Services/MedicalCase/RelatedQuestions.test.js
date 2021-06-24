@@ -12,6 +12,7 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
+import { debugNode } from '@/Utils/MedicalCase'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')
@@ -40,7 +41,7 @@ beforeEach(async () => {
 
 describe('Handle validations message', () => {
   it('Should return -1 form the MUAC Z-score', async () => {
-    await setBirthDate(store, 129)
+    await setBirthDate(store, 129, 'month')
     await setAnswer(214, 393) // I'm a female
     await setAnswer(97, 16.9) // my Muac 16.9 cm
     const mcNodes = store.getState().medicalCase.item.nodes

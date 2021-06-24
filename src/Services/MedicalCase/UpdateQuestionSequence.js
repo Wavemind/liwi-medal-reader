@@ -15,6 +15,7 @@ export default ({ nodeId, newNodes }) => {
   while (qsToUpdate.length > 0) {
     const qsId = qsToUpdate[0]
     const qsBooleanValue = getQsValue(qsId, newNodes)
+
     // If the QS has a value
     if (qsBooleanValue !== null) {
       const qsValue = qsBooleanValue
