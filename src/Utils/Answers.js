@@ -66,7 +66,11 @@ export const handleNumeric = (mcNode, node, value) => {
 
   if (value === null) {
     response.answer = null
-  } else if (mcNode.unavailableValue || unavailableAnswer?.id === value) {
+    response.value = ''
+  } else if (
+    mcNode.unavailableValue ||
+    (unavailableAnswer && unavailableAnswer?.id === value)
+  ) {
     // Unavailable question
     response.answer = Number(value)
     response.value = node.answers[response.answer].value

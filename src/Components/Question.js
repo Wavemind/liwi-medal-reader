@@ -78,10 +78,10 @@ const Question = ({ questionId, disabled = false }) => {
         value: !isUnavailable,
       }),
     )
-    setIsUnavailable(!isUnavailable)
     if (isUnavailable) {
-      dispatch(SetAnswer.action({ nodeId: questionId, value: '' }))
+      await dispatch(SetAnswer.action({ nodeId: questionId, value: '' }))
     }
+    setIsUnavailable(!isUnavailable)
   }
 
   /**

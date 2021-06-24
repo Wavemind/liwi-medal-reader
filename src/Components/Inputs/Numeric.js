@@ -33,20 +33,7 @@ const Numeric = ({ questionId, editable = true }) => {
 
   // Local state definition
   const [value, setValue] = useState(question.value)
-  const [firstRender, setFirstRender] = useState(true)
   const [estimableValue, setEstimableValue] = useState(question.estimableValue)
-
-  /**
-   * Clear input if unavailable was set
-   */
-  useEffect(() => {
-    // TODO NOT WORKING WHEN REOPENNING A CASE
-    if (!question.unavailableValue && !firstRender) {
-      setValue('')
-    } else {
-      setFirstRender(false)
-    }
-  }, [question.unavailableValue])
 
   /**
    * Save value in store
