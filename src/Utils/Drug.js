@@ -2,6 +2,11 @@ import { store } from '@/Store'
 import { Config } from '@/Config'
 import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
 
+/**
+ * Returns all available drugs for a specific final diagnosis
+ * @param {finalDiagnosis} finalDiagnosis : the final diagnosis we want to get the drugs from
+ * @returns {Array<Drug>} : Available drugs
+ */
 export const getAvailableDrugs = finalDiagnosis => {
   const state = store.getState()
   let instances =
@@ -17,6 +22,12 @@ export const getAvailableDrugs = finalDiagnosis => {
   return uniq(questionsToDisplay)
 }
 
+/**
+ * Tells if a drug is excluded by another drug
+ * @param {Integer} drugId : the Id of the drug we are testing
+ * @param {Array<Integer>} agreedDrugs : Array of drug id
+ * @returns {Boolean} : Tells if a drug is excluded by another drug
+ */
 export const isDrugExcluded = (drugId, agreedDrugs) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
@@ -26,6 +37,12 @@ export const isDrugExcluded = (drugId, agreedDrugs) => {
   )
 }
 
+/**
+ * Recursive function tha will find all available drugs for a final diagnosis
+ * @param {Instance} children : The Treatment condition / drug that we are testing
+ * @param {*} questionsToDisplay : list of available drug we are updating
+ * @param {Array<Instance>} instances : All the nodes in the final Diagnosis diagram
+ */
 export const handleDrugs = (children, questionsToDisplay, instances) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
