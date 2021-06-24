@@ -506,6 +506,7 @@ export default function () {
 
   const _buildMedicalCaseLight = async medicalCase => {
     const patient = await medicalCase.patient.fetch()
+
     return {
       id: medicalCase.id,
       synchronizedAt: medicalCase.synchronizedAt?.getTime(),
@@ -609,13 +610,13 @@ export default function () {
     // }
     await database.action(async () => {
       const object = await collection.find(id)
-      fields.map(async field => {
-        await database.batch(
-          object.prepareUpdate(record => {
+      await database.batch(
+        object.prepareUpdate(record => {
+          fields.map(field => {
             record[field.name] = field.value
-          }),
-        )
-      })
+          })
+        }),
+      )
     })
     // // Update patient updated_at value
     // if (model === 'MedicalCase') {

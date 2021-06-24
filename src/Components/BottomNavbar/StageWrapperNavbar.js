@@ -4,7 +4,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigation, useNavigationState } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import { isFulfilled } from '@reduxjs/toolkit'
 
@@ -24,6 +24,7 @@ import {
 import { getStages } from '@/Utils/Navigation/GetStages'
 import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
 import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
+import UpdatePatient from '@/Store/DatabasePatient/Update'
 
 const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
   // Theme and style elements deconstruction
@@ -40,11 +41,15 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
 
   const stageNavigation = getStages()
   const advancement = useSelector(state => state.medicalCase.item.advancement)
+  const patient = useSelector(state => state.patient.item)
   const savedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
   )
   const patientInsertError = useSelector(
     state => state.databasePatient.insert.error,
+  )
+  const patientUpdateError = useSelector(
+    state => state.databasePatient.update.error,
   )
   const medicalCaseUpdateError = useSelector(
     state => state.databaseMedicalCase.update.error,
@@ -94,10 +99,41 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
           }
         }
       } else if (advancement.stage === 0 && savedInDatabase) {
-        // TODO UPDATE PATIENT DUE TO CONSENT FILE
-        const updatePatientValues = await dispatch(UpdatePatientValues.action())
-        if (isFulfilled(updatePatientValues)) {
-          handleNavigation(direction)
+        const patientUpdate = await dispatch(
+          UpdatePatient.action({
+            patientId: patient.id,
+            fields: [
+              {
+                name: 'consent_file',
+                value: patient.consent_file,
+              },
+              {
+                name: 'birth_date',
+                value: patient.birth_date,
+              },
+              {
+                name: 'first_name',
+                value: patient.first_name,
+              },
+              {
+                name: 'last_name',
+                value: patient.last_name,
+              },
+              {
+                name: 'consent',
+                value: patient.consent,
+              },
+            ],
+          }),
+        )
+
+        if (isFulfilled(patientUpdate)) {
+          const updatePatientValues = await dispatch(
+            UpdatePatientValues.action(),
+          )
+          if (isFulfilled(updatePatientValues)) {
+            handleNavigation(direction)
+          }
         }
       } else {
         handleNavigation(direction)
@@ -136,6 +172,10 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
         }
       }
     }
+  }
+
+  if (patientUpdateError) {
+    return <ErrorNavBar message={patientUpdateError} />
   }
 
   if (medicalCaseUpdateError) {

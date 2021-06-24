@@ -43,6 +43,7 @@ const ExitMedicalCase = () => {
     const medicalCaseSaved = await SaveMedicalCaseService({})
     if (medicalCaseSaved) {
       await dispatch(ToggleVisibility.action({}))
+      // TODO REDIRECT WHERE USER CLICK
       navigateAndSimpleReset('Home', { destroyCurrentConsultation: true })
     }
   }

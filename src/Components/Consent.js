@@ -27,8 +27,10 @@ const Consent = props => {
     Colors,
   } = useTheme()
 
-  const patient = useSelector(state => state.patient.item)
-  console.log(patient)
+  const patientConsent = useSelector(state => state.patient.item.consent)
+  const patientConsentFile = useSelector(
+    state => state.patient.item.consent_file,
+  )
   const consentError = useSelector(state => state.validation.item.consent)
 
   /**
@@ -49,13 +51,13 @@ const Consent = props => {
         <View style={[question.inputWrapper, Layout.row]}>
           <View
             key="booleanButton-left"
-            style={booleanButton.buttonWrapper('left', patient.consent)}
+            style={booleanButton.buttonWrapper('left', patientConsent)}
           >
             <TouchableOpacity
               style={Layout.center}
               onPress={() => setPatientConsent(true)}
             >
-              <Text style={booleanButton.buttonText(patient.consent)}>
+              <Text style={booleanButton.buttonText(patientConsent)}>
                 {t('answers.yes')}
               </Text>
             </TouchableOpacity>
@@ -64,21 +66,21 @@ const Consent = props => {
             key="booleanButton-right"
             style={booleanButton.buttonWrapper(
               'right',
-              patient.consent === false,
+              patientConsent === false,
             )}
           >
             <TouchableOpacity
               style={Layout.center}
               onPress={() => setPatientConsent(false)}
             >
-              <Text style={booleanButton.buttonText(patient.consent === false)}>
+              <Text style={booleanButton.buttonText(patientConsent === false)}>
                 {t('answers.no')}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
-      {patient.consent && (
+      {patientConsent && (
         <View style={consent.buttonsWrapper}>
           <View style={consent.showConsentButton}>
             <SquareButton
@@ -86,13 +88,13 @@ const Consent = props => {
               onPress={() => navigation.navigate('Camera')}
             />
           </View>
-          {patient.consent_file && (
+          {patientConsentFile && (
             <View style={consent.scanConsentButton}>
               <SquareButton
                 label={t('actions.show_consent')}
                 onPress={() =>
                   navigation.navigate('Preview', {
-                    consent: patient.consent_file,
+                    consent: patientConsentFile,
                   })
                 }
                 filled
