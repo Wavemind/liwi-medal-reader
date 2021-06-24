@@ -31,7 +31,7 @@ const CustomDrawerContent = props => {
   const consentManagement = useSelector(
     state => state.algorithm.item.config.consent_management,
   )
-  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const medicalCase = useSelector(state => state.medicalCase.item)
 
   /**
    * Clear clinician and redirect user to clinician list
@@ -82,11 +82,11 @@ const CustomDrawerContent = props => {
               {...props}
             />
           )}
-          {medicalCaseId && (
+          {medicalCase.id && medicalCase.closedAt === 0 && (
             <CustomDrawerItem
               label={t('navigation.current_consultation')}
               routeName="StageWrapper"
-              routeParams={{ stageIndex: 0 }}
+              routeParams={{ stageIndex: medicalCase.advancement.stage, stepIndex: medicalCase.advancement.step }}
               iconName="summary"
               {...props}
             />
@@ -128,7 +128,7 @@ const CustomDrawerContent = props => {
           />
         </View>
       </View>
-      {medicalCaseId && <MedicalCaseDrawer />}
+      {medicalCase.id && medicalCase.closedAt === 0 && <MedicalCaseDrawer />}
     </View>
   )
 }

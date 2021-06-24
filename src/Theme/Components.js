@@ -23,6 +23,8 @@ import tabBarStyles from './components/TabBar.style'
 import sideBarStyles from './components/SideBar.style'
 import badgeBarStyles from './components/BadgeBar.style'
 import patientListItemStyles from './components/PatientListItem.style'
+import currentConsultationsStyles from './components/CurrentConsultation.style'
+import consultationListItemStyles from './components/ConsultationListItem.style'
 import patientTabItemStyles from './components/PatientTabItem.style'
 import consentListItemStyles from './components/ConsentListItem.style'
 import badgeStyles from './components/Badge.style'
@@ -72,6 +74,8 @@ export default function (props) {
     sideBar: sideBarStyles(props),
     badgeBar: badgeBarStyles(props),
     patientListItem: patientListItemStyles(props),
+    currentConsultation: currentConsultationsStyles(props),
+    consultationListItem: consultationListItemStyles(props),
     patientTabItem: patientTabItemStyles(props),
     consentListItem: consentListItemStyles(props),
     badge: badgeStyles(props),

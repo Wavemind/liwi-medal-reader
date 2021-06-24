@@ -1,42 +1,48 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
-import { View, FlatList, Text } from 'react-native'
+import React, { useState } from 'react'
+import { View, FlatList } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
-import { useTheme } from '@/Theme'
 import {
   SectionHeader,
   SquareButton,
   LoaderList,
-  MedicalCaseListItem,
+  ConsultationListItem,
+  CurrentConsultation,
 } from '@/Components'
+import { useTheme } from '@/Theme'
+import CreateMedicalCase from '@/Store/MedicalCase/Create'
+import UpdateNodeFields from '@/Store/MedicalCase/UpdateNodeFields'
+import { AddPatientValues } from '@/Services/MedicalCase'
 
-// TODO check if this component is used anywhere
 const ConsultationPatientContainer = ({ navigation }) => {
-  const { t } = useTranslation()
-
   const {
-    Containers: {},
     Gutters,
+    Containers: { patientConsultations },
+    Components: {},
   } = useTheme()
 
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+
+  const algorithm = useSelector(state => state.algorithm.item)
+  const patient = useSelector(state => state.patient.item)
+
   // Local state definition
-  const [caseInProgress, setCaseInProgress] = useState(false)
+  const [currentConsultation] = useState(
+    patient.medicalCases.find(medicalCase => medicalCase.closedAt === 0),
+  )
+  const [closedCases] = useState(
+    patient.medicalCases.filter(medicalCase => medicalCase.closedAt > 0),
+  )
   const [refreshing, setRefreshing] = useState(false)
   const [data, setData] = useState([])
-
-  useEffect(() => {
-    let timer = setTimeout(() => setData([]), 2 * 1000)
-
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [])
 
   /**
    * Fetch 15 latest medical cases
@@ -55,33 +61,50 @@ const ConsultationPatientContainer = ({ navigation }) => {
     setData(data.concat([]))
   }
 
-  return (
-    <View>
-      <View style={[Gutters.regularHMargin, Gutters.regularTMargin]}>
-        {caseInProgress ? (
-          <>
-            <SectionHeader
-              label={t('containers.patient.consultations.current_consultation')}
-            />
-            <Text>Other stuff</Text>
-          </>
-        ) : (
-          <SquareButton
-            label={t('actions.new_medical_case')}
-            icon="add"
-            onPress={() => navigation.navigate('TODO')}
-          />
-        )}
+  /**
+   * Creates a new medical case for this patient and navigates to the stageWrapper
+   * @returns {Promise<void>}
+   */
+  const handleAddConsultation = async () => {
+    // TODO check how to create a new medCase correctly
+    await dispatch(
+      CreateMedicalCase.action({ algorithm, patientId: patient.id }),
+    )
+    const patientValues = AddPatientValues()
+    console.log(patientValues)
+    await dispatch(UpdateNodeFields.action({ toUpdate: patientValues }))
 
+    navigation.navigate('StageWrapper')
+  }
+
+  return (
+    <View style={patientConsultations.sectionWrapper}>
+      {currentConsultation ? (
+        <View>
+          <SectionHeader
+            label={t('containers.patient.consultations.current_consultation')}
+          />
+          <CurrentConsultation
+            navigation={navigation}
+            consultation={currentConsultation}
+          />
+        </View>
+      ) : (
+        <SquareButton
+          label={t('actions.new_medical_case')}
+          icon="add"
+          onPress={handleAddConsultation}
+        />
+      )}
+      <View style={Gutters.largeTMargin}>
         <SectionHeader
           label={t('containers.patient.consultations.last_consultations')}
         />
-      </View>
-      <View>
         <FlatList
-          data={data}
-          renderItem={({ item }) => <MedicalCaseListItem item={item} />}
+          data={closedCases}
+          renderItem={({ item }) => <ConsultationListItem item={item} />}
           keyExtractor={item => item.id}
+          // TODO empty list
           ListEmptyComponent={<LoaderList />}
           onRefresh={() => handleRefresh()}
           refreshing={refreshing}

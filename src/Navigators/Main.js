@@ -31,7 +31,7 @@ const MainNavigator = ({ route }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const clinician = useSelector(state => state.healthFacility.clinician)
-  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const medicalCase = useSelector(state => state.medicalCase.item)
 
   const { Layout } = useTheme()
 
@@ -46,7 +46,7 @@ const MainNavigator = ({ route }) => {
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
-        drawerStyle={medicalCaseId ? Layout.fullWidth : Layout.halfWidth}
+        drawerStyle={medicalCase.id && medicalCase.closedAt === 0 ? Layout.fullWidth : Layout.halfWidth}
         screenOptions={{
           headerShown: true,
           header: ({ scene }) => {

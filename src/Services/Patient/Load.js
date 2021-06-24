@@ -10,6 +10,5 @@ export default async ({ patientId }) => {
   const { findBy } = useDatabase()
   const patient = await findBy('Patient', patientId)
   patient.savedInDatabase = true
-  delete patient.medicalCases
   return patient
 }

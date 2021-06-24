@@ -26,7 +26,7 @@ const CustomDrawerItem = ({
 
   const { index, routes } = navigation.dangerouslyGetState()
 
-  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const medicalCase = useSelector(state => state.medicalCase.item)
 
   // Theme and style elements deconstruction
   const {
@@ -36,7 +36,7 @@ const CustomDrawerItem = ({
   } = useTheme()
 
   const handleNavigation = async () => {
-    if (medicalCaseId) {
+    if (medicalCase.id && medicalCase.closedAt === 0) {
       await dispatch(
         SetParams.action({
           type: 'exitMedicalCase',

@@ -11,15 +11,13 @@ import { useTheme } from '@/Theme'
 import { QuestionItem } from '@/Components'
 import removeQuestions from '@/Services/MedicalCase/RemoveQuestions'
 
-const PersonalInfoPatientContainer = () => {
-  const {
-    Containers: { patientPersonalInfo },
-  } = useTheme()
+const SummaryQuestions = () => {
+  const { Gutters } = useTheme()
 
   const questions = removeQuestions()
 
   return (
-    <View style={[patientPersonalInfo.wrapper]}>
+    <View style={Gutters.regularHMargin}>
       <FlatList
         data={Object.values(questions)}
         renderItem={({ item }) => (
@@ -31,4 +29,4 @@ const PersonalInfoPatientContainer = () => {
   )
 }
 
-export default PersonalInfoPatientContainer
+export default SummaryQuestions
