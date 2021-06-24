@@ -46,6 +46,7 @@ const ListItem = ({ item }) => {
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {
         stageIndex: item.advancement.stage,
+        stepIndex: item.advancement.step,
       })
     }
   }

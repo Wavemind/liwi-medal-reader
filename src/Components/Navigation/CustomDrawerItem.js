@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import DefineType from '@/Store/Modal/DefineType'
+import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 
@@ -37,7 +37,12 @@ const CustomDrawerItem = ({
 
   const handleNavigation = async () => {
     if (medicalCaseId) {
-      await dispatch(DefineType.action({ type: 'exitMedicalCase' }))
+      await dispatch(
+        SetParams.action({
+          type: 'exitMedicalCase',
+          params: { routeName, routeParams },
+        }),
+      )
       await dispatch(ToggleVisibility.action({}))
     } else {
       navigateAndSimpleReset(routeName, routeParams)

@@ -4,7 +4,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigation, useNavigationState } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import { isFulfilled } from '@reduxjs/toolkit'
 
@@ -22,10 +22,12 @@ import {
   CloseMedicalCaseService,
 } from '@/Services/MedicalCase'
 import { getStages } from '@/Utils/Navigation/GetStages'
+import { GenerateUpdatePatient } from '@/Utils'
 import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
 import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
+import UpdatePatient from '@/Store/DatabasePatient/Update'
 
-const StageWrapperNavbar = ({ stageIndex }) => {
+const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
@@ -37,16 +39,18 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigation = useNavigation()
-  const navigationState = useNavigationState(
-    state => state.routes[state.index].state,
-  )
+
   const stageNavigation = getStages()
   const advancement = useSelector(state => state.medicalCase.item.advancement)
+  const patient = useSelector(state => state.patient.item)
   const savedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
   )
   const patientInsertError = useSelector(
     state => state.databasePatient.insert.error,
+  )
+  const patientUpdateError = useSelector(
+    state => state.databasePatient.update.error,
   )
   const medicalCaseUpdateError = useSelector(
     state => state.databaseMedicalCase.update.error,
@@ -88,15 +92,25 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               value: !savedInDatabase,
             }),
           )
-          const insertPatientValues = await dispatch(InsertPatientValues.action())
+          const insertPatientValues = await dispatch(
+            InsertPatientValues.action(),
+          )
           if (isFulfilled(insertPatientValues)) {
             handleNavigation(direction)
           }
         }
       } else if (advancement.stage === 0 && savedInDatabase) {
-        const updatePatientValues = await dispatch(UpdatePatientValues.action())
-        if (isFulfilled(updatePatientValues)) {
-          handleNavigation(direction)
+        const patientUpdate = await dispatch(
+          UpdatePatient.action(GenerateUpdatePatient(patient)),
+        )
+
+        if (isFulfilled(patientUpdate)) {
+          const updatePatientValues = await dispatch(
+            UpdatePatientValues.action(),
+          )
+          if (isFulfilled(updatePatientValues)) {
+            handleNavigation(direction)
+          }
         }
       } else {
         handleNavigation(direction)
@@ -109,35 +123,44 @@ const StageWrapperNavbar = ({ stageIndex }) => {
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
    */
   const handleNavigation = async direction => {
-    const medicalCaseState = navigationState.routes[navigationState.index].state
     const nextStep = advancement.step + direction
+    const steps = stageNavigation[stageIndex].steps
 
-    if (
-      medicalCaseState !== undefined &&
-      nextStep < medicalCaseState.routes.length &&
-      nextStep >= 0
-    ) {
-      navigation.navigate(medicalCaseState.routes[nextStep].name)
+    if (nextStep < steps.length && nextStep >= 0) {
+      navigation.navigate(steps[nextStep].label)
     } else {
       const nextStage = stageIndex + direction
 
       // Test if nextStage exist. If not, save and close medical case
       if (stageNavigation[nextStage] !== undefined) {
-        const medicalCaseSaved = await SaveMedicalCaseService(nextStage, nextStep)
+        // Not save if we go back
+        if (direction !== -1) {
+          const medicalCaseSaved = await SaveMedicalCaseService({ nextStage })
 
-        if (medicalCaseSaved) {
-          navigation.navigate('StageWrapper', {
-            stageIndex: nextStage,
-          })
+          if (medicalCaseSaved) {
+            navigation.navigate('StageWrapper', {
+              stageIndex: nextStage,
+              stepIndex: stageNavigation[nextStage].length - 1,
+            })
+          }
         }
+
+        navigation.navigate('StageWrapper', {
+          stageIndex: nextStage,
+          stepIndex: stageNavigation[nextStage].length - 1,
+        })
       } else {
-        const medicalCaseClosed = await CloseMedicalCaseService(nextStage)
+        const medicalCaseClosed = await CloseMedicalCaseService({ nextStage })
 
         if (medicalCaseClosed) {
           navigateAndSimpleReset('Home', { destroyCurrentConsultation: true })
         }
       }
     }
+  }
+
+  if (patientUpdateError) {
+    return <ErrorNavBar message={patientUpdateError} />
   }
 
   if (medicalCaseUpdateError) {
@@ -214,7 +237,9 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               bgColor={Colors.grey}
               icon="save-quit"
               iconSize={FontSize.large}
-              onPress={() => SaveMedicalCaseService(0)}
+              onPress={() =>
+                SaveMedicalCaseService({ nextStage: advancement.stage })
+              }
             />
           </View>
         )}

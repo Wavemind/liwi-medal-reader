@@ -11,11 +11,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
-import DefineType from '@/Store/Modal/DefineType'
+import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const Boolean = ({ questionId, emergency, disabled = false }) => {
+const Boolean = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
   const {
     Components: { booleanButton },
@@ -42,8 +42,11 @@ const Boolean = ({ questionId, emergency, disabled = false }) => {
    * @param {integer} answerId
    */
   const setAnswer = async answerId => {
-    if (emergency && yesAnswer.id === answerId) {
-      await dispatch(DefineType.action({ type: 'emergency' }))
+    if (
+      currentNode.emergency_status === 'emergency' &&
+      yesAnswer.id === answerId
+    ) {
+      await dispatch(SetParams.action({ type: 'emergency' }))
       await dispatch(ToggleVisibility.action({}))
     }
     setValue(answerId)

@@ -238,6 +238,16 @@ export default {
     os_version: 'OS Version',
     name_not_available: 'no name available',
   },
+  database: {
+    success: {
+      message: 'Save',
+      description: 'Medical case saved successfully',
+    },
+    error: {
+      message: 'Error',
+      description: 'An error occurred while saving the medical case',
+    },
+  },
   health_facility: {
     id: 'ID',
     name: 'Name',

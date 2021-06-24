@@ -63,7 +63,9 @@ const Question = ({ questionId, disabled = false }) => {
   )
 
   // Is an emergency question
-  const emergency = currentNode.emergency_status === 'referral'
+  const emergency =
+    currentNode.emergency_status === 'referral' ||
+    currentNode.emergency_status === 'emergency'
 
   /**
    * Used only when normal answer can't be set by clinician. A list of predefined answer are displayed
@@ -76,10 +78,10 @@ const Question = ({ questionId, disabled = false }) => {
         value: !isUnavailable,
       }),
     )
-    setIsUnavailable(!isUnavailable)
     if (isUnavailable) {
-      dispatch(SetAnswer.action({ nodeId: questionId, value: '' }))
+      await dispatch(SetAnswer.action({ nodeId: questionId, value: '' }))
     }
+    setIsUnavailable(!isUnavailable)
   }
 
   /**
@@ -122,7 +124,7 @@ const Question = ({ questionId, disabled = false }) => {
             {additionalUnavailableAnswer ? (
               <>
                 {mcNode.answer !== additionalUnavailableAnswer.id && (
-                  <InputFactory questionId={questionId} emergency={emergency} />
+                  <InputFactory questionId={questionId} />
                 )}
                 <Checkbox
                   label={translate(additionalUnavailableAnswer.label)}
@@ -135,7 +137,7 @@ const Question = ({ questionId, disabled = false }) => {
             ) : isUnavailable ? (
               <Select questionId={questionId} />
             ) : (
-              <InputFactory questionId={questionId} emergency={emergency} />
+              <InputFactory questionId={questionId} />
             )}
             {currentNode.unavailable && !additionalUnavailableAnswer && (
               <Checkbox

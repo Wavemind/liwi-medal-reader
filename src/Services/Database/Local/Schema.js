@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export default appSchema({
-  version: 8,
+  version: 10,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -23,6 +23,7 @@ export default appSchema({
         { name: 'first_name', type: 'string', isIndexed: true },
         { name: 'last_name', type: 'string', isIndexed: true },
         { name: 'birth_date', type: 'number', isIndexed: true },
+        { name: 'birth_date_estimated', type: 'boolean', isIndexed: true },
         { name: 'uid', type: 'string', isIndexed: true },
         { name: 'study_id', type: 'string' },
         { name: 'group_id', type: 'string' },
@@ -30,7 +31,7 @@ export default appSchema({
         { name: 'other_study_id', type: 'string', isOptional: true },
         { name: 'other_group_id', type: 'string', isOptional: true },
         { name: 'reason', type: 'string', isOptional: true },
-        { name: 'consent', type: 'string', isOptional: true },
+        { name: 'consent', type: 'boolean', isOptional: true },
         { name: 'consent_file', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },

@@ -81,18 +81,15 @@ export default function () {
     const patientValuesCollection = database.get('patient_values')
     await database.action(async () => {
       await database.batch(
-        patientValues.map(patientValue => {
-          return patientValuesCollection.prepareCreate(record => {
+        patientValues.map(patientValue =>
+          patientValuesCollection.prepareCreate(record => {
             record._raw.id = uuid.v4()
             record.patient_id = patientId
             record.node_id = parseInt(patientValue.id, 10)
-            record.answer_id =
-              patientValue.answer === null
-                ? null
-                : parseInt(patientValue.answer, 10)
+            record.answer_id = patientValue.answer
             record.value = patientValue.value
-          })
-        }),
+          }),
+        ),
       )
     }, 'insert patient values')
   }
@@ -110,18 +107,15 @@ export default function () {
         .query(Q.where('patient_id', patientId))
         .fetch()
       await database.batch(
-        existingPatientValues.map(patientValueRecord => {
-          return patientValueRecord.prepareUpdate(record => {
+        existingPatientValues.map(patientValueRecord =>
+          patientValueRecord.prepareUpdate(record => {
             const patientValue = patientValues.find(
               pv => record.node_id === pv.id,
             )
-            record.answer_id =
-              patientValue.answer === null
-                ? null
-                : parseInt(patientValue.answer, 10)
+            record.answer_id = patientValue.answer
             record.value = patientValue.value
-          })
-        }),
+          }),
+        ),
       )
     }, 'update patient values')
   }
@@ -440,7 +434,6 @@ export default function () {
 
   const insertPatient = async (patientData, medicalCaseData) => {
     const collection = database.get('patients')
-
     let patient = null
     // if (architecture === 'client_server') {
     //   object = { ...object, fail_safe: true }
@@ -451,6 +444,7 @@ export default function () {
         record.first_name = patientData.first_name
         record.last_name = patientData.last_name
         record.birth_date = patientData.birth_date
+        record.birth_date_estimated = patientData.birth_date_estimated
         record.uid = patientData.uid
         record.study_id = patientData.study_id
         record.group_id = patientData.group_id
@@ -485,40 +479,78 @@ export default function () {
     // await Promise.all([_savePatientValue('Patient', patientData)])
   }
 
-  const _buildPatient = async patient => {
-    const medicalCases = await patient.medicalCases.fetch()
-    const patientValues = await patient.patientValues.fetch()
-    const newPatient = patient._raw
+  const _buildPatient = async watermelonDBPatient => {
+    const watermelonDBMedicalCases =
+      await watermelonDBPatient.medicalCases.fetch()
+    const watermelonDBPatientValues =
+      await watermelonDBPatient.patientValues.fetch()
 
-    const response = {
-      createdAt: newPatient.created_at,
-      updatedAt: newPatient.updated_at,
-      medicalCases,
-      patientValues: patientValues.map(pv => pv._raw),
+    // Build medicalCases
+    const medicalCases = await Promise.all(
+      watermelonDBMedicalCases.map(
+        async watermelonDBMedicalCase =>
+          await _buildMedicalCase(watermelonDBMedicalCase, false),
+      ),
+    )
+
+    // Build patient values
+    const patientValues = watermelonDBPatientValues.map(
+      watermelonDBPatientValue => _buildPatientValue(watermelonDBPatientValue),
+    )
+
+    // Build patient
+    const patient = {
+      first_name: watermelonDBPatient.first_name,
+      last_name: watermelonDBPatient.last_name,
+      birth_date: watermelonDBPatient.birth_date.getTime(),
+      birth_date_estimated: watermelonDBPatient.birth_date_estimated,
+      consent: watermelonDBPatient.consent,
+      consent_file: watermelonDBPatient.consent_file,
+      createdAt: watermelonDBPatient.createdAt.getTime(),
+      fail_safe: watermelonDBPatient.fail_safe,
+      group_id: watermelonDBPatient.group_id,
+      id: watermelonDBPatient.id,
+      other_group_id: watermelonDBPatient.other_group_id,
+      other_study_id: watermelonDBPatient.other_study_id,
+      other_uid: watermelonDBPatient.other_uid,
+      reason: watermelonDBPatient.reason,
+      savedInDatabase: true,
+      study_id: watermelonDBPatient.study_id,
+      uid: watermelonDBPatient.uid,
+      updatedAt: watermelonDBPatient.updatedAt.getTime(),
     }
-    delete newPatient._changed
-    delete newPatient._status
-    delete newPatient.created_at
-    delete newPatient.updated_at
+
     return {
-      ...newPatient,
-      ...response,
+      ...patient,
+      patientValues: patientValues,
+      medicalCases: medicalCases,
     }
   }
 
-  const _buildMedicalCaseLight = async medicalCase => {
-    const patient = await medicalCase.patient.fetch()
+  const _buildPatientValue = watermelonDBPatientValues => {
     return {
-      id: medicalCase.id,
-      synchronizedAt: medicalCase.synchronizedAt?.getTime(),
+      patient_id: watermelonDBPatientValues.patient_id,
+      node_id: watermelonDBPatientValues.node_id,
+      answer_id: watermelonDBPatientValues.answer_id,
+      value: watermelonDBPatientValues.value,
+      fail_safe: watermelonDBPatientValues.fail_safe,
+    }
+  }
+
+  const _buildMedicalCaseLight = async watermelonDBMedicalCase => {
+    const patient = await watermelonDBMedicalCase.patient.fetch()
+
+    return {
+      id: watermelonDBMedicalCase.id,
+      synchronizedAt: watermelonDBMedicalCase.synchronizedAt?.getTime(),
       advancement: {
-        stage: medicalCase.stage,
-        step: medicalCase.step,
+        stage: watermelonDBMedicalCase.stage,
+        step: watermelonDBMedicalCase.step,
       },
-      fail_safe: medicalCase.fail_safe,
-      createdAt: medicalCase.createdAt.getTime(),
-      updatedAt: medicalCase.updatedAt.getTime(),
-      closedAt: medicalCase.closedAt.getTime(),
+      fail_safe: watermelonDBMedicalCase.fail_safe,
+      createdAt: watermelonDBMedicalCase.createdAt.getTime(),
+      updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
+      closedAt: watermelonDBMedicalCase.closedAt.getTime(),
       patient: {
         id: patient.id,
         first_name: patient.first_name,
@@ -528,29 +560,37 @@ export default function () {
     }
   }
 
-  const _buildMedicalCase = async medicalCase => {
-    const patient = await medicalCase.patient.fetch()
-    const parsedJson = JSON.parse(medicalCase.json)
+  const _buildMedicalCase = async (
+    watermelonDBMedicalCase,
+    addPatient = true,
+  ) => {
+    const parsedJson = JSON.parse(watermelonDBMedicalCase.json)
 
-    return {
-      id: medicalCase.id,
+    const medicalCase = {
+      id: watermelonDBMedicalCase.id,
       activities: [],
       comment: parsedJson.comment,
       consent: parsedJson.consent,
       diagnosis: parsedJson.diagnosis,
       nodes: parsedJson.nodes,
       json: parsedJson,
-      synchronized_at: medicalCase.synchronizedAt,
+      synchronized_at: watermelonDBMedicalCase.synchronizedAt,
       advancement: {
-        stage: medicalCase.stage,
-        step: medicalCase.step,
+        stage: watermelonDBMedicalCase.stage,
+        step: watermelonDBMedicalCase.step,
       },
-      fail_safe: medicalCase.fail_safe,
-      createdAt: medicalCase.createdAt.getTime(),
-      updatedAt: medicalCase.updatedAt.getTime(),
-      closedAt: medicalCase.closedAt.getTime(),
-      patient,
+      fail_safe: watermelonDBMedicalCase.fail_safe,
+      createdAt: watermelonDBMedicalCase.createdAt.getTime(),
+      updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
+      closedAt: watermelonDBMedicalCase.closedAt.getTime(),
     }
+
+    if (addPatient) {
+      const patient = await watermelonDBMedicalCase.patient.fetch()
+      medicalCase.patient = patient
+    }
+
+    return medicalCase
   }
 
   /**
@@ -611,13 +651,13 @@ export default function () {
     // }
     await database.action(async () => {
       const object = await collection.find(id)
-      fields.map(async field => {
-        await database.batch(
-          object.prepareUpdate(record => {
+      await database.batch(
+        object.prepareUpdate(record => {
+          fields.map(field => {
             record[field.name] = field.value
-          }),
-        )
-      })
+          })
+        }),
+      )
     })
     // // Update patient updated_at value
     // if (model === 'MedicalCase') {
