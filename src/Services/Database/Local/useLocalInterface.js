@@ -434,7 +434,6 @@ export default function () {
 
   const insertPatient = async (patientData, medicalCaseData) => {
     const collection = database.get('patients')
-    console.log('avant le insert', patientData)
     let patient = null
     // if (architecture === 'client_server') {
     //   object = { ...object, fail_safe: true }

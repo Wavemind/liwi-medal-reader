@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'

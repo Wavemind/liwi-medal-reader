@@ -29,7 +29,7 @@ export default async props => {
     other_study_id: other_study_id || null,
     other_uid: other_uid || null,
     patient_values: [],
-    reason: null, // TODO USED ?
+    reason: null, // DO THIS SHIT ALAIN
     savedInDatabase: !newMedicalCase,
     study_id,
     uid,
