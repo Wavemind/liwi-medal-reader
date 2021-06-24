@@ -1,14 +1,15 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
 import ToggleVisibility from './ToggleVisibility'
-import DefineType from './DefineType'
+import SetParams from './SetParams'
 
 const sliceInitialState = {
   visible: false,
   type: null,
+  params: null,
 }
 
 export default buildSlice(
   'modal',
-  [ToggleVisibility, DefineType],
+  [ToggleVisibility, SetParams],
   sliceInitialState,
 ).reducer

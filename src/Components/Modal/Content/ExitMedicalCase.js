@@ -28,12 +28,18 @@ const ExitMedicalCase = () => {
     state => state.patient.item.savedInDatabase,
   )
 
+  const routeName = useSelector(state => state.modal.params.routeName)
+  const routeParams = useSelector(state => state.modal.params.routeParams)
+
   /**
    * Redirect user to home page and clear medical case store
    */
   const exitWithoutSave = async () => {
     await dispatch(ToggleVisibility.action({}))
-    navigateAndSimpleReset('Home', { destroyCurrentConsultation: true })
+    navigateAndSimpleReset(routeName, {
+      ...routeParams,
+      destroyCurrentConsultation: true,
+    })
   }
 
   /**
@@ -43,8 +49,10 @@ const ExitMedicalCase = () => {
     const medicalCaseSaved = await SaveMedicalCaseService({})
     if (medicalCaseSaved) {
       await dispatch(ToggleVisibility.action({}))
-      // TODO REDIRECT WHERE USER CLICK
-      navigateAndSimpleReset('Home', { destroyCurrentConsultation: true })
+      navigateAndSimpleReset(routeName, {
+        ...routeParams,
+        destroyCurrentConsultation: true,
+      })
     }
   }
 

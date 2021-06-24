@@ -1,9 +1,9 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -21,23 +21,32 @@ import {
   ProfileWrapperPatientContainer,
   SummaryWrapperMedicalCaseContainer,
 } from '@/Containers'
+import DestroyMedicalCase from '@/Store/MedicalCase/Destroy'
+import DestroyPatient from '@/Store/Patient/Destroy'
 import { useTheme } from '@/Theme'
 
 const Drawer = createDrawerNavigator()
-const MainNavigator = () => {
+const MainNavigator = ({ route }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const clinician = useSelector(state => state.healthFacility.clinician)
-  const medicalCase = useSelector(state => state.medicalCase.item)
+  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
 
   const { Layout } = useTheme()
+
+  // Destroy medical case in store after closing a medical case
+  useEffect(() => {
+    dispatch(DestroyMedicalCase.action())
+    dispatch(DestroyPatient.action())
+  }, [route.state?.routes[0].params?.destroyCurrentConsultation])
 
   return (
     <>
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
-        drawerStyle={'id' in medicalCase ? Layout.fullWidth : Layout.halfWidth}
+        drawerStyle={medicalCaseId ? Layout.fullWidth : Layout.halfWidth}
         screenOptions={{
           headerShown: true,
           header: ({ scene }) => {

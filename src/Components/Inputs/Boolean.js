@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
-import DefineType from '@/Store/Modal/DefineType'
+import DefineType from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
