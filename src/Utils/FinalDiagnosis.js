@@ -46,7 +46,7 @@ const searchFinalDiagnoses = (instance, instances, finalDiagnoses = []) => {
           diagramConditionsValues(childId, instance, mcNodes),
         )
 
-        if (finalDiagnosisCondition === true) {
+        if (finalDiagnosisCondition) {
           finalDiagnoses.push(childId)
         }
       } else {
