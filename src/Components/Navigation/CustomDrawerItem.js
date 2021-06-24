@@ -4,12 +4,15 @@
 import React from 'react'
 import { Text } from 'react-native'
 import { DrawerItem } from '@react-navigation/drawer'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import SetParams from '@/Store/Modal/SetParams'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 
 const CustomDrawerItem = ({
@@ -19,7 +22,11 @@ const CustomDrawerItem = ({
   iconName,
   navigation,
 }) => {
+  const dispatch = useDispatch()
+
   const { index, routes } = navigation.dangerouslyGetState()
+
+  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
 
   // Theme and style elements deconstruction
   const {
@@ -27,6 +34,20 @@ const CustomDrawerItem = ({
     Colors,
     FontSize,
   } = useTheme()
+
+  const handleNavigation = async () => {
+    if (medicalCaseId) {
+      await dispatch(
+        SetParams.action({
+          type: 'exitMedicalCase',
+          params: { routeName, routeParams },
+        }),
+      )
+      await dispatch(ToggleVisibility.action({}))
+    } else {
+      navigateAndSimpleReset(routeName, routeParams)
+    }
+  }
 
   return (
     <DrawerItem
@@ -51,8 +72,7 @@ const CustomDrawerItem = ({
           color={focused ? Colors.secondary : Colors.primary}
         />
       )}
-      // TODO Check if we still need to reset the stack when the db shit works
-      onPress={() => navigateAndSimpleReset(routeName, routeParams)}
+      onPress={handleNavigation}
     />
   )
 }

@@ -39,9 +39,13 @@ export { default as TabBar } from './Navigation/MedicalCase/TabBar'
 export { default as PatientListItem } from './Patient/ListItem'
 export { default as PatientTabBar } from './Patient/TabBar'
 export { default as PatientTabItem } from './Patient/TabItem'
+export { default as PatientPersonalInfoItem } from './Patient/PersonalInfoItem'
 
 // MODALS
 export { default as CustomModal } from './Modal/Index'
+export { default as Emergency } from './Modal/Content/Emergency'
+export { default as Lock } from './Modal/Content/Lock'
+export { default as ExitMedicalCase } from './Modal/Content/ExitMedicalCase'
 
 // Media
 export { default as Media } from './Medias/Media'
@@ -59,6 +63,7 @@ export { default as ErrorNavBar } from './BottomNavbar/Error'
 export { default as Question } from './Question'
 export { default as ConsentListItem } from './ConsentListItem'
 export { default as MedicalCaseListItem } from './MedicalCase/ListItem'
+export { default as RegistrationHeader } from './MedicalCase/RegistrationHeader'
 export { default as ConnectionStatus } from './ConnectionStatus'
 export { default as SearchBar } from './SearchBar'
 export { default as BadgeBar } from './BadgeBar'

@@ -2,6 +2,7 @@
  * The external imports
  */
 import uuid from 'react-native-uuid'
+import faker from 'faker'
 
 /**
  * The internal imports
@@ -13,11 +14,11 @@ export default async props => {
   const { other_study_id, other_uid, other_group_id } = otherFacility
 
   return {
-    first_name: __DEV__ ? 'John' : '',
-    last_name: __DEV__ ? 'Doe' : '',
+    first_name: __DEV__ ? faker.name.firstName() : '',
+    last_name: __DEV__ ? faker.name.lastName() : '',
     birth_date: '',
     birth_date_estimated: false,
-    consent: false,
+    consent: true,
     consent_file: null,
     createdAt: new Date().getTime() / 1000, // Transform ms to s
     fail_safe: false,
@@ -28,7 +29,7 @@ export default async props => {
     other_study_id: other_study_id || null,
     other_uid: other_uid || null,
     patient_values: [],
-    reason: null,
+    reason: null, // DO THIS SHIT ALAIN
     savedInDatabase: !newMedicalCase,
     study_id,
     uid,

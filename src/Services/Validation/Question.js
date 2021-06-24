@@ -1,6 +1,7 @@
 /**
  * The external imports
  */
+import find from 'lodash/find'
 
 /**
  * The internal imports
@@ -14,6 +15,7 @@ export default (mcNode, node, value) => {
   const { algorithm } = store.getState()
 
   const formattedValue = parseFloat(value)
+  const unavailableAnswer = find(node.answers, a => a.value === 'not_available')
 
   // Default validations value
   let validationMessage = null
@@ -28,7 +30,7 @@ export default (mcNode, node, value) => {
   }
 
   // Skip validation if answer is set as unavailable
-  if (mcNode.unavailableValue) {
+  if (mcNode.unavailableValue || value === unavailableAnswer?.id) {
     return { validationMessage, validationType }
   }
 

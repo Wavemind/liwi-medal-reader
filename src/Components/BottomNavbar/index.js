@@ -38,9 +38,12 @@ const BottomNavbar = props => {
     const { name, params } = route
 
     const stageIndex = params?.stageIndex || 0
+    const stepIndex = params?.stepIndex || 0
     switch (name) {
       case 'StageWrapper':
-        return <StageWrapperNavbar stageIndex={stageIndex} />
+        return (
+          <StageWrapperNavbar stageIndex={stageIndex} stepIndex={stepIndex} />
+        )
       case 'Synchronization':
         return <SynchronizationNavbar />
       default:

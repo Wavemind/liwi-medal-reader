@@ -218,6 +218,12 @@ export default {
           'The patient is presenting a severe/emergency symptom or sign. Click on the emergency button if the child needs emergency care now.',
         emergencyButton: 'GO TO EMERGENCY',
       },
+      exitMedicalCase: {
+        title: 'Leave medical case',
+        content: 'You are leaving the medical case',
+        exitAndSave: 'Exit and save',
+        exitWithoutSave: 'Exit without save',
+      },
     },
     media: {
       file_not_supported: 'File not supported',
@@ -231,6 +237,16 @@ export default {
     os: 'OS',
     os_version: 'OS Version',
     name_not_available: 'no name available',
+  },
+  database: {
+    success: {
+      message: 'Save',
+      description: 'Medical case saved successfully',
+    },
+    error: {
+      message: 'Error',
+      description: 'An error occurred while saving the medical case',
+    },
   },
   health_facility: {
     id: 'ID',

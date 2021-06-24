@@ -2,6 +2,8 @@
  * The external imports
  */
 import findKey from 'lodash/findKey'
+import find from 'lodash/find'
+
 /**
  * The internal imports
  */
@@ -60,10 +62,15 @@ export const round = (value, step) => {
  */
 export const handleNumeric = (mcNode, node, value) => {
   const response = { answer: null, value: value }
+  const unavailableAnswer = find(node.answers, a => a.value === 'not_available')
 
   if (value === null) {
     response.answer = null
-  } else if (mcNode.unavailableValue) {
+    response.value = ''
+  } else if (
+    mcNode.unavailableValue ||
+    (unavailableAnswer && unavailableAnswer?.id === value)
+  ) {
     // Unavailable question
     response.answer = Number(value)
     response.value = node.answers[response.answer].value

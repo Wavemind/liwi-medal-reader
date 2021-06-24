@@ -26,7 +26,7 @@ export default function (props) {
       ...Layout.row,
       ...Layout.center,
       ...Gutters.smallVPadding,
-      ...Gutters.tinyHPadding,
+      ...Gutters.smallHPadding,
     },
     filled: (disabled, color, align, big) => ({
       ...base(disabled, big),

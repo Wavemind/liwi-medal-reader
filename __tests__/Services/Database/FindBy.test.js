@@ -34,6 +34,7 @@ describe('findBy should find an object based on a query', () => {
       'first_name',
       'last_name',
       'birth_date',
+      'birth_date_estimated',
       'uid',
       'study_id',
       'group_id',
@@ -47,6 +48,8 @@ describe('findBy should find an object based on a query', () => {
       'updatedAt',
       'fail_safe',
       'medicalCases',
+      'patientValues',
+      'savedInDatabase',
     ]
     const uid = uuid.v4()
     await store.dispatch(

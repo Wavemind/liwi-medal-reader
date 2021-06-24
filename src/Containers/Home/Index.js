@@ -24,9 +24,8 @@ import { fadeIn } from '@/Theme/Animation'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import GetAllMedicalCaseDB from '@/Store/DatabaseMedicalCase/GetAll'
-import DestroyMedicalCase from '@/Store/MedicalCase/Destroy'
 
-const IndexHomeContainer = ({ navigation, route }) => {
+const IndexHomeContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -40,11 +39,6 @@ const IndexHomeContainer = ({ navigation, route }) => {
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
-
-  // Destroy medical case in store after closing a medical case
-  if (route.params?.destroyMedicalCase) {
-    dispatch(DestroyMedicalCase.action())
-  }
 
   // Local state definition
   const [page, setPage] = useState(1)

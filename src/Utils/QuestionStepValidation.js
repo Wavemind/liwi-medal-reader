@@ -1,3 +1,11 @@
+/**
+ * The external imports
+ */
+ import find from 'lodash/find'
+
+/**
+ * The internal imports
+ */
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { translate } from '@/Translations/algorithm'
@@ -13,7 +21,13 @@ export default (questions, errors) => {
   questions.map(questionId => {
     const node = algorithm.nodes[questionId]
     const mcNode = medicalCase.nodes[questionId]
-    if (!mcNode.unavailableValue) {
+
+    const unavailableAnswer = find(
+      node.answers,
+      a => a.value === 'not_available',
+    )
+
+    if (!mcNode.unavailableValue && mcNode.value !== unavailableAnswer?.id) {
       const result = mcNode.answer !== null || mcNode.value !== ''
 
       // Integer or float input out of range defined by min/max value error

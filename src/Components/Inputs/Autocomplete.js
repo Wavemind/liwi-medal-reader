@@ -27,14 +27,13 @@ const Autocomplete = ({ questionId }) => {
     Components: { autocomplete },
   } = useTheme()
 
-  const [searchTerm, setSearchTerm] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [optionSelected, setOptionSelected] = useState(false)
-
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
   )
   const villageList = useSelector(state => state.algorithm.item.village_json)
+  const [searchTerm, setSearchTerm] = useState(question.value)
+  const [searchResults, setSearchResults] = useState([])
+  const [optionSelected, setOptionSelected] = useState(true)
 
   /**
    * Handles the filtering and reset of the searchResults
@@ -57,14 +56,14 @@ const Autocomplete = ({ questionId }) => {
   const handleOptionSelect = option => {
     setOptionSelected(true)
     setSearchTerm(option)
+    dispatch(SetAnswer.action({ nodeId: question.id, value: option }))
   }
 
   /**
    * Save value in store
-   * @param {Event} e
    */
-  const onEndEditing = e => {
-    const newValue = e.nativeEvent.text
+  const onEndEditing = event => {
+    const newValue = event.nativeEvent.text
     if (question.value !== newValue) {
       dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
     }
