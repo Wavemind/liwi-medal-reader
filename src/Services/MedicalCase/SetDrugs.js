@@ -12,12 +12,14 @@ export default () => {
   const agreedFinalDiagnoses = state.medicalCase.item.diagnosis.agreed
   const newFinalDiagnoses = {}
 
+  // List of all agreed drugs
   const agreedDrugs = Object.values(agreedFinalDiagnoses)
     .map(finalDiagnosis =>
       Object.values(finalDiagnosis.drugs.agreed).map(drug => drug.id),
     )
     .flat()
 
+  // Find for all final diagnosis the proposed drug
   Object.values(agreedFinalDiagnoses).map(finalDiagnosis => {
     const availableDrugs = getAvailableDrugs(nodes[finalDiagnosis.id])
     const newProposed = availableDrugs.filter(

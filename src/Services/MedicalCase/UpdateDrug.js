@@ -7,6 +7,7 @@ import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
 import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
 import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
+
 /**
  * Updates the proposed drugs by sorting them into agreed or refused
  * @param diagnosisId

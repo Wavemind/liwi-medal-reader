@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -15,7 +16,6 @@ import { AdditionalSelect, DrugBooleanButton } from '@/Components'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
 import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
-import { useIsFocused } from '@react-navigation/native'
 
 const DiagnosisDrugs = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
