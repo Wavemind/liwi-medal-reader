@@ -22,6 +22,7 @@ import {
   CloseMedicalCaseService,
 } from '@/Services/MedicalCase'
 import { getStages } from '@/Utils/Navigation/GetStages'
+import { GenerateUpdatePatient } from '@/Utils'
 import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
 import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
@@ -100,35 +101,7 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
         }
       } else if (advancement.stage === 0 && savedInDatabase) {
         const patientUpdate = await dispatch(
-          UpdatePatient.action({
-            patientId: patient.id,
-            fields: [
-              {
-                name: 'consent_file',
-                value: patient.consent_file,
-              },
-              {
-                name: 'birth_date',
-                value: patient.birth_date,
-              },
-              {
-                name: 'birth_date_estimated',
-                value: patient.birth_date_estimated,
-              },
-              {
-                name: 'first_name',
-                value: patient.first_name,
-              },
-              {
-                name: 'last_name',
-                value: patient.last_name,
-              },
-              {
-                name: 'consent',
-                value: patient.consent,
-              },
-            ],
-          }),
+          UpdatePatient.action(GenerateUpdatePatient(patient)),
         )
 
         if (isFulfilled(patientUpdate)) {

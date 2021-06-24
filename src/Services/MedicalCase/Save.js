@@ -11,6 +11,7 @@ import { store } from '@/Store'
 import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
 import InsertDatabaseActivity from '@/Store/DatabaseActivity/Insert'
 import ClearActivitiesMedicalCase from '@/Store/MedicalCase/ClearActivities'
+import i18n from '@/Translations/index'
 
 export default async ({ nextStage, nextStep }) => {
   const medicalCase = store.getState().medicalCase.item
@@ -50,8 +51,8 @@ export default async ({ nextStage, nextStep }) => {
       await store.dispatch(ClearActivitiesMedicalCase.action())
 
       showMessage({
-        message: 'Save',
-        description: 'Medical case saved successfully',
+        message: i18n.t('database.success.message'),
+        description: i18n.t('database.success.description'),
         type: 'success',
         duration: 3000,
       })
@@ -59,6 +60,13 @@ export default async ({ nextStage, nextStep }) => {
       return true
     }
   }
+
+  showMessage({
+    message: i18n.t('database.error.message'),
+    description: i18n.t('database.error.description'),
+    type: 'danger',
+    duration: 3000,
+  })
 
   return false
 }

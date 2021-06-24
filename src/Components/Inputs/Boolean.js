@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
-import DefineType from '@/Store/Modal/SetParams'
+import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
@@ -46,7 +46,7 @@ const Boolean = ({ questionId, disabled = false }) => {
       currentNode.emergency_status === 'emergency' &&
       yesAnswer.id === answerId
     ) {
-      await dispatch(DefineType.action({ type: 'emergency' }))
+      await dispatch(SetParams.action({ type: 'emergency' }))
       await dispatch(ToggleVisibility.action({}))
     }
     setValue(answerId)
