@@ -53,7 +53,7 @@ describe('Test Drugs Exclusion', () => {
     await setAnswer(2103, 925)
 
     // Add Bacterial acute pharyngitis
-    agreeFinalDiagnosis(pharyngitisId, pharyngitis)
+    agreeFinalDiagnosis(pharyngitis)
 
     expect(getAvailableDrugs(pharyngitis)).toEqual(
       expect.arrayContaining([1681]),
@@ -66,7 +66,7 @@ describe('Test Drugs Exclusion', () => {
     // Agree pyelonephritis
     const pyelonephritisId = 257
     const pyelonephritis = algorithm.nodes[pyelonephritisId]
-    agreeFinalDiagnosis(pyelonephritisId, pharyngitis)
+    agreeFinalDiagnosis(pyelonephritis)
 
     expect(getAvailableDrugs(pyelonephritis)).toEqual(
       expect.arrayContaining([1682]),
@@ -95,8 +95,8 @@ describe('Test Drugs Exclusion', () => {
     const pyelonephritisId = 257
     const pyelonephritis = algorithm.nodes[pyelonephritisId]
     // Agree final Diagnoses
-    agreeFinalDiagnosis(pyelonephritisId, pharyngitis)
-    agreeFinalDiagnosis(pharyngitisId, pyelonephritis)
+    agreeFinalDiagnosis(pharyngitis)
+    agreeFinalDiagnosis(pyelonephritis)
 
     // Treatment Condition
     await setAnswer(2103, 925)

@@ -3,12 +3,16 @@ import { getAvailableDrugs } from '@/Utils/Drug'
 
 import { store } from '@/Store'
 
-export const agreeFinalDiagnosis = async (nodeId, node) => {
+/**
+ * Adds a final diagnosis in the agreed final diagnosis
+ * @param {FinalDiagnosis} node :  the final diagnosis we want to agree
+ */
+export const agreeFinalDiagnosis = async node => {
   store.dispatch(
     AddAgreedDiagnoses.action({
-      diagnosisId: nodeId,
+      diagnosisId: node.id,
       diagnosisContent: {
-        id: nodeId,
+        id: node.id,
         managements: Object.values(node.managements).map(
           management => management.id,
         ),

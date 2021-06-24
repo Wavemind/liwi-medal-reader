@@ -121,10 +121,8 @@ export const drugDoses = (formulationIndex, drugId) => {
         // Second calculate min and max dose (cap)
         const minDoseCap = roundSup((1 / pillSize) * minDoseMg)
         const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg)
-
         // Define Dose Result
         doseResult = (minDoseCap + maxDoseCap) / 2
-
         if (maxDoseCap < 1) {
           return {
             ...formulation,
@@ -143,7 +141,6 @@ export const drugDoses = (formulationIndex, drugId) => {
           // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
           doseResult = Math.floor(minDoseCap)
         }
-
         return {
           minDoseMg,
           maxDoseMg,

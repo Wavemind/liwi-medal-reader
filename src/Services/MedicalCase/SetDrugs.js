@@ -5,36 +5,35 @@ import { store } from '@/Store'
 import { getAvailableDrugs, isDrugExcluded } from '@/Utils/Drug'
 
 export default () => {
+  // Retrieve state values
   const state = store.getState()
   const medicalCase = state.medicalCase.item
   const nodes = state.algorithm.item.nodes
   const agreedFinalDiagnoses = state.medicalCase.item.diagnosis.agreed
+  const newFinalDiagnoses = {}
 
   const agreedDrugs = Object.values(agreedFinalDiagnoses)
-    .map(agreedFinalDiagnosis =>
-      Object.values(agreedFinalDiagnosis.drugs.agreed).map(drug => drug.id),
+    .map(finalDiagnosis =>
+      Object.values(finalDiagnosis.drugs.agreed).map(drug => drug.id),
     )
     .flat()
 
-  const newFinalDiagnoses = {}
-  Object.values(agreedFinalDiagnoses).map(agreedFinalDiagnosis => {
-    const availableDrugs = getAvailableDrugs(nodes[agreedFinalDiagnosis.id])
+  Object.values(agreedFinalDiagnoses).map(finalDiagnosis => {
+    const availableDrugs = getAvailableDrugs(nodes[finalDiagnosis.id])
     const newProposed = availableDrugs.filter(
       drugId => !isDrugExcluded(drugId, agreedDrugs),
     )
-    const newAgreed = JSON.parse(
-      JSON.stringify(agreedFinalDiagnosis.drugs.agreed),
-    )
-    const drugToRemove = Object.keys(agreedFinalDiagnosis.drugs.agreed).filter(
+    const newAgreed = JSON.parse(JSON.stringify(finalDiagnosis.drugs.agreed))
+    const drugToRemove = Object.keys(finalDiagnosis.drugs.agreed).filter(
       agreedDrugId => !newProposed.includes(parseInt(agreedDrugId)),
     )
 
     drugToRemove.forEach(drugId => delete newAgreed[drugId])
 
-    newFinalDiagnoses[agreedFinalDiagnosis.id] = {
-      ...agreedFinalDiagnosis,
+    newFinalDiagnoses[finalDiagnosis.id] = {
+      ...finalDiagnosis,
       drugs: {
-        ...agreedFinalDiagnosis.drugs,
+        ...finalDiagnosis.drugs,
         proposed: newProposed,
         agreed: newAgreed,
       },

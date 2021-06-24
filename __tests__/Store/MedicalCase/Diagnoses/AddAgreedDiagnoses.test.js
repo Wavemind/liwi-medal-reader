@@ -3,7 +3,6 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import { getAvailableDrugs } from '@/Utils/Drug'
-import { debugNode } from '@/Utils/MedicalCase'
 import { setAnswer } from '../../../Utils/Answer'
 
 beforeAll(async () => {
@@ -23,7 +22,6 @@ describe('Handle agreed diagnosis addition', () => {
     const nodeId = 60
     const node = algorithm.nodes[nodeId]
     await setAnswer(50, 40)
-    await debugNode(38, store.getState().medicalCase.item.nodes)
     const availableDrugs = getAvailableDrugs(node)
     store.dispatch(
       AddAgreedDiagnoses.action({
