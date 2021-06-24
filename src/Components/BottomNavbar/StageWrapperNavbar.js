@@ -123,7 +123,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
 
       // Test if nextStage exist. If not, save and close medical case
       if (stageNavigation[nextStage] !== undefined) {
-        const medicalCaseSaved = await SaveMedicalCaseService(nextStage)
+        const medicalCaseSaved = await SaveMedicalCaseService(nextStage, nextStep)
 
         if (medicalCaseSaved) {
           navigation.navigate('StageWrapper', {
