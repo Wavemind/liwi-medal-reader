@@ -434,7 +434,7 @@ export default function () {
 
   const insertPatient = async (patientData, medicalCaseData) => {
     const collection = database.get('patients')
-
+    console.log('avant le insert', patientData)
     let patient = null
     // if (architecture === 'client_server') {
     //   object = { ...object, fail_safe: true }
@@ -445,6 +445,7 @@ export default function () {
         record.first_name = patientData.first_name
         record.last_name = patientData.last_name
         record.birth_date = patientData.birth_date
+        record.birth_date_estimated = patientData.birth_date_estimated
         record.uid = patientData.uid
         record.study_id = patientData.study_id
         record.group_id = patientData.group_id

@@ -112,6 +112,10 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
                 value: patient.birth_date,
               },
               {
+                name: 'birth_date_estimated',
+                value: patient.birth_date_estimated,
+              },
+              {
                 name: 'first_name',
                 value: patient.first_name,
               },
@@ -156,14 +160,22 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
 
       // Test if nextStage exist. If not, save and close medical case
       if (stageNavigation[nextStage] !== undefined) {
-        const medicalCaseSaved = await SaveMedicalCaseService({ nextStage })
+        // Not save if we go back
+        if (direction !== -1) {
+          const medicalCaseSaved = await SaveMedicalCaseService({ nextStage })
 
-        if (medicalCaseSaved) {
-          navigation.navigate('StageWrapper', {
-            stageIndex: nextStage,
-            stepIndex: stageNavigation[nextStage].length - 1,
-          })
+          if (medicalCaseSaved) {
+            navigation.navigate('StageWrapper', {
+              stageIndex: nextStage,
+              stepIndex: stageNavigation[nextStage].length - 1,
+            })
+          }
         }
+
+        navigation.navigate('StageWrapper', {
+          stageIndex: nextStage,
+          stepIndex: stageNavigation[nextStage].length - 1,
+        })
       } else {
         const medicalCaseClosed = await CloseMedicalCaseService({ nextStage })
 

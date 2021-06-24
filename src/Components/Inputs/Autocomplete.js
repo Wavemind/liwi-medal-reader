@@ -27,14 +27,13 @@ const Autocomplete = ({ questionId }) => {
     Components: { autocomplete },
   } = useTheme()
 
-  const [searchTerm, setSearchTerm] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [optionSelected, setOptionSelected] = useState(false)
-
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
   )
   const villageList = useSelector(state => state.algorithm.item.village_json)
+  const [searchTerm, setSearchTerm] = useState(question.value)
+  const [searchResults, setSearchResults] = useState([])
+  const [optionSelected, setOptionSelected] = useState(true)
 
   /**
    * Handles the filtering and reset of the searchResults

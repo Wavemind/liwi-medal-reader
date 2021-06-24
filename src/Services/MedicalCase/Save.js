@@ -12,7 +12,7 @@ import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
 import InsertDatabaseActivity from '@/Store/DatabaseActivity/Insert'
 import ClearActivitiesMedicalCase from '@/Store/MedicalCase/ClearActivities'
 
-export default async (nextStage, nextStep) => {
+export default async ({ nextStage, nextStep }) => {
   const medicalCase = store.getState().medicalCase.item
   const activities = store.getState().medicalCase.item.activities
 
