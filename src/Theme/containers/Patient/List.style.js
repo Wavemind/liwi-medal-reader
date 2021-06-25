@@ -11,7 +11,20 @@ export default function (props) {
       ...Gutters.regularVMargin,
       ...Layout.row,
     },
-    headerText: {
+    headerName: {
+      ...Layout.fill,
+      ...Fonts.textUppercase,
+      ...Fonts.textColorSecondary,
+      ...Fonts.textBold,
+    },
+    headerLastVisit: {
+      ...Layout.fill,
+      ...Fonts.textUppercase,
+      ...Fonts.textColorSecondary,
+      ...Fonts.textBold,
+      flex: 0.5,
+    },
+    headerStatus: {
       ...Layout.fill,
       ...Fonts.textUppercase,
       ...Fonts.textColorSecondary,

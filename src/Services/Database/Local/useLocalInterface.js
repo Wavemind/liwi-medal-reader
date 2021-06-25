@@ -387,7 +387,26 @@ export default function () {
     //   )
     // }
     // // if (filters !== '') result = await result.filtered(filters);
+
+    if (params) {
+      if (params.terms) {
+        queries.push(
+          Q.or(
+            Q.where(
+              'last_name',
+              Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
+            ),
+            Q.where(
+              'first_name',
+              Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
+            ),
+          ),
+        )
+      }
+    }
+
     result = await collection.query(...queries)
+
     // return _generateList(result, model, params.columns)
 
     // Order by updatedAt descending
