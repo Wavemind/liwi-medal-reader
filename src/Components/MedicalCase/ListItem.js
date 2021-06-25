@@ -38,11 +38,10 @@ const ListItem = ({ item }) => {
    * @returns {Promise<void>}
    */
   const handlePress = async () => {
+    await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
-      // TODO correcting this shit in new branch
       navigation.navigate('MedicalCaseSummary')
     } else {
-      await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {
         stageIndex: item.advancement.stage,
@@ -61,9 +60,9 @@ const ListItem = ({ item }) => {
           <Icon name="lock" size={FontSize.large} color={Colors.red} />
         </View>
         <View style={patientListItem.titleWrapper}>
-          <Text
-            style={patientListItem.title}
-          >{`${item.patient.first_name} ${item.patient.last_name}`}</Text>
+          <Text style={patientListItem.title}>
+            {`${item.patient.first_name} ${item.patient.last_name}`}
+          </Text>
           <Text>{format(item.patient.birth_date, 'dd.MM.yyyy')}</Text>
         </View>
 

@@ -3,6 +3,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
 import format from 'date-fns/format'
 
@@ -23,14 +24,13 @@ const ListItem = ({ item }) => {
     Fonts,
     FontSize,
   } = useTheme()
+  const { t } = useTranslation()
   const [activeMedicalCase, setActiveMedicalCase] = useState(null)
 
   const [stages] = useState(getStages())
 
   useEffect(() => {
-    const medicalCase = item.medicalCases.find(mc => {
-      return mc.advancement.closedAt !== null
-    })
+    const medicalCase = item.medicalCases.find(mc => mc.closedAt !== null)
     setActiveMedicalCase(medicalCase)
   }, [])
 
@@ -55,21 +55,27 @@ const ListItem = ({ item }) => {
           <Text>{format(item.birth_date, 'dd.MM.yyyy')}</Text>
         </View>
         <View style={patientListItem.dateWrapper}>
-          <Text style={Fonts.textCenter}>
+          <Text style={Fonts.textSemiBold}>
             {format(item.updatedAt, 'dd.MM.yyyy')}
           </Text>
         </View>
         {activeMedicalCase && (
           <View style={patientListItem.statusWrapper}>
-            <Text style={patientListItem.statusTitle}>1st assessment</Text>
+            <Text style={patientListItem.statusTitle}>
+              {t(
+                `containers.medical_case.stages.${
+                  stages[activeMedicalCase.stage].label
+                }`,
+              )}
+            </Text>
             <View style={Layout.row}>
               {stages.map((stage, index) => (
                 <Icon
                   key={`${item.id}-${stage.icon}`}
                   name={stage.icon}
-                  size={FontSize.large}
+                  size={FontSize.sectionHeader}
                   style={patientListItem.icon(
-                    index === activeMedicalCase.advancement.stage,
+                    index === activeMedicalCase.stage,
                   )}
                 />
               ))}

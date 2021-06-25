@@ -247,6 +247,14 @@ export default {
       message: 'Error',
       description: 'An error occurred while saving the medical case',
     },
+    createMedicalCaseError: {
+      message: 'Error',
+      description: 'An error occurred while creating the medical case',
+    },
+    patientLoadError: {
+      message: 'Error',
+      description: 'An error occurred while loading the patient',
+    },
   },
   health_facility: {
     id: 'ID',

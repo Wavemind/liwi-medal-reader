@@ -26,6 +26,7 @@ import { GenerateUpdatePatient } from '@/Utils'
 import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
 import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
+import InsertMedicalCase from '@/Store/DatabaseMedicalCase/Insert'
 
 const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
   // Theme and style elements deconstruction
@@ -43,8 +44,11 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
   const stageNavigation = getStages()
   const advancement = useSelector(state => state.medicalCase.item.advancement)
   const patient = useSelector(state => state.patient.item)
-  const savedInDatabase = useSelector(
+  const patientSavedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
+  )
+  const medicalCaseSavedInDatabase = useSelector(
+    state => state.medicalCase.item.savedInDatabase,
   )
   const patientInsertError = useSelector(
     state => state.databasePatient.insert.error,
@@ -54,6 +58,9 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
   )
   const medicalCaseUpdateError = useSelector(
     state => state.databaseMedicalCase.update.error,
+  )
+  const medicalCaseInsertError = useSelector(
+    state => state.databaseMedicalCase.insert.error,
   )
   const patientInsertLoading = useSelector(
     state => state.databasePatient.insert.loading,
@@ -82,34 +89,37 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
       (isFulfilled(validation) &&
         Object.values(validation.payload).length === 0)
     ) {
-      if (advancement.stage === 0 && !savedInDatabase) {
+      if (advancement.stage === 0 && !patientSavedInDatabase) {
         const patientInsert = await dispatch(InsertPatient.action())
 
         if (isFulfilled(patientInsert)) {
           dispatch(
             UpdateFieldPatient.action({
               field: 'savedInDatabase',
-              value: !savedInDatabase,
+              value: !patientSavedInDatabase,
             }),
           )
-          const insertPatientValues = await dispatch(
-            InsertPatientValues.action(),
-          )
+          const insertPatientValues = await dispatch(InsertPatientValues.action())
           if (isFulfilled(insertPatientValues)) {
             handleNavigation(direction)
           }
         }
-      } else if (advancement.stage === 0 && savedInDatabase) {
+      } else if (advancement.stage === 0 && patientSavedInDatabase) {
         const patientUpdate = await dispatch(
           UpdatePatient.action(GenerateUpdatePatient(patient)),
         )
 
         if (isFulfilled(patientUpdate)) {
-          const updatePatientValues = await dispatch(
-            UpdatePatientValues.action(),
-          )
+          const updatePatientValues = await dispatch(UpdatePatientValues.action())
           if (isFulfilled(updatePatientValues)) {
-            handleNavigation(direction)
+            if (!medicalCaseSavedInDatabase) {
+              const medicalCaseInsert = await dispatch(InsertMedicalCase.action())
+              if (isFulfilled(medicalCaseInsert)) {
+                handleNavigation(direction)
+              }
+            } else {
+              handleNavigation(direction)
+            }
           }
         }
       } else {
@@ -159,8 +169,8 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
     }
   }
 
-  if (patientUpdateError) {
-    return <ErrorNavBar message={patientUpdateError} />
+  if (medicalCaseInsertError) {
+    return <ErrorNavBar message={medicalCaseInsertError} />
   }
 
   if (medicalCaseUpdateError) {
@@ -169,6 +179,10 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
 
   if (patientInsertError) {
     return <ErrorNavBar message={patientInsertError} />
+  }
+
+  if (patientUpdateError) {
+    return <ErrorNavBar message={patientUpdateError} />
   }
 
   if (patientValuesInsertError) {

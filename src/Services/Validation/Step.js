@@ -12,6 +12,7 @@ import {
   PhysicalExamQuestions,
   AssessmentQuestions,
   ReferralQuestions,
+  TreatmentConditionsQuestions,
 } from '@/Services/Steps'
 
 export default () => {
@@ -54,7 +55,7 @@ export default () => {
     case 'final_diagnoses':
       return {}
     case 'healthcare_questions':
-      return QuestionStepValidation(errors)
+      return QuestionStepValidation(TreatmentConditionsQuestions(), errors)
     case 'medicines':
       return {}
     case 'formulations':

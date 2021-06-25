@@ -3,6 +3,7 @@ import Create from './Create'
 import SetAnswer from './SetAnswer'
 import ChangeAdvancement from './ChangeAdvancement'
 import UpdateNodeField from './UpdateNodeField'
+import UpdateNodeFields from './UpdateNodeFields'
 import Load from './Load'
 import HandleComplaintCategories from './HandleComplaintCategories'
 import HandleDateFormulas from './HandleDateFormulas'
@@ -55,6 +56,7 @@ export default buildSlice(
     HandleDateFormulas,
     SetAnswer,
     UpdateNodeField,
+    UpdateNodeFields,
     Load,
     // Activities
     AddStepActivities,
