@@ -40,9 +40,7 @@ const ListItem = ({ item }) => {
   const handlePress = async () => {
     await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
-      // navigation.navigate('MedicalCaseSummary')
-      await dispatch(LoadPatient.action({ patientId: item.patient.id }))
-      navigation.navigate('PatientProfile')
+      navigation.navigate('MedicalCaseSummary')
     } else {
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {
