@@ -25,6 +25,7 @@ import medicalCase from './MedicalCase'
 import modal from './Modal'
 import startup from './Startup'
 import patient from './Patient'
+import questionsPerSystem from './QuestionsPerSystem'
 import system from './System'
 import theme from './Theme'
 import scan from './Scan'
@@ -43,6 +44,7 @@ const reducers = combineReducers({
   medicalCase,
   modal,
   network,
+  questionsPerSystem,
   startup,
   patient,
   system,

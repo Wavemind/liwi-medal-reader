@@ -175,8 +175,11 @@ export const handleChildren = (
 const addQuestionToSystem = (questionId, questionsToDisplay, categories) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
+  const medicalHistory = state.questionsPerSystem.item.medicalHistory
+
   if (categories.includes(nodes[questionId].category)) {
     if (nodes[questionId].system in questionsToDisplay) {
+      console.log(questionId, medicalHistory)
       questionsToDisplay[nodes[questionId].system].push(questionId)
     } else {
       questionsToDisplay[nodes[questionId].system] = [questionId]

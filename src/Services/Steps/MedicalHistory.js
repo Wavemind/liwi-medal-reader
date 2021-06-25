@@ -45,5 +45,8 @@ export default () => {
     questionPerSystems[k] = uniq(questionPerSystems[k])
   })
 
-  return orderSystems(medicalHistoryStep, questionPerSystems)
+  return {
+    medicalHistory: orderSystems(medicalHistoryStep, questionPerSystems),
+    physicalExam: [],
+  }
 }
