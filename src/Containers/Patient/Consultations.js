@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { View, FlatList } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -39,10 +40,13 @@ const ConsultationPatientContainer = ({ navigation }) => {
     patient.medicalCases.find(medicalCase => medicalCase.closedAt === 0),
   )
   const [closedCases] = useState(
-    patient.medicalCases.filter(medicalCase => medicalCase.closedAt > 0),
+    orderBy(
+      patient.medicalCases.filter(medicalCase => medicalCase.closedAt > 0),
+      medicalCase => medicalCase.createdAt,
+      ['desc'],
+    ),
   )
   const [refreshing, setRefreshing] = useState(false)
-  const [data, setData] = useState([])
 
   /**
    * Fetch 15 latest medical cases
@@ -58,7 +62,6 @@ const ConsultationPatientContainer = ({ navigation }) => {
    */
   const loadMore = () => {
     console.log('TODO: load more')
-    setData(data.concat([]))
   }
 
   /**
@@ -66,12 +69,10 @@ const ConsultationPatientContainer = ({ navigation }) => {
    * @returns {Promise<void>}
    */
   const handleAddConsultation = async () => {
-    // TODO check how to create a new medCase correctly
     await dispatch(
       CreateMedicalCase.action({ algorithm, patientId: patient.id }),
     )
     const patientValues = AddPatientValues()
-    console.log(patientValues)
     await dispatch(UpdateNodeFields.action({ toUpdate: patientValues }))
 
     navigation.navigate('StageWrapper')

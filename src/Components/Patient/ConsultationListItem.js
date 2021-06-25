@@ -21,6 +21,9 @@ const ConsultationListItem = ({ item }) => {
   const {
     Fonts,
     FontSize,
+    Layout,
+    Gutters,
+    Colors,
     Components: { consultationListItem },
   } = useTheme()
 
@@ -63,6 +66,11 @@ const ConsultationListItem = ({ item }) => {
       onPress={() => handlePress()}
     >
       <View style={consultationListItem.container}>
+        {!item.synchronized_at && (
+          <View style={[Layout.column, Gutters.regularRMargin]}>
+            <Icon name="alert" size={FontSize.large} color={Colors.red} />
+          </View>
+        )}
         <Text style={consultationListItem.title}>
           {t('containers.medical_case.stages.diagnoses')}
         </Text>
@@ -80,7 +88,7 @@ const ConsultationListItem = ({ item }) => {
           ))}
         </View>
         <Text style={consultationListItem.date}>
-          {format(item.createdAt, 'dd.MM.yyyy')}
+          {item.synchronized_at && format(item.synchronized_at, 'dd.MM.yyyy')}
         </Text>
         <Icon name="right-arrow" size={FontSize.large} />
       </View>

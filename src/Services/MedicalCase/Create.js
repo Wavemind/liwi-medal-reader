@@ -34,5 +34,6 @@ export default async ({ algorithm, patientId }) => {
     updatedAt: new Date().getTime(),
     versionId: algorithm.version_id,
     fail_safe: false,
+    savedInDatabase: false,
   }
 }
