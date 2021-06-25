@@ -163,7 +163,9 @@ const ListPatientContainer = props => {
       ) : (
         <FlatList
           data={patients}
-          renderItem={({ item }) => <PatientListItem item={item} />}
+          renderItem={({ item }) => (
+            <PatientListItem key={`patient_list_${item.id}`} item={item} />
+          )}
           keyExtractor={item => `patient-${item.id}`}
           ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
           onRefresh={handleRefresh}

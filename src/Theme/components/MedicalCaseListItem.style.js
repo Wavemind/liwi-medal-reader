@@ -13,12 +13,12 @@ export default function (props) {
       borderColor: Colors.grey,
     },
     container: {
-      ...Layout.alignItemsCenter,
+      ...Layout.center,
       ...Layout.row,
     },
     titleWrapper: {
-      ...Layout.column,
-      width: wp(38),
+      ...Layout.fill,
+      ...Layout.colum,
     },
     title: {
       ...Fonts.textMedium,
@@ -26,8 +26,7 @@ export default function (props) {
       ...Gutters.tinyBPadding,
     },
     dateWrapper: {
-      ...Layout.grow,
-      width: wp(20),
+      flex: 0.5,
     },
     statusWrapper: {
       ...Layout.center,

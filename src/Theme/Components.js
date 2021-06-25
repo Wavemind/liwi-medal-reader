@@ -46,6 +46,7 @@ import autosuggestStyles from './components/Autosuggest.style'
 import autocompleteStyles from './components/Autocomplete.style'
 import additionalSelectStyles from './components/AdditionalSelect.style'
 import errorStyles from './components/Error.style'
+import medicalCaseListItemStyles from './components/MedicalCaseListItem.style'
 
 /**
  *
@@ -97,5 +98,6 @@ export default function (props) {
     autocomplete: autocompleteStyles(props),
     additionalSelect: additionalSelectStyles(props),
     error: errorStyles(props),
+    medicalCaseListItem: medicalCaseListItemStyles(props),
   }
 }
