@@ -68,7 +68,10 @@ const CurrentConsultation = ({ navigation, consultation }) => {
       </View>
       <View style={currentConsultation.statusWrapper}>
         {stages.map((stage, index) => (
-          <View style={currentConsultation.iconWrapper(index === stageIndex)}>
+          <View
+            key={`consultation-stage-${index}`}
+            style={currentConsultation.iconWrapper(index === stageIndex)}
+          >
             <Icon
               key={`${currentConsultation.id}-icon-${stage.icon}`}
               name={stage.icon}
