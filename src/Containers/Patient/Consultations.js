@@ -6,6 +6,8 @@ import { View, FlatList } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import orderBy from 'lodash/orderBy'
+import { showMessage } from 'react-native-flash-message'
+import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
  * The internal imports
@@ -18,10 +20,11 @@ import {
   CurrentConsultation,
 } from '@/Components'
 import { useTheme } from '@/Theme'
-import { AddPatientValues } from '@/Services/MedicalCase'
+import { transformPatientValues } from '@/Utils/MedicalCase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import UpdateNodeFields from '@/Store/MedicalCase/UpdateNodeFields'
 import LoadPatient from '@/Store/Patient/Load'
+import i18n from '@/Translations'
 
 const ConsultationPatientContainer = ({ navigation }) => {
   const {
@@ -36,6 +39,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
   const algorithm = useSelector(state => state.algorithm.item)
   const patient = useSelector(state => state.patient.item)
   const patientLoading = useSelector(state => state.patient.load.loading)
+  const patientLoadError = useSelector(state => state.patient.load.error)
 
   // Local state definition
   const [currentConsultation] = useState(
@@ -61,13 +65,30 @@ const ConsultationPatientContainer = ({ navigation }) => {
    * @returns {Promise<void>}
    */
   const handleAddConsultation = async () => {
-    await dispatch(
+    const createMedicalCase = await dispatch(
       CreateMedicalCase.action({ algorithm, patientId: patient.id }),
     )
-    const patientValues = AddPatientValues()
-    await dispatch(UpdateNodeFields.action({ toUpdate: patientValues }))
+    if (isFulfilled(createMedicalCase)) {
+      const patientValueNodes = transformPatientValues()
+      await dispatch(UpdateNodeFields.action({ toUpdate: patientValueNodes }))
+      navigation.navigate('StageWrapper')
+    } else {
+      showMessage({
+        message: i18n.t('database.createMedicalCaseError.message'),
+        description: i18n.t('database.createMedicalCaseError.description'),
+        type: 'danger',
+        duration: 5000,
+      })
+    }
+  }
 
-    navigation.navigate('StageWrapper')
+  if (patientLoadError) {
+    showMessage({
+      message: i18n.t('database.patientLoadError.message'),
+      description: i18n.t('database.patientLoadError.description'),
+      type: 'danger',
+      duration: 5000,
+    })
   }
 
   return (
@@ -95,7 +116,9 @@ const ConsultationPatientContainer = ({ navigation }) => {
         />
         <FlatList
           data={closedCases}
-          renderItem={({ item }) => <ConsultationListItem item={item} />}
+          renderItem={({ item }) => (
+            <ConsultationListItem key={`consultation_${item.id}`} item={item} />
+          )}
           keyExtractor={item => item.id}
           ListEmptyComponent={<LoaderList />}
           onRefresh={() => handleRefresh()}

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import format from 'date-fns/format'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
+import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
  * The internal imports
@@ -56,14 +57,18 @@ const ConsultationListItem = ({ item }) => {
    * @returns {Promise<void>}
    */
   const handlePress = async () => {
-    await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
-    navigation.navigate('MedicalCaseSummary')
+    const loadMedicalCase = await dispatch(
+      LoadMedicalCase.action({ medicalCaseId: item.id }),
+    )
+    if (isFulfilled(loadMedicalCase)) {
+      navigation.navigate('MedicalCaseSummary')
+    }
   }
 
   return (
     <TouchableOpacity
       style={consultationListItem.wrapper}
-      onPress={() => handlePress()}
+      onPress={handlePress}
     >
       <View style={consultationListItem.container}>
         {!item.synchronized_at && (

@@ -6,6 +6,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import format from 'date-fns/format'
 import { useDispatch } from 'react-redux'
+import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
  * The internal imports
@@ -40,15 +41,16 @@ const CurrentConsultation = ({ navigation, consultation }) => {
    * @returns {Promise<void>}
    */
   const handlePress = async () => {
-    await dispatch(LoadMedicalCase.action({ medicalCaseId: consultation.id }))
-    navigation.navigate('StageWrapper', { stageIndex })
+    const loadMedicalCase = await dispatch(
+      LoadMedicalCase.action({ medicalCaseId: consultation.id }),
+    )
+    if (isFulfilled(loadMedicalCase)) {
+      navigation.navigate('StageWrapper', { stageIndex })
+    }
   }
 
   return (
-    <TouchableOpacity
-      style={currentConsultation.wrapper}
-      onPress={() => handlePress()}
-    >
+    <TouchableOpacity style={currentConsultation.wrapper} onPress={handlePress}>
       {locked && (
         <View style={[Layout.column, Gutters.regularRMargin]}>
           <Icon name="lock" size={FontSize.large} color={Colors.red} />
@@ -66,14 +68,13 @@ const CurrentConsultation = ({ navigation, consultation }) => {
       </View>
       <View style={currentConsultation.statusWrapper}>
         {stages.map((stage, index) => {
-          const active = index === stageIndex
           return (
-            <View style={currentConsultation.iconWrapper(active)}>
+            <View style={currentConsultation.iconWrapper(index === stageIndex)}>
               <Icon
                 key={`${currentConsultation.id}-icon-${stage.icon}`}
                 name={stage.icon}
                 size={FontSize.large}
-                style={currentConsultation.icon(active)}
+                style={currentConsultation.icon(index === stageIndex)}
               />
             </View>
           )
