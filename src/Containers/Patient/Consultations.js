@@ -124,13 +124,8 @@ const ConsultationPatientContainer = ({ navigation }) => {
         ) : (
           <FlatList
             data={closedCases}
-            renderItem={({ item }) => (
-              <ConsultationListItem
-                key={`consultation_list_${item.id}`}
-                item={item}
-              />
-            )}
-            keyExtractor={item => item.id}
+            renderItem={({ item }) => <ConsultationListItem item={item} />}
+            keyExtractor={item => `consultation-${item.id}`}
             ListEmptyComponent={
               <EmptyList text={t('application.no_results')} />
             }

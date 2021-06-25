@@ -69,7 +69,7 @@ const CurrentConsultation = ({ navigation, consultation }) => {
       <View style={currentConsultation.statusWrapper}>
         {stages.map((stage, index) => (
           <View
-            key={`consultation_stage_${index}`}
+            key={`consultation-stage-${index}`}
             style={currentConsultation.iconWrapper(index === stageIndex)}
           >
             <Icon

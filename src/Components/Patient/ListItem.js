@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
 import format from 'date-fns/format'
 import { useDispatch } from 'react-redux'
+import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
  * The internal imports
@@ -15,7 +16,6 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import LoadPatient from '@/Store/Patient/Load'
-import { isFulfilled } from '@reduxjs/toolkit'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
