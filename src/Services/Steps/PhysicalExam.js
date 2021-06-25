@@ -16,11 +16,11 @@ export default () => {
   const state = store.getState()
   const physicalExamCategories = [
     Config.CATEGORIES.physicalExam,
-    Config.CATEGORIES.backgroundCalculation,
     Config.CATEGORIES.vitalSignAnthropometric,
   ]
   const physicalExamStep =
     state.algorithm.item.config.full_order.physical_exam_step
+  const currentSystems = state.questionsPerSystem.item.physicalExam
 
   const validDiagnoses = getValidDiagnoses()
 
@@ -33,6 +33,10 @@ export default () => {
       diagnosis.instances,
       physicalExamCategories,
       diagnosis.id,
+      Config.NODE_TYPES.diagnosis,
+      true,
+      currentSystems,
+      physicalExamStep,
     )
   })
 
@@ -40,5 +44,8 @@ export default () => {
     questionPerSystems[k] = uniq(questionPerSystems[k])
   })
 
-  return orderSystems(physicalExamStep, questionPerSystems)
+  return {
+    ...state.questionsPerSystem.item,
+    physicalExam: orderSystems(physicalExamStep, questionPerSystems),
+  }
 }

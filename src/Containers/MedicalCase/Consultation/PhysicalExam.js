@@ -1,11 +1,10 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { SectionList, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
-import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
@@ -13,25 +12,25 @@ import isEqual from 'lodash/isEqual'
 import { useTheme } from '@/Theme'
 import { SectionHeader, Question } from '@/Components'
 import { translate } from '@/Translations/algorithm'
-import { PhysicalExamQuestions } from '@/Services/Steps'
+import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
 
 const PhysicalExamMedicalCaseContainer = props => {
   const { Gutters } = useTheme()
   const isFocused = useIsFocused()
+  const dispatch = useDispatch()
 
-  const algorithm = useSelector(state => state.algorithm.item)
-  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
+  const systemsTranslations = useSelector(
+    state => state.algorithm.item.config.systems_translations,
+  )
 
-  const [systems, setSystems] = useState(PhysicalExamQuestions())
-
+  const systems = useSelector(
+    state => state.questionsPerSystem.item.physicalExam,
+  )
   // Update questions list only if question array change
   useEffect(() => {
-    const physicalExamQuestions = PhysicalExamQuestions()
+    dispatch(PhysicalExam.action())
+  }, [isFocused])
 
-    if (!isEqual(physicalExamQuestions, systems)) {
-      setSystems(physicalExamQuestions)
-    }
-  }, [isFocused, mcNodes])
   return (
     <SectionList
       sections={systems}
@@ -40,9 +39,7 @@ const PhysicalExamMedicalCaseContainer = props => {
       renderItem={({ item }) => <Question questionId={item} />}
       renderSectionHeader={({ section: { title } }) => (
         <View style={Gutters.regularHMargin}>
-          <SectionHeader
-            label={translate(algorithm.config.systems_translations[title])}
-          />
+          <SectionHeader label={translate(systemsTranslations[title])} />
         </View>
       )}
     />

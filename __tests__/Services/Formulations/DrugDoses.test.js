@@ -10,7 +10,7 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 import { drugDoses } from '@/Services/MedicalCase/DrugDoses'
-import { SetAnswer } from '@/Utils/Answers'
+import { setAnswer } from '@/Utils/Answers'
 
 import { setBirthDate } from '../../Utils/BirthDate'
 
@@ -26,19 +26,19 @@ beforeAll(async () => {
   await setBirthDate(store, 4, 'year')
 
   const weightId = algorithm.config.basic_questions.weight_question_id
-  await SetAnswer(weightId, '10')
+  await setAnswer(weightId, '10')
 })
 
 describe('Drug dose calculation', () => {
-  it('should calculate doseResult of 3 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
+  it('should calculate doseResult of 1 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
     const result = drugDoses(1, 1681)
     expect(result.doseResult).toEqual(10)
   })
-  it('should calculate minDoseMl of 3 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
+  it('should calculate minDoseMl of 1 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
     const result = drugDoses(1, 1681)
     expect(result.minDoseMl).toEqual(10)
   })
-  it('should calculate doseResultMg of 75 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
+  it('should calculate doseResultMg of 250 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
     const result = drugDoses(1, 1681)
     expect(result.doseResultMg).toEqual(250)
   })

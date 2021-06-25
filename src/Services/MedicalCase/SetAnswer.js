@@ -65,7 +65,7 @@ export default props => {
 
   return {
     ...newMedicalCase,
-    lastAnswer: {
+    lastSystemUpdated: {
       stage: newMedicalCase.advancement.stage,
       step: newMedicalCase.advancement.step,
       system: node.system,

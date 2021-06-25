@@ -12,7 +12,6 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
-import { debugNode } from '@/Utils/MedicalCase'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')

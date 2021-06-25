@@ -1,6 +1,6 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
 import MedicalHistory from './MedicalHistory'
-// import PhysicalExam from './PhysicalExam'
+import PhysicalExam from './PhysicalExam'
 
 const sliceInitialState = {
   item: {
@@ -11,6 +11,6 @@ const sliceInitialState = {
 
 export default buildSlice(
   'questionsPerSystem',
-  [MedicalHistory],
+  [MedicalHistory, PhysicalExam],
   sliceInitialState,
 ).reducer

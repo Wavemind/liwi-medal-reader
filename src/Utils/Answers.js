@@ -10,6 +10,7 @@ import find from 'lodash/find'
 import { Config } from '@/Config'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
+import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
 
 import { store } from '@/Store/index'
 
@@ -163,7 +164,9 @@ export const setNodeValue = (mcNode, node, value) => {
 export const setAnswer = async (nodeId, value) => {
   const advancement = store.getState().medicalCase.item.advancement
   await store.dispatch(SetAnswer.action({ nodeId, value }))
-  if (advancement.stage === 2) {
+  if (advancement.stage === 2 && advancement.step === 0) {
     store.dispatch(MedicalHistory.action())
+  } else if (advancement.stage === 2 && advancement.step === 1) {
+    store.dispatch(PhysicalExam.action())
   }
 }

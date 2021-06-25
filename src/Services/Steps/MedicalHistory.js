@@ -28,6 +28,7 @@ export default () => {
   // TODO Comment on affiche les vital Signs / Background calculation
 
   const validDiagnoses = getValidDiagnoses()
+  const currentSystems = state.questionsPerSystem.item.medicalHistory
 
   validDiagnoses.forEach(diagnosis => {
     const topConditions = getTopConditions(diagnosis.instances)
@@ -38,6 +39,10 @@ export default () => {
       diagnosis.instances,
       medicalHistoryCategories,
       diagnosis.id,
+      Config.NODE_TYPES.diagnosis,
+      true,
+      currentSystems,
+      medicalHistoryStep,
     )
   })
 
@@ -46,7 +51,7 @@ export default () => {
   })
 
   return {
+    ...state.questionsPerSystem.item,
     medicalHistory: orderSystems(medicalHistoryStep, questionPerSystems),
-    physicalExam: [],
   }
 }

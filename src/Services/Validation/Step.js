@@ -39,13 +39,13 @@ export default () => {
       return QuestionStepValidation(BasicMeasurementQuestions(), errors)
     case 'medical_history':
       systems = MedicalHistoryQuestions()
-      systems.forEach(system => {
+      systems.medicalHistory.forEach(system => {
         questions = questions.concat(system.data)
       })
       return QuestionStepValidation(questions, errors)
     case 'physical_exams':
       systems = PhysicalExamQuestions()
-      systems.forEach(system => {
+      systems.physicalExam.forEach(system => {
         questions = questions.concat(system.data)
       })
       return QuestionStepValidation(questions, errors)
