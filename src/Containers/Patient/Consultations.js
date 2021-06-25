@@ -2,11 +2,10 @@
  * The external imports
  */
 import React, { useState } from 'react'
-import { View, FlatList } from 'react-native'
+import { View, FlatList, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import orderBy from 'lodash/orderBy'
-import { showMessage } from 'react-native-flash-message'
 import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
@@ -18,19 +17,21 @@ import {
   LoaderList,
   ConsultationListItem,
   CurrentConsultation,
+  Icon,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { transformPatientValues } from '@/Utils/MedicalCase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import UpdateNodeFields from '@/Store/MedicalCase/UpdateNodeFields'
 import LoadPatient from '@/Store/Patient/Load'
-import i18n from '@/Translations'
 
 const ConsultationPatientContainer = ({ navigation }) => {
   const {
     Gutters,
+    FontSize,
+    Colors,
     Containers: { patientConsultations },
-    Components: {},
+    Components: { question },
   } = useTheme()
 
   const { t } = useTranslation()
@@ -40,6 +41,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
   const patient = useSelector(state => state.patient.item)
   const patientLoading = useSelector(state => state.patient.load.loading)
   const patientLoadError = useSelector(state => state.patient.load.error)
+  const mcCreateError = useSelector(state => state.medicalCase.create.error)
 
   // Local state definition
   const [currentConsultation] = useState(
@@ -72,23 +74,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
       const patientValueNodes = transformPatientValues()
       await dispatch(UpdateNodeFields.action({ toUpdate: patientValueNodes }))
       navigation.navigate('StageWrapper')
-    } else {
-      showMessage({
-        message: i18n.t('database.createMedicalCaseError.message'),
-        description: i18n.t('database.createMedicalCaseError.description'),
-        type: 'danger',
-        duration: 5000,
-      })
     }
-  }
-
-  if (patientLoadError) {
-    showMessage({
-      message: i18n.t('database.patientLoadError.message'),
-      description: i18n.t('database.patientLoadError.description'),
-      type: 'danger',
-      duration: 5000,
-    })
   }
 
   return (
@@ -104,26 +90,52 @@ const ConsultationPatientContainer = ({ navigation }) => {
           />
         </View>
       ) : (
-        <SquareButton
-          label={t('actions.new_medical_case')}
-          icon="add"
-          onPress={handleAddConsultation}
-        />
+        <>
+          <SquareButton
+            label={t('actions.new_medical_case')}
+            icon="add"
+            onPress={handleAddConsultation}
+          />
+          {mcCreateError && (
+            <View style={[question.messageWrapper('error')]}>
+              <Icon
+                size={FontSize.regular}
+                color={Colors.secondary}
+                name="warning"
+              />
+              <Text style={question.message}>{mcCreateError}</Text>
+            </View>
+          )}
+        </>
       )}
       <View style={Gutters.largeTMargin}>
         <SectionHeader
           label={t('containers.patient.consultations.last_consultations')}
         />
-        <FlatList
-          data={closedCases}
-          renderItem={({ item }) => (
-            <ConsultationListItem key={`consultation_${item.id}`} item={item} />
-          )}
-          keyExtractor={item => item.id}
-          ListEmptyComponent={<LoaderList />}
-          onRefresh={() => handleRefresh()}
-          refreshing={patientLoading}
-        />
+        {patientLoadError ? (
+          <View style={[question.messageWrapper('error')]}>
+            <Icon
+              size={FontSize.regular}
+              color={Colors.secondary}
+              name="warning"
+            />
+            <Text style={question.message}>{patientLoadError}</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={closedCases}
+            renderItem={({ item }) => (
+              <ConsultationListItem
+                key={`consultation_${item.id}`}
+                item={item}
+              />
+            )}
+            keyExtractor={item => item.id}
+            ListEmptyComponent={<LoaderList />}
+            onRefresh={() => handleRefresh()}
+            refreshing={patientLoading}
+          />
+        )}
       </View>
     </View>
   )

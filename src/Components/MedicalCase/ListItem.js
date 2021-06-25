@@ -41,9 +41,9 @@ const ListItem = ({ item }) => {
     await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
       // TODO yes I will remove this before I merge
-      // await dispatch(LoadPatient.action({ patientId: item.patient.id }))
-      // navigation.navigate('PatientProfile')
-      navigation.navigate('MedicalCaseSummary')
+      await dispatch(LoadPatient.action({ patientId: item.patient.id }))
+      navigation.navigate('PatientProfile')
+      // navigation.navigate('MedicalCaseSummary')
     } else {
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {

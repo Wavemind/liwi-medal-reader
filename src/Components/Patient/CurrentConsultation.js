@@ -67,18 +67,16 @@ const CurrentConsultation = ({ navigation, consultation }) => {
         </Text>
       </View>
       <View style={currentConsultation.statusWrapper}>
-        {stages.map((stage, index) => {
-          return (
-            <View style={currentConsultation.iconWrapper(index === stageIndex)}>
-              <Icon
-                key={`${currentConsultation.id}-icon-${stage.icon}`}
-                name={stage.icon}
-                size={FontSize.large}
-                style={currentConsultation.icon(index === stageIndex)}
-              />
-            </View>
-          )
-        })}
+        {stages.map((stage, index) => (
+          <View style={currentConsultation.iconWrapper(index === stageIndex)}>
+            <Icon
+              key={`${currentConsultation.id}-icon-${stage.icon}`}
+              name={stage.icon}
+              size={FontSize.large}
+              style={currentConsultation.icon(index === stageIndex)}
+            />
+          </View>
+        ))}
       </View>
       <Text style={Fonts.textTiny}>
         {format(consultation.createdAt, 'dd.MM.yyyy')}
