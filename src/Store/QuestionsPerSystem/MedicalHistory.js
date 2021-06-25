@@ -10,9 +10,6 @@ export default {
   initialState: buildAsyncState('medicalHistory'),
   action: buildAsyncActions(
     'questionsPerSystem/medicalHistory',
-    () => {
-      console.log('dasdadas')
-    },
     MedicalHistory,
   ),
   reducers: buildAsyncReducers({

@@ -8,6 +8,10 @@ import find from 'lodash/find'
  * The internal imports
  */
 import { Config } from '@/Config'
+import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
+
+import { store } from '@/Store/index'
 
 /**
  * Get yes answer based on reference
@@ -153,5 +157,13 @@ export const setNodeValue = (mcNode, node, value) => {
     default:
       console.error('FORMAT NOT HANDLED')
       return { answer: null, value: null }
+  }
+}
+
+export const setAnswer = async (nodeId, value) => {
+  const advancement = store.getState().medicalCase.item.advancement
+  await store.dispatch(SetAnswer.action({ nodeId, value }))
+  if (advancement.stage === 2) {
+    store.dispatch(MedicalHistory.action())
   }
 }

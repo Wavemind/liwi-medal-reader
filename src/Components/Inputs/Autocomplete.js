@@ -12,7 +12,7 @@ import filter from 'lodash/filter'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import { setAnswer } from '@/Utils/Answers'
 
 const Autocomplete = ({ questionId }) => {
   // Theme and style elements deconstruction
@@ -56,7 +56,7 @@ const Autocomplete = ({ questionId }) => {
   const handleOptionSelect = option => {
     setOptionSelected(true)
     setSearchTerm(option)
-    dispatch(SetAnswer.action({ nodeId: question.id, value: option }))
+    setAnswer(question.id, option)
   }
 
   /**
@@ -65,7 +65,7 @@ const Autocomplete = ({ questionId }) => {
   const onEndEditing = event => {
     const newValue = event.nativeEvent.text
     if (question.value !== newValue) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
+      setAnswer(question.id, newValue)
     }
   }
 

@@ -10,7 +10,6 @@ import QuestionValidationService from '@/Services/Validation/Question'
 import { setNodeValue } from '@/Utils/Answers'
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
 import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
-import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
 import AddActivityService from '@/Services/Activity/Add'
 
 export default props => {
@@ -57,10 +56,6 @@ export default props => {
 
   newNodes = UpdateQuestionSequence({ nodeId: node.id, newNodes })
   newNodes = UpdateRelatedQuestion({ nodeId: node.id, newNodes })
-
-  if (newMedicalCase.advancement.stage === 2) {
-    store.dispatch(MedicalHistory.action({ mcNodes: newNodes }))
-  }
 
   const newActivities = AddActivityService({
     medicalCase: newMedicalCase,

@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import { wp } from '@/Theme/Responsive'
 import { Icon } from '@/Components'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import { setAnswer } from '@/Utils/Answers'
 
 const ToggleComplaintCategory = ({ questionId }) => {
   // Theme and style elements deconstruction
@@ -25,7 +25,6 @@ const ToggleComplaintCategory = ({ questionId }) => {
   } = useTheme()
 
   const { t } = useTranslation()
-  const dispatch = useDispatch()
 
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
@@ -48,7 +47,7 @@ const ToggleComplaintCategory = ({ questionId }) => {
   useEffect(() => {
     const answerId = toggleValue ? yesAnswer.id : noAnswer.id
     if (question.answer !== answerId) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value: answerId }))
+      setAnswer(question.id, answerId)
     }
   }, [toggleValue])
 

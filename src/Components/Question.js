@@ -21,7 +21,7 @@ import {
 } from '@/Components'
 import { Config } from '@/Config'
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import { setAnswer } from '@/Utils/Answers'
 
 const Question = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
@@ -79,7 +79,7 @@ const Question = ({ questionId, disabled = false }) => {
       }),
     )
     if (isUnavailable) {
-      await dispatch(SetAnswer.action({ nodeId: questionId, value: '' }))
+      await setAnswer(questionId, '')
     }
     setIsUnavailable(!isUnavailable)
   }
@@ -89,7 +89,7 @@ const Question = ({ questionId, disabled = false }) => {
    */
   const handleUnavailableAnswer = value => {
     const answer = value ? additionalUnavailableAnswer.id : null
-    dispatch(SetAnswer.action({ nodeId: questionId, value: answer }))
+    setAnswer(questionId, answer)
   }
 
   return (

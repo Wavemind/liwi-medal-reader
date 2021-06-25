@@ -3,18 +3,16 @@
  */
 import React, { useEffect, useState } from 'react'
 import { TextInput } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import { setAnswer } from '@/Utils/Answers'
 
 const String = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
-  const dispatch = useDispatch()
-
   const {
     Components: { string },
   } = useTheme()
@@ -37,7 +35,7 @@ const String = ({ questionId, editable = true }) => {
   const onEndEditing = e => {
     const newValue = e.nativeEvent.text
     if (question.value !== newValue) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
+      setAnswer(question.id, newValue)
     }
   }
 

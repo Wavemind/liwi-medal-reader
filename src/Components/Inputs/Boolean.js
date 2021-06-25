@@ -13,7 +13,7 @@ import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
 import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import { setAnswer } from '@/Utils/Answers'
 
 const Boolean = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
@@ -41,7 +41,7 @@ const Boolean = ({ questionId, disabled = false }) => {
    * Set node answer and handle emergency action
    * @param {integer} answerId
    */
-  const setAnswer = async answerId => {
+  const setLocalAnswer = async answerId => {
     if (
       currentNode.emergency_status === 'emergency' &&
       yesAnswer.id === answerId
@@ -57,7 +57,7 @@ const Boolean = ({ questionId, disabled = false }) => {
    */
   useEffect(() => {
     if (question.answer !== value) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value }))
+      setAnswer(question.id, value)
     }
   }, [value])
 
@@ -73,7 +73,7 @@ const Boolean = ({ questionId, disabled = false }) => {
       >
         <TouchableOpacity
           style={Layout.center}
-          onPress={() => setAnswer(yesAnswer.id)}
+          onPress={() => setLocalAnswer(yesAnswer.id)}
           disabled={disabled}
         >
           <Text style={booleanButton.buttonText(value === yesAnswer.id)}>
@@ -91,7 +91,7 @@ const Boolean = ({ questionId, disabled = false }) => {
       >
         <TouchableOpacity
           style={Layout.center}
-          onPress={() => setAnswer(noAnswer.id)}
+          onPress={() => setLocalAnswer(noAnswer.id)}
           disabled={disabled}
         >
           <Text style={booleanButton.buttonText(value === noAnswer.id)}>
