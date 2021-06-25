@@ -18,9 +18,10 @@ import {
   CurrentConsultation,
 } from '@/Components'
 import { useTheme } from '@/Theme'
+import { AddPatientValues } from '@/Services/MedicalCase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import UpdateNodeFields from '@/Store/MedicalCase/UpdateNodeFields'
-import { AddPatientValues } from '@/Services/MedicalCase'
+import LoadPatient from '@/Store/Patient/Load'
 
 const ConsultationPatientContainer = ({ navigation }) => {
   const {
@@ -34,6 +35,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
 
   const algorithm = useSelector(state => state.algorithm.item)
   const patient = useSelector(state => state.patient.item)
+  const patientLoading = useSelector(state => state.patient.load.loading)
 
   // Local state definition
   const [currentConsultation] = useState(
@@ -46,22 +48,12 @@ const ConsultationPatientContainer = ({ navigation }) => {
       ['desc'],
     ),
   )
-  const [refreshing, setRefreshing] = useState(false)
 
   /**
    * Fetch 15 latest medical cases
    */
-  const handleRefresh = () => {
-    setRefreshing(true)
-    console.log('TODO: handle refresh')
-    setTimeout(() => setRefreshing(false), 2 * 1000)
-  }
-
-  /**
-   * Load more medical case
-   */
-  const loadMore = () => {
-    console.log('TODO: load more')
+  const handleRefresh = async () => {
+    await dispatch(LoadPatient.action({ patientId: patient.id }))
   }
 
   /**
@@ -105,12 +97,9 @@ const ConsultationPatientContainer = ({ navigation }) => {
           data={closedCases}
           renderItem={({ item }) => <ConsultationListItem item={item} />}
           keyExtractor={item => item.id}
-          // TODO empty list
           ListEmptyComponent={<LoaderList />}
           onRefresh={() => handleRefresh()}
-          refreshing={refreshing}
-          onEndReached={() => loadMore()}
-          onEndReachedThreshold={0.1}
+          refreshing={patientLoading}
         />
       </View>
     </View>

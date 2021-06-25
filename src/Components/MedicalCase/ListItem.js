@@ -38,13 +38,12 @@ const ListItem = ({ item }) => {
    * @returns {Promise<void>}
    */
   const handlePress = async () => {
+    await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
-      await dispatch(LoadPatient.action({ patientId: item.patient.id }))
-      // TODO uncomment and remove the second navigation
       // navigation.navigate('MedicalCaseSummary')
+      await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('PatientProfile')
     } else {
-      await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {
         stageIndex: item.advancement.stage,

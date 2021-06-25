@@ -32,8 +32,8 @@ const CurrentConsultation = ({ navigation, consultation }) => {
   const [stages] = useState(getStages())
   const [stageIndex] = useState(consultation.advancement.stage)
   const [stepIndex] = useState(consultation.advancement.step)
-  // TODO get locked info from somewhere
-  const [locked, setLocked] = useState(true)
+  // TODO get locked info from client-server
+  const [locked, setLocked] = useState(false)
 
   /**
    * Loads the current medical case in store and navigates to the stage wrapper
