@@ -87,7 +87,7 @@ export default function () {
             record.patient_id = patientId
             record.node_id = parseInt(patientValue.id, 10)
             record.answer_id = patientValue.answer
-            record.value = patientValue.value
+            record.value = patientValue.value?.toString()
           }),
         ),
       )
@@ -113,7 +113,7 @@ export default function () {
               pv => record.node_id === pv.id,
             )
             record.answer_id = patientValue.answer
-            record.value = patientValue.value
+            record.value = patientValue.value?.toString()
           }),
         ),
       )
@@ -479,6 +479,37 @@ export default function () {
     // await Promise.all([_savePatientValue('Patient', patientData)])
   }
 
+  /**
+   * Inserts a new medical case into the DB
+   * @param patientId
+   * @param medicalCaseData
+   * @returns {Promise<void>}
+   */
+  const insertMedicalCase = async (patientId, medicalCaseData) => {
+    const patient = await findBy('Patient', patientId)
+    const collection = database.get('medical_cases')
+    // if (architecture === 'client_server') {
+    //   object = { ...object, fail_safe: true }
+    // }
+    await database.action(async () => {
+      await collection.create(record => {
+        record._raw.id = medicalCaseData.id
+        record.json = JSON.stringify({
+          comment: medicalCaseData.comment,
+          consent: medicalCaseData.consent,
+          diagnosis: medicalCaseData.diagnosis,
+          nodes: medicalCaseData.nodes,
+        })
+        record.synchronized_at = medicalCaseData.synchronized_at
+        record.stage = medicalCaseData.advancement.stage
+        record.step = medicalCaseData.advancement.step
+        record.closedAt = null
+        record.fail_safe = false
+        record.patient.set(patient)
+      })
+    }, 'create medical case')
+  }
+
   const _buildPatient = async watermelonDBPatient => {
     const watermelonDBMedicalCases =
       await watermelonDBPatient.medicalCases.fetch()
@@ -703,6 +734,7 @@ export default function () {
     getAll,
     getConsentsFile,
     insertPatient,
+    insertMedicalCase,
     insertPatientValues,
     updatePatientValues,
     lockMedicalCase,

@@ -30,7 +30,7 @@ export default async props => {
     other_uid: other_uid || null,
     patient_values: [],
     reason: null, // DO THIS SHIT ALAIN
-    savedInDatabase: !newMedicalCase,
+    savedInDatabase: !newMedicalCase, // TODO check if we can set false directly
     study_id,
     uid,
     updatedAt: new Date().getTime() / 1000, // Transform ms to s

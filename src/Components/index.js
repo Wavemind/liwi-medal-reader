@@ -40,6 +40,8 @@ export { default as PatientListItem } from './Patient/ListItem'
 export { default as PatientTabBar } from './Patient/TabBar'
 export { default as PatientTabItem } from './Patient/TabItem'
 export { default as PatientPersonalInfoItem } from './Patient/PersonalInfoItem'
+export { default as CurrentConsultation } from './Patient/CurrentConsultation'
+export { default as ConsultationListItem } from './Patient/ConsultationListItem'
 
 // MODALS
 export { default as CustomModal } from './Modal/Index'

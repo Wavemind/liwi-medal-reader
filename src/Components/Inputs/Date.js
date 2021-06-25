@@ -86,6 +86,7 @@ const DateInput = () => {
       setYearValue(date.getFullYear())
     }
 
+    // TODO need to remove this, but it crashes without it
     if (__DEV__) {
       setDayValue(11)
       setMonthValue(4)
