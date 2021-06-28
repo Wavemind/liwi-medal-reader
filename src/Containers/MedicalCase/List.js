@@ -95,10 +95,10 @@ const ListMedicalCaseContainer = props => {
 
       <View style={medicalCaseList.headerTable}>
         <Text style={medicalCaseList.headerText}>
-          {t('containers.medicalCase.list.name')}
+          {t('containers.medical_case.list.name')}
         </Text>
         <Text style={[medicalCaseList.headerText, Fonts.textCenter]}>
-          {t('containers.medicalCase.list.status')}
+          {t('containers.medical_case.list.status')}
         </Text>
       </View>
 

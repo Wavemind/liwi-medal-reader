@@ -12,6 +12,7 @@ export { default as Checkbox } from './Inputs/Checkbox'
 export { default as ToggleSwitch } from './Inputs/ToggleSwitch'
 export { default as Autosuggest } from './Inputs/Autosuggest'
 export { default as Autocomplete } from './Inputs/Autocomplete'
+export { default as Comment } from './Inputs/Comment'
 
 // BUTTONS
 export { default as SquareButton } from './Buttons/SquareButton'
