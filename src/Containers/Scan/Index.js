@@ -18,6 +18,9 @@ import { Icon } from '@/Components'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import HandleQr from '@/Store/Scan/HandleQr'
+import LoadPatient from '@/Store/Patient/Load'
+import { transformPatientValues } from '@/Utils/MedicalCase'
+import UpdateNodeFields from '@/Store/MedicalCase/UpdateNodeFields'
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
@@ -65,7 +68,26 @@ const IndexScanContainer = props => {
           }
         }
       } else {
-        // TODO CREATE NEW MEDICAL CASE FOR AN EXISTING PATIENT
+        const loadPatientResult = await dispatch(
+          LoadPatient.action({
+            patientId: scanData.navigationParams.patientId,
+          }),
+        )
+        if (isFulfilled(loadPatientResult)) {
+          const medicalCaseResult = await dispatch(
+            CreateMedicalCase.action({
+              algorithm,
+              patientId: scanData.navigationParams.patientId,
+            }),
+          )
+          if (isFulfilled(medicalCaseResult)) {
+            const patientValueNodes = transformPatientValues()
+            await dispatch(
+              UpdateNodeFields.action({ toUpdate: patientValueNodes }),
+            )
+            navigation.navigate('StageWrapper')
+          }
+        }
       }
     }
   }

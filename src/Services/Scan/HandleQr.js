@@ -1,4 +1,5 @@
 import i18n from '@/Translations/index'
+import useDatabase from '@/Services/Database/useDatabase'
 
 /**
  * Parse TIMCI QR code data because they didn't want to use the existing format just to piss us off
@@ -55,13 +56,13 @@ const getQrData = async data => {
 /**
  * Requests the DB to know if the scanned patient is already known in the database
  */
-const searchPatient = async (QRData, healthFacilityId) => {
-  return null
-  // TODO GET PATIENT FROM DATABASE
-  // const sameFacility = healthFacilityId === parseInt(QRData.group_id)
-  // return sameFacility
-  //   ? database.findBy('Patient', QRData.uid, 'uid')
-  //   : database.findBy('Patient', QRData.uid, 'other_uid')
+export const SearchPatient = async (QRData, healthFacilityId) => {
+  const { findBy } = useDatabase()
+  const sameFacility = healthFacilityId === parseInt(QRData.group_id)
+  console.log(QRData, healthFacilityId)
+  return sameFacility
+    ? findBy('Patient', QRData.uid, 'uid')
+    : findBy('Patient', QRData.uid, 'other_uid')
 }
 
 export default async ({
@@ -75,7 +76,7 @@ export default async ({
   if ('uid' in QRData && 'study_id' in QRData && 'group_id' in QRData) {
     const sameFacility = healthFacilityId === parseInt(QRData.group_id)
 
-    const patient = await searchPatient(QRData, healthFacilityId)
+    const patient = await SearchPatient(QRData, healthFacilityId)
 
     if (patient !== null) {
       return {
