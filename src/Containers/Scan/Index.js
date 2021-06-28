@@ -21,7 +21,6 @@ import HandleQr from '@/Store/Scan/HandleQr'
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
-
 const IndexScanContainer = props => {
   const { t } = useTranslation()
   const dispatch = useDispatch()

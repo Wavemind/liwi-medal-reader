@@ -20,9 +20,11 @@ const RegistrationHeader = () => {
     state => state.algorithm.item.config.consent_management,
   )
 
+  const other_uid = useSelector(state => state.patient.item.other_uid)
   return (
     <>
       {consentManagement && <Consent />}
+      {other_uid && <PatientString field="reason" />}
       <View style={[Gutters.regularHMargin]}>
         <SectionHeader
           label={t('containers.medical_case.registration.questions')}

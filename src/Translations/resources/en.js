@@ -299,6 +299,7 @@ export default {
     first_name: 'First name',
     last_name: 'Last name',
     birth_date: 'Birth date',
+    reason: 'Reason for changing facility',
   },
   permissions: {
     message: 'You must grant the relevant permissions for the app to function.',
