@@ -37,7 +37,6 @@ const ToggleComplaintCategory = ({ questionId }) => {
   const yesAnswer = getYesAnswer(currentNode)
   const noAnswer = getNoAnswer(currentNode)
 
-  // TODO: Need to set by default answer to false
   const [toggleValue, setToggleValue] = useState(
     question.answer === yesAnswer.id,
   )

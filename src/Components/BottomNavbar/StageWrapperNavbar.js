@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
@@ -23,12 +23,13 @@ import {
 } from '@/Services/MedicalCase'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import { GenerateUpdatePatient } from '@/Utils'
+import { navigateToStage } from '@/Navigators/Root'
 import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
 import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertMedicalCase from '@/Store/DatabaseMedicalCase/Insert'
 
-const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
+const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
@@ -41,9 +42,12 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
   const { t } = useTranslation()
   const navigation = useNavigation()
 
+  const [loading, setLoading] = useState(false)
+
   const stageNavigation = getStages()
   const advancement = useSelector(state => state.medicalCase.item.advancement)
   const patient = useSelector(state => state.patient.item)
+
   const patientSavedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
   )
@@ -62,9 +66,6 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
   const medicalCaseInsertError = useSelector(
     state => state.databaseMedicalCase.insert.error,
   )
-  const patientInsertLoading = useSelector(
-    state => state.databasePatient.insert.loading,
-  )
   const patientValuesInsertError = useSelector(
     state => state.databasePatientValues.insert.error,
   )
@@ -78,6 +79,7 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
    */
   const stepVerification = async (direction, skipValidation = false) => {
+    setLoading(true)
     let validation = null
     if (!skipValidation) {
       validation = await dispatch(StepValidation.action())
@@ -99,9 +101,11 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
               value: !patientSavedInDatabase,
             }),
           )
-          const insertPatientValues = await dispatch(InsertPatientValues.action())
+          const insertPatientValues = await dispatch(
+            InsertPatientValues.action(),
+          )
           if (isFulfilled(insertPatientValues)) {
-            handleNavigation(direction)
+            await handleNavigation(direction)
           }
         }
       } else if (advancement.stage === 0 && patientSavedInDatabase) {
@@ -110,22 +114,28 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
         )
 
         if (isFulfilled(patientUpdate)) {
-          const updatePatientValues = await dispatch(UpdatePatientValues.action())
+          const updatePatientValues = await dispatch(
+            UpdatePatientValues.action(),
+          )
           if (isFulfilled(updatePatientValues)) {
             if (!medicalCaseSavedInDatabase) {
-              const medicalCaseInsert = await dispatch(InsertMedicalCase.action())
+              const medicalCaseInsert = await dispatch(
+                InsertMedicalCase.action(),
+              )
               if (isFulfilled(medicalCaseInsert)) {
-                handleNavigation(direction)
+                await handleNavigation(direction)
               }
             } else {
-              handleNavigation(direction)
+              await handleNavigation(direction)
             }
           }
         }
       } else {
-        handleNavigation(direction)
+        await handleNavigation(direction)
       }
     }
+
+    setLoading(false)
   }
 
   /**
@@ -137,6 +147,7 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
     const steps = stageNavigation[stageIndex].steps
 
     if (nextStep < steps.length && nextStep >= 0) {
+      setLoading(false)
       navigation.navigate(steps[nextStep].label)
     } else {
       const nextStage = stageIndex + direction
@@ -145,24 +156,30 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
       if (stageNavigation[nextStage] !== undefined) {
         // Not save if we go back
         if (direction !== -1) {
-          const medicalCaseSaved = await SaveMedicalCaseService({ nextStage })
+          const medicalCaseSaved = await SaveMedicalCaseService({
+            stageIndex: nextStage,
+            stepIndex: 0,
+          })
 
           if (medicalCaseSaved) {
+            setLoading(false)
             navigation.navigate('StageWrapper', {
               stageIndex: nextStage,
-              stepIndex: stageNavigation[nextStage].length - 1,
+              stepIndex: 0,
             })
           }
+        } else {
+          setLoading(false)
+          navigateToStage(
+            nextStage,
+            stageNavigation[nextStage].steps.length - 1,
+          )
         }
-
-        navigation.navigate('StageWrapper', {
-          stageIndex: nextStage,
-          stepIndex: stageNavigation[nextStage].length - 1,
-        })
       } else {
         const medicalCaseClosed = await CloseMedicalCaseService({ nextStage })
 
         if (medicalCaseClosed) {
+          setLoading(false)
           navigateAndSimpleReset('Home', { destroyCurrentConsultation: true })
         }
       }
@@ -217,7 +234,7 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
               bgColor={Colors.secondary}
               color={Colors.primary}
               iconSize={FontSize.large}
-              disabled={patientInsertLoading}
+              disabled={loading}
               onPress={() => dispatch(StepValidation.action())}
             />
           </View>
@@ -252,7 +269,10 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
               icon="save-quit"
               iconSize={FontSize.large}
               onPress={() =>
-                SaveMedicalCaseService({ nextStage: advancement.stage })
+                SaveMedicalCaseService({
+                  stageIndex: advancement.stage,
+                  stepIndex: advancement.step,
+                })
               }
             />
           </View>

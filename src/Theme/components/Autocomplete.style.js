@@ -26,6 +26,14 @@ export default function (props) {
       color: Colors.text,
       padding: 0,
     },
+    textArea: {
+      ...Fonts.textSmall,
+      ...Layout.grow,
+      color: Colors.text,
+      ...Gutters.smallVPadding,
+      ...Gutters.smallHPadding,
+      textAlignVertical: 'top',
+    },
     searchIcon: {
       ...Layout.colHCenter,
       ...Gutters.smallRMargin,
@@ -47,6 +55,6 @@ export default function (props) {
     dropdownItemText: {
       ...Fonts.textSmall,
       color: Colors.text,
-    }
+    },
   })
 }

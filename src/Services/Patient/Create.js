@@ -11,11 +11,10 @@ import faker from 'faker'
 export default async props => {
   const { facility, otherFacility, newMedicalCase } = props
   const { study_id, uid, group_id } = facility
-  const { other_study_id, other_uid, other_group_id } = otherFacility
 
   return {
-    first_name: __DEV__ ? faker.name.firstName() : '',
-    last_name: __DEV__ ? faker.name.lastName() : '',
+    first_name: '',
+    last_name: '',
     birth_date: '',
     birth_date_estimated: false,
     consent: true,
@@ -25,11 +24,11 @@ export default async props => {
     group_id,
     id: uuid.v4(),
     medicalCases: [],
-    other_group_id: other_group_id || null,
-    other_study_id: other_study_id || null,
-    other_uid: other_uid || null,
+    other_group_id: otherFacility.group_id || null,
+    other_study_id: otherFacility.study_id || null,
+    other_uid: otherFacility.uid || null,
     patient_values: [],
-    reason: null, // DO THIS SHIT ALAIN
+    reason: null,
     savedInDatabase: !newMedicalCase, // TODO check if we can set false directly
     study_id,
     uid,

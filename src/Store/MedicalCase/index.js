@@ -4,6 +4,7 @@ import SetAnswer from './SetAnswer'
 import ChangeAdvancement from './ChangeAdvancement'
 import UpdateNodeField from './UpdateNodeField'
 import UpdateNodeFields from './UpdateNodeFields'
+import UpdateComment from './UpdateComment'
 import Load from './Load'
 import HandleComplaintCategories from './HandleComplaintCategories'
 import HandleDateFormulas from './HandleDateFormulas'
@@ -23,6 +24,7 @@ import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnos
 import RemoveRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses'
 import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses'
 import RemoveCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveCustomDiagnoses'
+
 // Drugs
 import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
@@ -35,8 +37,10 @@ import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
 import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
+
 // Formulations
 import ChangeFormulations from '@/Store/MedicalCase/ChangeFormulations'
+
 // Arm Control
 import ArmAddCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmAddCustomDrugs'
 import ArmRemoveCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmRemoveCustomDrugs'
@@ -57,6 +61,7 @@ export default buildSlice(
     SetAnswer,
     UpdateNodeField,
     UpdateNodeFields,
+    UpdateComment,
     Load,
     // Activities
     AddStepActivities,

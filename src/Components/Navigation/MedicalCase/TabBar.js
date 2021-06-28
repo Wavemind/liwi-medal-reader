@@ -34,7 +34,6 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
 
   /**
    * Updates the activities array with the new stage and step
-   * TODO: MOVE IT TO StageWrapperNavBar ?
    */
   const updateMedicalCaseActivities = () => {
     const stage = stages[stageIndex]
