@@ -56,9 +56,8 @@ const getQrData = async data => {
 /**
  * Requests the DB to know if the scanned patient is already known in the database
  */
-export const SearchPatient = async (QRData, healthFacilityId) => {
+export const SearchPatient = async (QRData, sameFacility) => {
   const { findBy } = useDatabase()
-  const sameFacility = healthFacilityId === parseInt(QRData.group_id)
   return sameFacility
     ? findBy('Patient', QRData.uid, 'uid')
     : findBy('Patient', QRData.uid, 'other_uid')
@@ -75,7 +74,7 @@ export default async ({
   if ('uid' in QRData && 'study_id' in QRData && 'group_id' in QRData) {
     const sameFacility = healthFacilityId === parseInt(QRData.group_id)
 
-    const patient = await SearchPatient(QRData, healthFacilityId)
+    const patient = await SearchPatient(QRData, sameFacility)
 
     if (patient !== null) {
       return {

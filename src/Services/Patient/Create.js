@@ -13,8 +13,8 @@ export default async props => {
   const { study_id, uid, group_id } = facility
 
   return {
-    first_name: __DEV__ ? faker.name.firstName() : '',
-    last_name: __DEV__ ? faker.name.lastName() : '',
+    first_name: '',
+    last_name: '',
     birth_date: '',
     birth_date_estimated: false,
     consent: true,
