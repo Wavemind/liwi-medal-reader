@@ -59,7 +59,6 @@ const getQrData = async data => {
 export const SearchPatient = async (QRData, healthFacilityId) => {
   const { findBy } = useDatabase()
   const sameFacility = healthFacilityId === parseInt(QRData.group_id)
-  console.log(QRData, healthFacilityId)
   return sameFacility
     ? findBy('Patient', QRData.uid, 'uid')
     : findBy('Patient', QRData.uid, 'other_uid')
