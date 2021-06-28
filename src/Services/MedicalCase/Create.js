@@ -14,6 +14,7 @@ export default async ({ algorithm, patientId }) => {
     comment: '',
     consent: !!algorithm.config.consent_management,
     createdAt: new Date().getTime(),
+    closedAt: 0,
     diagnosis: {
       proposed: [],
       excluded: [],

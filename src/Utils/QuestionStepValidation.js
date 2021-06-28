@@ -29,7 +29,7 @@ export default (questions, errors) => {
 
     if (
       (!mcNode.unavailableValue && mcNode.value !== unavailableAnswer?.id) ||
-      (mcNode.unavailableValue && !unavailableAnswer)
+      (mcNode.unavailableValue && mcNode.answer === null)
     ) {
       const result = mcNode.answer !== null || mcNode.value !== ''
 
