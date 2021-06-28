@@ -172,10 +172,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
 
         setLoading(false)
 
-        navigation.navigate('StageWrapper', {
-          stageIndex: nextStage,
-          stepIndex: stageNavigation[nextStage].steps.length - 1,
-        })
+        navigateToStage(nextStage, stageNavigation[nextStage].steps.length - 1)
       } else {
         const medicalCaseClosed = await CloseMedicalCaseService({ nextStage })
 
