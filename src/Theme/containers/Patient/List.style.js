@@ -25,23 +25,9 @@ export default function (props) {
       width: wp(20),
     },
     headerStatus: {
-      //...Layout.fill,
       ...Fonts.textUppercase,
       ...Fonts.textColorSecondary,
       ...Fonts.textBold,
     },
-    // headerLastVisit: {
-    //   ...Layout.fill,
-    //   ...Fonts.textUppercase,
-    //   ...Fonts.textColorSecondary,
-    //   ...Fonts.textBold,
-    //   flex: 0.5,
-    // },
-    // headerStatus: {
-    //   ...Layout.fill,
-    //   ...Fonts.textUppercase,
-    //   ...Fonts.textColorSecondary,
-    //   ...Fonts.textBold,
-    // },
   })
 }
