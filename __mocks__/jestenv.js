@@ -145,6 +145,8 @@ jest.mock('react-native-fs', () => {
   }
 })
 
+jest.mock('react-native-zip-archive', () => {})
+
 jest.mock('react-native-gesture-handler', () => {
   return {
     Direction: jest.fn(),
