@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
- import find from 'lodash/find'
+import find from 'lodash/find'
 
 /**
  * The internal imports
@@ -27,7 +27,10 @@ export default (questions, errors) => {
       a => a.value === 'not_available',
     )
 
-    if (!mcNode.unavailableValue && mcNode.value !== unavailableAnswer?.id) {
+    if (
+      (!mcNode.unavailableValue && mcNode.value !== unavailableAnswer?.id) ||
+      (mcNode.unavailableValue && !unavailableAnswer)
+    ) {
       const result = mcNode.answer !== null || mcNode.value !== ''
 
       // Integer or float input out of range defined by min/max value error

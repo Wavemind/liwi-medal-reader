@@ -14,10 +14,10 @@ import { isFulfilled } from '@reduxjs/toolkit'
 import {
   SectionHeader,
   SquareButton,
-  LoaderList,
   ConsultationListItem,
   CurrentConsultation,
   Icon,
+  EmptyList,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { transformPatientValues } from '@/Utils/MedicalCase'
@@ -124,14 +124,11 @@ const ConsultationPatientContainer = ({ navigation }) => {
         ) : (
           <FlatList
             data={closedCases}
-            renderItem={({ item }) => (
-              <ConsultationListItem
-                key={`consultation_${item.id}`}
-                item={item}
-              />
-            )}
-            keyExtractor={item => item.id}
-            ListEmptyComponent={<LoaderList />}
+            renderItem={({ item }) => <ConsultationListItem item={item} />}
+            keyExtractor={item => `consultation-${item.id}`}
+            ListEmptyComponent={
+              <EmptyList text={t('application.no_results')} />
+            }
             onRefresh={() => handleRefresh()}
             refreshing={patientLoading}
           />
