@@ -23,12 +23,13 @@ import {
 } from '@/Services/MedicalCase'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import { GenerateUpdatePatient } from '@/Utils'
+import { navigateToStage } from '@/Navigators/Root'
 import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
 import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertMedicalCase from '@/Store/DatabaseMedicalCase/Insert'
 
-const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
+const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
@@ -156,23 +157,24 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
         // Not save if we go back
         if (direction !== -1) {
           const medicalCaseSaved = await SaveMedicalCaseService({
-            nextStage,
-            nextStep: 0,
+            stageIndex: nextStage,
+            stepIndex: 0,
           })
 
           if (medicalCaseSaved) {
             setLoading(false)
             navigation.navigate('StageWrapper', {
               stageIndex: nextStage,
-              nextStep: 0,
+              stepIndex: 0,
             })
           }
         }
 
         setLoading(false)
+
         navigation.navigate('StageWrapper', {
           stageIndex: nextStage,
-          stepIndex: stageNavigation[nextStage].length - 1,
+          stepIndex: stageNavigation[nextStage].steps.length - 1,
         })
       } else {
         const medicalCaseClosed = await CloseMedicalCaseService({ nextStage })
@@ -268,7 +270,10 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
               icon="save-quit"
               iconSize={FontSize.large}
               onPress={() =>
-                SaveMedicalCaseService({ nextStage: advancement.stage })
+                SaveMedicalCaseService({
+                  stageIndex: advancement.stage,
+                  stepIndex: advancement.step,
+                })
               }
             />
           </View>

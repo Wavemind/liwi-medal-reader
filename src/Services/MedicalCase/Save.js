@@ -13,7 +13,7 @@ import InsertDatabaseActivity from '@/Store/DatabaseActivity/Insert'
 import ClearActivitiesMedicalCase from '@/Store/MedicalCase/ClearActivities'
 import i18n from '@/Translations/index'
 
-export default async ({ nextStage, nextStep }) => {
+export default async ({ stageIndex, stepIndex }) => {
   const medicalCase = store.getState().medicalCase.item
   const activities = store.getState().medicalCase.item.activities
 
@@ -22,8 +22,8 @@ export default async ({ nextStage, nextStep }) => {
     UpdateDatabaseMedicalCase.action({
       medicalCaseId: medicalCase.id,
       fields: [
-        { name: 'stage', value: nextStage || medicalCase.advancement.stage },
-        { name: 'step', value: nextStep || medicalCase.advancement.step },
+        { name: 'stage', value: stageIndex },
+        { name: 'step', value: stepIndex },
         {
           name: 'json',
           value: JSON.stringify({
