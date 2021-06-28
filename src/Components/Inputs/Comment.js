@@ -58,7 +58,7 @@ const Comment = () => {
           <View style={[question.inputWrapper, Layout.center]}>
             <Toggle
               value={toggleValue}
-              onPress={newState => setToggleValue(newState)}
+              onPress={setToggleValue}
               leftComponent={
                 <Text style={toggleComplaintCategory.leftText(toggleValue)}>
                   {t('answers.yes')}
