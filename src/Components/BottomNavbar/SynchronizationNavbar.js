@@ -1,17 +1,19 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { View } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
+import Synchronize from '@/Store/Synchronization/Synchronize'
 
-const SynchronizationNavbar = props => {
+const SynchronizationNavbar = () => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
@@ -19,80 +21,22 @@ const SynchronizationNavbar = props => {
   } = useTheme()
 
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+
+  const synchLoading = useSelector(state => state.synchronization.loading)
+  const medicalCases = useSelector(
+    state => state.databaseMedicalCase.getAll.item.data,
+  )
+
+  const [unSynced] = useState(
+    medicalCases.filter(medicalCase => medicalCase.synchronizedAt === 0),
+  )
 
   /**
-   * TODO
-   * @param {integer} direction :
+   * Handles the synchronization action
    */
-  const handleSynchronization = () => {
-    // const writePermission = await askWriteStorage()
-    // if (writePermission) {
-    //   const { medicalCasesToSynch, mainDataURL } = this.state
-    //   const {
-    //     app: { t, database },
-    //   } = this.props
-    //   this.setState({ isLoading: true })
-    //   const folder = `${DocumentDirectoryPath}/medical_cases`
-    //   const targetPath = `${folder}.zip`
-    //   // Create directory
-    //   await mkdir(folder)
-    //   // Generate files
-    //   await Promise.all(
-    //     medicalCasesToSynch.map(async medicalCase => {
-    //       const patient = await database.localInterface.findBy(
-    //         'Patient',
-    //         medicalCase.patient_id,
-    //       )
-    //       const patientAll = await database.localInterface.getAll(
-    //         'Patient',
-    //         null,
-    //         null,
-    //         true,
-    //       )
-    //       const activitiesDB = await medicalCase.activities
-    //       const activities = await Promise.all(
-    //         activitiesDB.map(activity => new ActivityModel(activity)),
-    //       )
-    //       const medicalCaseJson = JSON.stringify(
-    //         {
-    //           ...JSON.parse(medicalCase.json),
-    //           patient: { ...patient, medicalCases: [] },
-    //           activities,
-    //         },
-    //         (key, value) => (typeof value === 'undefined' ? null : value),
-    //       )
-    //       await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson)
-    //     }),
-    //   )
-    //   // Generate archive
-    //   const path = await zip(normalizeFilePath(folder), targetPath).catch(
-    //     error => {
-    //       this.setState({ isLoading: false })
-    //     },
-    //   )
-    //   await Promise.all(
-    //     medicalCasesToSynch.map(async medicalCase => {
-    //       await unlink(`${folder}/${medicalCase.id}.json`)
-    //     }),
-    //   )
-    //   const result = await synchronizeMedicalCases(mainDataURL, path)
-    //   if (result !== null && result.data_received) {
-    //     // Reset medicalCases to sync if request success
-    //     medicalCasesToSynch.forEach(medicalCase => {
-    //       database.localInterface.update('MedicalCase', medicalCase.id, {
-    //         synchronized_at: moment().unix(),
-    //       })
-    //     })
-    //     this.setState({ isLoading: false, error: '', medicalCasesToSynch: [] })
-    //   } else {
-    //     this.setState({
-    //       isLoading: false,
-    //       error: t('synchronize:error'),
-    //       medicalCasesToSynch,
-    //     })
-    //   }
-    // }
-    // }
+  const handleSynchronization = async () => {
+    await dispatch(Synchronize.action())
   }
 
   return (
@@ -101,7 +45,8 @@ const SynchronizationNavbar = props => {
         <SquareButton
           label={t('containers.synchronization.synchronize')}
           filled
-          onPress={() => handleSynchronization()}
+          onPress={handleSynchronization}
+          disabled={synchLoading || unSynced.length === 0}
         />
       </View>
     </View>

@@ -178,6 +178,7 @@ export default {
     synchronization: {
       synchronize: 'Synchronize',
       not_synchronized: 'Medical cases not synchronized yet',
+      warning: 'You have not synchronized for over 7 days',
     },
     settings: {
       general: {
