@@ -23,7 +23,7 @@ export default async ({ nextStage, nextStep }) => {
       medicalCaseId: medicalCase.id,
       fields: [
         { name: 'stage', value: nextStage || medicalCase.advancement.stage },
-        { name: 'step', value: medicalCase.advancement.step },
+        { name: 'step', value: nextStep || medicalCase.advancement.step },
         {
           name: 'json',
           value: JSON.stringify({

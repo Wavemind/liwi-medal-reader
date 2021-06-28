@@ -37,6 +37,7 @@ const CustomDrawerItem = ({
   } = useTheme()
 
   const handleNavigation = async () => {
+    console.log(medicalCaseId, closedAt)
     if (medicalCaseId && closedAt === 0) {
       await dispatch(
         SetParams.action({

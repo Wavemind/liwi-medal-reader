@@ -21,9 +21,11 @@ const StageWrapper = ({ route }) => {
     Containers: { medicalCase },
   } = useTheme()
   const stageIndex = route.params?.stageIndex || 0
+  const stepIndex = route.params?.stepIndex || 0
 
   const stages = getStages()
   const stage = stages[stageIndex]
+  const currentStep = stage.steps[stepIndex]
 
   return (
     <View style={medicalCase.wrapper}>
@@ -37,11 +39,14 @@ const StageWrapper = ({ route }) => {
         <Tab.Navigator
           lazy={true}
           swipeEnabled={false}
+          initialRouteName={currentStep.label}
           tabBarOptions={{
             scrollEnabled: true,
             tabStyle: medicalCase.tabBar,
           }}
-          tabBar={tabProps => <TabBar {...{ ...tabProps, stageIndex }} />}
+          tabBar={tabProps => (
+            <TabBar {...{ ...tabProps, stageIndex, stepIndex }} />
+          )}
         >
           {stage.steps.map(step => (
             <Tab.Screen

@@ -155,13 +155,16 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
       if (stageNavigation[nextStage] !== undefined) {
         // Not save if we go back
         if (direction !== -1) {
-          const medicalCaseSaved = await SaveMedicalCaseService({ nextStage })
+          const medicalCaseSaved = await SaveMedicalCaseService({
+            nextStage,
+            nextStep: 0,
+          })
 
           if (medicalCaseSaved) {
             setLoading(false)
             navigation.navigate('StageWrapper', {
               stageIndex: nextStage,
-              stepIndex: stageNavigation[nextStage].length - 1,
+              nextStep: 0,
             })
           }
         }
