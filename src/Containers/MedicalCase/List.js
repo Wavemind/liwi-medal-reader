@@ -46,6 +46,10 @@ const ListMedicalCaseContainer = props => {
   const [page, setPage] = useState(1)
   const [firstLoading, setFirstLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const [filters, setFilters] = useState([
+    { filterBy: 'Gender', value: 'Female' },
+    { filterBy: 'Age', value: '12' },
+  ])
 
   const medicalCases = useSelector(
     state => state.databaseMedicalCase.getAll.item.data,
@@ -69,12 +73,36 @@ const ListMedicalCaseContainer = props => {
     setFirstLoading(false)
   }, [])
 
+  useEffect(() => {
+    if (searchTerm === '') {
+      dispatch(
+        GetAllMedicalCasesDB.action({
+          page,
+          reset: true,
+        }),
+      )
+    } else if (searchTerm.length >= 2) {
+      dispatch(
+        GetAllMedicalCasesDB.action({
+          page,
+          reset: true,
+          params: { terms: searchTerm },
+        }),
+      )
+    }
+  }, [searchTerm])
+
+  const resetFilters = () => {
+    setSearchTerm('')
+    setFilters([])
+  }
   /**
    * Reset filters and search terms. Fetch 15 latest patients
    */
   const handleRefresh = () => {
     dispatch(GetAllMedicalCasesDB.action({ page: 1, reset: true }))
     setPage(1)
+    resetFilters()
   }
 
   /**
@@ -109,14 +137,15 @@ const ListMedicalCaseContainer = props => {
           </TouchableOpacity>
         </View>
         <BadgeBar
-          removeBadge={() => console.log('TODO Remove selected badge')}
-          selected={[
-            { filterBy: 'Gender', value: 'Female' },
-            { filterBy: 'Age', value: '12' },
-          ]}
-          clearBadges={() => console.log('TODO Clear selected badges')}
+          removeBadge={badge => {
+            const index = filters.indexOf(badge)
+            setFilters(filters.filter((_, i) => i !== index))
+            console.log('TODO Remove selected badge', badge)
+          }}
+          selected={filters}
           badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
           showClearAll
+          onClearAll={() => setFilters([])}
         />
       </View>
       <View style={medicalCaseList.headerTable}>
