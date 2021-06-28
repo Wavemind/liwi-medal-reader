@@ -11,7 +11,7 @@ import isEqual from 'lodash/isEqual'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { SectionHeader, Question } from '@/Components'
+import { SectionHeader, Question, Comment } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import { PhysicalExamQuestions } from '@/Services/Steps'
 
@@ -32,6 +32,7 @@ const PhysicalExamMedicalCaseContainer = props => {
       setSystems(physicalExamQuestions)
     }
   }, [isFocused, mcNodes])
+
   return (
     <SectionList
       sections={systems}
@@ -45,6 +46,7 @@ const PhysicalExamMedicalCaseContainer = props => {
           />
         </View>
       )}
+      ListFooterComponent={<Comment />}
     />
   )
 }
