@@ -46,6 +46,7 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
   const stageNavigation = getStages()
   const advancement = useSelector(state => state.medicalCase.item.advancement)
   const patient = useSelector(state => state.patient.item)
+
   const patientSavedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
   )
@@ -63,9 +64,6 @@ const StageWrapperNavbar = ({ stageIndex, stepIndex }) => {
   )
   const medicalCaseInsertError = useSelector(
     state => state.databaseMedicalCase.insert.error,
-  )
-  const patientInsertLoading = useSelector(
-    state => state.databasePatient.insert.loading,
   )
   const patientValuesInsertError = useSelector(
     state => state.databasePatientValues.insert.error,
