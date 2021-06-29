@@ -115,7 +115,6 @@ export const handleChildren = (
 ) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
-  console.info('source', source)
   children.forEach(instance => {
     if (
       instance.conditions.length === 0 ||
@@ -239,17 +238,6 @@ export const calculateCondition = (instance, sourceId = null) => {
   if (instance.conditions.length === 0) {
     return true
   }
-  // console.info(
-  //   sourceId,
-  //   instance.conditions,
-  //   instance.conditions.filter(condition => {
-  //     if (sourceId === null) {
-  //       return true
-  //     } else {
-  //       return condition.node_id === sourceId
-  //     }
-  //   }),
-  // )
 
   return instance.conditions
     .filter(condition => {
