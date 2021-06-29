@@ -6,7 +6,7 @@ import { store } from '@/Store'
  * @returns {*}
  */
 export const translate = translation => {
-  const system_language = store.getState().system.language
+  const algorithm_language = store.getState().algorithm.language
   const type = typeof translation
 
   if (type === 'string') {
@@ -14,8 +14,8 @@ export const translate = translation => {
   }
 
   // Translate given language
-  if (translation.hasOwnProperty(system_language)) {
-    return translation[system_language]
+  if (translation.hasOwnProperty(algorithm_language)) {
+    return translation[algorithm_language]
   }
 
   // Fallback in english

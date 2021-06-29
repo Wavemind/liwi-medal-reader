@@ -31,20 +31,26 @@ const IndexSettingsContainer = () => {
     Fonts,
   } = useTheme()
 
-  // Local state definition
-  const [algorithmLanguage, setAlgorithmLanguage] = useState(
-    useSelector(state => state.system.language),
-  )
-  const [appLanguage, setAppLanguage] = useState(
-    useSelector(state => state.algorithm.language),
-  )
-
   // Get values from the store
   const environment = useSelector(state => state.system.environment)
   const device = useSelector(state => state.device.item)
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithm = useSelector(state => state.algorithm.item)
   const darkMode = useSelector(state => state.theme.darkMode)
+
+  // Local state definition
+  const [algorithmLanguage, setAlgorithmLanguage] = useState(
+    useSelector(state => state.algorithm.language),
+  )
+  const [appLanguage, setAppLanguage] = useState(
+    useSelector(state => state.system.language),
+  )
+  const [algorithmLanguages] = useState(
+    algorithm.version_languages.map(language => ({
+      value: language,
+      label: t(`containers.settings.general.languages.${language}`),
+    })),
+  )
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -123,7 +129,7 @@ const IndexSettingsContainer = () => {
       <View style={settings.itemGeneral}>
         <SquareSelect
           label={t('containers.settings.general.algorithm_languages')}
-          items={Config.LANGUAGES}
+          items={algorithmLanguages}
           handleOnSelect={changeAlgorithmLanguage}
           value={algorithmLanguage}
         />
