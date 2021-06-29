@@ -158,6 +158,39 @@ export default function () {
   }
 
   /**
+
+  /**
+   * Gets the list of activities for a given medical case
+   * @param medicalCaseId
+   * @returns {Promise<*>}
+   */
+  const getActivities = async medicalCaseId => {
+    const collection = database.get(_mapModelToTable('Activity'))
+    let result = await collection
+      .query(Q.where('medical_case_id', medicalCaseId))
+      .fetch()
+    return result.map(activity => ({
+      id: activity._raw.id,
+      step: activity.step,
+      clinician: activity.clinician,
+      nodes: JSON.parse(activity.nodes),
+      mac_address: activity.mac_address,
+      medical_case_id: activity.medical_case_id,
+      fail_safe: activity.fail_safe,
+    }))
+  }
+
+  /**
+   * Gets all medical cases in the database
+   * @returns {Promise<*[]|PatientModel|MedicalCaseModel>}
+   */
+  const getMedicalCases = async () => {
+    const collection = database.get(_mapModelToTable('MedicalCase'))
+    let result = await collection.query().fetch()
+    return _initClasses(result, 'MedicalCase')
+  }
+
+  /**
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } page - Used for pagination,tells what page to show
@@ -171,18 +204,24 @@ export default function () {
 
     if (params) {
       if (params.terms) {
-        queries.push(
-          Q.or(
-            Q.where(
-              'last_name',
-              Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
-            ),
-            Q.where(
-              'first_name',
-              Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
-            ),
+        // Search on last_name or first_name
+        const searchQuery = Q.or(
+          Q.where(
+            'last_name',
+            Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
+          ),
+          Q.where(
+            'first_name',
+            Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
           ),
         )
+
+        // search on patient or use the relation
+        if (model === 'Patient') {
+          queries.push(searchQuery)
+        } else if (model === 'MedicalCase') {
+          queries.push(Q.on(_mapModelToTable('Patient'), [searchQuery]))
+        }
       }
     }
 
@@ -374,6 +413,7 @@ export default function () {
         stage: watermelonDBMedicalCase.stage,
         step: watermelonDBMedicalCase.step,
       },
+      json: watermelonDBMedicalCase.json,
       fail_safe: watermelonDBMedicalCase.fail_safe,
       createdAt: watermelonDBMedicalCase.createdAt.getTime(),
       updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
@@ -477,6 +517,8 @@ export default function () {
   return {
     insertActivities,
     findBy,
+    getActivities,
+    getMedicalCases,
     getAll,
     getConsentsFile,
     insertPatient,
