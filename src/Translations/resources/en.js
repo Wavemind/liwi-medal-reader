@@ -184,6 +184,10 @@ export default {
         environment: 'Environment',
         app_languages: 'App languages',
         algorithm_languages: 'Algorithm languages',
+        languages: {
+          en: 'English',
+          fr: 'Français',
+        },
       },
       algorithm: {
         title: 'Algorithm',
