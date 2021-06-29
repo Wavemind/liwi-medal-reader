@@ -20,11 +20,11 @@ import {
 } from '@/Components'
 import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
+import { translate } from '@/Translations/algorithm'
+import { GenerateFiltersBadgeObject } from '@/Utils'
 import GetAllMedicalCasesDB from '@/Store/DatabaseMedicalCase/GetAll'
 import ClearFilters from '@/Store/Filters/ClearFilters'
-import { translate } from '@/Translations/algorithm'
 import ChangeFilters from '@/Store/Filters/ChangeFilters'
-import { GenerateFiltersBadgeObject } from '@/Utils'
 
 const ListMedicalCaseContainer = props => {
   // Theme and style elements deconstruction
