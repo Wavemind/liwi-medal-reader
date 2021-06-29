@@ -5,8 +5,7 @@ import { store } from '@/Store'
 import { Config } from '@/Config'
 
 export default () => {
-  const state = store.getState()
-  const nodes = state.algorithm.item.nodes
+  const nodes = store.getState().algorithm.item.nodes
   const questionsToDisplay = []
 
   Object.values(nodes)
