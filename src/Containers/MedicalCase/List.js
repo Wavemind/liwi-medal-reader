@@ -35,7 +35,7 @@ const ListMedicalCaseContainer = props => {
     Gutters,
     FontSize,
     Colors,
-    Components: { searchBar },
+    Components: { searchBar, additionalSelect },
     Containers: { medicalCaseList, global },
   } = useTheme()
 
@@ -46,10 +46,10 @@ const ListMedicalCaseContainer = props => {
   const [page, setPage] = useState(1)
   const [firstLoading, setFirstLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [filters, setFilters] = useState([
-    { filterBy: 'Gender', value: 'Female' },
-    { filterBy: 'Age', value: '12' },
-  ])
+  // const [filters, setFilters] = useState([
+  //   { filterBy: 'Gender', value: 'Female' },
+  //   { filterBy: 'Age', value: '12' },
+  // ])
 
   const medicalCases = useSelector(
     state => state.databaseMedicalCase.getAll.item.data,
@@ -94,7 +94,7 @@ const ListMedicalCaseContainer = props => {
 
   const resetFilters = () => {
     setSearchTerm('')
-    setFilters([])
+    // setFilters([])
   }
   /**
    * Reset filters and search terms. Fetch 15 latest patients
@@ -131,12 +131,14 @@ const ListMedicalCaseContainer = props => {
           </View>
           <TouchableOpacity
             style={searchBar.filterButton}
-            onPress={() => navigation.push('Filters')}
+            onPress={() =>
+              navigation.navigate('Filters', { list: 'medicalCases' })
+            }
           >
             <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
           </TouchableOpacity>
         </View>
-        <BadgeBar
+        {/* <BadgeBar
           removeBadge={badge => {
             const index = filters.indexOf(badge)
             setFilters(filters.filter((_, i) => i !== index))
@@ -146,7 +148,7 @@ const ListMedicalCaseContainer = props => {
           badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
           showClearAll
           onClearAll={() => setFilters([])}
-        />
+        /> */}
       </View>
       <View style={medicalCaseList.headerTable}>
         <Text style={medicalCaseList.headerText}>

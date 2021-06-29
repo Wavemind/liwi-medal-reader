@@ -129,7 +129,7 @@ const ListPatientContainer = props => {
           </View>
           <TouchableOpacity
             style={searchBar.filterButton}
-            onPress={() => navigation.push('Filters')}
+            onPress={() => navigation.navigate('Filters', { list: 'patients' })}
           >
             <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
           </TouchableOpacity>
