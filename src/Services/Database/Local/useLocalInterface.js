@@ -390,18 +390,24 @@ export default function () {
 
     if (params) {
       if (params.terms) {
-        queries.push(
-          Q.or(
-            Q.where(
-              'last_name',
-              Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
-            ),
-            Q.where(
-              'first_name',
-              Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
-            ),
+        // Search on last_name or first_name
+        const searchQuery = Q.or(
+          Q.where(
+            'last_name',
+            Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
+          ),
+          Q.where(
+            'first_name',
+            Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
           ),
         )
+
+        // search on patient or use the relation
+        if (model === 'Patient') {
+          queries.push(searchQuery)
+        } else if (model === 'MedicalCase') {
+          queries.push(Q.on(_mapModelToTable('Patient'), [searchQuery]))
+        }
       }
     }
 
