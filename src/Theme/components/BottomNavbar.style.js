@@ -70,5 +70,15 @@ export default function (props) {
       ...Layout.fill,
       ...Gutters.smallHMargin,
     },
+    warningWrapper: {
+      ...Layout.rowHCenter,
+      ...Layout.justifyContentBetween,
+      backgroundColor: Colors.warning,
+      width: wp(89),
+    },
+    warningText: {
+      ...Fonts.textSmall,
+      color: Colors.secondary,
+    },
   })
 }

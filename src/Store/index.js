@@ -31,6 +31,7 @@ import scan from './Scan'
 import theme from './Theme'
 import validation from './Validation'
 import user from './User'
+import synchronization from './Synchronization'
 
 const reducers = combineReducers({
   algorithm,
@@ -52,6 +53,7 @@ const reducers = combineReducers({
   scan,
   validation,
   user,
+  synchronization,
 })
 
 const persistConfig = {
