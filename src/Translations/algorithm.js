@@ -1,13 +1,12 @@
-import i18n from '@/Translations/index'
+import { store } from '@/Store'
 
 /**
  * Translate algorithm value
  * @param translation
- * @param language
  * @returns {*}
  */
-// TODO remove language parameter
-export const translate = (translation, language) => {
+export const translate = translation => {
+  const system_language = store.getState().system.language
   const type = typeof translation
 
   if (type === 'string') {
@@ -15,8 +14,8 @@ export const translate = (translation, language) => {
   }
 
   // Translate given language
-  if (translation.hasOwnProperty(language)) {
-    return translation[language]
+  if (translation.hasOwnProperty(system_language)) {
+    return translation[system_language]
   }
 
   // Fallback in english
