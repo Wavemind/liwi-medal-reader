@@ -85,7 +85,7 @@ const ListConsentContainer = props => {
         </Text>
       </View>
 
-      {firstLoading ? (
+      {firstLoading || patientConsentLoading ? (
         <LoaderList />
       ) : (
         <FlatList
