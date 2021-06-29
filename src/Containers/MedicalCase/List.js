@@ -165,7 +165,7 @@ const ListMedicalCaseContainer = props => {
           {t('containers.medical_case.list.status')}
         </Text>
       </View>
-      {firstLoading ? (
+      {firstLoading || medicalCasesLoading ? (
         <LoaderList />
       ) : (
         <FlatList
