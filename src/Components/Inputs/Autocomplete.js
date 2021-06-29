@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, TouchableOpacity, TextInput, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,6 +13,8 @@ import filter from 'lodash/filter'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import debounce from "lodash/debounce";
+import GetAllPatientDB from "@/Store/DatabasePatient/GetAll";
 
 const Autocomplete = ({ questionId }) => {
   // Theme and style elements deconstruction
@@ -35,17 +37,26 @@ const Autocomplete = ({ questionId }) => {
   const [searchResults, setSearchResults] = useState([])
   const [optionSelected, setOptionSelected] = useState(true)
 
+  // Callback that debounces the search by 500ms
+  const debouncedSearch = useCallback(
+    debounce(term => {
+      const filteredVillageList = filter(villageList, village =>
+        Object.values(village)[0].match(new RegExp(term, 'i')),
+      )
+      setSearchResults(filteredVillageList.slice(0, 5))
+    }, 500),
+    [],
+  )
+
   /**
    * Handles the filtering and reset of the searchResults
    */
   useEffect(() => {
     if (searchTerm.length === 0 || optionSelected) {
+      debouncedSearch.cancel()
       setSearchResults([])
     } else {
-      const filteredVillageList = filter(villageList, village =>
-        Object.values(village)[0].match(new RegExp(searchTerm, 'i')),
-      )
-      setSearchResults(filteredVillageList.slice(0, 5))
+      debouncedSearch(searchTerm)
     }
   }, [searchTerm])
 
@@ -74,7 +85,9 @@ const Autocomplete = ({ questionId }) => {
    * @param text
    */
   const handleChangeText = text => {
-    setOptionSelected(false)
+    if (optionSelected) {
+      setOptionSelected(false)
+    }
     setSearchTerm(text)
   }
 
