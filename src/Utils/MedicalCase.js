@@ -293,18 +293,21 @@ export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
  * @param {Array<Node>} mcNodes : Current state of medical case nodes
  */
 export const debugNode = (nodeId, mcNodes) => {
+  const localMcNode =
+    mcNodes === undefined ? store.getState().medicalCase.item.nodes : mcNodes
   const nodes = store.getState().algorithm.item.nodes
   const result = nodes[nodeId].dd.map(diagnosisId => {
     return {
-      [diagnosisId]: debugNodeInDiagnosis(diagnosisId, nodeId, mcNodes),
+      [diagnosisId]: debugNodeInDiagnosis(diagnosisId, nodeId, localMcNode),
     }
   })
   console.info(
     'debug',
     nodeId,
     result,
-    'answer' + ' ' + mcNodes[nodeId].answer,
-    'value' + ' ' + mcNodes[nodeId].value,
+    nodes[nodeId],
+    'answer' + ' ' + localMcNode[nodeId].answer,
+    'value' + ' ' + localMcNode[nodeId].value,
   )
 }
 

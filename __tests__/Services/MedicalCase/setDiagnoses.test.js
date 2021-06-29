@@ -15,6 +15,7 @@ import { store } from '@/Store'
 import SetDiagnoses from '@/Services/MedicalCase/SetDiagnoses'
 import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
+import { debugNode } from '@/Utils/MedicalCase'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')
@@ -190,5 +191,22 @@ describe('Final diagnosis are included / excluded correctly', () => {
   it('No Final Diagnosis should be proposed if nothing is answered', async () => {
     const result = SetDiagnoses()
     expect(result.diagnosis.proposed).toEqual([8781]) // Only prevention and screening
+  })
+
+  it('Should propose MCI/IMAI pneumonia Bug on issue 95', async () => {
+    await setBirthDate(store, 1486)
+    await setAnswer(40, 76) // Difficulty breathing => yes
+    await setAnswer(25, 36) // Fever within the last 2 days => yes
+    await setAnswer(42, 5) // Duration of fever => yes
+    await setAnswer(1685, 752) // Convulsing now => No
+    await setAnswer(88, 150) // Convulsion in present illness => No
+    await setAnswer(86, 146) // Unconscious or Lethargic (Unusually sleepy) => No
+    await setAnswer(3184, 2342) // Vomiting everything  => No
+    await setAnswer(278, 491) // Unable to drink or breastfeed => No
+    await setAnswer(122, 229) // CRP => Unavailable
+    await setAnswer(3545, 3155) // Respiratory rate => Unavailable
+    await setAnswer(4530, 3182) // Visible respiratory rate => Visibly fast
+    const result = SetDiagnoses()
+    expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([123]))
   })
 })
