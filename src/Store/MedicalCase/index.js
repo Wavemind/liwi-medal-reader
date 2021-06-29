@@ -45,6 +45,7 @@ import ChangeFormulations from '@/Store/MedicalCase/ChangeFormulations'
 import ArmAddCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmAddCustomDrugs'
 import ArmRemoveCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmRemoveCustomDrugs'
 import ArmChangeCustomDrugDuration from '@/Store/MedicalCase/ArmControl/ArmChangeCustomDrugDuration'
+import ResetAssessments from '@/Store/MedicalCase/ArmControl/ResetAssessments'
 
 const sliceInitialState = {
   item: {},
@@ -94,6 +95,7 @@ export default buildSlice(
     ArmAddCustomDrugs,
     ArmRemoveCustomDrugs,
     ArmChangeCustomDrugDuration,
+    ResetAssessments,
   ],
   sliceInitialState,
 ).reducer
