@@ -1,10 +1,11 @@
 /**
  * The external imports
  */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { View, Text, FlatList, Animated, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import debounce from 'lodash/debounce'
 
 /**
  * The internal imports
@@ -59,6 +60,20 @@ const ListPatientContainer = props => {
   )
   const patientsError = useSelector(state => state.databasePatient.getAll.error)
 
+  // Callback that debounces the search by 500ms
+  const debouncedSearch = useCallback(
+    debounce(term => {
+      dispatch(
+        GetAllPatientDB.action({
+          page,
+          reset: true,
+          params: { terms: term },
+        }),
+      )
+    }, 500),
+    [],
+  )
+
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
@@ -77,13 +92,7 @@ const ListPatientContainer = props => {
         }),
       )
     } else if (searchTerm.length >= 2) {
-      dispatch(
-        GetAllPatientDB.action({
-          page,
-          reset: true,
-          params: { terms: searchTerm },
-        }),
-      )
+      debouncedSearch(searchTerm)
     }
   }, [searchTerm])
 
