@@ -1,55 +1,48 @@
 /**
  * The external imports
  */
-import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
-import { useNavigationState, useNavigation } from '@react-navigation/native'
+import React, { useState, useEffect } from 'react'
+import { TouchableOpacity, View, Text } from 'react-native'
+import {
+  useNavigationState,
+  useNavigation,
+  getFocusedRouteNameFromRoute,
+  useRoute,
+} from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Icon } from '@/Components'
-import StageWrapperNavbar from './StageWrapperNavbar'
-import SynchronizationNavbar from './SynchronizationNavbar'
+import { Icon, SquareButton } from '@/Components'
+import NavbarActions from './Actions'
+import { CheckSynchronization } from '@/Services/MedicalCase'
 
 const BottomNavbar = props => {
-  const navigation = useNavigation()
-  const navigationState = useNavigationState(state => state)
-
   // Theme and style elements deconstruction
   const {
+    Gutters,
+    Colors,
+    FontSize,
     Components: { bottomNavbar },
   } = useTheme()
 
-  /**
-   * Renders the content of the bottom nav bar based on the current navigation route
-   * @returns
-   */
-  const RenderActions = () => {
-    const homeNavigation = navigationState.routes[navigationState.index].state
+  const { t } = useTranslation()
+  const navigation = useNavigation()
+  const navigationState = useNavigationState(state => state)
+  const route = useRoute()
+  const routeName = getFocusedRouteNameFromRoute(route)
 
-    const route = homeNavigation?.routes[homeNavigation.index]
-    // Early return if navigation is not loaded
-    if (route === undefined) {
-      return null
+  const [syncRequired, setSyncRequired] = useState(false)
+
+  // Checks whether the synchronization required warning is to be shown
+  useEffect(async () => {
+    const required = await CheckSynchronization(routeName)
+    if (required !== syncRequired) {
+      setSyncRequired(required)
     }
-
-    const { name, params } = route
-
-    const stageIndex = params?.stageIndex || 0
-    const stepIndex = params?.stepIndex || 0
-    switch (name) {
-      case 'StageWrapper':
-        return (
-          <StageWrapperNavbar stageIndex={stageIndex} stepIndex={stepIndex} />
-        )
-      case 'Synchronization':
-        return <SynchronizationNavbar />
-      default:
-        return null
-    }
-  }
+  }, [route])
 
   return (
     <View style={bottomNavbar.container}>
@@ -61,8 +54,28 @@ const BottomNavbar = props => {
           <Icon name="emergency" style={bottomNavbar.emergency} />
         </TouchableOpacity>
       </View>
+      {syncRequired && (
+        <View style={bottomNavbar.warningWrapper}>
+          <Icon name="warning" color={Colors.secondary} size={FontSize.big} />
+          <Text style={bottomNavbar.warningText}>
+            {t('containers.synchronization.warning')}
+          </Text>
+          <View style={Gutters.regularRMargin}>
+            <SquareButton
+              filled
+              icon="right-arrow"
+              iconAfter
+              bgColor={Colors.secondary}
+              color={Colors.primary}
+              iconSize={FontSize.large}
+              onPress={() => navigation.navigate('Synchronization')}
+              fullWidth={false}
+            />
+          </View>
+        </View>
+      )}
       <View style={bottomNavbar.actions}>
-        <RenderActions navigationState={navigationState} />
+        <NavbarActions navigationState={navigationState} />
       </View>
     </View>
   )
