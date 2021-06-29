@@ -4,7 +4,7 @@ export default {
   initialState: {},
   action: createAction('filters/changeFilters'),
   reducers(state, { payload: { list, item } }) {
-    // TODO GL HF for reviewers <3 
+    // GL HF bitches (reviewers) <3
     if (item.nodeId in state[list]) {
       const answerIndex = state[list][item.nodeId].indexOf(item.answerId)
       if (answerIndex > -1) {

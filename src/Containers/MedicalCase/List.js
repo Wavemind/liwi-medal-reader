@@ -21,6 +21,10 @@ import {
 import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
 import GetAllMedicalCasesDB from '@/Store/DatabaseMedicalCase/GetAll'
+import ClearFilters from '@/Store/Filters/ClearFilters'
+import { translate } from '@/Translations/algorithm'
+import ChangeFilters from '@/Store/Filters/ChangeFilters'
+import { GenerateFiltersBadgeObject } from '@/Utils'
 
 const ListMedicalCaseContainer = props => {
   // Theme and style elements deconstruction
@@ -35,7 +39,7 @@ const ListMedicalCaseContainer = props => {
     Gutters,
     FontSize,
     Colors,
-    Components: { searchBar, additionalSelect },
+    Components: { searchBar },
     Containers: { medicalCaseList, global },
   } = useTheme()
 
@@ -46,11 +50,10 @@ const ListMedicalCaseContainer = props => {
   const [page, setPage] = useState(1)
   const [firstLoading, setFirstLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  // const [filters, setFilters] = useState([
-  //   { filterBy: 'Gender', value: 'Female' },
-  //   { filterBy: 'Age', value: '12' },
-  // ])
 
+  const nodes = useSelector(state => state.algorithm.item.nodes)
+  const medicalCasesFilters = useSelector(state => state.filters.medicalCases)
+  const data = GenerateFiltersBadgeObject(medicalCasesFilters)
   const medicalCases = useSelector(
     state => state.databaseMedicalCase.getAll.item.data,
   )
@@ -92,17 +95,13 @@ const ListMedicalCaseContainer = props => {
     }
   }, [searchTerm])
 
-  const resetFilters = () => {
-    setSearchTerm('')
-    // setFilters([])
-  }
   /**
    * Reset filters and search terms. Fetch 15 latest patients
    */
   const handleRefresh = () => {
     dispatch(GetAllMedicalCasesDB.action({ page: 1, reset: true }))
     setPage(1)
-    resetFilters()
+    setSearchTerm('')
   }
 
   /**
@@ -138,17 +137,23 @@ const ListMedicalCaseContainer = props => {
             <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
           </TouchableOpacity>
         </View>
-        {/* <BadgeBar
-          removeBadge={badge => {
-            const index = filters.indexOf(badge)
-            setFilters(filters.filter((_, i) => i !== index))
-            console.log('TODO Remove selected badge', badge)
-          }}
-          selected={filters}
-          badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
+        <BadgeBar
+          removeBadge={badge =>
+            dispatch(
+              ChangeFilters.action({ list: 'medicalCases', item: badge }),
+            )
+          }
+          selected={data}
+          badgeComponentLabel={badge =>
+            `${translate(nodes[badge.nodeId].label)} : ${translate(
+              nodes[badge.nodeId].answers[badge.answerId].label,
+            )}`
+          }
           showClearAll
-          onClearAll={() => setFilters([])}
-        /> */}
+          onClearAll={() =>
+            dispatch(ClearFilters.action({ list: 'medicalCases' }))
+          }
+        />
       </View>
       <View style={medicalCaseList.headerTable}>
         <Text style={medicalCaseList.headerText}>

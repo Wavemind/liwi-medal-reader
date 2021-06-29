@@ -21,11 +21,6 @@ const Item = ({ item, list }) => {
   const dispatch = useDispatch()
   const currentFilter = useSelector(state => state.filters[list][item.nodeId])
 
-  // 1 PATIENT
-  // Rajouter bouton apply filters
-  // Rajouter bouton reset filters
-  // Récupérer les valeurs dans le parent et activer les filtres
-
   return (
     <View style={accordionItem.wrapper}>
       <Checkbox

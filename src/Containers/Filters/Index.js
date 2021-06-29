@@ -11,9 +11,8 @@ import { useDispatch, useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import { SectionHeader, Icon, Accordion, SquareButton } from '@/Components'
-import { Config } from '@/Config'
-import { translate } from '@/Translations/algorithm'
 import ClearFilters from '@/Store/Filters/ClearFilters'
+import { GenerateFiltersObject } from '@/Utils'
 
 const IndexFiltersContainer = ({ navigation, route }) => {
   // Theme and style elements deconstruction
@@ -27,31 +26,7 @@ const IndexFiltersContainer = ({ navigation, route }) => {
   } = useTheme()
   const dispatch = useDispatch()
   const nodes = useSelector(state => state.algorithm.item.nodes)
-  const data = []
-  Object.values(nodes).forEach(node => {
-    if (
-      (node.category === Config.CATEGORIES.demographic ||
-        node.category === Config.CATEGORIES.basicDemographic) &&
-      (node.display_format === Config.DISPLAY_FORMAT.dropDownList ||
-        node.display_format === Config.DISPLAY_FORMAT.radioButton)
-    ) {
-      const items = []
-
-      Object.values(node.answers).map(answer => {
-        items.push({
-          nodeId: node.id,
-          answerLabel: translate(answer.label),
-          answerId: answer.id,
-        })
-      })
-
-      data.push({
-        nodeId: node.id,
-        label: translate(node.label),
-        items,
-      })
-    }
-  })
+  const data = GenerateFiltersObject(nodes)
 
   /**
    * Clear all filters
