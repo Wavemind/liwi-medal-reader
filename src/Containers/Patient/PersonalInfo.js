@@ -42,7 +42,9 @@ const PersonalInfoPatientContainer = () => {
    */
   const renderAnswer = patientValue => {
     if (patientValue.answer_id !== null) {
-      return translate(nodes[patientValue.node_id].answers[patientValue.answer_id].label)
+      return translate(
+        nodes[patientValue.node_id].answers[patientValue.answer_id].label,
+      )
     }
     return patientValue.value
   }

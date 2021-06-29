@@ -41,7 +41,9 @@ const ConsultationPatientContainer = ({ navigation }) => {
   const patient = useSelector(state => state.patient.item)
   const patientLoading = useSelector(state => state.patient.load.loading)
   const patientLoadError = useSelector(state => state.patient.load.error)
-  const mcCreateError = useSelector(state => state.medicalCase.create.error)
+  const medicalCaseCreateError = useSelector(
+    state => state.medicalCase.create.error,
+  )
 
   // Local state definition
   const [currentConsultation] = useState(
@@ -96,14 +98,14 @@ const ConsultationPatientContainer = ({ navigation }) => {
             icon="add"
             onPress={handleAddConsultation}
           />
-          {mcCreateError && (
+          {medicalCaseCreateError && (
             <View style={[question.messageWrapper('error')]}>
               <Icon
                 size={FontSize.regular}
                 color={Colors.secondary}
                 name="warning"
               />
-              <Text style={question.message}>{mcCreateError}</Text>
+              <Text style={question.message}>{medicalCaseCreateError}</Text>
             </View>
           )}
         </>
@@ -129,7 +131,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
             ListEmptyComponent={
               <EmptyList text={t('application.no_results')} />
             }
-            onRefresh={() => handleRefresh()}
+            onRefresh={handleRefresh}
             refreshing={patientLoading}
           />
         )}
