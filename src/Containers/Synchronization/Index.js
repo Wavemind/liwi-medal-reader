@@ -23,8 +23,8 @@ const IndexSynchronizationContainer = props => {
 
   const { t } = useTranslation()
 
-  const synchError = useSelector(state => state.synchronization.error)
-  const synchLoading = useSelector(state => state.synchronization.loading)
+  const syncError = useSelector(state => state.synchronization.error)
+  const syncLoading = useSelector(state => state.synchronization.loading)
   const medicalCases = useSelector(
     state => state.databaseMedicalCase.getAll.item.data,
   )
@@ -50,10 +50,10 @@ const IndexSynchronizationContainer = props => {
           {t('containers.synchronization.not_synchronized')}
         </Text>
         <Text style={synchronization.counter}>{unSynced.length}</Text>
-        {synchError && (
-          <Text style={auth.errorMessage}>{synchError.message}</Text>
+        {syncError && (
+          <Text style={auth.errorMessage}>{syncError.message}</Text>
         )}
-        {synchLoading && <Loader />}
+        {syncLoading && <Loader />}
       </View>
     </Animated.View>
   )

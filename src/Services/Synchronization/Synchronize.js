@@ -30,7 +30,7 @@ export default async () => {
   const mainDataUrl = store.getState().healthFacility.item.main_data_ip
 
   const medicalCases = getMedicalCases()
-  const medicalCasesToSynch = medicalCases.filter(
+  const medicalCasesToSync = medicalCases.filter(
     medicalCase => medicalCase.synchronizedAt === 0,
   )
 
@@ -40,7 +40,7 @@ export default async () => {
   await mkdir(folder)
   // Generate files
   await Promise.all(
-    medicalCasesToSynch.map(async medicalCase => {
+    medicalCasesToSync.map(async medicalCase => {
       const patient = await findBy('Patient', medicalCase.patient.id)
       const activities = await getActivities(medicalCase.id)
 
@@ -62,7 +62,7 @@ export default async () => {
     },
   )
   await Promise.all(
-    medicalCasesToSynch.map(async medicalCase => {
+    medicalCasesToSync.map(async medicalCase => {
       await unlink(`${folder}/${medicalCase.id}.json`)
     }),
   )
@@ -71,7 +71,7 @@ export default async () => {
   const result = null
   if (result !== null && result.data_received) {
     // Reset medicalCases to sync if request success
-    medicalCasesToSynch.forEach(medicalCase => {
+    medicalCasesToSync.forEach(medicalCase => {
       update('MedicalCase', medicalCase.id, {
         synchronized_at: new Date().getTime(),
       })

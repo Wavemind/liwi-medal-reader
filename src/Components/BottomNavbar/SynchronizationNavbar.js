@@ -23,7 +23,7 @@ const SynchronizationNavbar = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const synchLoading = useSelector(state => state.synchronization.loading)
+  const syncLoading = useSelector(state => state.synchronization.loading)
   const medicalCases = useSelector(
     state => state.databaseMedicalCase.getAll.item.data,
   )
@@ -46,7 +46,7 @@ const SynchronizationNavbar = () => {
           label={t('containers.synchronization.synchronize')}
           filled
           onPress={handleSynchronization}
-          disabled={synchLoading || unSynced.length === 0}
+          disabled={syncLoading || unSynced.length === 0}
         />
       </View>
     </View>
