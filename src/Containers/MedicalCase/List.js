@@ -1,10 +1,11 @@
 /**
  * The external imports
  */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Animated, View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import debounce from 'lodash/debounce'
 
 /**
  * The internal imports
@@ -64,6 +65,20 @@ const ListMedicalCaseContainer = props => {
     state => state.databaseMedicalCase.getAll.error,
   )
 
+  // Callback that debounces the search by 500ms
+  const debouncedSearch = useCallback(
+    debounce(term => {
+      dispatch(
+        GetAllMedicalCasesDB.action({
+          page,
+          reset: true,
+          params: { terms: term },
+        }),
+      )
+    }, 500),
+    [],
+  )
+
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
@@ -82,13 +97,7 @@ const ListMedicalCaseContainer = props => {
         }),
       )
     } else if (searchTerm.length >= 2) {
-      dispatch(
-        GetAllMedicalCasesDB.action({
-          page,
-          reset: true,
-          params: { terms: searchTerm },
-        }),
-      )
+      debouncedSearch(searchTerm)
     }
   }, [searchTerm])
 
@@ -156,7 +165,7 @@ const ListMedicalCaseContainer = props => {
           {t('containers.medical_case.list.status')}
         </Text>
       </View>
-      {firstLoading ? (
+      {firstLoading || medicalCasesLoading ? (
         <LoaderList />
       ) : (
         <FlatList
