@@ -35,8 +35,8 @@ const SynchronizationNavbar = () => {
   /**
    * Handles the synchronization action
    */
-  const handleSynchronization = async () => {
-    await dispatch(Synchronize.action())
+  const handleSynchronization = () => {
+    dispatch(Synchronize.action())
   }
 
   return (

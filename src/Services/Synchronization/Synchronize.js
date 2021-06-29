@@ -25,14 +25,14 @@ const normalizeFilePath = path => {
 }
 
 export default async () => {
+  const { getActivities, findBy, update, getMedicalCases } = useDatabase()
+
   const mainDataUrl = store.getState().healthFacility.item.main_data_ip
 
-  const medicalCasesToSynch = store
-    .getState()
-    .databaseMedicalCase.getAll.item.data.filter(
-      medicalCase => medicalCase.synchronizedAt === 0,
-    )
-  const { getActivities, findBy, update } = useDatabase()
+  const medicalCases = getMedicalCases()
+  const medicalCasesToSynch = medicalCases.filter(
+    medicalCase => medicalCase.synchronizedAt === 0,
+  )
 
   const folder = `${DocumentDirectoryPath}/medical_cases`
   const targetPath = `${folder}.zip`
