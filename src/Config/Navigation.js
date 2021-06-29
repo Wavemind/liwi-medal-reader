@@ -22,6 +22,7 @@ import SummaryMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Summ
 // Arm Control
 import ArmFinalDiagnosesMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/FinalDiagnoses'
 import ArmDrugsMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/Drugs'
+import AssessmentArmControlMedicalCaseContainer from '@/Containers/ArmControl/Assessment'
 
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
@@ -173,7 +174,7 @@ const baseArmControlStages = [
     steps: [
       {
         label: 'assessments',
-        component: AssessmentMedicalCaseContainer,
+        component: AssessmentArmControlMedicalCaseContainer,
       },
     ],
   },
@@ -197,6 +198,7 @@ const REFERRAL_ARM_CONTROL_STAGES = [
 ]
 
 export default {
+  ARM_CONTROL_ASSESSMENT_STAGE: 2,
   INTERVENTION_STAGES,
   REFERRAL_INTERVENTION_STAGES,
   ARM_CONTROL_STAGES,

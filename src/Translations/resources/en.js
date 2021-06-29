@@ -14,6 +14,7 @@ export default {
     scan_consent: 'Scan new consent',
     add: 'Add',
     apply: 'Apply Selection',
+    reset: 'Reset',
     save: 'Save',
   },
   algorithm: {
