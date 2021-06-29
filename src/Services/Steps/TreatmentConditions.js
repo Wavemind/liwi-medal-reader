@@ -24,6 +24,7 @@ export default () => {
 
     handleChildren(
       topConditions,
+      null,
       questionsToDisplay,
       instances,
       [Config.CATEGORIES.treatmentQuestion],

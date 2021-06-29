@@ -105,6 +105,7 @@ export const orderSystems = (systemOrder, questionsPerSystem) => {
  */
 export const handleChildren = (
   children,
+  source,
   questionsToDisplay,
   instances,
   categories,
@@ -114,13 +115,17 @@ export const handleChildren = (
 ) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
-
+  console.info('source', source)
   children.forEach(instance => {
-    if (instance.conditions.length === 0 || calculateCondition(instance)) {
+    if (
+      instance.conditions.length === 0 ||
+      calculateCondition(instance, source)
+    ) {
       if (nodes[instance.id].type === Config.NODE_TYPES.questionsSequence) {
         const topConditions = getTopConditions(nodes[instance.id].instances)
         handleChildren(
           topConditions,
+          instance.id,
           questionsToDisplay,
           nodes[instance.id].instances,
           categories,
@@ -154,6 +159,7 @@ export const handleChildren = (
       if (childrenInstance.length > 0) {
         handleChildren(
           childrenInstance,
+          instance.id,
           questionsToDisplay,
           instances,
           categories,
@@ -223,7 +229,7 @@ export const excludedByCC = questionId => {
  * @param {Instance} instance : the instance we wanna calculate
  * @returns {Boolean} : value of the condition
  */
-export const calculateCondition = instance => {
+export const calculateCondition = (instance, sourceId = null) => {
   const state = store.getState()
   const mcNodes = state.medicalCase.item.nodes
 
@@ -233,9 +239,29 @@ export const calculateCondition = instance => {
   if (instance.conditions.length === 0) {
     return true
   }
-  return instance.conditions.some(
-    condition => mcNodes[condition.node_id].answer === condition.answer_id,
-  )
+  // console.info(
+  //   sourceId,
+  //   instance.conditions,
+  //   instance.conditions.filter(condition => {
+  //     if (sourceId === null) {
+  //       return true
+  //     } else {
+  //       return condition.node_id === sourceId
+  //     }
+  //   }),
+  // )
+
+  return instance.conditions
+    .filter(condition => {
+      if (sourceId === null) {
+        return true
+      } else {
+        return condition.node_id === sourceId
+      }
+    })
+    .some(
+      condition => mcNodes[condition.node_id].answer === condition.answer_id,
+    )
 }
 
 /**
