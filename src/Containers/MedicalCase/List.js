@@ -164,9 +164,9 @@ const ListMedicalCaseContainer = props => {
           renderItem={({ item }) => <MedicalCaseListItem item={item} />}
           keyExtractor={item => item.id}
           ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
-          onRefresh={() => handleRefresh()}
+          onRefresh={handleRefresh}
           refreshing={medicalCasesLoading}
-          onEndReached={() => loadMore()}
+          onEndReached={loadMore}
           onEndReachedThreshold={0.1}
         />
       )}
