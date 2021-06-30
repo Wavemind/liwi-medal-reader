@@ -25,7 +25,7 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import GetAllMedicalCaseDB from '@/Store/DatabaseMedicalCase/GetAll'
 
-const IndexHomeContainer = ({ navigation }) => {
+const Home = ({ navigation }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -185,4 +185,4 @@ const IndexHomeContainer = ({ navigation }) => {
   )
 }
 
-export default IndexHomeContainer
+export default Home

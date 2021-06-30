@@ -13,7 +13,7 @@ import isEqual from 'lodash/isEqual'
 import { Question, EmptyList } from '@/Components'
 import { BasicMeasurementQuestions } from '@/Services/Steps'
 
-const BasicMeasurementMedicalCaseContainer = props => {
+const BasicMeasurements = props => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
   const [questions, setQuestions] = useState(BasicMeasurementQuestions())
@@ -39,4 +39,4 @@ const BasicMeasurementMedicalCaseContainer = props => {
   )
 }
 
-export default BasicMeasurementMedicalCaseContainer
+export default BasicMeasurements

@@ -15,7 +15,7 @@ import { SectionHeader, Question, Comment } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import { PhysicalExamQuestions } from '@/Services/Steps'
 
-const PhysicalExamMedicalCaseContainer = props => {
+const PhysicalExam = props => {
   const { Gutters } = useTheme()
   const isFocused = useIsFocused()
 
@@ -51,4 +51,4 @@ const PhysicalExamMedicalCaseContainer = props => {
   )
 }
 
-export default PhysicalExamMedicalCaseContainer
+export default PhysicalExam

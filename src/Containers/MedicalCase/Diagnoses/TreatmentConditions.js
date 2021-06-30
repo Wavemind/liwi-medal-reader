@@ -14,7 +14,7 @@ import isEqual from 'lodash/isEqual'
 import { Question, EmptyList } from '@/Components'
 import { TreatmentConditionsQuestions } from '@/Services/Steps'
 
-const TreatmentConditionsMedicalCaseContainer = props => {
+const TreatmentConditions = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
 
@@ -43,4 +43,4 @@ const TreatmentConditionsMedicalCaseContainer = props => {
   )
 }
 
-export default TreatmentConditionsMedicalCaseContainer
+export default TreatmentConditions

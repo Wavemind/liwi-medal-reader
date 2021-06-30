@@ -13,7 +13,7 @@ import isEqual from 'lodash/isEqual'
 import { Question, EmptyList } from '@/Components'
 import { ComplaintCategoryQuestions } from '@/Services/Steps'
 
-const ComplaintCategoryMedicalCaseContainer = props => {
+const ComplaintCategories = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
 
@@ -40,4 +40,4 @@ const ComplaintCategoryMedicalCaseContainer = props => {
   )
 }
 
-export default ComplaintCategoryMedicalCaseContainer
+export default ComplaintCategories

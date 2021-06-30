@@ -10,7 +10,7 @@ import { FlatList } from 'react-native'
 import { Question } from '@/Components'
 import { UniqueTriageQuestions } from '@/Services/Steps'
 
-const UniqueTriageQuestionsMedicalCaseContainer = props => {
+const UniqueTriage = () => {
   const questions = UniqueTriageQuestions()
 
   return (
@@ -23,4 +23,4 @@ const UniqueTriageQuestionsMedicalCaseContainer = props => {
   )
 }
 
-export default UniqueTriageQuestionsMedicalCaseContainer
+export default UniqueTriage

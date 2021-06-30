@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { Question, EmptyList, RegistrationHeader } from '@/Components'
 import { RegistrationQuestions } from '@/Services/Steps'
 
-const RegistrationMedicalCaseContainer = props => {
+const Registration = props => {
   const { t } = useTranslation()
 
   const questions = RegistrationQuestions()
@@ -30,4 +30,4 @@ const RegistrationMedicalCaseContainer = props => {
   )
 }
 
-export default RegistrationMedicalCaseContainer
+export default Registration
