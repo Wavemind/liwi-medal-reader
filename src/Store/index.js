@@ -20,14 +20,15 @@ import databasePatient from './DatabasePatient'
 import databasePatientValues from './DatabasePatientValues'
 import device from './Device'
 import emergency from './Emergency'
+import filters from './Filters'
 import healthFacility from './HealthFacility'
 import medicalCase from './MedicalCase'
 import modal from './Modal'
-import startup from './Startup'
 import patient from './Patient'
+import startup from './Startup'
 import system from './System'
-import theme from './Theme'
 import scan from './Scan'
+import theme from './Theme'
 import validation from './Validation'
 import user from './User'
 import synchronization from './Synchronization'
@@ -40,6 +41,7 @@ const reducers = combineReducers({
   databasePatientValues,
   device,
   emergency,
+  filters,
   healthFacility,
   medicalCase,
   modal,

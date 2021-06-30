@@ -199,6 +199,7 @@ export default function () {
    */
   const getAll = async (model, page = 1, params) => {
     const queries = []
+    let filtersQuery = ''
     const collection = database.get(_mapModelToTable(model))
     let result = await collection.query().fetch()
 
@@ -221,6 +222,40 @@ export default function () {
           queries.push(searchQuery)
         } else if (model === 'MedicalCase') {
           queries.push(Q.on(_mapModelToTable('Patient'), [searchQuery]))
+        }
+      }
+
+      if (params.filters && Object.keys(params.filters).length > 0) {
+        Object.keys(params.filters).forEach((nodeId, key) => {
+          params.filters[nodeId].map((filter, filterKey) => {
+            filtersQuery += `(patient_values.node_id = ${nodeId} AND patient_values.answer_id = ${filter})`
+            if (filterKey + 1 < params.filters[nodeId].length) {
+              filtersQuery += ' OR '
+            }
+          })
+          if (key + 1 < Object.keys(params.filters).length) {
+            filtersQuery += ' AND '
+          }
+        })
+
+        if (model === 'Patient') {
+          queries.push(
+            Q.on(_mapModelToTable('PatientValue'), [
+              Q.unsafeSqlExpr(filtersQuery),
+            ]),
+          )
+        } else {
+          queries.push(
+            Q.experimentalNestedJoin(
+              _mapModelToTable('Patient'),
+              _mapModelToTable('PatientValue'),
+            ),
+            Q.on(_mapModelToTable('Patient'), [
+              Q.on(_mapModelToTable('PatientValue'), [
+                Q.unsafeSqlExpr(filtersQuery),
+              ]),
+            ]),
+          )
         }
       }
     }

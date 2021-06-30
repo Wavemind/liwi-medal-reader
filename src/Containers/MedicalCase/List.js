@@ -21,7 +21,11 @@ import {
 } from '@/Components'
 import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
+import { translate } from '@/Translations/algorithm'
+import { GenerateFiltersBadgeObject } from '@/Utils'
 import GetAllMedicalCasesDB from '@/Store/DatabaseMedicalCase/GetAll'
+import ClearFilters from '@/Store/Filters/ClearFilters'
+import ChangeFilters from '@/Store/Filters/ChangeFilters'
 
 const ListMedicalCaseContainer = props => {
   // Theme and style elements deconstruction
@@ -47,11 +51,10 @@ const ListMedicalCaseContainer = props => {
   const [page, setPage] = useState(1)
   const [firstLoading, setFirstLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [filters, setFilters] = useState([
-    { filterBy: 'Gender', value: 'Female' },
-    { filterBy: 'Age', value: '12' },
-  ])
 
+  const nodes = useSelector(state => state.algorithm.item.nodes)
+  const medicalCasesFilters = useSelector(state => state.filters.medicalCases)
+  const data = GenerateFiltersBadgeObject(medicalCasesFilters)
   const medicalCases = useSelector(
     state => state.databaseMedicalCase.getAll.item.data,
   )
@@ -72,7 +75,7 @@ const ListMedicalCaseContainer = props => {
         GetAllMedicalCasesDB.action({
           page,
           reset: true,
-          params: { terms: term },
+          params: { terms: term, filters: medicalCasesFilters },
         }),
       )
     }, 500),
@@ -94,24 +97,27 @@ const ListMedicalCaseContainer = props => {
         GetAllMedicalCasesDB.action({
           page,
           reset: true,
+          params: { filters: medicalCasesFilters },
         }),
       )
     } else if (searchTerm.length >= 2) {
       debouncedSearch(searchTerm)
     }
-  }, [searchTerm])
+  }, [searchTerm, medicalCasesFilters])
 
-  const resetFilters = () => {
-    setSearchTerm('')
-    setFilters([])
-  }
   /**
    * Reset filters and search terms. Fetch 15 latest patients
    */
   const handleRefresh = () => {
-    dispatch(GetAllMedicalCasesDB.action({ page: 1, reset: true }))
+    dispatch(
+      GetAllMedicalCasesDB.action({
+        page: 1,
+        reset: true,
+        params: { filters: medicalCasesFilters },
+      }),
+    )
     setPage(1)
-    resetFilters()
+    setSearchTerm('')
   }
 
   /**
@@ -119,7 +125,12 @@ const ListMedicalCaseContainer = props => {
    */
   const loadMore = () => {
     if (!isLastBatch) {
-      dispatch(GetAllMedicalCasesDB.action({ page: page + 1 }))
+      dispatch(
+        GetAllMedicalCasesDB.action({
+          page: page + 1,
+          params: { filters: medicalCasesFilters },
+        }),
+      )
       setPage(page + 1)
     }
   }
@@ -140,21 +151,29 @@ const ListMedicalCaseContainer = props => {
           </View>
           <TouchableOpacity
             style={searchBar.filterButton}
-            onPress={() => navigation.push('Filters')}
+            onPress={() =>
+              navigation.navigate('Filters', { source: 'medicalCases' })
+            }
           >
             <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
           </TouchableOpacity>
         </View>
         <BadgeBar
-          removeBadge={badge => {
-            const index = filters.indexOf(badge)
-            setFilters(filters.filter((_, i) => i !== index))
-            console.log('TODO Remove selected badge', badge)
-          }}
-          selected={filters}
-          badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
+          removeBadge={badge =>
+            dispatch(
+              ChangeFilters.action({ source: 'medicalCases', item: badge }),
+            )
+          }
+          selected={data}
+          badgeComponentLabel={badge =>
+            `${translate(nodes[badge.nodeId].label)} : ${translate(
+              nodes[badge.nodeId].answers[badge.answerId].label,
+            )}`
+          }
           showClearAll
-          onClearAll={() => setFilters([])}
+          onClearAll={() =>
+            dispatch(ClearFilters.action({ source: 'medicalCases' }))
+          }
         />
       </View>
       <View style={medicalCaseList.headerTable}>
