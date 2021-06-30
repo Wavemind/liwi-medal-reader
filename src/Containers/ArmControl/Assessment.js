@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { Question, EmptyList } from '@/Components'
 import { AssessmentArmControlQuestions } from '@/Services/Steps'
 
-const Assessment = () => {
+const AssessmentArmControlContainer = () => {
   const { t } = useTranslation()
   const [questions] = useState(AssessmentArmControlQuestions())
 
@@ -30,4 +30,4 @@ const Assessment = () => {
   )
 }
 
-export default Assessment
+export default AssessmentArmControlContainer

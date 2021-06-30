@@ -27,13 +27,8 @@ import GetAllMedicalCasesDB from '@/Store/DatabaseMedicalCase/GetAll'
 import ClearFilters from '@/Store/Filters/ClearFilters'
 import ChangeFilters from '@/Store/Filters/ChangeFilters'
 
-const ListMedicalCaseContainer = props => {
+const ListMedicalCaseContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
-  const { navigation } = props
-
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-
   const {
     Layout,
     Fonts,
@@ -43,6 +38,9 @@ const ListMedicalCaseContainer = props => {
     Components: { searchBar },
     Containers: { medicalCaseList, global },
   } = useTheme()
+
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current

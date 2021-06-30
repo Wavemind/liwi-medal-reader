@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { TabBar, SideBar } from '@/Components'
 import { getStages } from '@/Utils/Navigation/GetStages'
 
-const StageWrapper = ({ route }) => {
+const StageWrapperMedicalCaseContainer = ({ route }) => {
   const { t } = useTranslation()
   const Tab = createMaterialTopTabNavigator()
 
@@ -61,4 +61,4 @@ const StageWrapper = ({ route }) => {
   )
 }
 
-export default StageWrapper
+export default StageWrapperMedicalCaseContainer

@@ -15,7 +15,7 @@ import { SectionHeader, Question } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import { MedicalHistoryQuestions } from '@/Services/Steps'
 
-const MedicalHistory = () => {
+const MedicalHistoryMedicalCaseContainer = () => {
   const { Gutters } = useTheme()
   const isFocused = useIsFocused()
 
@@ -50,4 +50,4 @@ const MedicalHistory = () => {
   )
 }
 
-export default MedicalHistory
+export default MedicalHistoryMedicalCaseContainer

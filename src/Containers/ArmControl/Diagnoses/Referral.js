@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { Question, EmptyList } from '@/Components'
 
-const Referral = () => {
+const ReferralArmControlContainer = () => {
   const { t } = useTranslation()
 
   const questions = useSelector(
@@ -30,4 +30,4 @@ const Referral = () => {
   )
 }
 
-export default Referral
+export default ReferralArmControlContainer

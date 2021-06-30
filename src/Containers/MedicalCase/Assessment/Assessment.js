@@ -14,7 +14,7 @@ import { Question, EmptyList } from '@/Components'
 import { AssessmentQuestions } from '@/Services/Steps'
 import { debugNode } from '@/Utils/MedicalCase'
 
-const Assessment = () => {
+const AssessmentMedicalCaseContainer = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
   const [questions, setQuestions] = useState(AssessmentQuestions())
@@ -46,4 +46,4 @@ const Assessment = () => {
   )
 }
 
-export default Assessment
+export default AssessmentMedicalCaseContainer

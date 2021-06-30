@@ -20,12 +20,17 @@ import {
   SquareButton,
 } from '@/Components'
 import { useTheme } from '@/Theme'
-import ListItem from '@/Containers/MedicalCase/AdditionalListItem'
+import ListItem from '@/Components/MedicalCase/AdditionalListItem'
 import { translate } from '@/Translations/algorithm'
 import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
 import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 
-const SearchAdditionalContainer = ({ navigation, route }) => {
+const SearchAdditionalMedicalCaseContainer = ({
+  navigation,
+  route: {
+    params: { diagnosisKey, diagnosisId },
+  },
+}) => {
   // Theme and style elements deconstruction
   const {
     Colors,
@@ -35,10 +40,6 @@ const SearchAdditionalContainer = ({ navigation, route }) => {
     FontSize,
     Containers: { searchAdditional },
   } = useTheme()
-
-  const {
-    params: { diagnosisKey, diagnosisId },
-  } = route
 
   // Define store and translation hooks
   const { t } = useTranslation()
@@ -279,4 +280,4 @@ const SearchAdditionalContainer = ({ navigation, route }) => {
   )
 }
 
-export default SearchAdditionalContainer
+export default SearchAdditionalMedicalCaseContainer

@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import { FormulationDrugs } from '@/Components'
 import { transformFormulations } from '@/Services/MedicalCase/TransformFormulations'
 
-const Formulations = () => {
+const FormulationsMedicalCaseContainer = () => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -70,4 +70,4 @@ const Formulations = () => {
   )
 }
 
-export default Formulations
+export default FormulationsMedicalCaseContainer

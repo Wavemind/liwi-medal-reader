@@ -23,13 +23,8 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import GetAllPatientDB from '@/Store/DatabasePatient/GetAll'
 
-const ListPatientContainer = props => {
+const ListPatientContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
-  const { navigation } = props
-
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-
   const {
     Layout,
     Gutters,
@@ -38,6 +33,9 @@ const ListPatientContainer = props => {
     Containers: { patientList, global },
     Components: { searchBar },
   } = useTheme()
+
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current

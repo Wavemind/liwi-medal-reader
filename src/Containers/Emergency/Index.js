@@ -12,9 +12,7 @@ import { useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 
-const IndexEmergencyContainer = props => {
-  const { navigation } = props
-
+const IndexEmergencyContainer = ({ navigation }) => {
   const { t } = useTranslation()
 
   const emergencyContent = useSelector(state => state.emergency.content)

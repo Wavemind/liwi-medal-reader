@@ -19,7 +19,7 @@ import ArmAddCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmAddCustomDrugs'
 import ArmRemoveCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmRemoveCustomDrugs'
 import ArmChangeCustomDrugDuration from '@/Store/MedicalCase/ArmControl/ArmChangeCustomDrugDuration'
 
-const Drugs = () => {
+const DrugsArmControlContainer = () => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -164,4 +164,4 @@ const Drugs = () => {
   )
 }
 
-export default Drugs
+export default DrugsArmControlContainer
