@@ -11,16 +11,20 @@ import find from 'lodash/find'
  */
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import { Icon, DisplayInput, QuestionInfoButton } from '@/Components'
+import {
+  Icon,
+  DisplayInput,
+  QuestionInfoButton,
+  InputFactory,
+} from '@/Components'
 import { Config } from '@/Config'
 import { store } from '@/Store'
-import { InputFactory } from '@/Components'
 
 const Question = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
   const {
     Components: { question },
-    Containers: {},
+    FontSize,
     Colors,
   } = useTheme()
 

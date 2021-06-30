@@ -22,7 +22,6 @@ const DisplayInput = ({ questionId }) => {
   const dispatch = useDispatch()
   const {
     Components: { question },
-    Containers: {},
   } = useTheme()
 
   const unavailableValue = useSelector(
@@ -72,7 +71,6 @@ const DisplayInput = ({ questionId }) => {
     setAnswer(questionId, newAnswer)
   }
 
-  console.log('DisplayInput', questionId)
   return (
     <View
       style={

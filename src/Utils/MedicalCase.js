@@ -95,6 +95,11 @@ export const orderSystems = (systemOrder, questionsPerSystem) => {
         title: system.title,
         data,
       })
+    } else {
+      orderedSystem.push({
+        title: system.title,
+        data: [],
+      })
     }
   })
   return orderedSystem
