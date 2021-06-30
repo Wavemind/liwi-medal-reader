@@ -12,14 +12,14 @@ import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
 import ChangeFilters from '@/Store/Filters/ChangeFilters'
 
-const Item = ({ item, list }) => {
+const Item = ({ item, source }) => {
   // Theme and style elements deconstruction
   const {
     Components: { accordionItem },
   } = useTheme()
 
   const dispatch = useDispatch()
-  const currentFilter = useSelector(state => state.filters[list][item.nodeId])
+  const currentFilter = useSelector(state => state.filters[source][item.nodeId])
 
   return (
     <View style={accordionItem.wrapper}>
@@ -28,7 +28,7 @@ const Item = ({ item, list }) => {
         defaultValue={
           currentFilter !== undefined && currentFilter.includes(item.answerId)
         }
-        onPress={() => dispatch(ChangeFilters.action({ list, item }))}
+        onPress={() => dispatch(ChangeFilters.action({ source, item }))}
       />
     </View>
   )

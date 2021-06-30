@@ -12,7 +12,7 @@ import { useTheme } from '@/Theme'
 import { Icon, AccordionItem } from '@/Components'
 import { hp } from '@/Theme/Responsive'
 
-const Accordion = ({ data, list }) => {
+const Accordion = ({ data, source }) => {
   const [open, setOpen] = useState(false)
   const [height, setHeight] = useState(0)
 
@@ -23,7 +23,7 @@ const Accordion = ({ data, list }) => {
     Components: { accordion },
   } = useTheme()
 
-  const currentFilter = useSelector(state => state.filters[list][data.nodeId])
+  const currentFilter = useSelector(state => state.filters[source][data.nodeId])
 
   /**
    * Open or close accordion
@@ -47,7 +47,7 @@ const Accordion = ({ data, list }) => {
           <View style={accordion.buttonTextWrapper}>
             <Text style={accordion.buttonText(open)}>{data.label}</Text>
           </View>
-          <View style={[accordion.badgeWrapper]}>
+          <View style={accordion.badgeWrapper}>
             {currentFilter !== undefined && (
               <View style={accordion.badge(open)}>
                 <Text style={accordion.badgeText(open)}>
@@ -56,7 +56,7 @@ const Accordion = ({ data, list }) => {
               </View>
             )}
           </View>
-          <View style={[accordion.iconWrapper]}>
+          <View style={accordion.iconWrapper}>
             <Icon
               name="right-arrow"
               size={15}
@@ -68,7 +68,7 @@ const Accordion = ({ data, list }) => {
       </TouchableWithoutFeedback>
       <View style={[accordion.contentWrapper(open), { height }]}>
         {data.items.map((item, key) => (
-          <AccordionItem {...{ item, key, list }} />
+          <AccordionItem {...{ item, key, source }} />
         ))}
       </View>
     </>

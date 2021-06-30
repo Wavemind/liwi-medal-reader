@@ -32,7 +32,7 @@ const IndexFiltersContainer = ({ navigation, route }) => {
    * Clear all filters
    */
   const clearFilters = async () => {
-    await dispatch(ClearFilters.action({ list: route.params.list }))
+    await dispatch(ClearFilters.action({ source: route.params.source }))
     navigation.goBack()
   }
 
@@ -41,17 +41,18 @@ const IndexFiltersContainer = ({ navigation, route }) => {
       <View style={Gutters.regularHMargin}>
         <View style={filters.header}>
           <Text style={filters.title}>{t('containers.filters.title')}</Text>
-          <TouchableOpacity
-            style={filters.button}
-            onPress={() => navigation.goBack()}
-          >
+          <TouchableOpacity style={filters.button} onPress={navigation.goBack}>
             <Icon name="close" color={Colors.secondary} />
           </TouchableOpacity>
         </View>
         <ScrollView style={Layout.grow}>
           <SectionHeader label={t('containers.filters.patient_info')} />
           {data.map(item => (
-            <Accordion key={item.label} data={item} list={route.params.list} />
+            <Accordion
+              key={item.label}
+              data={item}
+              source={route.params.source}
+            />
           ))}
         </ScrollView>
       </View>
@@ -77,7 +78,7 @@ const IndexFiltersContainer = ({ navigation, route }) => {
           bgColor={Colors.primary}
           color={Colors.secondary}
           fullWidth={false}
-          onPress={() => navigation.goBack()}
+          onPress={navigation.goBack}
         />
       </View>
     </View>

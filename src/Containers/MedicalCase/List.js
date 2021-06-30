@@ -152,7 +152,7 @@ const ListMedicalCaseContainer = props => {
           <TouchableOpacity
             style={searchBar.filterButton}
             onPress={() =>
-              navigation.navigate('Filters', { list: 'medicalCases' })
+              navigation.navigate('Filters', { source: 'medicalCases' })
             }
           >
             <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
@@ -161,7 +161,7 @@ const ListMedicalCaseContainer = props => {
         <BadgeBar
           removeBadge={badge =>
             dispatch(
-              ChangeFilters.action({ list: 'medicalCases', item: badge }),
+              ChangeFilters.action({ source: 'medicalCases', item: badge }),
             )
           }
           selected={data}
@@ -172,7 +172,7 @@ const ListMedicalCaseContainer = props => {
           }
           showClearAll
           onClearAll={() =>
-            dispatch(ClearFilters.action({ list: 'medicalCases' }))
+            dispatch(ClearFilters.action({ source: 'medicalCases' }))
           }
         />
       </View>
