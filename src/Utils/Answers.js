@@ -137,7 +137,6 @@ export const handleAnswerId = (node, value) => {
  * @returns See return of handleNumeric or handleAnswerId
  */
 export const setNodeValue = (mcNode, node, value) => {
-  console.log(value)
   const { int, float, bool, array, present, positive, string } =
     Config.VALUE_FORMATS
   switch (node.value_format) {

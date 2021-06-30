@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
-import { View, Text } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, BackHandler } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
@@ -31,6 +31,8 @@ import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertMedicalCase from '@/Store/DatabaseMedicalCase/Insert'
 import ResetAssessments from '@/Store/MedicalCase/ArmControl/ResetAssessments'
+import SetParams from '@/Store/Modal/SetParams'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -77,6 +79,27 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     state => state.databasePatientValues.update.error,
   )
   const errors = useSelector(state => state.validation.item)
+
+  // Adds an event listener to tablet back button press
+  // Opens the existMedicalCase modal and redirects to the Home screen
+  useEffect(() => {
+    const backAction = async () => {
+      await dispatch(
+        SetParams.action({
+          type: 'exitMedicalCase',
+          params: { routeName: 'Home', routeParams: {} },
+        }),
+      )
+      await dispatch(ToggleVisibility.action({}))
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    )
+
+    return () => backHandler.remove()
+  }, [])
 
   /**
    * Pre check of validation and insert in database patient if we're at registration stage
