@@ -18,6 +18,7 @@ import { navigateAndSimpleReset } from '@/Navigators/Root'
 import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
 import UpdateFieldPatient from '@/Store/Patient/UpdateField'
+import UpdateFieldMedicalCase from '@/Store/MedicalCase/UpdateField'
 import {
   SaveMedicalCaseService,
   CloseMedicalCaseService,
@@ -102,6 +103,12 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             UpdateFieldPatient.action({
               field: 'savedInDatabase',
               value: !patientSavedInDatabase,
+            }),
+          )
+          dispatch(
+            UpdateFieldMedicalCase.action({
+              field: 'savedInDatabase',
+              value: !medicalCaseSavedInDatabase,
             }),
           )
           const insertPatientValues = await dispatch(
