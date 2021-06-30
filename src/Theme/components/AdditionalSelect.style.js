@@ -33,6 +33,7 @@ export default function (props) {
       borderColor: Colors.primary,
       borderWidth: 1,
       backgroundColor: Colors.lightGrey,
+      color: Colors.primary,
     },
     itemLabelWrapper: {
       ...Layout.row,

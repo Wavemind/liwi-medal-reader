@@ -21,6 +21,7 @@ export default function (props) {
       backgroundColor: Colors.secondary,
       borderWidth: 1,
       borderColor: Colors.grey,
+      color: Colors.primary,
     },
     buttonWrapper: {
       ...Gutters.largeTMargin,

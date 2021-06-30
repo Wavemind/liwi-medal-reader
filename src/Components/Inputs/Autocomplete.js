@@ -105,6 +105,7 @@ const Autocomplete = ({ questionId }) => {
             onChangeText={handleChangeText}
             value={searchTerm}
             placeholder={t('application.search')}
+            placeholderTextColor={Colors.grey}
           />
         </View>
         <View style={autocomplete.searchIcon}>

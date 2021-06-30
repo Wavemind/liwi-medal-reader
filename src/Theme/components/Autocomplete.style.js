@@ -26,6 +26,14 @@ export default function (props) {
       color: Colors.text,
       padding: 0,
     },
+    textArea: {
+      ...Fonts.textSmall,
+      ...Layout.grow,
+      ...Gutters.smallVPadding,
+      ...Gutters.smallHPadding,
+      color: Colors.text,
+      textAlignVertical: 'top',
+    },
     searchIcon: {
       ...Layout.colHCenter,
       ...Gutters.smallRMargin,

@@ -35,6 +35,7 @@ export default function (props) {
       backgroundColor: Colors.secondary,
       borderRadius: hp(2.5),
       height: hp(5),
+      color: Colors.primary,
     },
     noItemsText: {
       ...Gutters.smallVPadding,
