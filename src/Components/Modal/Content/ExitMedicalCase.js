@@ -30,6 +30,12 @@ const ExitMedicalCase = () => {
 
   const routeName = useSelector(state => state.modal.params.routeName)
   const routeParams = useSelector(state => state.modal.params.routeParams)
+  const stageIndex = useSelector(
+    state => state.medicalCase.item.advancement.stage,
+  )
+  const stepIndex = useSelector(
+    state => state.medicalCase.item.advancement.step,
+  )
 
   /**
    * Redirect user to home page and clear medical case store
@@ -46,7 +52,10 @@ const ExitMedicalCase = () => {
    * Save in database current medical case and redirect user to home page and clear medical case store
    */
   const exitAndSave = async () => {
-    const medicalCaseSaved = await SaveMedicalCaseService({})
+    const medicalCaseSaved = await SaveMedicalCaseService({
+      stageIndex,
+      stepIndex,
+    })
     if (medicalCaseSaved) {
       await dispatch(ToggleVisibility.action({}))
       navigateAndSimpleReset(routeName, {
