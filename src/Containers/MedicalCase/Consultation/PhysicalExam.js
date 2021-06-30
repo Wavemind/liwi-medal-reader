@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useEffect } from 'react'
-import { SectionList, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
 
@@ -26,7 +26,7 @@ const PhysicalExamMedicalCaseContainer = props => {
   const systems = useSelector(
     state => state.questionsPerSystem.item.physicalExam,
   )
-  console.log(systems)
+
   // Update questions list only if question array change
   useEffect(() => {
     if (isFocused) {
@@ -35,18 +35,25 @@ const PhysicalExamMedicalCaseContainer = props => {
   }, [isFocused])
 
   return (
-    <SectionList
-      sections={systems}
-      keyExtractor={item => item}
-      removeClippedSubviews={false}
-      renderItem={({ item }) => <Question questionId={item} />}
-      renderSectionHeader={({ section: { title } }) => (
-        <View style={Gutters.regularHMargin}>
-          <SectionHeader label={translate(systemsTranslations[title])} />
-        </View>
-      )}
-      ListFooterComponent={<Comment />}
-    />
+    <ScrollView>
+      {systems.map(system => {
+        if (system.data.length > 0) {
+          return (
+            <View key={system.title}>
+              <View style={Gutters.regularHMargin}>
+                <SectionHeader
+                  label={translate(systemsTranslations[system.title])}
+                />
+              </View>
+              {system.data.map(item => (
+                <Question key={item} questionId={item} />
+              ))}
+            </View>
+          )
+        }
+      })}
+      <Comment />
+    </ScrollView>
   )
 }
 
