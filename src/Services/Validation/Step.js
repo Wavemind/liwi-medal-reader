@@ -28,7 +28,7 @@ export default () => {
   let errors = {}
   let questions = []
   let systems = []
-
+  return {}
   switch (navigation[stage].steps[step].label) {
     case 'registration':
       return RegistrationStepService(errors)

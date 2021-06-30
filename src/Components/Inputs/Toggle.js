@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { Text, View } from 'react-native'
 import Toggle from 'react-native-toggle-element'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports

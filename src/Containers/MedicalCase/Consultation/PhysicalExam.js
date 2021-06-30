@@ -26,9 +26,12 @@ const PhysicalExamMedicalCaseContainer = props => {
   const systems = useSelector(
     state => state.questionsPerSystem.item.physicalExam,
   )
+  console.log(systems)
   // Update questions list only if question array change
   useEffect(() => {
-    dispatch(PhysicalExam.action())
+    if (isFocused) {
+      dispatch(PhysicalExam.action())
+    }
   }, [isFocused])
 
   return (

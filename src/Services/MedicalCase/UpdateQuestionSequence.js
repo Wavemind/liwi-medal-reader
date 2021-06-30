@@ -6,7 +6,7 @@ import { getQsValue } from '@/Utils/QuestionSequence'
 import { store } from '@/Store'
 import { getYesAnswer, getNoAnswer, handleAnswerId } from '@/Utils/Answers'
 
-export default ({ nodeId, newNodes }) => {
+export default ({ nodeId, newNodes, mcNodes }) => {
   const nodes = store.getState().algorithm.item.nodes
 
   // List of QS we need to update
@@ -14,7 +14,7 @@ export default ({ nodeId, newNodes }) => {
 
   while (qsToUpdate.length > 0) {
     const qsId = qsToUpdate[0]
-    const qsBooleanValue = getQsValue(qsId, newNodes)
+    const qsBooleanValue = getQsValue(qsId, { ...mcNodes, ...newNodes })
 
     // If the QS has a value
     if (qsBooleanValue !== null) {
@@ -25,15 +25,13 @@ export default ({ nodeId, newNodes }) => {
       const newQsValues = handleAnswerId(nodes[qsId], qsValue)
 
       // Set the qs Value in the store
-      newNodes[qsId] = { ...newNodes[qsId], ...newQsValues }
+      newNodes[qsId] = { ...mcNodes[qsId], ...newQsValues }
     } else {
-      newNodes[qsId] = { ...newNodes[qsId], value: null, answer: null }
+      newNodes[qsId] = { ...mcNodes[qsId], value: null, answer: null }
     }
 
     // Add the related QS to the QS processing list
-    const newQsList = nodes[qsId].qs.filter(
-      childId => !excludedByCC(childId, nodes, newNodes),
-    )
+    const newQsList = nodes[qsId].qs.filter(childId => !excludedByCC(childId))
 
     qsToUpdate = qsToUpdate.concat(newQsList)
 

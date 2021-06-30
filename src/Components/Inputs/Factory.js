@@ -20,6 +20,7 @@ import {
 import { Config } from '@/Config'
 
 const Factory = ({ questionId }) => {
+  console.log('Factory', questionId)
   // Get node from algorithm
   const currentNode = useSelector(
     state => state.algorithm.item.nodes[questionId],

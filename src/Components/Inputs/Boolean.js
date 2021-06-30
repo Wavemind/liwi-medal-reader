@@ -24,15 +24,15 @@ const Boolean = ({ questionId, disabled = false }) => {
   const dispatch = useDispatch()
 
   // Get node from algorithm
-  const question = useSelector(
-    state => state.medicalCase.item.nodes[questionId],
+  const answer = useSelector(
+    state => state.medicalCase.item.nodes[questionId].answer,
   )
   const currentNode = useSelector(
-    state => state.algorithm.item.nodes[question.id],
+    state => state.algorithm.item.nodes[questionId],
   )
 
   // Local state definition
-  const [value, setValue] = useState(question.answer)
+  const [value, setValue] = useState(answer)
 
   const yesAnswer = getYesAnswer(currentNode)
   const noAnswer = getNoAnswer(currentNode)
@@ -56,8 +56,8 @@ const Boolean = ({ questionId, disabled = false }) => {
    * Update value in store when value changes
    */
   useEffect(() => {
-    if (question.answer !== value) {
-      setAnswer(question.id, value)
+    if (answer !== value) {
+      setAnswer(questionId, value)
     }
   }, [value])
 

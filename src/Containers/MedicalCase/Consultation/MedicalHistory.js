@@ -17,7 +17,6 @@ import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
 const MedicalHistoryMedicalCaseContainer = props => {
   const { Gutters } = useTheme()
   const isFocused = useIsFocused()
-
   const dispatch = useDispatch()
 
   const systemsTranslations = useSelector(
@@ -29,7 +28,9 @@ const MedicalHistoryMedicalCaseContainer = props => {
   )
   // Update questions list only if question array change
   useEffect(() => {
-    dispatch(MedicalHistory.action())
+    if (isFocused) {
+      dispatch(MedicalHistory.action())
+    }
   }, [isFocused])
 
   return (

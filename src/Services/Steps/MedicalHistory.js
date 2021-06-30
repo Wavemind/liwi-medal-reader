@@ -51,6 +51,7 @@ export default () => {
     questionPerSystems[k] = uniq(questionPerSystems[k])
   })
 
+  console.log('MedicalHistory')
   return {
     ...state.questionsPerSystem.item,
     medicalHistory: orderSystems(medicalHistoryStep, questionPerSystems),

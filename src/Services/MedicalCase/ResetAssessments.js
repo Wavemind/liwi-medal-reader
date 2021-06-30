@@ -15,7 +15,7 @@ export default props => {
     medicalCase: { item: newMedicalCase },
   } = store.getState()
   // TODO find another way
-  let newNodes = JSON.parse(JSON.stringify(newMedicalCase.nodes))
+  let newNodes = {}
 
   Object.values(nodes)
     .filter(node => node.category === Config.CATEGORIES.assessment)
@@ -33,6 +33,7 @@ export default props => {
     ...newMedicalCase,
     activities: [],
     nodes: {
+      ...newMedicalCase.nodes,
       ...newNodes,
     },
   }
