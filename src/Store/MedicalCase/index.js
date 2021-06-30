@@ -5,6 +5,7 @@ import ChangeAdvancement from './ChangeAdvancement'
 import UpdateNodeField from './UpdateNodeField'
 import UpdateNodeFields from './UpdateNodeFields'
 import UpdateComment from './UpdateComment'
+import UpdateField from '@/Store/MedicalCase/UpdateField'
 import Load from './Load'
 import HandleComplaintCategories from './HandleComplaintCategories'
 import HandleDateFormulas from './HandleDateFormulas'
@@ -63,6 +64,7 @@ export default buildSlice(
     UpdateNodeField,
     UpdateNodeFields,
     UpdateComment,
+    UpdateField,
     Load,
     // Activities
     AddStepActivities,
