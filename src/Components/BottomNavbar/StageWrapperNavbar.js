@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
-import { View, Text } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, BackHandler } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +18,7 @@ import { navigateAndSimpleReset } from '@/Navigators/Root'
 import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
 import UpdateFieldPatient from '@/Store/Patient/UpdateField'
+import UpdateFieldMedicalCase from '@/Store/MedicalCase/UpdateField'
 import {
   SaveMedicalCaseService,
   CloseMedicalCaseService,
@@ -30,6 +31,8 @@ import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertMedicalCase from '@/Store/DatabaseMedicalCase/Insert'
 import ResetAssessments from '@/Store/MedicalCase/ArmControl/ResetAssessments'
+import SetParams from '@/Store/Modal/SetParams'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -77,6 +80,27 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   )
   const errors = useSelector(state => state.validation.item)
 
+  // Adds an event listener to tablet back button press
+  // Opens the existMedicalCase modal and redirects to the Home screen
+  useEffect(() => {
+    const backAction = async () => {
+      await dispatch(
+        SetParams.action({
+          type: 'exitMedicalCase',
+          params: { routeName: 'Home', routeParams: {} },
+        }),
+      )
+      await dispatch(ToggleVisibility.action({}))
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    )
+
+    return () => backHandler.remove()
+  }, [])
+
   /**
    * Pre check of validation and insert in database patient if we're at registration stage
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
@@ -102,6 +126,12 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             UpdateFieldPatient.action({
               field: 'savedInDatabase',
               value: !patientSavedInDatabase,
+            }),
+          )
+          dispatch(
+            UpdateFieldMedicalCase.action({
+              field: 'savedInDatabase',
+              value: !medicalCaseSavedInDatabase,
             }),
           )
           const insertPatientValues = await dispatch(

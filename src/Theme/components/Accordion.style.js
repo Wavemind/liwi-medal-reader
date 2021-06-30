@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Gutters, Colors, Layout, Fonts } = props
@@ -19,9 +20,34 @@ export default function (props) {
       borderTopRightRadius: 10,
       borderColor: open ? Colors.primary : Colors.grey,
     }),
+    buttonTextWrapper: {
+      width: wp(75),
+    },
+    badgeWrapper: {
+      ...Layout.center,
+      ...Layout.row,
+      width: wp(8),
+    },
+    iconWrapper: {
+      ...Layout.center,
+      ...Layout.row,
+      width: wp(4),
+    },
     buttonText: open => ({
       color: open ? Colors.secondary : Colors.primary,
       ...Fonts.textMedium,
+      ...Fonts.textBold,
+    }),
+    badge: open => ({
+      backgroundColor: open ? Colors.secondary : Colors.primary,
+      borderRadius: 20,
+      ...Gutters.tinyVPadding,
+      ...Gutters.smallHPadding,
+      ...Gutters.smallRMargin,
+    }),
+    badgeText: open => ({
+      color: open ? Colors.primary : Colors.secondary,
+      ...Fonts.textTiny,
       ...Fonts.textBold,
     }),
     contentWrapper: open => ({

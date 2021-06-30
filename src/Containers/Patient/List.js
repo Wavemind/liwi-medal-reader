@@ -21,7 +21,11 @@ import {
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
+import { GenerateFiltersBadgeObject } from '@/Utils'
+import { translate } from '@/Translations/algorithm'
 import GetAllPatientDB from '@/Store/DatabasePatient/GetAll'
+import ClearFilters from '@/Store/Filters/ClearFilters'
+import ChangeFilters from '@/Store/Filters/ChangeFilters'
 
 const ListPatientContainer = props => {
   // Theme and style elements deconstruction
@@ -46,10 +50,10 @@ const ListPatientContainer = props => {
   const [page, setPage] = useState(1)
   const [firstLoading, setFirstLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [filters, setFilters] = useState([
-    { filterBy: 'Gender', value: 'Female' },
-    { filterBy: 'Age', value: '12' },
-  ])
+
+  const nodes = useSelector(state => state.algorithm.item.nodes)
+  const patientsFilters = useSelector(state => state.filters.patients)
+  const data = GenerateFiltersBadgeObject(patientsFilters)
 
   const patients = useSelector(state => state.databasePatient.getAll.item.data)
   const isLastBatch = useSelector(
@@ -67,7 +71,7 @@ const ListPatientContainer = props => {
         GetAllPatientDB.action({
           page,
           reset: true,
-          params: { terms: term },
+          params: { terms: term, filters: patientsFilters },
         }),
       )
     }, 500),
@@ -89,25 +93,27 @@ const ListPatientContainer = props => {
         GetAllPatientDB.action({
           page,
           reset: true,
+          params: { filters: patientsFilters },
         }),
       )
     } else if (searchTerm.length >= 2) {
       debouncedSearch(searchTerm)
     }
-  }, [searchTerm])
-
-  const resetFilters = () => {
-    setSearchTerm('')
-    setFilters([])
-  }
+  }, [searchTerm, patientsFilters])
 
   /**
    * Reset filters and search terms. Fetch 15 latest patients
    */
   const handleRefresh = () => {
-    dispatch(GetAllPatientDB.action({ page: 1, reset: true }))
+    dispatch(
+      GetAllPatientDB.action({
+        page: 1,
+        reset: true,
+        params: { filters: patientsFilters },
+      }),
+    )
     setPage(1)
-    resetFilters()
+    setSearchTerm('')
   }
 
   /**
@@ -115,7 +121,12 @@ const ListPatientContainer = props => {
    */
   const loadMore = () => {
     if (!isLastBatch) {
-      dispatch(GetAllPatientDB.action({ page: page + 1 }))
+      dispatch(
+        GetAllPatientDB.action({
+          page: page + 1,
+          params: { filters: patientsFilters },
+        }),
+      )
       setPage(page + 1)
     }
   }
@@ -138,21 +149,27 @@ const ListPatientContainer = props => {
           </View>
           <TouchableOpacity
             style={searchBar.filterButton}
-            onPress={() => navigation.push('Filters')}
+            onPress={() =>
+              navigation.navigate('Filters', { source: 'patients' })
+            }
           >
             <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
           </TouchableOpacity>
         </View>
         <BadgeBar
-          removeBadge={badge => {
-            const index = filters.indexOf(badge)
-            setFilters(filters.filter((_, i) => i !== index))
-            console.log('TODO Remove selected badge', badge)
-          }}
-          selected={filters}
-          badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
+          removeBadge={badge =>
+            dispatch(ChangeFilters.action({ source: 'patients', item: badge }))
+          }
+          selected={data}
+          badgeComponentLabel={badge =>
+            `${translate(nodes[badge.nodeId].label)} : ${translate(
+              nodes[badge.nodeId].answers[badge.answerId].label,
+            )}`
+          }
           showClearAll
-          onClearAll={() => setFilters([])}
+          onClearAll={() =>
+            dispatch(ClearFilters.action({ source: 'patients' }))
+          }
         />
       </View>
 
