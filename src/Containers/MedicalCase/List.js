@@ -75,7 +75,7 @@ const ListMedicalCaseContainer = props => {
         GetAllMedicalCasesDB.action({
           page,
           reset: true,
-          params: { terms: term },
+          params: { terms: term, filters: medicalCasesFilters },
         }),
       )
     }, 500),
@@ -97,18 +97,25 @@ const ListMedicalCaseContainer = props => {
         GetAllMedicalCasesDB.action({
           page,
           reset: true,
+          params: { filters: medicalCasesFilters },
         }),
       )
     } else if (searchTerm.length >= 2) {
       debouncedSearch(searchTerm)
     }
-  }, [searchTerm])
+  }, [searchTerm, medicalCasesFilters])
 
   /**
    * Reset filters and search terms. Fetch 15 latest patients
    */
   const handleRefresh = () => {
-    dispatch(GetAllMedicalCasesDB.action({ page: 1, reset: true }))
+    dispatch(
+      GetAllMedicalCasesDB.action({
+        page: 1,
+        reset: true,
+        params: { filters: medicalCasesFilters },
+      }),
+    )
     setPage(1)
     setSearchTerm('')
   }
@@ -118,7 +125,12 @@ const ListMedicalCaseContainer = props => {
    */
   const loadMore = () => {
     if (!isLastBatch) {
-      dispatch(GetAllMedicalCasesDB.action({ page: page + 1 }))
+      dispatch(
+        GetAllMedicalCasesDB.action({
+          page: page + 1,
+          params: { filters: medicalCasesFilters },
+        }),
+      )
       setPage(page + 1)
     }
   }
