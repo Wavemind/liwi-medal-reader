@@ -14,6 +14,7 @@ export default {
     scan_consent: 'Scan new consent',
     add: 'Add',
     apply: 'Apply Selection',
+    reset: 'Reset',
     save: 'Save',
   },
   algorithm: {
@@ -76,6 +77,11 @@ export default {
         back: 'Prev',
         next: 'Next',
       },
+      list: {
+        title: 'Consultations',
+        name: 'Name',
+        status: 'Status',
+      },
       stages: {
         registration: 'Registration',
         first_assessments: '1st assessments',
@@ -91,7 +97,6 @@ export default {
         basic_measurements: 'Basic measurements',
         medical_history: 'Medical history',
         physical_exams: 'Physical exams',
-        comment: 'Comment',
         assessments: 'Assessments',
         final_diagnoses: 'Final diagnoses',
         healthcare_questions: 'Healthcare questions',
@@ -168,16 +173,10 @@ export default {
         title: 'Consent files',
       },
     },
-    medicalCase: {
-      list: {
-        title: 'Consultations',
-        name: 'Name',
-        status: 'Status',
-      },
-    },
     synchronization: {
       synchronize: 'Synchronize',
       not_synchronized: 'Medical cases not synchronized yet',
+      warning: 'You have not synchronized for over 7 days',
     },
     settings: {
       general: {
@@ -185,6 +184,10 @@ export default {
         environment: 'Environment',
         app_languages: 'App languages',
         algorithm_languages: 'Algorithm languages',
+        languages: {
+          en: 'English',
+          fr: 'Français',
+        },
       },
       algorithm: {
         title: 'Algorithm',
@@ -299,6 +302,10 @@ export default {
     first_name: 'First name',
     last_name: 'Last name',
     birth_date: 'Birth date',
+    reason: 'Reason for changing facility',
+  },
+  medical_case: {
+    comment: 'Comment',
   },
   permissions: {
     message: 'You must grant the relevant permissions for the app to function.',

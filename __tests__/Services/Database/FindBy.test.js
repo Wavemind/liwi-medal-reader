@@ -85,6 +85,7 @@ describe('findBy should find an object based on a query', () => {
       'closedAt',
       'createdAt',
       'updatedAt',
+      'version_id',
     ]
     const id = store.getState().medicalCase.item.id
     const medicalCase = await findBy('MedicalCase', id)

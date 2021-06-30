@@ -122,17 +122,17 @@ const IndexHomeContainer = ({ navigation }) => {
               filled
             />
           </View>
-          {__DEV__ && (
-            <View style={home.consultationsButton}>
-              <SquareButton
-                label={t('actions.new_patient')}
-                icon="add"
-                big
-                onPress={newPatient}
-                filled
-              />
-            </View>
-          )}
+          {/* {__DEV__ && ( */}
+          <View style={home.consultationsButton}>
+            <SquareButton
+              label={t('actions.new_patient')}
+              icon="add"
+              big
+              onPress={newPatient}
+              filled
+            />
+          </View>
+          {/* )} */}
         </View>
         <View style={home.buttonListWrapper}>
           <View style={home.patientListButton}>

@@ -3,13 +3,15 @@
  */
 import useDatabase from '../Database/useDatabase'
 import { store } from '@/Store'
+import { Config } from '@/Config'
+import { UniqObject } from '@/Utils'
 
-export default async ({ page, reset = false }) => {
+export default async ({ page, reset = false, params }) => {
   const { getAll } = useDatabase()
 
-  const newMedicalCases = await getAll('MedicalCase', page)
+  const newMedicalCases = await getAll('MedicalCase', page, params)
 
-  const isLastBatch = newMedicalCases.length === 0
+  const isLastBatch = newMedicalCases.length < Config.ELEMENT_PER_PAGE
 
   let medicalCases
 
@@ -22,7 +24,7 @@ export default async ({ page, reset = false }) => {
   }
 
   return {
-    data: medicalCases,
+    data: UniqObject(medicalCases),
     isLastBatch,
   }
 }

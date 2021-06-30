@@ -35,6 +35,7 @@ export default () => {
 
     handleChildren(
       topConditions,
+      null,
       questionPerSystems,
       diagnosis.instances,
       medicalHistoryCategories,

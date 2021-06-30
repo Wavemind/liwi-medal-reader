@@ -112,6 +112,7 @@ export const orderSystems = (systemOrder, questionsPerSystem) => {
  */
 export const handleChildren = (
   children,
+  source,
   questionsToDisplay,
   instances,
   categories,
@@ -123,13 +124,16 @@ export const handleChildren = (
 ) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
-
   children.forEach(instance => {
-    if (instance.conditions.length === 0 || calculateCondition(instance)) {
+    if (
+      instance.conditions.length === 0 ||
+      calculateCondition(instance, source)
+    ) {
       if (nodes[instance.id].type === Config.NODE_TYPES.questionsSequence) {
         const topConditions = getTopConditions(nodes[instance.id].instances)
         handleChildren(
           topConditions,
+          instance.id,
           questionsToDisplay,
           nodes[instance.id].instances,
           categories,
@@ -171,6 +175,7 @@ export const handleChildren = (
       if (childrenInstance.length > 0) {
         handleChildren(
           childrenInstance,
+          instance.id,
           questionsToDisplay,
           instances,
           categories,
@@ -273,7 +278,7 @@ export const excludedByCC = questionId => {
  * @param {Instance} instance : the instance we wanna calculate
  * @returns {Boolean} : value of the condition
  */
-export const calculateCondition = instance => {
+export const calculateCondition = (instance, sourceId = null) => {
   const state = store.getState()
   const mcNodes = state.medicalCase.item.nodes
 
@@ -283,9 +288,17 @@ export const calculateCondition = instance => {
   if (instance.conditions.length === 0) {
     return true
   }
-  return instance.conditions.some(
-    condition => mcNodes[condition.node_id].answer === condition.answer_id,
-  )
+
+  return instance.conditions
+    .filter(condition => {
+      if (sourceId === null) {
+        return true
+      }
+      return condition.node_id === sourceId
+    })
+    .some(
+      condition => mcNodes[condition.node_id].answer === condition.answer_id,
+    )
 }
 
 /**
@@ -329,18 +342,21 @@ export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
  * @param {Array<Node>} mcNodes : Current state of medical case nodes
  */
 export const debugNode = (nodeId, mcNodes) => {
+  const localMcNode =
+    mcNodes === undefined ? store.getState().medicalCase.item.nodes : mcNodes
   const nodes = store.getState().algorithm.item.nodes
   const result = nodes[nodeId].dd.map(diagnosisId => {
     return {
-      [diagnosisId]: debugNodeInDiagnosis(diagnosisId, nodeId, mcNodes),
+      [diagnosisId]: debugNodeInDiagnosis(diagnosisId, nodeId, localMcNode),
     }
   })
   console.info(
     'debug',
     nodeId,
     result,
-    'answer' + ' ' + mcNodes[nodeId].answer,
-    'value' + ' ' + mcNodes[nodeId].value,
+    nodes[nodeId],
+    'answer' + ' ' + localMcNode[nodeId].answer,
+    'value' + ' ' + localMcNode[nodeId].value,
   )
 }
 

@@ -10,7 +10,7 @@ import { useIsFocused } from '@react-navigation/native'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { SectionHeader, Question } from '@/Components'
+import { SectionHeader, Question, Comment } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
 
@@ -42,6 +42,7 @@ const PhysicalExamMedicalCaseContainer = props => {
           <SectionHeader label={translate(systemsTranslations[title])} />
         </View>
       )}
+      ListFooterComponent={<Comment />}
     />
   )
 }

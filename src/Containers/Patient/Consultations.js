@@ -14,10 +14,10 @@ import { isFulfilled } from '@reduxjs/toolkit'
 import {
   SectionHeader,
   SquareButton,
-  LoaderList,
   ConsultationListItem,
   CurrentConsultation,
   Icon,
+  EmptyList,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { transformPatientValues } from '@/Utils/MedicalCase'
@@ -41,7 +41,9 @@ const ConsultationPatientContainer = ({ navigation }) => {
   const patient = useSelector(state => state.patient.item)
   const patientLoading = useSelector(state => state.patient.load.loading)
   const patientLoadError = useSelector(state => state.patient.load.error)
-  const mcCreateError = useSelector(state => state.medicalCase.create.error)
+  const medicalCaseCreateError = useSelector(
+    state => state.medicalCase.create.error,
+  )
 
   // Local state definition
   const [currentConsultation] = useState(
@@ -96,14 +98,14 @@ const ConsultationPatientContainer = ({ navigation }) => {
             icon="add"
             onPress={handleAddConsultation}
           />
-          {mcCreateError && (
+          {medicalCaseCreateError && (
             <View style={[question.messageWrapper('error')]}>
               <Icon
                 size={FontSize.regular}
                 color={Colors.secondary}
                 name="warning"
               />
-              <Text style={question.message}>{mcCreateError}</Text>
+              <Text style={question.message}>{medicalCaseCreateError}</Text>
             </View>
           )}
         </>
@@ -124,15 +126,12 @@ const ConsultationPatientContainer = ({ navigation }) => {
         ) : (
           <FlatList
             data={closedCases}
-            renderItem={({ item }) => (
-              <ConsultationListItem
-                key={`consultation_${item.id}`}
-                item={item}
-              />
-            )}
-            keyExtractor={item => item.id}
-            ListEmptyComponent={<LoaderList />}
-            onRefresh={() => handleRefresh()}
+            renderItem={({ item }) => <ConsultationListItem item={item} />}
+            keyExtractor={item => `consultation-${item.id}`}
+            ListEmptyComponent={
+              <EmptyList text={t('application.no_results')} />
+            }
+            onRefresh={handleRefresh}
             refreshing={patientLoading}
           />
         )}

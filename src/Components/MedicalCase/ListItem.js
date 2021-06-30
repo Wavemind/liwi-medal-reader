@@ -20,7 +20,7 @@ import { getStages } from '@/Utils/Navigation/GetStages'
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
   const {
-    Components: { patientListItem },
+    Components: { medicalCaseListItem },
     Layout,
     Gutters,
     Colors,
@@ -52,22 +52,22 @@ const ListItem = ({ item }) => {
 
   return (
     <TouchableOpacity
-      style={patientListItem.wrapper}
+      style={medicalCaseListItem.wrapper}
       onPress={() => handlePress()}
     >
-      <View style={patientListItem.container}>
+      <View style={medicalCaseListItem.container}>
         <View style={[Layout.column, Gutters.regularRMargin]}>
           <Icon name="lock" size={FontSize.large} color={Colors.red} />
         </View>
-        <View style={patientListItem.titleWrapper}>
-          <Text style={patientListItem.title}>
+        <View style={medicalCaseListItem.titleWrapper}>
+          <Text style={medicalCaseListItem.title}>
             {`${item.patient.first_name} ${item.patient.last_name}`}
           </Text>
           <Text>{format(item.patient.birth_date, 'dd.MM.yyyy')}</Text>
         </View>
 
-        <View style={patientListItem.statusWrapper}>
-          <Text style={patientListItem.statusTitle}>
+        <View style={medicalCaseListItem.statusWrapper}>
+          <Text style={medicalCaseListItem.statusTitle}>
             {item.closedAt > 0
               ? t('containers.medical_case.stages.closed')
               : t(
@@ -82,7 +82,7 @@ const ListItem = ({ item }) => {
                 key={`${item.id}-icon-${stage.icon}`}
                 name={stage.icon}
                 size={FontSize.large}
-                style={patientListItem.icon(
+                style={medicalCaseListItem.icon(
                   item.closedAt > 0 ? true : index === item.advancement.stage,
                 )}
               />
