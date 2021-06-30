@@ -11,17 +11,17 @@ import isEqual from 'lodash/isEqual'
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
-import { ComplaintCategoryQuestions } from '@/Services/Steps'
+import { ComplaintCategoryQuestionsService } from '@/Services/Steps'
 
 const ComplaintCategoryMedicalCaseContainer = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
 
-  const [questions, setQuestions] = useState(ComplaintCategoryQuestions())
+  const [questions, setQuestions] = useState(ComplaintCategoryQuestionsService())
 
   // Update questions list only if question array change
   useEffect(() => {
-    const complaintCategoryQuestion = ComplaintCategoryQuestions()
+    const complaintCategoryQuestion = ComplaintCategoryQuestionsService()
     if (!isEqual(complaintCategoryQuestion, questions)) {
       setQuestions(complaintCategoryQuestion)
     }

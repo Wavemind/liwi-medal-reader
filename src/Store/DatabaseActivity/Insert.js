@@ -10,11 +10,11 @@ import {
 /**
  * The internal imports
  */
-import insertActivityService from '@/Services/Activity/Insert'
+import { InsertActivitiesService } from '@/Services/Activity'
 
 export default {
   initialState: buildAsyncState('insert'),
-  action: buildAsyncActions('databaseActivity/insert', insertActivityService),
+  action: buildAsyncActions('databaseActivity/insert', InsertActivitiesService),
   reducers: buildAsyncReducers({
     itemKey: null,
     errorKey: 'insert.error',

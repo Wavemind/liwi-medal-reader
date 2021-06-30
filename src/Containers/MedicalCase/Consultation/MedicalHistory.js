@@ -13,7 +13,7 @@ import isEqual from 'lodash/isEqual'
 import { useTheme } from '@/Theme'
 import { SectionHeader, Question } from '@/Components'
 import { translate } from '@/Translations/algorithm'
-import { MedicalHistoryQuestions } from '@/Services/Steps'
+import { MedicalHistoryQuestionsService } from '@/Services/Steps'
 
 const MedicalHistoryMedicalCaseContainer = () => {
   const { Gutters } = useTheme()
@@ -22,11 +22,11 @@ const MedicalHistoryMedicalCaseContainer = () => {
   const algorithm = useSelector(state => state.algorithm.item)
   const medicalCase = useSelector(state => state.medicalCase.item)
 
-  const [systems, setSystems] = useState(MedicalHistoryQuestions())
+  const [systems, setSystems] = useState(MedicalHistoryQuestionsService())
 
   // Update questions list only if question array change
   useEffect(() => {
-    const medicalHistoryQuestions = MedicalHistoryQuestions()
+    const medicalHistoryQuestions = MedicalHistoryQuestionsService()
 
     if (!isEqual(medicalHistoryQuestions, systems)) {
       setSystems(medicalHistoryQuestions)

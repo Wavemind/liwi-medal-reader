@@ -11,8 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { navigateToStage } from '@/Navigators/Root'
-import RotatedText from './RotatedText'
-import Dot from './Dot'
+import { RotatedText, Dot } from '@/Components'
 
 const SideBarItem = ({ stage, index }) => {
   const { t } = useTranslation()

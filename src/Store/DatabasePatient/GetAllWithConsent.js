@@ -9,7 +9,7 @@ import {
 /**
  * The internal imports
  */
-import getAllPatientWithConsentService from '@/Services/Patient/GetAllWithConsent'
+import { GetAllPatientsWithConsentService } from '@/Services/Patient'
 
 export default {
   initialState: {
@@ -21,7 +21,7 @@ export default {
   },
   action: buildAsyncActions(
     'databasePatient/getAllWithConsent',
-    getAllPatientWithConsentService,
+    GetAllPatientsWithConsentService,
   ),
   reducers: buildAsyncReducers({
     itemKey: 'getAllWithConsent.item',

@@ -1,1 +1,1 @@
-export { default as handleQrService } from './HandleQr'
+export { default as HandleQrService } from './HandleQr'

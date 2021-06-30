@@ -5,7 +5,7 @@ import { store } from '@/Store'
 
 import i18n from '@/Translations/index'
 import { QuestionStepValidation } from '@/Utils'
-import { RegistrationQuestions } from '@/Services/Steps'
+import { RegistrationQuestionsService } from '@/Services/Steps'
 
 export default async errors => {
   const state = store.getState()
@@ -13,7 +13,7 @@ export default async errors => {
   const algorithm = state.algorithm.item
   const patient = state.patient.item
 
-  const questions = RegistrationQuestions()
+  const questions = RegistrationQuestionsService()
   const consentManagement = algorithm.config.consent_management
 
   // Consent management

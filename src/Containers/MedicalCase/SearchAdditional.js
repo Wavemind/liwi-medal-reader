@@ -18,9 +18,9 @@ import {
   Autosuggest,
   BadgeBar,
   SquareButton,
+  AdditionalListItem,
 } from '@/Components'
 import { useTheme } from '@/Theme'
-import ListItem from '@/Components/MedicalCase/AdditionalListItem'
 import { translate } from '@/Translations/algorithm'
 import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
 import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
@@ -236,7 +236,7 @@ const SearchAdditionalMedicalCaseContainer = ({
         <FlatList
           data={items}
           renderItem={({ item }) => (
-            <ListItem
+            <AdditionalListItem
               selected={selected}
               item={item}
               handlePress={toggleAdditionalItems}

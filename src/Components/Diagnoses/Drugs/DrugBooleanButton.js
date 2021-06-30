@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import UpdateDrugs from '@/Services/MedicalCase/UpdateDrug'
+import { UpdateDrugService } from '@/Services/MedicalCase'
 
 const DrugBooleanButton = ({ diagnosis, drugId, diagnosisKey }) => {
   // Theme and style elements deconstruction
@@ -40,7 +40,9 @@ const DrugBooleanButton = ({ diagnosis, drugId, diagnosisKey }) => {
       >
         <TouchableOpacity
           style={Layout.center}
-          onPress={() => UpdateDrugs(diagnosis.id, drugId, true, diagnosisKey)}
+          onPress={() =>
+            UpdateDrugService(diagnosis.id, drugId, true, diagnosisKey)
+          }
         >
           <Text style={booleanButton.buttonText(isAgreed)}>
             {t('containers.medical_case.common.agree')}
@@ -58,7 +60,9 @@ const DrugBooleanButton = ({ diagnosis, drugId, diagnosisKey }) => {
       >
         <TouchableOpacity
           style={Layout.center}
-          onPress={() => UpdateDrugs(diagnosis.id, drugId, false, diagnosisKey)}
+          onPress={() =>
+            UpdateDrugService(diagnosis.id, drugId, false, diagnosisKey)
+          }
         >
           <Text style={booleanButton.buttonText(isRefused)}>
             {t('containers.medical_case.common.disagree')}

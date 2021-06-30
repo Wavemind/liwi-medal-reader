@@ -25,13 +25,14 @@ import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const Question = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
-  const dispatch = useDispatch()
   const {
     Components: { question },
     Containers: { global },
     Colors,
     FontSize,
   } = useTheme()
+
+  const dispatch = useDispatch()
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current

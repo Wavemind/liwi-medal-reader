@@ -12,7 +12,7 @@ import isEqual from 'lodash/isEqual'
  */
 import { useTheme } from '@/Theme'
 import { FormulationDrugs } from '@/Components'
-import { transformFormulations } from '@/Services/MedicalCase/TransformFormulations'
+import { TransformFormulationsService } from '@/Services/MedicalCase'
 
 const FormulationsMedicalCaseContainer = () => {
   // Theme and style elements deconstruction
@@ -24,13 +24,13 @@ const FormulationsMedicalCaseContainer = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
 
-  const [drugs, setDrugs] = useState(transformFormulations())
+  const [drugs, setDrugs] = useState(TransformFormulationsService())
 
   /**
    * Transforms stored diagnoses/drugs into a usable local format
    */
   useEffect(() => {
-    const newDrugs = transformFormulations()
+    const newDrugs = TransformFormulationsService()
     if (!isEqual(newDrugs, drugs)) {
       setDrugs(newDrugs)
     }

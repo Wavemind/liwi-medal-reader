@@ -9,11 +9,10 @@ import { useSelector } from 'react-redux'
 /**
  * The internal imports
  */
-import { Icon } from '@/Components'
+import { Icon, SelectedItem } from '@/Components'
 import { navigate } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import SelectedItem from '@/Components/Diagnoses/SelectedItem'
 
 const AdditionalSelect = ({
   listObject,

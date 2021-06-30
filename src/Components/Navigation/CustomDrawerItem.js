@@ -22,19 +22,19 @@ const CustomDrawerItem = ({
   iconName,
   navigation,
 }) => {
-  const dispatch = useDispatch()
-
-  const { index, routes } = navigation.dangerouslyGetState()
-
-  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
-  const closedAt = useSelector(state => state.medicalCase.item.closedAt)
-
   // Theme and style elements deconstruction
   const {
     Components: { customDrawerItem },
     Colors,
     FontSize,
   } = useTheme()
+
+  const dispatch = useDispatch()
+
+  const { index, routes } = navigation.dangerouslyGetState()
+
+  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const closedAt = useSelector(state => state.medicalCase.item.closedAt)
 
   const handleNavigation = async () => {
     if (medicalCaseId && closedAt === 0) {

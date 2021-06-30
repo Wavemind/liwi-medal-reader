@@ -16,7 +16,7 @@ export { default as ListConsentContainer } from './Consent/List'
 export { default as PreviewConsentContainer } from './Consent/Preview'
 
 // Emergency
-export { default as IndexEmergencyContainer } from './Emergency'
+export { default as IndexEmergencyContainer } from './Emergency/Index'
 
 // Filters
 export { default as IndexFiltersContainer } from './Filters/Index'

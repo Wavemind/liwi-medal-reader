@@ -13,9 +13,6 @@ import { Icon, AccordionItem } from '@/Components'
 import { hp } from '@/Theme/Responsive'
 
 const Accordion = ({ data, source }) => {
-  const [open, setOpen] = useState(false)
-  const [height, setHeight] = useState(0)
-
   // Theme and style elements deconstruction
   const {
     Layout,
@@ -24,6 +21,9 @@ const Accordion = ({ data, source }) => {
   } = useTheme()
 
   const currentFilter = useSelector(state => state.filters[source][data.nodeId])
+
+  const [open, setOpen] = useState(false)
+  const [height, setHeight] = useState(0)
 
   /**
    * Open or close accordion

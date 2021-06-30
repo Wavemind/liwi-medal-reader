@@ -11,13 +11,13 @@ import isEqual from 'lodash/isEqual'
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
-import { AssessmentQuestions } from '@/Services/Steps'
+import { AssessmentQuestionsService } from '@/Services/Steps'
 import { debugNode } from '@/Utils/MedicalCase'
 
 const AssessmentMedicalCaseContainer = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
-  const [questions, setQuestions] = useState(AssessmentQuestions())
+  const [questions, setQuestions] = useState(AssessmentQuestionsService())
 
   debugNode(3545)
   debugNode(4530)

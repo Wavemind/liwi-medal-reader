@@ -6,7 +6,7 @@ import 'react-native'
 /**
  * The internal imports
  */
-import handleQR from '@/Services/Scan/HandleQr'
+import { HandleQrService } from '@/Services/Scan'
 
 // Define global testing variables
 const healthFacilityId = 7
@@ -19,7 +19,7 @@ const otherQrRawData =
 
 describe('Scan QR code properly ', () => {
   it('should handle a QR code from Dynamic TZ properly', async () => {
-    const result = await handleQR({
+    const result = await HandleQrService({
       QrRawData: otherQrRawData,
       healthFacilityId: otherHealthFacilityId,
       generateNewQR: false,
@@ -43,7 +43,7 @@ describe('Scan QR code properly ', () => {
   it('should handle a QR code that has not the correct format', async () => {
     const notAQrCode = 'I am not a QR CODE'
     try {
-      await handleQR({
+      await HandleQrService({
         QrRawData: notAQrCode,
         healthFacilityId: otherHealthFacilityId,
         generateNewQR: false,
@@ -59,7 +59,7 @@ describe('Scan QR code properly ', () => {
 
   it('should handle a QR code that is from another facility', async () => {
     try {
-      await handleQR({
+      await HandleQrService({
         QrRawData: otherQrRawData,
         healthFacilityId,
         generateNewQR: false,
@@ -82,7 +82,7 @@ describe('Scan QR code properly ', () => {
   })
 
   it('should handle a QR code that is given to a patient that comes from another Health facility', async () => {
-    const result = await handleQR({
+    const result = await HandleQrService({
       QrRawData,
       healthFacilityId,
       generateNewQR: true,
@@ -115,7 +115,7 @@ describe('Scan QR code properly ', () => {
     const unknownQrRawData =
       '{"study_id":"Dynamic Tanzania","group_id":"8","uid":"e1a56e66-613c-49f7-9905-31e1e8943af0"}'
     try {
-      await handleQR({
+      await HandleQrService({
         QrRawData: unknownQrRawData,
         healthFacilityId,
         generateNewQR: true,

@@ -9,7 +9,7 @@ import {
 /**
  * The internal imports
  */
-import getAll from '@/Services/Patient/GetAll'
+import { GetAllPatientsService } from '@/Services/Patient'
 
 export default {
   initialState: {
@@ -19,7 +19,7 @@ export default {
       error: null,
     },
   },
-  action: buildAsyncActions('databasePatient/getAll', getAll),
+  action: buildAsyncActions('databasePatient/getAll', GetAllPatientsService),
   reducers: buildAsyncReducers({
     itemKey: 'getAll.item',
     errorKey: 'getAll.error',

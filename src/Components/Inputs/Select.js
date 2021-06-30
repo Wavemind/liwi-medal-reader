@@ -16,12 +16,13 @@ import { translate } from '@/Translations/algorithm'
 
 const Select = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
   const {
     Components: { select },
     Colors,
   } = useTheme()
+
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   // Get node from algorithm
   const question = useSelector(

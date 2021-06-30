@@ -13,11 +13,11 @@ import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const String = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
-  const dispatch = useDispatch()
-
   const {
     Components: { string },
   } = useTheme()
+
+  const dispatch = useDispatch()
 
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],

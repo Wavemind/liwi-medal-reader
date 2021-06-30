@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, TextInput, TouchableOpacity, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,13 +15,14 @@ import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 
 const Numeric = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
   const {
     Components: { numeric, booleanButton },
     Layout,
     Gutters,
   } = useTheme()
+
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   // Get node from algorithm
   const question = useSelector(

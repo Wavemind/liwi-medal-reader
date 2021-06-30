@@ -11,21 +11,20 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { Icon, ConnectionStatus } from '@/Components'
 
-const Header = props => {
-  // Props deconstruction
-  const {
+const Header = ({
+  descriptor: {
     options: { title },
     navigation,
-  } = props.descriptor
-
-  const architecture = useSelector(
-    state => state.healthFacility.item.architecture,
-  )
-
+  },
+}) => {
   // Theme and style elements deconstruction
   const {
     Components: { header },
   } = useTheme()
+
+  const architecture = useSelector(
+    state => state.healthFacility.item.architecture,
+  )
 
   return (
     <View style={header.wrapper}>

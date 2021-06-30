@@ -10,7 +10,7 @@ import { View, ScrollView } from 'react-native'
 import { useTheme } from '@/Theme'
 import { Diagnosis, Custom } from '@/Components'
 
-const FinalDiagnoses = () => {
+const SummaryFinalDiagnoses = () => {
   const {
     Gutters,
     Containers: { patientPersonalInfo },
@@ -27,4 +27,4 @@ const FinalDiagnoses = () => {
   )
 }
 
-export default FinalDiagnoses
+export default SummaryFinalDiagnoses

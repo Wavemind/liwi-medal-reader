@@ -9,7 +9,7 @@ import {
 /**
  * The internal imports
  */
-import getAllMedicalCaseService from '@/Services/MedicalCase/GetAll'
+import { GetAllMedicalCasesService } from '@/Services/MedicalCase'
 
 export default {
   initialState: {
@@ -21,7 +21,7 @@ export default {
   },
   action: buildAsyncActions(
     'databaseMedicalCase/getAll',
-    getAllMedicalCaseService,
+    GetAllMedicalCasesService,
   ),
   reducers: buildAsyncReducers({
     itemKey: 'getAll.item',

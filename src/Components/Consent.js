@@ -14,11 +14,8 @@ import { useTheme } from '@/Theme'
 import { SectionHeader, SquareButton, Icon } from '@/Components'
 import UpdateField from '@/Store/Patient/UpdateField'
 
-const Consent = props => {
+const Consent = () => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const navigation = useNavigation()
   const {
     Components: { consent, question, booleanButton },
     Layout,
@@ -26,6 +23,10 @@ const Consent = props => {
     FontSize,
     Colors,
   } = useTheme()
+
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigation = useNavigation()
 
   const patientConsent = useSelector(state => state.patient.item.consent)
   const patientConsentFile = useSelector(

@@ -1,11 +1,12 @@
 /**
  * The external imports
  */
-import React, {useState, useEffect, useCallback} from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, TouchableOpacity, TextInput, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import filter from 'lodash/filter'
+import debounce from 'lodash/debounce'
 
 /**
  * The internal imports
@@ -13,14 +14,9 @@ import filter from 'lodash/filter'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
-import debounce from "lodash/debounce";
-import GetAllPatientDB from "@/Store/DatabasePatient/GetAll";
 
 const Autocomplete = ({ questionId }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-
   const {
     Colors,
     FontSize,
@@ -29,10 +25,14 @@ const Autocomplete = ({ questionId }) => {
     Components: { autocomplete },
   } = useTheme()
 
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
   )
   const villageList = useSelector(state => state.algorithm.item.village_json)
+
   const [searchTerm, setSearchTerm] = useState(question.value)
   const [searchResults, setSearchResults] = useState([])
   const [optionSelected, setOptionSelected] = useState(true)

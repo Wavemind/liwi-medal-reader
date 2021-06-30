@@ -6,7 +6,7 @@ import uuid from 'react-native-uuid'
 /**
  * The internal imports
  */
-import { generateNodes } from '@/Services/Node'
+import { GenerateNodesService } from '@/Services/Node'
 
 export default async ({ algorithm, patientId }) => {
   return {
@@ -25,7 +25,7 @@ export default async ({ algorithm, patientId }) => {
     },
     id: uuid.v4(),
     patient_id: patientId,
-    nodes: generateNodes({ nodes: algorithm.nodes }),
+    nodes: GenerateNodesService({ nodes: algorithm.nodes }),
     json: '',
     advancement: {
       stage: 0,

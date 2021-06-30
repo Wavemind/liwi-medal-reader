@@ -9,10 +9,7 @@ import { View, Text } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 
-const SectionHeader = props => {
-  // Props deconstruction
-  const { label } = props
-
+const SectionHeader = ({ label }) => {
   // Theme and style elements deconstruction
   const {
     Components: { sectionHeader },

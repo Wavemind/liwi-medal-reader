@@ -9,12 +9,12 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { Question, EmptyList, RegistrationHeader } from '@/Components'
-import { RegistrationQuestions } from '@/Services/Steps'
+import { RegistrationQuestionsService } from '@/Services/Steps'
 
 const RegistrationMedicalCaseContainer = () => {
   const { t } = useTranslation()
 
-  const questions = RegistrationQuestions()
+  const questions = RegistrationQuestionsService()
 
   return (
     <FlatList

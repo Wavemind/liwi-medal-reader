@@ -15,11 +15,10 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Icon, SquareButton } from '@/Components'
-import NavbarActions from './Actions'
-import { CheckSynchronization } from '@/Services/MedicalCase'
+import { Icon, SquareButton, ActionsNavbar } from '@/Components'
+import { CheckSynchronizationService } from '@/Services/MedicalCase'
 
-const BottomNavbar = props => {
+const BottomNavbar = () => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -38,7 +37,7 @@ const BottomNavbar = props => {
 
   // Checks whether the synchronization required warning is to be shown
   useEffect(async () => {
-    const required = await CheckSynchronization(routeName)
+    const required = await CheckSynchronizationService(routeName)
     if (required !== syncRequired) {
       setSyncRequired(required)
     }
@@ -75,7 +74,7 @@ const BottomNavbar = props => {
         </View>
       )}
       <View style={bottomNavbar.actions}>
-        <NavbarActions navigationState={navigationState} />
+        <ActionsNavbar navigationState={navigationState} />
       </View>
     </View>
   )

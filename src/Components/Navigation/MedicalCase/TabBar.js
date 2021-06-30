@@ -11,7 +11,7 @@ import uuid from 'react-native-uuid'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import TabBarItem from './TabBarItem'
+import { TabBarItem } from '@/Components'
 import ChangeAdvancement from '@/Store/MedicalCase/ChangeAdvancement'
 import AddStepActivities from '@/Store/MedicalCase/AddStepActivities'
 import { getStages } from '@/Utils/Navigation/GetStages'
