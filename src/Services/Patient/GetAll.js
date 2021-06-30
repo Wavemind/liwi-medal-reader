@@ -4,6 +4,7 @@
 import useDatabase from '../Database/useDatabase'
 import { store } from '@/Store'
 import { Config } from '@/Config'
+import { UniqObject } from '@/Utils'
 
 export default async ({ page, reset = false, params }) => {
   const { getAll } = useDatabase()
@@ -23,7 +24,7 @@ export default async ({ page, reset = false, params }) => {
   }
 
   return {
-    data: patients,
+    data: UniqObject(patients),
     isLastBatch,
   }
 }
