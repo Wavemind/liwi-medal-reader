@@ -100,7 +100,6 @@ export const orderSystems = (systemOrder, questionsPerSystem) => {
         title: system.title,
         data: [],
       })
-    }
   })
   return orderedSystem
 }

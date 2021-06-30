@@ -59,7 +59,7 @@ const Question = ({ questionId, disabled = false }) => {
   const emergency =
     currentNode.emergency_status === 'referral' ||
     currentNode.emergency_status === 'emergency'
-
+  console.log(questionId)
   return (
     <View style={[question.wrapper(emergency)]}>
       <View style={question.container}>
