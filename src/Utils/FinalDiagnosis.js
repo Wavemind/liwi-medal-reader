@@ -32,12 +32,17 @@ export const findProposedFinalDiagnoses = diagnosis => {
  * @param {Array<Integer>} finalDiagnoses : an array of id we populate when we find a final diagnosis
  * @returns we return finalDiagnoses
  */
-const searchFinalDiagnoses = (instance, instances, finalDiagnoses = []) => {
+const searchFinalDiagnoses = (
+  instance,
+  instances,
+  sourceId = null,
+  finalDiagnoses = [],
+) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   const mcNodes = state.medicalCase.item.nodes
 
-  const instanceCondition = calculateCondition(instance)
+  const instanceCondition = calculateCondition(instance, sourceId)
 
   if (instanceCondition) {
     instance.children.forEach(childId => {
@@ -50,7 +55,12 @@ const searchFinalDiagnoses = (instance, instances, finalDiagnoses = []) => {
           finalDiagnoses.push(childId)
         }
       } else {
-        searchFinalDiagnoses(instances[childId], instances, finalDiagnoses)
+        searchFinalDiagnoses(
+          instances[childId],
+          instances,
+          instance.id,
+          finalDiagnoses,
+        )
       }
     })
   }
