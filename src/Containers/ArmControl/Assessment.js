@@ -1,35 +1,19 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View, FlatList } from 'react-native'
-import { useIsFocused } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
-import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
-import { AssessmentQuestions } from '@/Services/Steps'
-import { debugNode } from '@/Utils/MedicalCase'
+import { AssessmentArmControlQuestions } from '@/Services/Steps'
 
 const AssessmentMedicalCaseContainer = props => {
   const { t } = useTranslation()
-  const isFocused = useIsFocused()
-  const [questions, setQuestions] = useState(AssessmentQuestions())
-
-  debugNode(3545)
-  debugNode(4530)
-  debugNode(5092)
-
-  // Update questions list only if question array change
-  useEffect(() => {
-    const assessmentQuestions = AssessmentQuestions()
-    if (!isEqual(assessmentQuestions, questions)) {
-      setQuestions(assessmentQuestions)
-    }
-  }, [isFocused])
+  const [questions] = useState(AssessmentArmControlQuestions())
 
   return (
     <View>

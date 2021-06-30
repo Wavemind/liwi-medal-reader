@@ -14,6 +14,7 @@ export default {
     scan_consent: 'Scan new consent',
     add: 'Add',
     apply: 'Apply Selection',
+    reset: 'Reset',
     save: 'Save',
   },
   algorithm: {
@@ -183,6 +184,10 @@ export default {
         environment: 'Environment',
         app_languages: 'App languages',
         algorithm_languages: 'Algorithm languages',
+        languages: {
+          en: 'English',
+          fr: 'Français',
+        },
       },
       algorithm: {
         title: 'Algorithm',

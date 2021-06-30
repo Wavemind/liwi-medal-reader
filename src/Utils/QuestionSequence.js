@@ -45,7 +45,6 @@ export const getQsValue = (qsId, newMcNodes) => {
  */
 const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
   const mcNode = newMcNodes[instance.id]
-
   const instanceCondition = calculateCondition(instance)
 
   if (instanceCondition && mcNode.answer === null) {
@@ -53,29 +52,21 @@ const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
   }
 
   if (instanceCondition) {
-    if (isEndOfQS(instance.children, qsId)) {
-      return reduceConditions(
-        diagramConditionsValues(qsId, instance, newMcNodes),
-      )
-    } else {
-      const childrenInstances = instance.children.map(child => instances[child])
-      return reduceConditions(
-        // TODO break if QS node  Values is yes for optimization
-        childrenInstances.map(child =>
-          qsInstanceValue(child, newMcNodes, instances, qsId),
-        ),
-      )
-    }
+    const children = instance.children
+      .filter(child => instances[child])
+      .map(child => instances[child])
+
+    const childrenConditions = children.map(child =>
+      qsInstanceValue(child, newMcNodes, instances, qsId),
+    )
+
+    const finalDiagnosesConditions = diagramConditionsValues(
+      qsId,
+      instance,
+      newMcNodes,
+    )
+    return reduceConditions(childrenConditions.concat(finalDiagnosesConditions))
   } else {
     return false
   }
-}
-
-/**
- * Tells if the children we are processing are the last child
- * @param {Array<instance>} children
- * @returns
- */
-const isEndOfQS = (children, qsId) => {
-  return children.find(childId => childId === qsId) !== undefined
 }

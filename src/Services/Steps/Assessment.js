@@ -22,6 +22,7 @@ export default () => {
 
     handleChildren(
       topConditions,
+      null,
       questionsToDisplay,
       diagnosis.instances,
       assessmentCategories,

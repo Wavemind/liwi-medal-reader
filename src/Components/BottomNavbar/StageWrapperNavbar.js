@@ -12,6 +12,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { ARM_CONTROL_ASSESSMENT_STAGE } from '@/Config/Navigation'
 import { SquareButton, ErrorNavBar } from '@/Components'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import InsertPatient from '@/Store/DatabasePatient/Insert'
@@ -28,6 +29,7 @@ import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
 import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertMedicalCase from '@/Store/DatabaseMedicalCase/Insert'
+import ResetAssessments from '@/Store/MedicalCase/ArmControl/ResetAssessments'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -47,6 +49,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   const stageNavigation = getStages()
   const advancement = useSelector(state => state.medicalCase.item.advancement)
   const patient = useSelector(state => state.patient.item)
+  const isArmControl = useSelector(state => state.algorithm.item.is_arm_control)
 
   const patientSavedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
@@ -136,6 +139,17 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     }
 
     setLoading(false)
+  }
+
+  /**
+   * Dispatches the action that resets all the Assessments + refreshed the view
+   */
+  const handleResetAssessments = async () => {
+    await dispatch(ResetAssessments.action())
+    navigateToStage(
+      ARM_CONTROL_ASSESSMENT_STAGE,
+      stageNavigation[ARM_CONTROL_ASSESSMENT_STAGE].steps.length - 1,
+    )
   }
 
   /**
@@ -247,17 +261,31 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     <View style={bottomNavbar.stageWrapperContainer}>
       <View style={[Layout.fill, Layout.row]}>
         {stageIndex > 0 ? (
-          <SquareButton
-            label={t('containers.medical_case.navigation.back')}
-            filled
-            bgColor={Colors.secondary}
-            color={Colors.primary}
-            icon="left-arrow"
-            align={Layout.alignItemsStart}
-            iconSize={FontSize.regular}
-            onPress={() => stepVerification(-1, true)}
-          />
+          <View style={bottomNavbar.actionButton}>
+            <SquareButton
+              label={t('containers.medical_case.navigation.back')}
+              filled
+              bgColor={Colors.secondary}
+              color={Colors.primary}
+              icon="left-arrow"
+              align={Layout.alignItemsStart}
+              iconSize={FontSize.regular}
+              onPress={() => stepVerification(-1, true)}
+            />
+          </View>
         ) : null}
+        {isArmControl && stageIndex === ARM_CONTROL_ASSESSMENT_STAGE && (
+          <View style={bottomNavbar.actionButton}>
+            <SquareButton
+              label={t('actions.reset')}
+              filled
+              bgColor={Colors.grey}
+              icon="refresh"
+              iconSize={FontSize.large}
+              onPress={handleResetAssessments}
+            />
+          </View>
+        )}
       </View>
       <View style={[Layout.fill, Layout.row]}>
         {advancement.stage > 0 && (
