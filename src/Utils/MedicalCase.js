@@ -243,9 +243,8 @@ export const calculateCondition = (instance, sourceId = null) => {
     .filter(condition => {
       if (sourceId === null) {
         return true
-      } else {
-        return condition.node_id === sourceId
       }
+      return condition.node_id === sourceId
     })
     .some(
       condition => mcNodes[condition.node_id].answer === condition.answer_id,
