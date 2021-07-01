@@ -17,7 +17,7 @@ import {
 } from '@/Components'
 import { RegistrationQuestions } from '@/Services/Steps'
 
-const RegistrationMedicalCaseContainer = props => {
+const RegistrationMedicalCaseContainer = () => {
   const { t } = useTranslation()
 
   const questions = RegistrationQuestions()
@@ -35,7 +35,7 @@ const RegistrationMedicalCaseContainer = props => {
         case 'first_name':
           return <PatientString field="first_name" />
         case 'last_name':
-          return <PatientString field="first_name" />
+          return <PatientString field="last_name" />
         default:
           return <BirthDate />
       }
