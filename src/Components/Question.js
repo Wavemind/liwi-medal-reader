@@ -70,7 +70,7 @@ const Question = ({ questionId, disabled = false }) => {
             style={
               emergency
                 ? question.emergencyText
-                : question.text(fieldError ? 'error' : '')
+                : question.text(fieldError ? 'error' : validationType)
             }
           >
             {translate(currentNode.label)} {currentNode.is_mandatory && '*'}

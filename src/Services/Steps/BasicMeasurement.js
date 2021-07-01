@@ -19,6 +19,7 @@ export default () => {
     return true
   })
 
+  // Adding Reference table to the view
   return questionsId.concat(
     Object.values(nodes)
       .filter(node => node.reference_table_x_id)

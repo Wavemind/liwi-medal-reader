@@ -11,7 +11,7 @@ import { Config } from '@/Config'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
 import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
-
+import { ARM_CONTROL_ASSESSMENT_STAGE } from '@/Config/Navigation'
 import { store } from '@/Store/index'
 
 /**
@@ -161,12 +161,23 @@ export const setNodeValue = (mcNode, node, value) => {
   }
 }
 
+/**
+ *
+ * @param {*} nodeId
+ * @param {*} value
+ */
 export const setAnswer = async (nodeId, value) => {
   const advancement = store.getState().medicalCase.item.advancement
   await store.dispatch(SetAnswer.action({ nodeId, value }))
-  if (advancement.stage === 2 && advancement.step === 0) {
+  if (
+    advancement.stage === ARM_CONTROL_ASSESSMENT_STAGE &&
+    advancement.step === 0
+  ) {
     store.dispatch(MedicalHistory.action())
-  } else if (advancement.stage === 2 && advancement.step === 1) {
+  } else if (
+    advancement.stage === ARM_CONTROL_ASSESSMENT_STAGE &&
+    advancement.step === 1
+  ) {
     store.dispatch(PhysicalExam.action())
   }
 }
