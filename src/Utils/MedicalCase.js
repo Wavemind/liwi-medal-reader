@@ -68,30 +68,6 @@ export const getTopConditions = (instances, isFinalDiagnosis = false) => {
       (isFinalDiagnosis || instance.final_diagnosis_id === null),
   )
 }
-/**
- * Transforms an array of system to an object that is readable by the view and will order it
- * based on the order defined in the algorithm
- * @param {} systemOrder : Order of the systems and the question for this specific step
- * @param {} questionsPerSystem : the systems and the question before ordering
- * @returns
- */
-export const orderSystems = (systemOrder, questionsPerSystem) => {
-  const orderedSystem = []
-  systemOrder.forEach(system => {
-    if (
-      questionsPerSystem[system.title] &&
-      questionsPerSystem[system.title].length > 0
-    ) {
-      orderedSystem.push({
-        title: system.title,
-        data: uniq(system.data).filter(data =>
-          questionsPerSystem[system.title].includes(data),
-        ),
-      })
-    }
-  })
-  return orderedSystem
-}
 
 /**
  * Recursive function that goes through the diagram and add the valid node in questionsToDisplay
@@ -110,8 +86,10 @@ export const handleChildren = (
   instances,
   categories,
   diagramId,
-  diagramType = Config.NODE_TYPES.diagnosis,
-  system = true,
+  diagramType,
+  system,
+  currentSystems,
+  systemOrder,
 ) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
@@ -131,10 +109,18 @@ export const handleChildren = (
           instance.id,
           Config.NODE_TYPES.questionsSequence,
           system,
+          currentSystems,
+          systemOrder,
         )
       } else {
         if (system) {
-          addQuestionToSystem(instance.id, questionsToDisplay, categories)
+          addQuestionToSystem(
+            instance.id,
+            questionsToDisplay,
+            categories,
+            currentSystems,
+            systemOrder,
+          )
         } else {
           addQuestion(instance.id, questionsToDisplay, categories)
         }
@@ -165,6 +151,8 @@ export const handleChildren = (
           diagramId,
           diagramType,
           system,
+          currentSystems,
+          systemOrder,
         )
       }
     }
@@ -177,14 +165,47 @@ export const handleChildren = (
  * @param {object} questionsToDisplay : Object of question id to display filtered by system
  * @param {Array<String>} categories : The categories we want to add in questionsToDisplay
  */
-const addQuestionToSystem = (questionId, questionsToDisplay, categories) => {
+const addQuestionToSystem = (
+  questionId,
+  questionsToDisplay,
+  categories,
+  currentSystems,
+  systemOrder,
+) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
+
+  const lastSystemUpdated = state.medicalCase.item.lastSystemUpdated
+
   if (categories.includes(nodes[questionId].category)) {
-    if (nodes[questionId].system in questionsToDisplay) {
-      questionsToDisplay[nodes[questionId].system].push(questionId)
+    const oldSystemIndex = systemOrder.findIndex(
+      system => system.title === lastSystemUpdated?.system,
+    )
+
+    const currentQuestionSystemIndex = systemOrder.findIndex(
+      system => system.title === nodes[questionId].system,
+    )
+    const visibleNodes = Object.values(currentSystems)
+      .map(system => system)
+      .flat()
+    const isAlreadyDisplayed = visibleNodes.includes(questionId)
+
+    if (
+      !isAlreadyDisplayed &&
+      visibleNodes.length > 0 &&
+      currentQuestionSystemIndex < oldSystemIndex
+    ) {
+      if ('follow_up_questions' in questionsToDisplay) {
+        questionsToDisplay.follow_up_questions.push(questionId)
+      } else {
+        questionsToDisplay.follow_up_questions = [questionId]
+      }
     } else {
-      questionsToDisplay[nodes[questionId].system] = [questionId]
+      if (nodes[questionId].system in questionsToDisplay) {
+        questionsToDisplay[nodes[questionId].system].push(questionId)
+      } else {
+        questionsToDisplay[nodes[questionId].system] = [questionId]
+      }
     }
   }
 }

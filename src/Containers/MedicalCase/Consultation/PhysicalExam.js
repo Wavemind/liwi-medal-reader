@@ -1,52 +1,49 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
-import { SectionList, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { ScrollView } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
-import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
  */
-import { useTheme } from '@/Theme'
-import { SectionHeader, Question, Comment } from '@/Components'
-import { translate } from '@/Translations/algorithm'
-import { PhysicalExamQuestions } from '@/Services/Steps'
+import { System, Comment, Loader } from '@/Components'
+import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
 
 const PhysicalExamMedicalCaseContainer = props => {
-  const { Gutters } = useTheme()
   const isFocused = useIsFocused()
+  const dispatch = useDispatch()
 
-  const algorithm = useSelector(state => state.algorithm.item)
-  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
-
-  const [systems, setSystems] = useState(PhysicalExamQuestions())
+  const physicalExamStep = useSelector(
+    state => state.algorithm.item.config.full_order.physical_exam_step,
+  )
+  const loading = useSelector(
+    state => state.questionsPerSystem.physicalExam.loading,
+  )
 
   // Update questions list only if question array change
   useEffect(() => {
-    const physicalExamQuestions = PhysicalExamQuestions()
-
-    if (!isEqual(physicalExamQuestions, systems)) {
-      setSystems(physicalExamQuestions)
+    if (isFocused) {
+      dispatch(PhysicalExam.action())
     }
-  }, [isFocused, mcNodes])
+  }, [isFocused])
+
+  if (loading) {
+    return <Loader />
+  }
+
   return (
-    <SectionList
-      sections={systems}
-      keyExtractor={item => item}
-      removeClippedSubviews={false}
-      renderItem={({ item }) => <Question questionId={item} />}
-      renderSectionHeader={({ section: { title } }) => (
-        <View style={Gutters.regularHMargin}>
-          <SectionHeader
-            label={translate(algorithm.config.systems_translations[title])}
-          />
-        </View>
-      )}
-      ListFooterComponent={<Comment />}
-    />
+    <ScrollView>
+      {physicalExamStep.map(system => (
+        <System
+          key={`medical-history-${system.title}`}
+          systemName={system.title}
+        />
+      ))}
+      <Comment />
+    </ScrollView>
   )
 }
 

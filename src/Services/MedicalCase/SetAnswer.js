@@ -5,12 +5,12 @@
 /**
  * The internal imports
  */
-import { store } from '@/Store'
 import QuestionValidationService from '@/Services/Validation/Question'
 import { setNodeValue } from '@/Utils/Answers'
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
 import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
 import AddActivityService from '@/Services/Activity/Add'
+import { store } from '@/Store'
 
 export default props => {
   const { nodeId, value } = props
@@ -25,8 +25,7 @@ export default props => {
   const node = nodes[nodeId]
 
   const mcNode = newMedicalCase.nodes[nodeId]
-  // TODO find another way
-  let newNodes = JSON.parse(JSON.stringify(newMedicalCase.nodes))
+  let newNodes = {}
 
   // Validation
   const validation = QuestionValidationService(mcNode, node, value)
@@ -54,19 +53,32 @@ export default props => {
     ...newValues,
   }
 
-  newNodes = UpdateQuestionSequence({ nodeId: node.id, newNodes })
-  newNodes = UpdateRelatedQuestion({ nodeId: node.id, newNodes })
+  newNodes = UpdateQuestionSequence({
+    nodeId: node.id,
+    newNodes,
+    mcNodes: newMedicalCase.nodes,
+  })
+  newNodes = UpdateRelatedQuestion({
+    nodeId: node.id,
+    newNodes,
+    mcNodes: newMedicalCase.nodes,
+  })
 
   const newActivities = AddActivityService({
     medicalCase: newMedicalCase,
     nodeId,
     value,
   })
-
   return {
     ...newMedicalCase,
+    lastSystemUpdated: {
+      stage: newMedicalCase.advancement.stage,
+      step: newMedicalCase.advancement.step,
+      system: node.system,
+    },
     activities: [...newActivities],
     nodes: {
+      ...newMedicalCase.nodes,
       ...newNodes,
     },
   }

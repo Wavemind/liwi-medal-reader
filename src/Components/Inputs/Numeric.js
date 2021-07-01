@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, TextInput, TouchableOpacity, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import setAnswer from '@/Utils/SetAnswer'
+
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 
 const Numeric = ({ questionId, editable = true }) => {
@@ -43,7 +44,7 @@ const Numeric = ({ questionId, editable = true }) => {
     const newValue = e.nativeEvent.text
 
     if (question.value !== newValue) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
+      setAnswer(question.id, newValue)
     }
   }
 
