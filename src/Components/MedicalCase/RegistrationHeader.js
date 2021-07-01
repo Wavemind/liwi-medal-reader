@@ -9,14 +9,10 @@ import { useTranslation } from 'react-i18next'
 /**
  * The external imports
  */
-import {
-  BirthDate,
-  Consent,
-  PatientString,
-  SectionHeader,
-} from '@/Components'
+import { BirthDate, Consent, PatientString, SectionHeader } from '@/Components'
 import { useTheme } from '@/Theme'
 
+// TODO remove PatientStrings and Birthdate from here once algo has been updated with correct registration questions
 const RegistrationHeader = () => {
   const { Gutters } = useTheme()
   const { t } = useTranslation()
