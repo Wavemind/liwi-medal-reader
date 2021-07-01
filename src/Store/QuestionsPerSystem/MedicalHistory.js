@@ -4,13 +4,13 @@ import {
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import MedicalHistory from '@/Services/Steps/MedicalHistory'
+import { MedicalHistoryQuestions } from '@/Services/Steps'
 
 export default {
   initialState: buildAsyncState('medicalHistory'),
   action: buildAsyncActions(
     'questionsPerSystem/medicalHistory',
-    MedicalHistory,
+    MedicalHistoryQuestions,
   ),
   reducers: buildAsyncReducers({
     errorKey: 'medicalHistory.error',

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { View, TouchableOpacity, TextInput, Text } from 'react-native'
 import { useSelector } from 'react-redux'
 import filter from 'lodash/filter'
+import debounce from 'lodash/debounce'
 
 /**
  * The internal imports
@@ -13,7 +14,6 @@ import filter from 'lodash/filter'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import setAnswer from '@/Utils/SetAnswer'
-import debounce from 'lodash/debounce'
 
 const Autocomplete = ({ questionId }) => {
   // Theme and style elements deconstruction

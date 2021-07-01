@@ -9,7 +9,7 @@ import { useIsFocused } from '@react-navigation/native'
 /**
  * The internal imports
  */
-import { System, Comment } from '@/Components'
+import { System, Comment, Loader } from '@/Components'
 import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
 
 const PhysicalExamMedicalCaseContainer = props => {
@@ -19,6 +19,9 @@ const PhysicalExamMedicalCaseContainer = props => {
   const physicalExamStep = useSelector(
     state => state.algorithm.item.config.full_order.physical_exam_step,
   )
+  const loading = useSelector(
+    state => state.questionsPerSystem.physicalExam.loading,
+  )
 
   // Update questions list only if question array change
   useEffect(() => {
@@ -26,10 +29,18 @@ const PhysicalExamMedicalCaseContainer = props => {
       dispatch(PhysicalExam.action())
     }
   }, [isFocused])
+
+  if (loading) {
+    return <Loader />
+  }
+
   return (
     <ScrollView>
       {physicalExamStep.map(system => (
-        <System systemName={system.title} />
+        <System
+          key={`medical-history-${system.title}`}
+          systemName={system.title}
+        />
       ))}
       <Comment />
     </ScrollView>

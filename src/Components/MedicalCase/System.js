@@ -21,8 +21,9 @@ const System = ({ systemName }) => {
   const systemData = useSelector(
     state => state.questionsPerSystem.item.medicalHistory[systemName],
   )
-  if (systemData?.length > 0) {
-    return (
+
+  return (
+    systemData?.length > 0 && (
       <View key={systemName}>
         <View style={Gutters.regularHMargin}>
           <SectionHeader label={translate(systemsTranslations[systemName])} />
@@ -32,7 +33,6 @@ const System = ({ systemName }) => {
         ))}
       </View>
     )
-  }
-  return null
+  )
 }
 export default System

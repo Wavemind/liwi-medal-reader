@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import {
   Icon,
-  DisplayInput,
+  DisplayUnavailable,
   QuestionInfoButton,
   InputFactory,
 } from '@/Components'
@@ -88,7 +88,7 @@ const Question = ({ questionId, disabled = false }) => {
             }
           >
             {currentNode.unavailable || additionalUnavailableAnswer ? (
-              <DisplayInput questionId={questionId} />
+              <DisplayUnavailable questionId={questionId} />
             ) : (
               <InputFactory questionId={questionId} />
             )}

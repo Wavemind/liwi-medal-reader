@@ -34,8 +34,8 @@ const Boolean = ({ questionId, disabled = false }) => {
   // Local state definition
   const [value, setValue] = useState(answer)
 
-  const yesAnswer = getYesAnswer(currentNode)
-  const noAnswer = getNoAnswer(currentNode)
+  const [yesAnswer] = useState(getYesAnswer(currentNode))
+  const [noAnswer] = useState(getNoAnswer(currentNode))
 
   /**
    * Set node answer and handle emergency action

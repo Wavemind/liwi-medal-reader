@@ -14,7 +14,6 @@ export default props => {
     },
     medicalCase: { item: newMedicalCase },
   } = store.getState()
-  // TODO find another way
   let newNodes = {}
 
   Object.values(nodes)

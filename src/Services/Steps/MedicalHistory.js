@@ -24,8 +24,6 @@ export default () => {
   const medicalHistoryStep =
     state.algorithm.item.config.full_order.medical_history_step
 
-  // TODO Comment on affiche les vital Signs / Background calculation
-
   const validDiagnoses = getValidDiagnoses()
   const currentSystems = state.questionsPerSystem.item.medicalHistory
 

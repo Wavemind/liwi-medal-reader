@@ -2,8 +2,8 @@
  * The internal imports
  */
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
-import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
-import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
+import UpdateMedicalHistoryQuestions from '@/Store/QuestionsPerSystem/MedicalHistory'
+import UpdatePhysicalExamQuestions from '@/Store/QuestionsPerSystem/PhysicalExam'
 import { ARM_CONTROL_ASSESSMENT_STAGE } from '@/Config/Navigation'
 import { store } from '@/Store/index'
 
@@ -19,11 +19,11 @@ export default async (nodeId, value) => {
     advancement.stage === ARM_CONTROL_ASSESSMENT_STAGE &&
     advancement.step === 0
   ) {
-    store.dispatch(MedicalHistory.action())
+    store.dispatch(UpdateMedicalHistoryQuestions.action())
   } else if (
     advancement.stage === ARM_CONTROL_ASSESSMENT_STAGE &&
     advancement.step === 1
   ) {
-    store.dispatch(PhysicalExam.action())
+    store.dispatch(UpdatePhysicalExamQuestions.action())
   }
 }
