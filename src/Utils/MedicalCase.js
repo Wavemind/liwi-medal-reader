@@ -247,6 +247,8 @@ export const excludedByCC = questionId => {
 /**
  * For an instance we will calculate its conditions
  * @param {Instance} instance : the instance we wanna calculate
+ * @param {Integer} sourceId : the parent node id who called the function
+ * @param {Nodes} newNodes : the nodes updated in the setAnswer process
  * @returns {Boolean} : value of the condition
  */
 export const calculateCondition = (
