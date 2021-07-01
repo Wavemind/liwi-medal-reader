@@ -12,7 +12,7 @@ import filter from 'lodash/filter'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import { setAnswer } from '@/Utils/Answers'
+import setAnswer from '@/Utils/SetAnswer'
 import debounce from 'lodash/debounce'
 
 const Autocomplete = ({ questionId }) => {

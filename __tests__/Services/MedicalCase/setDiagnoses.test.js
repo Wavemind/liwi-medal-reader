@@ -15,7 +15,6 @@ import { store } from '@/Store'
 import SetDiagnoses from '@/Services/MedicalCase/SetDiagnoses'
 import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
-import { debugNode } from '@/Utils/MedicalCase'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')

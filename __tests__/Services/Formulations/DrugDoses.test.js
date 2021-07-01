@@ -10,7 +10,7 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 import { drugDoses } from '@/Services/MedicalCase/DrugDoses'
-import { setAnswer } from '@/Utils/Answers'
+import setAnswer from '@/Utils/SetAnswer'
 
 import { setBirthDate } from '../../Utils/BirthDate'
 

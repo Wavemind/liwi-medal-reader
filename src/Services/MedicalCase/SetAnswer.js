@@ -5,12 +5,12 @@
 /**
  * The internal imports
  */
-import { store } from '@/Store'
 import QuestionValidationService from '@/Services/Validation/Question'
 import { setNodeValue } from '@/Utils/Answers'
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
 import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
 import AddActivityService from '@/Services/Activity/Add'
+import { store } from '@/Store'
 
 export default props => {
   const { nodeId, value } = props

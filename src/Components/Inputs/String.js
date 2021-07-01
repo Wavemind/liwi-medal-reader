@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { setAnswer } from '@/Utils/Answers'
+import setAnswer from '@/Utils/SetAnswer'
 
 const String = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction

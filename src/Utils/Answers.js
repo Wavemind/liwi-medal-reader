@@ -8,11 +8,6 @@ import find from 'lodash/find'
  * The internal imports
  */
 import { Config } from '@/Config'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
-import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
-import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
-import { ARM_CONTROL_ASSESSMENT_STAGE } from '@/Config/Navigation'
-import { store } from '@/Store/index'
 
 /**
  * Get yes answer based on reference
@@ -158,26 +153,5 @@ export const setNodeValue = (mcNode, node, value) => {
     default:
       console.error('FORMAT NOT HANDLED')
       return { answer: null, value: null }
-  }
-}
-
-/**
- * Wraps the setAnswer function it allows to update the question to render in Consultations Stage
- * @param {Integer} nodeId : Node we want to update
- * @param {*} value : Values we wanna set
- */
-export const setAnswer = async (nodeId, value) => {
-  const advancement = store.getState().medicalCase.item.advancement
-  await store.dispatch(SetAnswer.action({ nodeId, value }))
-  if (
-    advancement.stage === ARM_CONTROL_ASSESSMENT_STAGE &&
-    advancement.step === 0
-  ) {
-    store.dispatch(MedicalHistory.action())
-  } else if (
-    advancement.stage === ARM_CONTROL_ASSESSMENT_STAGE &&
-    advancement.step === 1
-  ) {
-    store.dispatch(PhysicalExam.action())
   }
 }

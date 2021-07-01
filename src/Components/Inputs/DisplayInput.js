@@ -15,7 +15,7 @@ import { Checkbox, Select, InputFactory } from '@/Components'
 import { Config } from '@/Config'
 import { store } from '@/Store'
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
-import { setAnswer } from '@/Utils/Answers'
+import setAnswer from '@/Utils/SetAnswer'
 
 const DisplayInput = ({ questionId }) => {
   // Theme and style elements deconstruction

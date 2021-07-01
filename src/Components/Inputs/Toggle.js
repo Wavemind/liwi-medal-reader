@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import { wp } from '@/Theme/Responsive'
 import { Icon } from '@/Components'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
-import { setAnswer } from '@/Utils/Answers'
+import setAnswer from '@/Utils/SetAnswer'
 
 const ToggleComplaintCategory = ({ questionId }) => {
   // Theme and style elements deconstruction

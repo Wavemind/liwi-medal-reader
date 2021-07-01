@@ -13,7 +13,7 @@ import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
 import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
-import { setAnswer } from '@/Utils/Answers'
+import setAnswer from '@/Utils/SetAnswer'
 
 const Boolean = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction

@@ -1,4 +1,4 @@
-import { setAnswer as UtilsSetAnswer } from '@/Utils/Answers'
+import { default as UtilsSetAnswer } from '@/Utils/SetAnswer'
 
 /**
  * Set a an answer for a node
