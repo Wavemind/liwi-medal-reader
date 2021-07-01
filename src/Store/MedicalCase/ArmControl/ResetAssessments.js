@@ -4,11 +4,14 @@ import {
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import ResetAssessments from '@/Services/MedicalCase/ResetAssessments'
+import { ResetAssessmentsService } from '@/Services/MedicalCase'
 
 export default {
   initialState: buildAsyncState('resetAssessments'),
-  action: buildAsyncActions('medicalCase/resetAssessments', ResetAssessments),
+  action: buildAsyncActions(
+    'medicalCase/resetAssessments',
+    ResetAssessmentsService,
+  ),
   reducers: buildAsyncReducers({
     errorKey: 'resetAssessments.error',
     loadingKey: 'resetAssessments.loading',

@@ -12,16 +12,16 @@ import { useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import setAnswer from '@/Utils/SetAnswer'
-
 import { translate } from '@/Translations/algorithm'
 
 const Select = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
   const {
     Components: { select },
     Colors,
   } = useTheme()
+
+  const { t } = useTranslation()
 
   // Get node from algorithm
   const question = useSelector(

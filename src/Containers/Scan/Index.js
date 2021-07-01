@@ -25,7 +25,7 @@ import { navigateAndSimpleReset } from '@/Navigators/Root'
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
-const IndexScanContainer = props => {
+const IndexScanContainer = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigation = useNavigation()

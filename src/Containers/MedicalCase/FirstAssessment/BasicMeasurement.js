@@ -11,16 +11,16 @@ import isEqual from 'lodash/isEqual'
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
-import { BasicMeasurementQuestions } from '@/Services/Steps'
+import { BasicMeasurementQuestionsService } from '@/Services/Steps'
 
-const BasicMeasurementMedicalCaseContainer = props => {
+const BasicMeasurementMedicalCaseContainer = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
-  const [questions, setQuestions] = useState(BasicMeasurementQuestions())
+  const [questions, setQuestions] = useState(BasicMeasurementQuestionsService())
 
   // Update questions list only if question array change
   useEffect(() => {
-    const basicMeasurementQuestions = BasicMeasurementQuestions()
+    const basicMeasurementQuestions = BasicMeasurementQuestionsService()
     if (!isEqual(basicMeasurementQuestions, questions)) {
       setQuestions(basicMeasurementQuestions)
     }

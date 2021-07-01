@@ -17,8 +17,6 @@ import setAnswer from '@/Utils/SetAnswer'
 
 const Autocomplete = ({ questionId }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-
   const {
     Colors,
     FontSize,
@@ -27,10 +25,13 @@ const Autocomplete = ({ questionId }) => {
     Components: { autocomplete },
   } = useTheme()
 
+  const { t } = useTranslation()
+
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
   )
   const villageList = useSelector(state => state.algorithm.item.village_json)
+
   const [searchTerm, setSearchTerm] = useState(question.value)
   const [searchResults, setSearchResults] = useState([])
   const [optionSelected, setOptionSelected] = useState(true)

@@ -9,7 +9,7 @@ import find from 'lodash/find'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { translate } from '@/Translations/algorithm'
-import { RegistrationQuestions } from '@/Services/Steps'
+import { RegistrationQuestionsService } from '@/Services/Steps'
 import i18n from '@/Translations/index'
 
 export default (questions, errors) => {
@@ -72,7 +72,7 @@ export default (questions, errors) => {
       if (
         !algorithm.is_arm_control ||
         (algorithm.is_arm_control &&
-          RegistrationQuestions().includes(questionId))
+          RegistrationQuestionsService().includes(questionId))
       ) {
         // Mandatory
         if (node.is_mandatory && !result) {

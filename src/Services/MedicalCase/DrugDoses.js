@@ -14,7 +14,7 @@ import { roundSup } from '@/Utils/Formulations/RoundSup'
  * | {recurrence: *, doseResult: *, maxDoseCap: number, maxDoseMg: *, minDoseMg: *, minDoseCap: number}
  * }
  */
-export const drugDoses = (formulationIndex, drugId) => {
+const drugDoses = (formulationIndex, drugId) => {
   const algorithm = store.getState().algorithm.item
   const medicalCase = store.getState().medicalCase.item
   const mcWeight =
@@ -156,3 +156,5 @@ export const drugDoses = (formulationIndex, drugId) => {
   }
   return { doseResult: null, recurrence, ...formulation }
 }
+
+export default drugDoses

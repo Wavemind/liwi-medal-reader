@@ -26,14 +26,15 @@ import HandleDateFormulas from '@/Store/MedicalCase/HandleDateFormulas'
 
 const DateInput = () => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
   const {
     Components: { select, numeric },
     Colors,
     Layout,
     Gutters,
   } = useTheme()
+
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const birth_date_estimated = useSelector(
     state => state.patient.item.birth_date_estimated,

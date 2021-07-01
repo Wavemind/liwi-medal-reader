@@ -12,10 +12,10 @@ import formatDistanceStrict from 'date-fns/formatDistanceStrict'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import Item from './Item'
+import { MedicalCaseDrawerItem } from '@/Components'
 import { getStages } from '@/Utils/Navigation/GetStages'
 
-const DrawerItem = () => {
+const MedicalCaseDrawer = () => {
   const { t } = useTranslation()
   const stageIndex = useSelector(
     state => state.medicalCase.item.advancement.stage,
@@ -55,7 +55,7 @@ const DrawerItem = () => {
       </View>
       <ScrollView>
         {stages.map((stage, index) => (
-          <Item
+          <MedicalCaseDrawerItem
             key={index}
             stage={stage}
             index={index}
@@ -73,4 +73,4 @@ const DrawerItem = () => {
   )
 }
 
-export default DrawerItem
+export default MedicalCaseDrawer

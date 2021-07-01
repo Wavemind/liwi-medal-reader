@@ -29,9 +29,8 @@ const Factory = ({ questionId }) => {
     case Config.DISPLAY_FORMAT.radioButton:
       if (currentNode.category === Config.CATEGORIES.complaintCategory) {
         return <Toggle questionId={questionId} />
-      } else {
-        return <Boolean questionId={questionId} />
       }
+      return <Boolean questionId={questionId} />
     case Config.DISPLAY_FORMAT.input:
       return <Numeric questionId={questionId} />
     case Config.DISPLAY_FORMAT.string:

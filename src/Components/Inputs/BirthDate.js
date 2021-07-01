@@ -20,6 +20,7 @@ const BirthDate = () => {
     FontSize,
     Colors,
   } = useTheme()
+
   const { t } = useTranslation()
 
   const birthDateError = useSelector(state => state.validation.item.birth_date)

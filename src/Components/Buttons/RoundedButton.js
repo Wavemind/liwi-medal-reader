@@ -9,32 +9,28 @@ import { TouchableOpacity, Text, View } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import { FontSize } from '@/Theme/Variables'
 
-const RoundedButton = props => {
+const RoundedButton = ({
+  label = null,
+  filled,
+  disabled,
+  onPress,
+  icon,
+  big = false,
+  iconAfter = false,
+  bgColor = null,
+  color = null,
+  iconSize = FontSize.huge,
+  align = null,
+  fullWidth = true,
+}) => {
   // Theme and style elements deconstruction
   const {
     Components: { roundedButton },
     Colors,
-    Gutters,
     Layout,
-    FontSize,
   } = useTheme()
-
-  // Props deconstruction
-  const {
-    label = null,
-    filled,
-    disabled,
-    onPress,
-    icon,
-    big = false,
-    iconAfter = false,
-    bgColor = null,
-    color = null,
-    iconSize = FontSize.huge,
-    align = null,
-    fullWidth = true,
-  } = props
 
   // Constants definition
   const type = filled ? 'filled' : 'outlined'

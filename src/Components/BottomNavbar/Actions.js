@@ -6,10 +6,9 @@ import React from 'react'
 /**
  * The internal imports
  */
-import StageWrapperNavbar from '@/Components/BottomNavbar/StageWrapperNavbar'
-import SynchronizationNavbar from '@/Components/BottomNavbar/SynchronizationNavbar'
+import { SynchronizationNavbar, StageWrapperNavbar } from '@/Components'
 
-const NavbarActions = ({ navigationState }) => {
+const ActionsNavbar = ({ navigationState }) => {
   const homeNavigation = navigationState.routes[navigationState.index].state
 
   const route = homeNavigation?.routes[homeNavigation.index]
@@ -34,4 +33,4 @@ const NavbarActions = ({ navigationState }) => {
   }
 }
 
-export default NavbarActions
+export default ActionsNavbar

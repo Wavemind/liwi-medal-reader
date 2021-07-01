@@ -13,13 +13,14 @@ import { Icon } from '@/Components'
 
 const SearchBar = ({ navigation, filters = false }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
   const {
     Layout,
     Colors,
     FontSize,
     Components: { searchBar },
   } = useTheme()
+
+  const { t } = useTranslation()
 
   return (
     <View style={Layout.row}>

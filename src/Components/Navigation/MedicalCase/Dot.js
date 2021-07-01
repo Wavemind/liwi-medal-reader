@@ -13,14 +13,15 @@ import { useTheme } from '@/Theme'
 import { navigateToStage } from '@/Navigators/Root'
 
 const Dot = ({ status, step, stepIndex, stageIndex, thinLines }) => {
-  const navigation = useNavigation()
-  const [active, setActive] = useState(false)
-
   const {
     Components: { sideBar },
   } = useTheme()
 
+  const navigation = useNavigation()
+
   const advancement = useSelector(state => state.medicalCase.item.advancement)
+
+  const [active, setActive] = useState(false)
 
   useEffect(() => {
     if (status === 'done') {

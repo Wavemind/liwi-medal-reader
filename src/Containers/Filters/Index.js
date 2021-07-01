@@ -16,7 +16,6 @@ import { GenerateFiltersObject } from '@/Utils'
 
 const IndexFiltersContainer = ({ navigation, route }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
   const {
     Colors,
     Gutters,
@@ -24,7 +23,10 @@ const IndexFiltersContainer = ({ navigation, route }) => {
     Layout,
     Containers: { filters, searchAdditional },
   } = useTheme()
+
   const dispatch = useDispatch()
+  const { t } = useTranslation()
+
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const data = GenerateFiltersObject(nodes)
 

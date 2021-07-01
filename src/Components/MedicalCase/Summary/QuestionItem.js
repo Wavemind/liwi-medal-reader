@@ -12,7 +12,7 @@ import { translate } from '@/Translations/algorithm'
 import { QuestionInfoButton } from '@/Components'
 import { useTheme } from '@/Theme'
 
-const QuestionItem = ({ questions, questionId }) => {
+const SummaryQuestionItem = ({ questions, questionId }) => {
   const {
     Containers: { patientPersonalInfo },
   } = useTheme()
@@ -40,4 +40,4 @@ const QuestionItem = ({ questions, questionId }) => {
   )
 }
 
-export default QuestionItem
+export default SummaryQuestionItem

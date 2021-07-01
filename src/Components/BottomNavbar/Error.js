@@ -9,7 +9,7 @@ import { View, Text } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 
-const ErrorNavBar = ({ message }) => {
+const ErrorNavbar = ({ message }) => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
@@ -25,4 +25,4 @@ const ErrorNavBar = ({ message }) => {
   )
 }
 
-export default ErrorNavBar
+export default ErrorNavbar

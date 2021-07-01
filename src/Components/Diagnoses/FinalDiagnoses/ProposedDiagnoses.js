@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import { QuestionInfoButton } from '@/Components'
-import { UpdateDiagnosis } from '@/Services/MedicalCase'
+import { UpdateDiagnosisService } from '@/Services/MedicalCase'
 
 const ProposedDiagnoses = () => {
   // Theme and style elements deconstruction
@@ -57,7 +57,7 @@ const ProposedDiagnoses = () => {
             <View style={booleanButton.buttonWrapper('left', isAgreed)}>
               <TouchableOpacity
                 style={Layout.center}
-                onPress={() => UpdateDiagnosis(diagnosisId, true)}
+                onPress={() => UpdateDiagnosisService(diagnosisId, true)}
               >
                 <Text style={booleanButton.buttonText(isAgreed)}>
                   {t('containers.medical_case.common.agree')}
@@ -67,7 +67,7 @@ const ProposedDiagnoses = () => {
             <View style={booleanButton.buttonWrapper('right', isRefused)}>
               <TouchableOpacity
                 style={Layout.center}
-                onPress={() => UpdateDiagnosis(diagnosisId, false)}
+                onPress={() => UpdateDiagnosisService(diagnosisId, false)}
               >
                 <Text style={booleanButton.buttonText(isRefused)}>
                   {t('containers.medical_case.common.disagree')}

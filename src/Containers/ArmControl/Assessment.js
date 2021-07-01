@@ -9,11 +9,11 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
-import { AssessmentArmControlQuestions } from '@/Services/Steps'
+import { AssessmentArmControlQuestionsService } from '@/Services/Steps'
 
-const AssessmentMedicalCaseContainer = props => {
+const AssessmentArmControlContainer = () => {
   const { t } = useTranslation()
-  const [questions] = useState(AssessmentArmControlQuestions())
+  const [questions] = useState(AssessmentArmControlQuestionsService())
 
   return (
     <View>
@@ -30,4 +30,4 @@ const AssessmentMedicalCaseContainer = props => {
   )
 }
 
-export default AssessmentMedicalCaseContainer
+export default AssessmentArmControlContainer
