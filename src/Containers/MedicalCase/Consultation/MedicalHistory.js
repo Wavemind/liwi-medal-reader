@@ -40,6 +40,7 @@ const MedicalHistoryMedicalCaseContainer = () => {
         <System
           key={`medical-history-${system.title}`}
           systemName={system.title}
+          step="medicalHistory"
         />
       ))}
     </ScrollView>

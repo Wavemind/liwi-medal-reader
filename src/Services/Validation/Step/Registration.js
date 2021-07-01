@@ -13,7 +13,9 @@ export default async errors => {
   const algorithm = state.algorithm.item
   const patient = state.patient.item
 
-  const questions = RegistrationQuestionsService()
+  const questions = RegistrationQuestionsService().filter(
+    question => typeof question === 'number',
+  )
   const consentManagement = algorithm.config.consent_management
 
   // Consent management

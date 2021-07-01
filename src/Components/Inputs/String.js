@@ -17,8 +17,6 @@ const String = ({ questionId, editable = true }) => {
     Components: { string },
   } = useTheme()
 
-  const dispatch = useDispatch()
-
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
   )

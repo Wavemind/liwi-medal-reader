@@ -123,7 +123,7 @@ export default ({ nodes }) => {
       case Config.NODE_TYPES.healthCare:
       case Config.NODE_TYPES.finalDiagnosis:
       default:
-        newNodes[node.id] = node.id
+        break
     }
   })
   return newNodes

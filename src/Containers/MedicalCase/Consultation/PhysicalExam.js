@@ -40,6 +40,7 @@ const PhysicalExamMedicalCaseContainer = () => {
         <System
           key={`medical-history-${system.title}`}
           systemName={system.title}
+          step="physicalExam"
         />
       ))}
       <Comment />
