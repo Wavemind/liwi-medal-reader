@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
@@ -19,9 +19,8 @@ const MedicalHistoryMedicalCaseContainer = () => {
   const medicalHistoryStep = useSelector(
     state => state.algorithm.item.config.full_order.medical_history_step,
   )
-  const loading = useSelector(
-    state => state.questionsPerSystem.medicalHistory.loading,
-  )
+
+  const [loading, setLoading] = useState(true)
 
   // Update questions list only if question array change
   useEffect(() => {
@@ -29,6 +28,11 @@ const MedicalHistoryMedicalCaseContainer = () => {
       dispatch(MedicalHistory.action())
     }
   }, [isFocused])
+
+  useEffect(() => {
+    dispatch(MedicalHistory.action())
+    setLoading(false)
+  }, [])
 
   if (loading) {
     return <Loader />

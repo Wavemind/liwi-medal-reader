@@ -124,6 +124,7 @@ export default ({ nodes }) => {
       case Config.NODE_TYPES.finalDiagnosis:
       default:
         break
+      //newNodes[node.id] = node.id
     }
   })
   return newNodes

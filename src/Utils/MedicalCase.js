@@ -247,11 +247,17 @@ export const excludedByCC = questionId => {
 /**
  * For an instance we will calculate its conditions
  * @param {Instance} instance : the instance we wanna calculate
+ * @param {Integer} sourceId : the parent node id who called the function
+ * @param {Nodes} newNodes : the nodes updated in the setAnswer process
  * @returns {Boolean} : value of the condition
  */
-export const calculateCondition = (instance, sourceId = null) => {
+export const calculateCondition = (
+  instance,
+  sourceId = null,
+  newNodes = {},
+) => {
   const state = store.getState()
-  const mcNodes = state.medicalCase.item.nodes
+  const mcNodes = { ...state.medicalCase.item.nodes, ...newNodes }
 
   if (excludedByCC(instance.id)) {
     return false

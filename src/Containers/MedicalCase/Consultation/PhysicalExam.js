@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
@@ -19,9 +19,8 @@ const PhysicalExamMedicalCaseContainer = () => {
   const physicalExamStep = useSelector(
     state => state.algorithm.item.config.full_order.physical_exam_step,
   )
-  const loading = useSelector(
-    state => state.questionsPerSystem.physicalExam.loading,
-  )
+
+  const [loading, setLoading] = useState(true)
 
   // Update questions list only if question array change
   useEffect(() => {
@@ -29,6 +28,11 @@ const PhysicalExamMedicalCaseContainer = () => {
       dispatch(PhysicalExam.action())
     }
   }, [isFocused])
+
+  useEffect(() => {
+    dispatch(PhysicalExam.action())
+    setLoading(false)
+  }, [])
 
   if (loading) {
     return <Loader />
@@ -38,7 +42,7 @@ const PhysicalExamMedicalCaseContainer = () => {
     <ScrollView>
       {physicalExamStep.map(system => (
         <System
-          key={`medical-history-${system.title}`}
+          key={`physical-exam-${system.title}`}
           systemName={system.title}
           step="physicalExam"
         />
