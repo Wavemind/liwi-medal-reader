@@ -6,7 +6,7 @@ import 'react-native'
 /**
  * The internal imports
  */
-import { HandleQrService } from '@/Services/Scan'
+import HandleQrService from '@/Services/Scan/HandleQr'
 
 // Define global testing variables
 const healthFacilityId = 7

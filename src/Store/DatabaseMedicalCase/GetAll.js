@@ -9,7 +9,7 @@ import {
 /**
  * The internal imports
  */
-import { GetAllMedicalCasesService } from '@/Services/MedicalCase'
+import GetAllMedicalCasesService from '@/Services/MedicalCase/GetAll'
 
 export default {
   initialState: {

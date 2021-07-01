@@ -4,7 +4,7 @@ import {
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import { CreateMedicalCaseService } from '@/Services/MedicalCase'
+import CreateMedicalCaseService from '@/Services/MedicalCase/Create'
 
 export default {
   initialState: buildAsyncState('create'),

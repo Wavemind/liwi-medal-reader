@@ -10,7 +10,7 @@ import {
 /**
  * The internal imports
  */
-import { InsertActivitiesService } from '@/Services/Activity'
+import InsertActivitiesService from '@/Services/Activity/Insert'
 
 export default {
   initialState: buildAsyncState('insert'),

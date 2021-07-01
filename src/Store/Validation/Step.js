@@ -4,7 +4,7 @@ import {
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import { ValidationStepService } from '@/Services/Validation'
+import ValidationStepService from '@/Services/Validation/Step'
 
 export default {
   initialState: buildAsyncState('step'),

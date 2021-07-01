@@ -4,11 +4,11 @@ import {
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import { CreatePatientService } from '@/Services/Patient'
+import CreatePatientService from '@/Services/Patient/Create'
 
 export default {
   initialState: buildAsyncState('create'),
-  action: buildAsyncActions('patient/create', CreatePatientService()),
+  action: buildAsyncActions('patient/create', CreatePatientService),
   reducers: buildAsyncReducers({
     errorKey: 'create.error',
     loadingKey: 'create.loading',

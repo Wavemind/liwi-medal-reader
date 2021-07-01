@@ -4,7 +4,7 @@ import {
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import { SetAnswerService } from '@/Services/MedicalCase'
+import SetAnswerService from '@/Services/MedicalCase/SetAnswer'
 
 export default {
   initialState: buildAsyncState('setAnswer'),
