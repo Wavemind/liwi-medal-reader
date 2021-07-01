@@ -45,7 +45,7 @@ export const getQsValue = (qsId, newMcNodes) => {
  */
 const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
   const mcNode = newMcNodes[instance.id]
-  const instanceCondition = calculateCondition(instance)
+  const instanceCondition = calculateCondition(instance, null, newMcNodes)
 
   if (instanceCondition && mcNode.answer === null) {
     return null
