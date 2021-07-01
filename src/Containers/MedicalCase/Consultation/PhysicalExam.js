@@ -32,7 +32,6 @@ const PhysicalExamMedicalCaseContainer = props => {
       setSystems(physicalExamQuestions)
     }
   }, [isFocused, mcNodes])
-
   return (
     <SectionList
       sections={systems}
