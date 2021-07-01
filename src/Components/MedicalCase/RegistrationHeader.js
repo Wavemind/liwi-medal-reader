@@ -9,12 +9,7 @@ import { useTranslation } from 'react-i18next'
 /**
  * The external imports
  */
-import {
-  BirthDate,
-  Consent,
-  PatientString,
-  SectionHeader,
-} from '@/Components'
+import { Consent, PatientString, SectionHeader } from '@/Components'
 import { useTheme } from '@/Theme'
 
 const RegistrationHeader = () => {
@@ -35,10 +30,6 @@ const RegistrationHeader = () => {
           label={t('containers.medical_case.registration.questions')}
         />
       </View>
-
-      <PatientString field="first_name" />
-      <PatientString field="last_name" />
-      <BirthDate />
     </>
   )
 }
