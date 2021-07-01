@@ -1,25 +1,23 @@
 /**
  * The external imports
  */
-import React, {useState, useEffect, useCallback} from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, TouchableOpacity, TextInput, Text } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import filter from 'lodash/filter'
+import debounce from 'lodash/debounce'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
-import debounce from "lodash/debounce";
-import GetAllPatientDB from "@/Store/DatabasePatient/GetAll";
+import setAnswer from '@/Utils/SetAnswer'
 
 const Autocomplete = ({ questionId }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
-  const dispatch = useDispatch()
 
   const {
     Colors,
@@ -67,7 +65,7 @@ const Autocomplete = ({ questionId }) => {
   const handleOptionSelect = option => {
     setOptionSelected(true)
     setSearchTerm(option)
-    dispatch(SetAnswer.action({ nodeId: question.id, value: option }))
+    setAnswer(question.id, option)
   }
 
   /**
@@ -76,7 +74,7 @@ const Autocomplete = ({ questionId }) => {
   const onEndEditing = event => {
     const newValue = event.nativeEvent.text
     if (question.value !== newValue) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
+      setAnswer(question.id, newValue)
     }
   }
 

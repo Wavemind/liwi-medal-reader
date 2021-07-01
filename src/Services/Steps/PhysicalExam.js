@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual'
 /**
  * The internal imports
  */
@@ -7,8 +8,6 @@ import {
   getValidDiagnoses,
   getTopConditions,
   handleChildren,
-  orderSystems,
-  uniq,
 } from '@/Utils/MedicalCase'
 
 export default () => {
@@ -16,11 +15,11 @@ export default () => {
   const state = store.getState()
   const physicalExamCategories = [
     Config.CATEGORIES.physicalExam,
-    Config.CATEGORIES.backgroundCalculation,
     Config.CATEGORIES.vitalSignAnthropometric,
   ]
   const physicalExamStep =
     state.algorithm.item.config.full_order.physical_exam_step
+  const currentSystems = state.questionsPerSystem.item.physicalExam
 
   const validDiagnoses = getValidDiagnoses()
 
@@ -34,12 +33,27 @@ export default () => {
       diagnosis.instances,
       physicalExamCategories,
       diagnosis.id,
+      Config.NODE_TYPES.diagnosis,
+      true,
+      currentSystems,
+      physicalExamStep,
     )
   })
 
-  Object.keys(questionPerSystems).map(k => {
-    questionPerSystems[k] = uniq(questionPerSystems[k])
+  const updatedSystems = {}
+  physicalExamStep.forEach(system => {
+    const newQuestions = system.data.filter(questionId =>
+      questionPerSystems[system.title]?.includes(questionId),
+    )
+    if (!isEqual(currentSystems[system.title], newQuestions)) {
+      updatedSystems[system.title] = newQuestions
+    }
   })
-
-  return orderSystems(physicalExamStep, questionPerSystems)
+  return {
+    ...state.questionsPerSystem.item,
+    physicalExam: {
+      ...state.questionsPerSystem.item.medicalHistory,
+      ...updatedSystems,
+    },
+  }
 }
