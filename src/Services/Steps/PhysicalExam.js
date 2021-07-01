@@ -52,7 +52,7 @@ export default () => {
   return {
     ...state.questionsPerSystem.item,
     physicalExam: {
-      ...state.questionsPerSystem.item.medicalHistory,
+      ...state.questionsPerSystem.item.physicalExam,
       ...updatedSystems,
     },
   }
