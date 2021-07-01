@@ -12,20 +12,15 @@ import isEqual from 'lodash/isEqual'
  */
 import { Question, EmptyList } from '@/Components'
 import { AssessmentQuestionsService } from '@/Services/Steps'
-import { debugNode } from '@/Utils/MedicalCase'
 
 const AssessmentMedicalCaseContainer = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
   const [questions, setQuestions] = useState(AssessmentQuestionsService())
 
-  debugNode(3545)
-  debugNode(4530)
-  debugNode(5092)
-
   // Update questions list only if question array change
   useEffect(() => {
-    const assessmentQuestions = AssessmentQuestions()
+    const assessmentQuestions = AssessmentQuestionsService()
     if (!isEqual(assessmentQuestions, questions)) {
       setQuestions(assessmentQuestions)
     }
