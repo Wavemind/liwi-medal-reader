@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual'
 /**
  * The internal imports
  */
@@ -7,8 +8,6 @@ import {
   getValidDiagnoses,
   getTopConditions,
   handleChildren,
-  orderSystems,
-  uniq,
 } from '@/Utils/MedicalCase'
 
 export default () => {
@@ -25,9 +24,8 @@ export default () => {
   const medicalHistoryStep =
     state.algorithm.item.config.full_order.medical_history_step
 
-  // TODO Comment on affiche les vital Signs / Background calculation
-
   const validDiagnoses = getValidDiagnoses()
+  const currentSystems = state.questionsPerSystem.item.medicalHistory
 
   validDiagnoses.forEach(diagnosis => {
     const topConditions = getTopConditions(diagnosis.instances)
@@ -39,12 +37,28 @@ export default () => {
       diagnosis.instances,
       medicalHistoryCategories,
       diagnosis.id,
+      Config.NODE_TYPES.diagnosis,
+      true,
+      currentSystems,
+      medicalHistoryStep,
     )
   })
 
-  Object.keys(questionPerSystems).map(k => {
-    questionPerSystems[k] = uniq(questionPerSystems[k])
+  const updatedSystems = {}
+  medicalHistoryStep.forEach(system => {
+    const newQuestions = system.data.filter(questionId =>
+      questionPerSystems[system.title]?.includes(questionId),
+    )
+    if (!isEqual(currentSystems[system.title], newQuestions)) {
+      updatedSystems[system.title] = newQuestions
+    }
   })
 
-  return orderSystems(medicalHistoryStep, questionPerSystems)
+  return {
+    ...state.questionsPerSystem.item,
+    medicalHistory: {
+      ...state.questionsPerSystem.item.medicalHistory,
+      ...updatedSystems,
+    },
+  }
 }

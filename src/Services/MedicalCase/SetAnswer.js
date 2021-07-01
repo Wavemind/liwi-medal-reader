@@ -27,8 +27,7 @@ export default props => {
   const node = nodes[nodeId]
 
   const mcNode = newMedicalCase.nodes[nodeId]
-  // TODO find another way
-  let newNodes = JSON.parse(JSON.stringify(newMedicalCase.nodes))
+  let newNodes = {}
 
   // Validation
   const validation = QuestionValidationService(mcNode, node, value)
@@ -56,19 +55,32 @@ export default props => {
     ...newValues,
   }
 
-  newNodes = UpdateQuestionSequenceService({ nodeId: node.id, newNodes })
-  newNodes = UpdateRelatedQuestionService({ nodeId: node.id, newNodes })
+  newNodes = UpdateQuestionSequenceService({
+    nodeId: node.id,
+    newNodes,
+    mcNodes: newMedicalCase.nodes,
+  })
+  newNodes = UpdateRelatedQuestionService({
+    nodeId: node.id,
+    newNodes,
+    mcNodes: newMedicalCase.nodes,
+  })
 
   const newActivities = AddActivityService({
     medicalCase: newMedicalCase,
     nodeId,
     value,
   })
-
   return {
     ...newMedicalCase,
+    lastSystemUpdated: {
+      stage: newMedicalCase.advancement.stage,
+      step: newMedicalCase.advancement.step,
+      system: node.system,
+    },
     activities: [...newActivities],
     nodes: {
+      ...newMedicalCase.nodes,
       ...newNodes,
     },
   }

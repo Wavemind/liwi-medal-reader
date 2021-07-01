@@ -1,52 +1,48 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
-import { SectionList, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { ScrollView } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
-import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
  */
-import { useTheme } from '@/Theme'
-import { SectionHeader, Question } from '@/Components'
-import { translate } from '@/Translations/algorithm'
-import { MedicalHistoryQuestionsService } from '@/Services/Steps'
+import { System, Loader } from '@/Components'
+import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
 
 const MedicalHistoryMedicalCaseContainer = () => {
-  const { Gutters } = useTheme()
   const isFocused = useIsFocused()
+  const dispatch = useDispatch()
 
-  const algorithm = useSelector(state => state.algorithm.item)
-  const medicalCase = useSelector(state => state.medicalCase.item)
-
-  const [systems, setSystems] = useState(MedicalHistoryQuestionsService())
+  const medicalHistoryStep = useSelector(
+    state => state.algorithm.item.config.full_order.medical_history_step,
+  )
+  const loading = useSelector(
+    state => state.questionsPerSystem.medicalHistory.loading,
+  )
 
   // Update questions list only if question array change
   useEffect(() => {
-    const medicalHistoryQuestions = MedicalHistoryQuestionsService()
-
-    if (!isEqual(medicalHistoryQuestions, systems)) {
-      setSystems(medicalHistoryQuestions)
+    if (isFocused) {
+      dispatch(MedicalHistory.action())
     }
-  }, [isFocused, medicalCase])
+  }, [isFocused])
+
+  if (loading) {
+    return <Loader />
+  }
 
   return (
-    <SectionList
-      sections={systems}
-      keyExtractor={item => item}
-      removeClippedSubviews={false}
-      renderItem={({ item }) => <Question questionId={item} />}
-      renderSectionHeader={({ section: { title } }) => (
-        <View style={Gutters.regularHMargin}>
-          <SectionHeader
-            label={translate(algorithm.config.systems_translations[title])}
-          />
-        </View>
-      )}
-    />
+    <ScrollView>
+      {medicalHistoryStep.map(system => (
+        <System
+          key={`medical-history-${system.title}`}
+          systemName={system.title}
+        />
+      ))}
+    </ScrollView>
   )
 }
 

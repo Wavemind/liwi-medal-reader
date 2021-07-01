@@ -5,13 +5,13 @@ import React, { useState, useEffect } from 'react'
 import { View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { Picker } from '@react-native-picker/picker'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import setAnswer from '@/Utils/SetAnswer'
 import { translate } from '@/Translations/algorithm'
 
 const Select = ({ questionId, disabled = false }) => {
@@ -22,7 +22,6 @@ const Select = ({ questionId, disabled = false }) => {
   } = useTheme()
 
   const { t } = useTranslation()
-  const dispatch = useDispatch()
 
   // Get node from algorithm
   const question = useSelector(
@@ -44,7 +43,7 @@ const Select = ({ questionId, disabled = false }) => {
   /**
    * Set answer in medical case
    */
-  const setAnswer = answerId => {
+  const setLocalAnswer = answerId => {
     setValue(answerId)
   }
 
@@ -53,7 +52,7 @@ const Select = ({ questionId, disabled = false }) => {
    */
   useEffect(() => {
     if (question.answer !== value) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value }))
+      setAnswer(question.id, value)
     }
   }, [value])
 
@@ -63,7 +62,7 @@ const Select = ({ questionId, disabled = false }) => {
         style={select.picker}
         selectedValue={value}
         prompt={translate(currentNode.label)}
-        onValueChange={setAnswer}
+        onValueChange={setLocalAnswer}
         dropdownIconColor={Colors.primary}
         enabled={!disabled}
       >

@@ -10,7 +10,8 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 import { DrugDosesService } from '@/Services/MedicalCase'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import setAnswer from '@/Utils/SetAnswer'
+
 import { setBirthDate } from '../../Utils/BirthDate'
 
 beforeAll(async () => {
@@ -25,7 +26,7 @@ beforeAll(async () => {
   await setBirthDate(store, 4, 'year')
 
   const weightId = algorithm.config.basic_questions.weight_question_id
-  await store.dispatch(SetAnswer.action({ nodeId: weightId, value: '10' }))
+  await setAnswer(weightId, '10')
 })
 
 describe('Drug dose calculation', () => {

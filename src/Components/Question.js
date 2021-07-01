@@ -1,52 +1,45 @@
 /**
  * The external imports
  */
-import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, Animated } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState } from 'react'
+import { View, Text } from 'react-native'
+import { useSelector } from 'react-redux'
 import find from 'lodash/find'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { fadeIn } from '@/Theme/Animation'
 import { translate } from '@/Translations/algorithm'
 import {
-  Checkbox,
-  Select,
   Icon,
-  InputFactory,
+  DisplayUnavailable,
   QuestionInfoButton,
+  InputFactory,
 } from '@/Components'
 import { Config } from '@/Config'
-import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import { store } from '@/Store'
 
 const Question = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
   const {
     Components: { question },
-    Containers: { global },
-    Colors,
     FontSize,
+    Colors,
   } = useTheme()
 
-  const dispatch = useDispatch()
-
-  // Define references
-  const fadeAnim = useRef(new Animated.Value(0)).current
-
-  useEffect(() => {
-    fadeIn(fadeAnim)
-  }, [fadeAnim])
-
   // Get node from algorithm
-  const mcNode = useSelector(state => state.medicalCase.item.nodes[questionId])
-  const currentNode = useSelector(
-    state => state.algorithm.item.nodes[questionId],
+  const validationType = useSelector(
+    state => state.medicalCase.item.nodes[questionId].validationType,
+  )
+  const validationMessage = useSelector(
+    state => state.medicalCase.item.nodes[questionId].validationMessage,
   )
   const fieldError = useSelector(state => state.validation.item[questionId])
+
+  const [currentNode] = useState(
+    store.getState().algorithm.item.nodes[questionId],
+  )
 
   // Local state definition
   const [isFullLength] = useState(
@@ -56,7 +49,6 @@ const Question = ({ questionId, disabled = false }) => {
   const [descriptionAvailable] = useState(
     translate(currentNode.description) !== '',
   )
-  const [isUnavailable, setIsUnavailable] = useState(mcNode.unavailableValue)
 
   // Node can have an unavailable answer
   const [additionalUnavailableAnswer] = useState(
@@ -68,35 +60,8 @@ const Question = ({ questionId, disabled = false }) => {
     currentNode.emergency_status === 'referral' ||
     currentNode.emergency_status === 'emergency'
 
-  /**
-   * Used only when normal answer can't be set by clinician. A list of predefined answer are displayed
-   */
-  const handleUnavailable = async () => {
-    await dispatch(
-      UpdateNodeField.action({
-        nodeId: questionId,
-        field: 'unavailableValue',
-        value: !isUnavailable,
-      }),
-    )
-    if (isUnavailable) {
-      await dispatch(SetAnswer.action({ nodeId: questionId, value: '' }))
-    }
-    setIsUnavailable(!isUnavailable)
-  }
-
-  /**
-   * Used only when isUnavailableAnswer have a value
-   */
-  const handleUnavailableAnswer = value => {
-    const answer = value ? additionalUnavailableAnswer.id : null
-    dispatch(SetAnswer.action({ nodeId: questionId, value: answer }))
-  }
-
   return (
-    <Animated.View
-      style={[question.wrapper(emergency), global.animation(fadeAnim)]}
-    >
+    <View style={[question.wrapper(emergency)]}>
       <View style={question.container}>
         <View style={question.questionWrapper(isFullLength)}>
           {emergency && <Icon name="alert" color={Colors.red} />}
@@ -105,7 +70,7 @@ const Question = ({ questionId, disabled = false }) => {
             style={
               emergency
                 ? question.emergencyText
-                : question.text(fieldError ? 'error' : mcNode.validationType)
+                : question.text(fieldError ? 'error' : validationType)
             }
           >
             {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
@@ -122,42 +87,20 @@ const Question = ({ questionId, disabled = false }) => {
                 : question.inputWrapper
             }
           >
-            {additionalUnavailableAnswer ? (
-              <>
-                {mcNode.answer !== additionalUnavailableAnswer.id && (
-                  <InputFactory questionId={questionId} />
-                )}
-                <Checkbox
-                  label={translate(additionalUnavailableAnswer.label)}
-                  defaultValue={
-                    mcNode.answer === additionalUnavailableAnswer.id
-                  }
-                  onPress={handleUnavailableAnswer}
-                />
-              </>
-            ) : isUnavailable ? (
-              <Select questionId={questionId} />
+            {currentNode.unavailable || additionalUnavailableAnswer ? (
+              <DisplayUnavailable questionId={questionId} />
             ) : (
               <InputFactory questionId={questionId} />
-            )}
-            {currentNode.unavailable && !additionalUnavailableAnswer && (
-              <Checkbox
-                label={translate(currentNode.unavailable_label)}
-                defaultValue={isUnavailable}
-                onPress={handleUnavailable}
-              />
             )}
           </View>
         </View>
 
-        {(mcNode.validationType === 'error' ||
-          mcNode.validationType === 'warning' ||
+        {(validationType === 'error' ||
+          validationType === 'warning' ||
           fieldError) && (
           <View
             style={[
-              question.messageWrapper(
-                fieldError ? 'error' : mcNode.validationType,
-              ),
+              question.messageWrapper(fieldError ? 'error' : validationType),
             ]}
           >
             <Icon
@@ -166,12 +109,12 @@ const Question = ({ questionId, disabled = false }) => {
               name="warning"
             />
             <Text style={question.message}>
-              {mcNode.validationMessage ? mcNode.validationMessage : fieldError}
+              {validationMessage ? validationMessage : fieldError}
             </Text>
           </View>
         )}
       </View>
-    </Animated.View>
+    </View>
   )
 }
 

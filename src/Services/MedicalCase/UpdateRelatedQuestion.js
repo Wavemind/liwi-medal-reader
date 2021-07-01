@@ -10,10 +10,9 @@ import { calculateReference } from '@/Utils/ReferenceTable'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
-export default ({ nodeId, newNodes }) => {
+export default ({ nodeId, newNodes, mcNodes }) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
-  const mcNodes = state.medicalCase.item.nodes
 
   // List of formulas/reference tables we need to update
   let questionsToUpdate = nodes[nodeId].referenced_in
@@ -26,9 +25,9 @@ export default ({ nodeId, newNodes }) => {
     let value = null
 
     if (node.display_format === Config.DISPLAY_FORMAT.formula) {
-      value = calculateFormula(questionId, newNodes)
+      value = calculateFormula(questionId, { ...mcNodes, ...newNodes })
     } else {
-      value = calculateReference(questionId, newNodes)
+      value = calculateReference(questionId, { ...mcNodes, ...newNodes })
     }
 
     if (value !== null) {
@@ -42,13 +41,17 @@ export default ({ nodeId, newNodes }) => {
       } else {
         const newQuestionValues = handleNumeric(mcNode, node, value)
         // Set the question value in the store
-        newNodes[questionId] = { ...newNodes[questionId], ...newQuestionValues }
+        newNodes[questionId] = { ...mcNodes[questionId], ...newQuestionValues }
       }
       questionsToUpdate = questionsToUpdate.concat(node.referenced_in)
 
       // uniq to avoid processing same question multiple time
       // Slice to remove element we just handled
-      newNodes = UpdateQuestionSequenceService({ nodeId: questionId, newNodes })
+      newNodes = UpdateQuestionSequenceService({
+        nodeId: questionId,
+        newNodes,
+        mcNodes,
+      })
     }
     questionsToUpdate = uniq(questionsToUpdate.slice(1))
   }
