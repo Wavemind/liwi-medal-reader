@@ -68,41 +68,6 @@ export const getTopConditions = (instances, isFinalDiagnosis = false) => {
       (isFinalDiagnosis || instance.final_diagnosis_id === null),
   )
 }
-/**
- * Transforms an array of system to an object that is readable by the view and will order it
- * based on the order defined in the algorithm
- * @param {} systemOrder : Order of the systems and the question for this specific step
- * @param {} questionsPerSystem : the systems and the question before ordering
- * @returns
- */
-export const orderSystems = (systemOrder, questionsPerSystem) => {
-  const orderedSystem = []
-  systemOrder.forEach(system => {
-    if (
-      questionsPerSystem[system.title] &&
-      questionsPerSystem[system.title].length > 0
-    ) {
-      let data = []
-      if (system.title !== 'follow_up_questions') {
-        data = uniq(system.data).filter(nodeId =>
-          questionsPerSystem[system.title].includes(nodeId),
-        )
-      } else {
-        data = uniq(questionsPerSystem[system.title])
-      }
-
-      orderedSystem.push({
-        title: system.title,
-        data,
-      })
-    } else {
-      orderedSystem.push({
-        title: system.title,
-        data: [],
-      })
-  })
-  return orderedSystem
-}
 
 /**
  * Recursive function that goes through the diagram and add the valid node in questionsToDisplay
@@ -220,7 +185,9 @@ const addQuestionToSystem = (
     const currentQuestionSystemIndex = systemOrder.findIndex(
       system => system.title === nodes[questionId].system,
     )
-    const visibleNodes = currentSystems.map(system => system.data).flat()
+    const visibleNodes = Object.values(currentSystems)
+      .map(system => system)
+      .flat()
     const isAlreadyDisplayed = visibleNodes.includes(questionId)
 
     if (

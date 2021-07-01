@@ -72,11 +72,7 @@ const DisplayInput = ({ questionId }) => {
   }
 
   return (
-    <View
-      style={
-        isFullLength ? question.fullLengthInputWrapper : question.inputWrapper
-      }
-    >
+    <>
       {additionalUnavailableAnswer ? (
         <>
           {answer !== additionalUnavailableAnswer.id && (
@@ -100,7 +96,7 @@ const DisplayInput = ({ questionId }) => {
           onPress={handleUnavailable}
         />
       )}
-    </View>
+    </>
   )
 }
 

@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual'
 /**
  * The internal imports
  */
@@ -7,8 +8,6 @@ import {
   getValidDiagnoses,
   getTopConditions,
   handleChildren,
-  orderSystems,
-  uniq,
 } from '@/Utils/MedicalCase'
 
 export default () => {
@@ -47,12 +46,21 @@ export default () => {
     )
   })
 
-  Object.keys(questionPerSystems).map(k => {
-    questionPerSystems[k] = uniq(questionPerSystems[k])
+  const updatedSystems = {}
+  medicalHistoryStep.forEach(system => {
+    const newQuestions = system.data.filter(questionId =>
+      questionPerSystems[system.title]?.includes(questionId),
+    )
+    if (!isEqual(currentSystems[system.title], newQuestions)) {
+      updatedSystems[system.title] = newQuestions
+    }
   })
 
   return {
     ...state.questionsPerSystem.item,
-    medicalHistory: orderSystems(medicalHistoryStep, questionPerSystems),
+    medicalHistory: {
+      ...state.questionsPerSystem.item.medicalHistory,
+      ...updatedSystems,
+    },
   }
 }
