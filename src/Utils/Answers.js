@@ -162,9 +162,9 @@ export const setNodeValue = (mcNode, node, value) => {
 }
 
 /**
- *
- * @param {*} nodeId
- * @param {*} value
+ * Wraps the setAnswer function it allows to update the question to render in Consultations Stage
+ * @param {Integer} nodeId : Node we want to update
+ * @param {*} value : Values we wanna set
  */
 export const setAnswer = async (nodeId, value) => {
   const advancement = store.getState().medicalCase.item.advancement
