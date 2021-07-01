@@ -18,11 +18,7 @@ export default () => {
     }
     return true
   })
-  console.log(
-    Object.values(nodes).filter(node => {
-      return node.reference_table_x_id
-    }),
-  )
+
   return questionsId.concat(
     Object.values(nodes)
       .filter(node => node.reference_table_x_id)
