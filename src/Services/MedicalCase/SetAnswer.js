@@ -6,7 +6,7 @@
  * The internal imports
  */
 import { store } from '@/Store'
-import QuestionValidationService from '@/Services/Validation/Question'
+import { QuestionValidationService } from '@/Services/Validation'
 import { setNodeValue } from '@/Utils/Answers'
 import {
   UpdateQuestionSequenceService,

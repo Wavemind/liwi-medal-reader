@@ -4,7 +4,7 @@
 import { store } from '@/Store'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import { QuestionStepValidation } from '@/Utils'
-import RegistrationStepService from '@/Services/Validation/Step/Registration'
+import { RegistrationStepService } from '@/Services/Validation'
 import {
   BasicMeasurementQuestionsService,
   UniqueTriageQuestionsService,

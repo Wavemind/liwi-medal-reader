@@ -2,7 +2,7 @@
  * The internal imports
  */
 import { UpdateQuestionSequenceService } from '@/Services/MedicalCase'
-import QuestionValidationService from '@/Services/Validation/Question'
+import { QuestionValidationService } from '@/Services/Validation'
 import { uniq } from '@/Utils/MedicalCase'
 import { handleNumeric } from '@/Utils/Answers'
 import { calculateFormula } from '@/Utils/Formula'
