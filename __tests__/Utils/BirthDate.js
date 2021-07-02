@@ -13,7 +13,7 @@ export const setBirthDate = async (store, value, precision = 'day') => {
   const algorithm = store.getState().algorithm.item
   let birthDate = null
   if (precision === 'day') {
-    birthDate = subDays(new Date(), value + 1)
+    birthDate = subDays(new Date(), value)
   } else if (precision === 'month') {
     birthDate = subMonths(new Date(), value)
   } else {
