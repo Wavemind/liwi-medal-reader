@@ -218,7 +218,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(1751, 807) // Tonsillar swelling => Present
     await setAnswer(1752, 810) // Tonsillar exudate => Absent
 
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([191]))
   })
 })
