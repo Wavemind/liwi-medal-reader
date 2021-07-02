@@ -10,11 +10,11 @@ import {
 /**
  * The internal imports
  */
-import fetchOneAlgorithmService from '@/Services/Algorithm/FetchOne'
+import { FetchOneAlgorithmService } from '@/Services/Algorithm'
 
 export default {
   initialState: buildAsyncState('fetchOne'),
-  action: buildAsyncActions('algorithm/fetchOne', fetchOneAlgorithmService),
+  action: buildAsyncActions('algorithm/fetchOne', FetchOneAlgorithmService),
   reducers: buildAsyncReducers({
     errorKey: 'fetchOne.error',
     loadingKey: 'fetchOne.loading',

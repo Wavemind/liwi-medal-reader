@@ -3,7 +3,7 @@
  */
 import useDatabase from '../Database/useDatabase'
 import { store } from '@/Store'
-import { RegistrationQuestions } from '@/Services/Steps'
+import { RegistrationQuestionsService } from '@/Services/Steps'
 
 export default async () => {
   const patient = store.getState().patient.item
@@ -11,7 +11,7 @@ export default async () => {
 
   const { updatePatientValues } = useDatabase()
 
-  const questions = RegistrationQuestions()
+  const questions = RegistrationQuestionsService()
   const patientValues = Object.values(mcNodes).filter(node =>
     questions.includes(node.id),
   )

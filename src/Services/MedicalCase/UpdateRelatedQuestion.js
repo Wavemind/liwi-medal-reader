@@ -1,8 +1,8 @@
 /**
  * The internal imports
  */
-import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
-import QuestionValidationService from '@/Services/Validation/Question'
+import { UpdateQuestionSequenceService } from '@/Services/MedicalCase'
+import { QuestionValidationService } from '@/Services/Validation'
 import { uniq } from '@/Utils/MedicalCase'
 import { handleNumeric } from '@/Utils/Answers'
 import { calculateFormula } from '@/Utils/Formula'
@@ -47,7 +47,7 @@ export default ({ nodeId, newNodes, mcNodes }) => {
 
       // uniq to avoid processing same question multiple time
       // Slice to remove element we just handled
-      newNodes = UpdateQuestionSequence({
+      newNodes = UpdateQuestionSequenceService({
         nodeId: questionId,
         newNodes,
         mcNodes,

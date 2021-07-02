@@ -1,7 +1,7 @@
 /**
  * The internal imports
  */
-import QuestionValidationService from '@/Services/Validation/Question'
+import { QuestionValidationService } from '@/Services/Validation'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import { translate } from '@/Translations/algorithm'
 import LoadAlgorithm from '@/Store/Algorithm/Load'

@@ -4,7 +4,7 @@ import { store } from '@/Store'
  * Transforms the diagnosis structure in the store to a usable format for the formulations container
  * @returns {{}}
  */
-export const transformFormulations = () => {
+const transformFormulations = () => {
   const newDrugs = {}
 
   const nodes = store.getState().algorithm.item.nodes
@@ -44,3 +44,5 @@ export const transformFormulations = () => {
 
   return newDrugs
 }
+
+export default transformFormulations

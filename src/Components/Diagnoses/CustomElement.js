@@ -8,9 +8,8 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
-import { RoundedButton } from '@/Components'
+import { RoundedButton, SelectedItem } from '@/Components'
 import { useTheme } from '@/Theme'
-import SelectedItem from '@/Components/Diagnoses/SelectedItem'
 
 const CustomElement = ({
   listObject,

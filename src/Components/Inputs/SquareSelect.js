@@ -21,14 +21,14 @@ const SquareSelect = ({
   fullWidth = true,
   pickerGrow = false,
 }) => {
-  const { t } = useTranslation()
-
   // Theme and style elements deconstruction
   const {
     Colors,
     Fonts,
     Components: { squareSelect },
   } = useTheme()
+
+  const { t } = useTranslation()
 
   return (
     <View style={squareSelect.wrapper(fullWidth, label)}>

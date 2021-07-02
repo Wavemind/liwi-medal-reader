@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { Question, EmptyList } from '@/Components'
 
-const ReferralMedicalCaseContainer = props => {
+const ReferralArmControlContainer = () => {
   const { t } = useTranslation()
 
   const questions = useSelector(
@@ -30,4 +30,4 @@ const ReferralMedicalCaseContainer = props => {
   )
 }
 
-export default ReferralMedicalCaseContainer
+export default ReferralArmControlContainer

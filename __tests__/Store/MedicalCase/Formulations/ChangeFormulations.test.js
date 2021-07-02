@@ -2,10 +2,8 @@ import { store } from '@/Store'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
-import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
 import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
-import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
-import ChangeFormulations from "@/Store/MedicalCase/ChangeFormulations";
+import ChangeFormulations from '@/Store/MedicalCase/ChangeFormulations'
 
 beforeAll(async () => {
   const algorithmFile = require('../../../algorithm.json')
@@ -80,6 +78,8 @@ describe('Handle drug formulation modification', () => {
     )
 
     expect(
-      store.getState().medicalCase.item.diagnosis.agreed[diagnosisId].drugs.agreed[drugId].formulation_id).toEqual(4)
+      store.getState().medicalCase.item.diagnosis.agreed[diagnosisId].drugs
+        .agreed[drugId].formulation_id,
+    ).toEqual(4)
   })
 })

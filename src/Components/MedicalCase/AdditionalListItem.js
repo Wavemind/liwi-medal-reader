@@ -11,7 +11,7 @@ import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 
-const ListItem = ({ item, handlePress, selected }) => {
+const AdditionalListItem = ({ item, handlePress, selected }) => {
   // Theme and style elements deconstruction
   const {
     Components: { diagnosisItem },
@@ -29,4 +29,4 @@ const ListItem = ({ item, handlePress, selected }) => {
   )
 }
 
-export default ListItem
+export default AdditionalListItem

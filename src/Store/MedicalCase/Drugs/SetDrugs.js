@@ -4,11 +4,11 @@ import {
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import SetDrugs from '@/Services/MedicalCase/SetDrugs'
+import { SetDrugsService } from '@/Services/MedicalCase'
 
 export default {
   initialState: buildAsyncState('setDrugs'),
-  action: buildAsyncActions('medicalCase/setDrugs', SetDrugs),
+  action: buildAsyncActions('medicalCase/setDrugs', SetDrugsService),
   reducers: buildAsyncReducers({
     errorKey: 'setDrugs.error',
     loadingKey: 'setDrugs.loading',

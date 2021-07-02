@@ -14,14 +14,12 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { navigateNestedAndSimpleReset } from '@/Navigators/Root'
 
-const IndexStudyContainer = props => {
-  const {
-    navigation,
-    route: {
-      params: { source },
-    },
-  } = props
-
+const IndexStudyContainer = ({
+  navigation,
+  route: {
+    params: { source },
+  },
+}) => {
   const { t } = useTranslation()
 
   const studyDescription = useSelector(

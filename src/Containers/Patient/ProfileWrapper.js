@@ -16,11 +16,11 @@ import {
   ConsultationsPatientContainer,
 } from '@/Containers'
 
-const ProfileWrapperPatientContainer = props => {
+const ProfileWrapperPatientContainer = () => {
+  const { Layout } = useTheme()
+
   const { t } = useTranslation()
   const Tab = createMaterialTopTabNavigator()
-
-  const { Layout } = useTheme()
 
   return (
     <View style={Layout.fill}>

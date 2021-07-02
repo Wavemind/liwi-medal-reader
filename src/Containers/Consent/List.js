@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import GetAllPatientWithConsentDB from '@/Store/DatabasePatient/GetAllWithConsent'
 
-const ListConsentContainer = props => {
+const ListConsentContainer = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 

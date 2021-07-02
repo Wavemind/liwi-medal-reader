@@ -5,12 +5,14 @@
 /**
  * The internal imports
  */
-import QuestionValidationService from '@/Services/Validation/Question'
-import { setNodeValue } from '@/Utils/Answers'
-import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
-import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
-import AddActivityService from '@/Services/Activity/Add'
 import { store } from '@/Store'
+import { QuestionValidationService } from '@/Services/Validation'
+import { setNodeValue } from '@/Utils/Answers'
+import {
+  UpdateQuestionSequenceService,
+  UpdateRelatedQuestionService,
+} from '@/Services/MedicalCase'
+import { AddActivityService } from '@/Services/Activity'
 
 export default props => {
   const { nodeId, value } = props
@@ -53,12 +55,12 @@ export default props => {
     ...newValues,
   }
 
-  newNodes = UpdateQuestionSequence({
+  newNodes = UpdateQuestionSequenceService({
     nodeId: node.id,
     newNodes,
     mcNodes: newMedicalCase.nodes,
   })
-  newNodes = UpdateRelatedQuestion({
+  newNodes = UpdateRelatedQuestionService({
     nodeId: node.id,
     newNodes,
     mcNodes: newMedicalCase.nodes,

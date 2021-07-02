@@ -13,7 +13,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
  */
 import { useTheme } from '@/Theme'
 import { ARM_CONTROL_ASSESSMENT_STAGE } from '@/Config/Navigation'
-import { SquareButton, ErrorNavBar } from '@/Components'
+import { SquareButton, ErrorNavbar } from '@/Components'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
@@ -231,27 +231,27 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   }
 
   if (medicalCaseInsertError) {
-    return <ErrorNavBar message={medicalCaseInsertError} />
+    return <ErrorNavbar message={medicalCaseInsertError} />
   }
 
   if (medicalCaseUpdateError) {
-    return <ErrorNavBar message={medicalCaseUpdateError} />
+    return <ErrorNavbar message={medicalCaseUpdateError} />
   }
 
   if (patientInsertError) {
-    return <ErrorNavBar message={patientInsertError} />
+    return <ErrorNavbar message={patientInsertError} />
   }
 
   if (patientUpdateError) {
-    return <ErrorNavBar message={patientUpdateError} />
+    return <ErrorNavbar message={patientUpdateError} />
   }
 
   if (patientValuesInsertError) {
-    return <ErrorNavBar message={patientValuesInsertError} />
+    return <ErrorNavbar message={patientValuesInsertError} />
   }
 
   if (patientValuesUpdateError) {
-    return <ErrorNavBar message={patientValuesUpdateError} />
+    return <ErrorNavbar message={patientValuesUpdateError} />
   }
 
   if (Object.keys(errors).length > 0) {

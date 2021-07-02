@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { getVersion, getBuildNumber } from 'react-native-device-info'
 
 /**
  * The internal imports
@@ -25,11 +26,12 @@ import DestroySession from '@/Store/User/DestroySession'
 
 const IndexSettingsContainer = () => {
   // Theme and style elements deconstruction
-  const { t, i18n } = useTranslation()
   const {
     Containers: { global, settings },
     Fonts,
   } = useTheme()
+
+  const { t, i18n } = useTranslation()
 
   // Get values from the store
   const environment = useSelector(state => state.system.environment)
@@ -51,6 +53,8 @@ const IndexSettingsContainer = () => {
       label: t(`containers.settings.general.languages.${language}`),
     })),
   )
+  const [appVersion] = useState(getVersion())
+  const [appBuildNumber] = useState(getBuildNumber())
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -110,6 +114,12 @@ const IndexSettingsContainer = () => {
       <Text style={[settings.title]}>
         {t('containers.settings.general.title')}
       </Text>
+      <View style={settings.item}>
+        <Text style={settings.text}>App version</Text>
+        <Text style={[settings.text, Fonts.textBold]}>
+          {`${appVersion}.${appBuildNumber}`}
+        </Text>
+      </View>
       <View style={settings.itemGeneral}>
         <SquareSelect
           label={t('containers.settings.general.environment')}

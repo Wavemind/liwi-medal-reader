@@ -4,11 +4,11 @@ import {
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import handleQrService from '@/Services/Scan/HandleQr'
+import { HandleQrService } from '@/Services/Scan'
 
 export default {
   initialState: buildAsyncState('handleQr'),
-  action: buildAsyncActions('scan/handleQr', handleQrService),
+  action: buildAsyncActions('scan/handleQr', HandleQrService),
   reducers: buildAsyncReducers({
     errorKey: 'handleQr.error',
     loadingKey: 'handleQr.loading',

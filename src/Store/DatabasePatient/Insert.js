@@ -10,11 +10,11 @@ import {
 /**
  * The internal imports
  */
-import insertPatientService from '@/Services/Patient/Insert'
+import InsertPatientService from '@/Services/Patient/Insert'
 
 export default {
   initialState: buildAsyncState('insert'),
-  action: buildAsyncActions('databasePatient/insert', insertPatientService),
+  action: buildAsyncActions('databasePatient/insert', InsertPatientService),
   reducers: buildAsyncReducers({
     itemKey: null,
     errorKey: 'insert.error',

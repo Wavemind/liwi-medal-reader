@@ -12,7 +12,7 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnoses'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import { store } from '@/Store'
-import SetDiagnoses from '@/Services/MedicalCase/SetDiagnoses'
+import { SetDiagnosesService } from '@/Services/MedicalCase'
 import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
 
@@ -50,7 +50,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(1703, 764) // Duration of neck mass >= 4 weeks => No
     await setAnswer(204, 2) // Size of neck mass => < 3 cm
     await setAnswer(205, 386) // Local tenderness of neck mass => No
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.excluded).toEqual(expect.arrayContaining([208])) // Uncomplicated infectious lymphadenopathy
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([209])) // Uncomplicated lymphadenopathy
   })
@@ -60,7 +60,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(1703, 764) // Duration of neck mass >= 4 weeks => No
     await setAnswer(204, 2) // Size of neck mass => < 3 cm
     await setAnswer(205, 386) // Local tenderness of neck mass => No
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.excluded).toEqual(
       expect.arrayContaining([208, 209]), // Uncomplicated infectious lymphadenopathy & Uncomplicated lymphadenopathy
     )
@@ -71,14 +71,14 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(40, 76) // Difficulty Breathing To Yes
     await setAnswer(2974, 2254) // Grunting To Yes
     await setAnswer(86, 145) // Unconscious To Yes
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([60]))
   })
 
   it('Basic + Top level exclusion - should exclude Severe pneumonia very basic diagram exclusion at top level', async () => {
     await setAnswer(39, 75) // Cough To No
     await setAnswer(40, 77) // Difficulty Breathing To No
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.excluded).toEqual(expect.arrayContaining([60]))
   })
 
@@ -96,7 +96,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 116 }))
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 123 }))
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 3186 }))
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([128]))
   })
 
@@ -112,7 +112,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(122, 229) // CRP => Unavailable
     await setAnswer(3545, 55) // Respiratory rate => Unavailable
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 60 }))
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([123, 83]))
   })
 
@@ -127,14 +127,14 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(278, 491) // Unable to drink or breastfeed => No
     await setAnswer(122, 230) // CRP => < 10
 
-    let result = SetDiagnoses()
+    let result = SetDiagnosesService()
     expect(result.diagnosis.proposed).not.toEqual(expect.arrayContaining([116]))
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 60 }))
-    result = SetDiagnoses()
+    result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([83]))
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 83 }))
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 123 }))
-    result = SetDiagnoses()
+    result = SetDiagnosesService()
     expect(result.diagnosis.refused).toEqual(expect.arrayContaining([83, 123]))
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([116]))
   })
@@ -150,10 +150,10 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(3184, 2342) // Vomiting everything  => No
     await setAnswer(278, 491) // Unable to drink or breastfeed => No
     await setAnswer(122, 230) // CRP => < 10
-    let result = SetDiagnoses()
+    let result = SetDiagnosesService()
     expect(result.diagnosis.proposed).not.toEqual(expect.arrayContaining([116]))
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 60 }))
-    result = SetDiagnoses()
+    result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([83]))
     store.dispatch(
       AddAgreedDiagnoses.action({
@@ -173,7 +173,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
       }),
     )
     store.dispatch(AddRefusedDiagnoses.action({ diagnosisId: 123 }))
-    result = SetDiagnoses()
+    result = SetDiagnosesService()
     expect(result.diagnosis.excluded).toEqual(expect.arrayContaining([116]))
   })
 
@@ -183,12 +183,12 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(86, 146) // Unconscious or Lethargic (Unusually sleepy) => No
     await setAnswer(1685, 752) // Convulsing now => No
     await setAnswer(7314, 5277) // Oral fluid test => Not able to drink / vomits after drinking
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([3806]))
   })
 
   it('No Final Diagnosis should be proposed if nothing is answered', async () => {
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual([8781]) // Only prevention and screening
   })
 
@@ -205,7 +205,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(122, 229) // CRP => Unavailable
     await setAnswer(3545, 3155) // Respiratory rate => Unavailable
     await setAnswer(4530, 3182) // Visible respiratory rate => Visibly fast
-    const result = SetDiagnoses()
+    const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([123]))
   })
   it('QSS to false - Should propose Viral acute pharyngitis', async () => {

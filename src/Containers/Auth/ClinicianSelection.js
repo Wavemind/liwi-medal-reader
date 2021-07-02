@@ -17,7 +17,7 @@ import { navigateAndSimpleReset } from '@/Navigators/Root'
 import ChangeEmergencyContent from '@/Store/Emergency/ChangeEmergencyContent'
 import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 
-const ClinicianSelectionAuthContainer = props => {
+const ClinicianSelectionAuthContainer = () => {
   // Theme and style elements deconstruction
   const {
     Layout,
