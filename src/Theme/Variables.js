@@ -10,19 +10,23 @@ import { hp } from '@/Theme/Responsive'
  * Colors
  */
 export const Colors = {
+  // Colors that change in dark mode
   primary: '#000000',
-  primaryLowOpacity: '#00000088',
   secondary: '#ffffff',
+  text: '#121212',
+
+  // Colors that don't change in dark mode
+  primaryLowOpacity: '#00000088',
   red: '#d20730',
   softRed: '#fbdedb',
   redLowOpacity: '#d2073044',
-  grey: '#6f6f6f',
   disabled: '#d3d1cf',
   warning: '#e27900',
-  lightGrey: '#f2f1ee',
   transparent: 'rgba(0,0,0,0)',
-  text: '#121212',
   white: '#ffffff',
+  black: '#000000',
+  lightGrey: '#f2f1ee',
+  grey: '#6f6f6f',
   darkGrey: '#323232',
 }
 

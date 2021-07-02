@@ -8,7 +8,7 @@ export default function (props) {
       ...Gutters.smallVPadding,
       ...Layout.row,
       ...Layout.fill,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.white,
       borderWidth: 1,
       borderBottomWidth: resultsOpen ? 0 : 1,
       borderColor: Colors.grey,

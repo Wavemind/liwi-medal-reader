@@ -48,7 +48,7 @@ const database = new Database({
 
 export default function () {
   /**
-   * Create activities for a releated medical case
+   * Create activities for a related medical case
    * @param { integer } medicalCaseId
    * @param { array } activities - List of activities to create
    * @private
@@ -124,7 +124,7 @@ export default function () {
    * @param patientId
    * @returns {Promise<void>}
    */
-  const updatePatientValues = async (patientValues, patientId) => {
+  const updatePatientValues = async (patientValues, patientId) =>   {
     const patientValuesCollection = database.get('patient_values')
     await database.action(async () => {
       const existingPatientValues = await patientValuesCollection
