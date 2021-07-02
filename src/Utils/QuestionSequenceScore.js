@@ -13,10 +13,10 @@ import { store } from '@/Store'
 export const scoredCalculateCondition = (qsId, newMcNodes) => {
   const algorithm = store.getState().algorithm.item
 
-  const currentNode = algorithm.nodes[qsId]
+  const qs = algorithm.nodes[qsId]
 
   // If this is a top parent node
-  if (currentNode.conditions.length === 0) {
+  if (qs.conditions.length === 0) {
     return true
   }
 
@@ -25,14 +25,14 @@ export const scoredCalculateCondition = (qsId, newMcNodes) => {
   let scoreNull = 0
   let scoreTotalPossible = 0
 
-  currentNode.conditions.map(conditions => {
+  qs.conditions.map(conditions => {
     const { answer_id, node_id } = conditions
     let returnedBoolean = false
     if (newMcNodes[node_id].answer !== null) {
       returnedBoolean = Number(newMcNodes[node_id].answer) === Number(answer_id)
     }
-
     scoreTotalPossible += conditions.score
+
     switch (returnedBoolean) {
       case true:
         scoreTrue += conditions.score
@@ -49,15 +49,15 @@ export const scoredCalculateCondition = (qsId, newMcNodes) => {
   })
 
   // If score true so this QS is true
-  if (scoreTrue >= currentNode.min_score) {
+  if (scoreTrue >= qs.min_score) {
     return true
   }
   // If there are more false condition than min necessary so we return false
-  if (scoreTotalPossible - scoreFalse >= currentNode.min_score) {
+  if (scoreTotalPossible - scoreFalse <= qs.min_score) {
     return false
   }
   // If there are more null condition than min necessary so we return null
-  if (scoreTotalPossible - scoreNull >= currentNode.min_score) {
+  if (scoreTotalPossible - scoreNull >= qs.min_score) {
     return null
   }
 }
