@@ -25,7 +25,7 @@ export default {
       const value =
         nodes[nodeId].formula.search('Month') > 0
           ? differenceInMonths(new Date(createdAt), new Date(birthDate))
-          : differenceInDays(new Date(createdAt), new Date(birthDate))
+          : differenceInDays(new Date(createdAt), new Date(birthDate)) + 1
 
       const newValue = handleNumeric(mcNodes[nodeId], nodes[nodeId], value)
       state.item.nodes[nodeId] = { ...state.item.nodes[nodeId], ...newValue }
