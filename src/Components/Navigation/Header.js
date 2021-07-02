@@ -19,6 +19,7 @@ const Header = props => {
 
   // Theme and style elements deconstruction
   const {
+    Colors,
     Components: { header },
   } = useTheme()
 
@@ -26,7 +27,7 @@ const Header = props => {
     <View style={header.wrapper}>
       <View style={header.menu}>
         <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          <Icon name="menu" />
+          <Icon name="menu" color={Colors.primary} />
         </TouchableOpacity>
       </View>
       <View style={header.titleWrapper}>

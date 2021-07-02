@@ -26,6 +26,7 @@ const CustomDrawerContent = props => {
   const {
     Components: { customDrawerContent },
     Layout,
+    Colors,
   } = useTheme()
 
   const consentManagement = useSelector(
@@ -47,7 +48,7 @@ const CustomDrawerContent = props => {
         <DrawerContentScrollView contentContainerStyle={Layout.fill}>
           <View style={customDrawerContent.closeWrapper}>
             <TouchableOpacity onPress={() => navigation.closeDrawer()}>
-              <Icon name="close" />
+              <Icon name="close" color={Colors.primary} />
             </TouchableOpacity>
           </View>
           <CustomDrawerItem
@@ -123,7 +124,7 @@ const CustomDrawerContent = props => {
                 {t('navigation.logout')}
               </Text>
             )}
-            icon={() => <Icon name="logout" />}
+            icon={() => <Icon name="logout" color={Colors.primary} />}
             onPress={() => handleLogout()}
           />
         </View>
