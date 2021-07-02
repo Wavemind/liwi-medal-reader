@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { Text, View } from 'react-native'
 import Toggle from 'react-native-toggle-element'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import { wp } from '@/Theme/Responsive'
 import { Icon } from '@/Components'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import setAnswer from '@/Utils/SetAnswer'
 
 const ToggleComplaintCategory = ({ questionId }) => {
   // Theme and style elements deconstruction
@@ -25,7 +25,6 @@ const ToggleComplaintCategory = ({ questionId }) => {
   } = useTheme()
 
   const { t } = useTranslation()
-  const dispatch = useDispatch()
 
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
@@ -37,7 +36,6 @@ const ToggleComplaintCategory = ({ questionId }) => {
   const yesAnswer = getYesAnswer(currentNode)
   const noAnswer = getNoAnswer(currentNode)
 
-  // TODO: Need to set by default answer to false
   const [toggleValue, setToggleValue] = useState(
     question.answer === yesAnswer.id,
   )
@@ -48,7 +46,7 @@ const ToggleComplaintCategory = ({ questionId }) => {
   useEffect(() => {
     const answerId = toggleValue ? yesAnswer.id : noAnswer.id
     if (question.answer !== answerId) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value: answerId }))
+      setAnswer(question.id, answerId)
     }
   }, [toggleValue])
 

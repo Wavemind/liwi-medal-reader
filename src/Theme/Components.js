@@ -10,9 +10,11 @@ import checkboxStyles from './components/Checkbox.style'
 import booleanButtonStyles from './components/BooleanButtons.style'
 import selectStyles from './components/Select.style'
 import squareSelectStyles from './components/SquareSelect.style'
+import toggleSwitchStyles from './components/ToggleSwitch.style'
 import sectionHeaderStyles from './components/SectionHeader.style'
 import infoStyles from './components/Info.style'
 import clinicianStyles from './components/Clinician.style'
+import customClinicianStyles from './components/CustomClinician.style'
 import headerStyles from './components/Header.style'
 import customDrawerContentStyles from './components/CustomDrawerContent.style'
 import customDrawerItemStyles from './components/CustomDrawerItem.style'
@@ -21,6 +23,8 @@ import tabBarStyles from './components/TabBar.style'
 import sideBarStyles from './components/SideBar.style'
 import badgeBarStyles from './components/BadgeBar.style'
 import patientListItemStyles from './components/PatientListItem.style'
+import currentConsultationsStyles from './components/CurrentConsultation.style'
+import consultationListItemStyles from './components/ConsultationListItem.style'
 import patientTabItemStyles from './components/PatientTabItem.style'
 import consentListItemStyles from './components/ConsentListItem.style'
 import badgeStyles from './components/Badge.style'
@@ -42,6 +46,7 @@ import autosuggestStyles from './components/Autosuggest.style'
 import autocompleteStyles from './components/Autocomplete.style'
 import additionalSelectStyles from './components/AdditionalSelect.style'
 import errorStyles from './components/Error.style'
+import medicalCaseListItemStyles from './components/MedicalCaseListItem.style'
 
 /**
  *
@@ -58,8 +63,10 @@ export default function (props) {
     sectionHeader: sectionHeaderStyles(props),
     info: infoStyles(props),
     squareSelect: squareSelectStyles(props),
+    toggleSwitch: toggleSwitchStyles(props),
     bottomNavbar: bottomNavbarStyles(props),
     clinician: clinicianStyles(props),
+    customClinician: customClinicianStyles(props),
     header: headerStyles(props),
     customDrawerContent: customDrawerContentStyles(props),
     customDrawerItem: customDrawerItemStyles(props),
@@ -68,6 +75,8 @@ export default function (props) {
     sideBar: sideBarStyles(props),
     badgeBar: badgeBarStyles(props),
     patientListItem: patientListItemStyles(props),
+    currentConsultation: currentConsultationsStyles(props),
+    consultationListItem: consultationListItemStyles(props),
     patientTabItem: patientTabItemStyles(props),
     consentListItem: consentListItemStyles(props),
     badge: badgeStyles(props),
@@ -89,5 +98,6 @@ export default function (props) {
     autocomplete: autocompleteStyles(props),
     additionalSelect: additionalSelectStyles(props),
     error: errorStyles(props),
+    medicalCaseListItem: medicalCaseListItemStyles(props),
   }
 }

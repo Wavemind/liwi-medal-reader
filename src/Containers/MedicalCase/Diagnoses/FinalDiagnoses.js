@@ -1,9 +1,9 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, ScrollView } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -16,13 +16,16 @@ import {
   CustomDiagnoses,
 } from '@/Components'
 import { useTheme } from '@/Theme'
+import SetDiagnoses from '@/Store/MedicalCase/Diagnoses/SetDiagnoses'
 
-const FinalDiagnoses = () => {
+const FinalDiagnosesMedicalCaseContainer = () => {
   // Theme and style elements deconstruction
   const { Gutters } = useTheme()
+  const dispatch = useDispatch()
 
   const { t } = useTranslation()
 
+  useEffect(() => dispatch(SetDiagnoses.action({})), [])
   const versionName = useSelector(state => state.algorithm.item.version_name)
 
   return (
@@ -49,4 +52,4 @@ const FinalDiagnoses = () => {
   )
 }
 
-export default FinalDiagnoses
+export default FinalDiagnosesMedicalCaseContainer

@@ -11,11 +11,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
-import DefineType from '@/Store/Modal/DefineType'
+import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import setAnswer from '@/Utils/SetAnswer'
 
-const Boolean = ({ questionId, emergency, disabled = false }) => {
+const Boolean = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
   const {
     Components: { booleanButton },
@@ -24,26 +24,29 @@ const Boolean = ({ questionId, emergency, disabled = false }) => {
   const dispatch = useDispatch()
 
   // Get node from algorithm
-  const question = useSelector(
-    state => state.medicalCase.item.nodes[questionId],
+  const answer = useSelector(
+    state => state.medicalCase.item.nodes[questionId].answer,
   )
   const currentNode = useSelector(
-    state => state.algorithm.item.nodes[question.id],
+    state => state.algorithm.item.nodes[questionId],
   )
 
   // Local state definition
-  const [value, setValue] = useState(question.answer)
+  const [value, setValue] = useState(answer)
 
-  const yesAnswer = getYesAnswer(currentNode)
-  const noAnswer = getNoAnswer(currentNode)
+  const [yesAnswer] = useState(getYesAnswer(currentNode))
+  const [noAnswer] = useState(getNoAnswer(currentNode))
 
   /**
    * Set node answer and handle emergency action
    * @param {integer} answerId
    */
-  const setAnswer = async answerId => {
-    if (emergency && yesAnswer.id === answerId) {
-      await dispatch(DefineType.action({ type: 'emergency' }))
+  const setLocalAnswer = async answerId => {
+    if (
+      currentNode.emergency_status === 'emergency' &&
+      yesAnswer.id === answerId
+    ) {
+      await dispatch(SetParams.action({ type: 'emergency' }))
       await dispatch(ToggleVisibility.action({}))
     }
     setValue(answerId)
@@ -53,8 +56,8 @@ const Boolean = ({ questionId, emergency, disabled = false }) => {
    * Update value in store when value changes
    */
   useEffect(() => {
-    if (question.answer !== value) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value }))
+    if (answer !== value) {
+      setAnswer(questionId, value)
     }
   }, [value])
 
@@ -70,7 +73,7 @@ const Boolean = ({ questionId, emergency, disabled = false }) => {
       >
         <TouchableOpacity
           style={Layout.center}
-          onPress={() => setAnswer(yesAnswer.id)}
+          onPress={() => setLocalAnswer(yesAnswer.id)}
           disabled={disabled}
         >
           <Text style={booleanButton.buttonText(value === yesAnswer.id)}>
@@ -88,7 +91,7 @@ const Boolean = ({ questionId, emergency, disabled = false }) => {
       >
         <TouchableOpacity
           style={Layout.center}
-          onPress={() => setAnswer(noAnswer.id)}
+          onPress={() => setLocalAnswer(noAnswer.id)}
           disabled={disabled}
         >
           <Text style={booleanButton.buttonText(value === noAnswer.id)}>

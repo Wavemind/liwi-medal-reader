@@ -13,14 +13,12 @@ import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { SectionHeader, Media } from '@/Components'
 
-const IndexQuestionInfoContainer = props => {
-  const {
-    navigation,
-    route: {
-      params: { nodeId },
-    },
-  } = props
-
+const IndexQuestionInfoContainer = ({
+  navigation,
+  route: {
+    params: { nodeId },
+  },
+}) => {
   const { t } = useTranslation()
 
   // Theme and style elements deconstruction

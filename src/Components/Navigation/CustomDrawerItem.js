@@ -4,12 +4,16 @@
 import React from 'react'
 import { Text } from 'react-native'
 import { DrawerItem } from '@react-navigation/drawer'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import SetParams from '@/Store/Modal/SetParams'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 
 const CustomDrawerItem = ({
   label,
@@ -18,14 +22,33 @@ const CustomDrawerItem = ({
   iconName,
   navigation,
 }) => {
-  const { index, routes } = navigation.dangerouslyGetState()
-
   // Theme and style elements deconstruction
   const {
     Components: { customDrawerItem },
     Colors,
     FontSize,
   } = useTheme()
+
+  const dispatch = useDispatch()
+
+  const { index, routes } = navigation.dangerouslyGetState()
+
+  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const closedAt = useSelector(state => state.medicalCase.item.closedAt)
+
+  const handleNavigation = async () => {
+    if (medicalCaseId && closedAt === 0) {
+      await dispatch(
+        SetParams.action({
+          type: 'exitMedicalCase',
+          params: { routeName, routeParams },
+        }),
+      )
+      await dispatch(ToggleVisibility.action({}))
+    } else {
+      navigateAndSimpleReset(routeName, routeParams)
+    }
+  }
 
   return (
     <DrawerItem
@@ -50,7 +73,7 @@ const CustomDrawerItem = ({
           color={focused ? Colors.secondary : Colors.primary}
         />
       )}
-      onPress={() => navigation.navigate(routeName, routeParams)}
+      onPress={handleNavigation}
     />
   )
 }

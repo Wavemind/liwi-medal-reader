@@ -53,7 +53,7 @@ const BadgeBar = ({
           return (
             <Badge
               key={`badge-${i}`}
-              removeBadge={removeBadge}
+              removeBadge={() => removeBadge(selectedItem)}
               selectedItem={selectedItem.id}
               label={() => badgeComponentLabel(selectedItem)}
             />

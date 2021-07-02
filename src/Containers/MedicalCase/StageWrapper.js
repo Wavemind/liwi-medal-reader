@@ -11,9 +11,9 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { TabBar, SideBar } from '@/Components'
-import Navigation from '@/Config/Navigation'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
-const StageWrapper = ({ route }) => {
+const StageWrapperMedicalCaseContainer = ({ route }) => {
   const { t } = useTranslation()
   const Tab = createMaterialTopTabNavigator()
 
@@ -21,8 +21,11 @@ const StageWrapper = ({ route }) => {
     Containers: { medicalCase },
   } = useTheme()
   const stageIndex = route.params?.stageIndex || 0
+  const stepIndex = route.params?.stepIndex || 0
 
-  const stage = Navigation.INTERVENTION_STAGES[stageIndex]
+  const stages = getStages()
+  const stage = stages[stageIndex]
+  const currentStep = stage.steps[stepIndex]
 
   return (
     <View style={medicalCase.wrapper}>
@@ -35,8 +38,15 @@ const StageWrapper = ({ route }) => {
         </View>
         <Tab.Navigator
           lazy={true}
-          tabBarOptions={{ scrollEnabled: true, tabStyle: medicalCase.tabBar }}
-          tabBar={tabProps => <TabBar {...{ ...tabProps, stageIndex }} />}
+          swipeEnabled={false}
+          initialRouteName={currentStep.label}
+          tabBarOptions={{
+            scrollEnabled: true,
+            tabStyle: medicalCase.tabBar,
+          }}
+          tabBar={tabProps => (
+            <TabBar {...{ ...tabProps, stageIndex, stepIndex }} />
+          )}
         >
           {stage.steps.map(step => (
             <Tab.Screen
@@ -51,4 +61,4 @@ const StageWrapper = ({ route }) => {
   )
 }
 
-export default StageWrapper
+export default StageWrapperMedicalCaseContainer

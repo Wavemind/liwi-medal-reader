@@ -1,24 +1,22 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, TouchableOpacity, TextInput, Text } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import filter from 'lodash/filter'
+import debounce from 'lodash/debounce'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import setAnswer from '@/Utils/SetAnswer'
 
 const Autocomplete = ({ questionId }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-
   const {
     Colors,
     FontSize,
@@ -27,26 +25,37 @@ const Autocomplete = ({ questionId }) => {
     Components: { autocomplete },
   } = useTheme()
 
-  const [searchTerm, setSearchTerm] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [optionSelected, setOptionSelected] = useState(false)
+  const { t } = useTranslation()
 
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
   )
   const villageList = useSelector(state => state.algorithm.item.village_json)
 
+  const [searchTerm, setSearchTerm] = useState(question.value)
+  const [searchResults, setSearchResults] = useState([])
+  const [optionSelected, setOptionSelected] = useState(true)
+
+  // Callback that debounces the search by 500ms
+  const debouncedSearch = useCallback(
+    debounce(term => {
+      const filteredVillageList = filter(villageList, village =>
+        Object.values(village)[0].match(new RegExp(term, 'i')),
+      )
+      setSearchResults(filteredVillageList.slice(0, 5))
+    }, 500),
+    [],
+  )
+
   /**
    * Handles the filtering and reset of the searchResults
    */
   useEffect(() => {
     if (searchTerm.length === 0 || optionSelected) {
+      debouncedSearch.cancel()
       setSearchResults([])
     } else {
-      const filteredVillageList = filter(villageList, village =>
-        Object.values(village)[0].match(new RegExp(searchTerm, 'i')),
-      )
-      setSearchResults(filteredVillageList.slice(0, 5))
+      debouncedSearch(searchTerm)
     }
   }, [searchTerm])
 
@@ -57,7 +66,17 @@ const Autocomplete = ({ questionId }) => {
   const handleOptionSelect = option => {
     setOptionSelected(true)
     setSearchTerm(option)
-    dispatch(SetAnswer.action({ nodeId: question.id, option }))
+    setAnswer(question.id, option)
+  }
+
+  /**
+   * Save value in store
+   */
+  const onEndEditing = event => {
+    const newValue = event.nativeEvent.text
+    if (question.value !== newValue) {
+      setAnswer(question.id, newValue)
+    }
   }
 
   /**
@@ -65,7 +84,9 @@ const Autocomplete = ({ questionId }) => {
    * @param text
    */
   const handleChangeText = text => {
-    setOptionSelected(false)
+    if (optionSelected) {
+      setOptionSelected(false)
+    }
     setSearchTerm(text)
   }
 
@@ -103,6 +124,7 @@ const Autocomplete = ({ questionId }) => {
             style={autocomplete.inputText}
             keyboardType="default"
             onChangeText={handleChangeText}
+            onEndEditing={onEndEditing}
             value={searchTerm}
             placeholder={t('application.search')}
             placeholderTextColor={Colors.grey}

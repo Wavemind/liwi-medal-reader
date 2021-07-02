@@ -1,10 +1,4 @@
 /**
- * The external imports
- */
-import React from 'react'
-import { View, Text } from 'react-native'
-
-/**
  * The internal imports
  */
 // Registration
@@ -28,6 +22,7 @@ import SummaryMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Summ
 // Arm Control
 import ArmFinalDiagnosesMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/FinalDiagnoses'
 import ArmDrugsMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/Drugs'
+import AssessmentArmControlMedicalCaseContainer from '@/Containers/ArmControl/Assessment'
 
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
@@ -125,14 +120,23 @@ const baseInterventionStages = [
   },
 ]
 
-const INTERVENTION_STAGES = [...baseInterventionStages, diagnosesStage]
+const armControlDiagnosesStage = {
+  label: 'diagnoses',
+  icon: 'diagnosis',
+  component: 'DiagnosesWrapper',
+  steps: [
+    {
+      label: 'final_diagnoses',
+      component: ArmFinalDiagnosesMedicalCaseContainer,
+    },
+    {
+      label: 'medicines',
+      component: ArmDrugsMedicalCaseContainer,
+    },
+  ],
+}
 
-const REFERRAL_INTERVENTION_STAGES = [
-  ...baseInterventionStages,
-  { ...diagnosesStage, steps: [...diagnosesStage.steps, referralStep] },
-]
-
-const ARM_CONTROL_STAGES = [
+const baseArmControlStages = [
   {
     label: 'registration',
     icon: 'registration',
@@ -170,29 +174,34 @@ const ARM_CONTROL_STAGES = [
     steps: [
       {
         label: 'assessments',
-        component: AssessmentMedicalCaseContainer,
-      },
-    ],
-  },
-  {
-    label: 'diagnoses',
-    icon: 'diagnosis',
-    component: 'DiagnosesWrapper',
-    steps: [
-      {
-        label: 'final_diagnoses',
-        component: ArmFinalDiagnosesMedicalCaseContainer,
-      },
-      {
-        label: 'medicines',
-        component: ArmDrugsMedicalCaseContainer,
+        component: AssessmentArmControlMedicalCaseContainer,
       },
     ],
   },
 ]
 
+const INTERVENTION_STAGES = [...baseInterventionStages, diagnosesStage]
+
+const REFERRAL_INTERVENTION_STAGES = [
+  ...baseInterventionStages,
+  { ...diagnosesStage, steps: [...diagnosesStage.steps, referralStep] },
+]
+
+const ARM_CONTROL_STAGES = [...baseArmControlStages, armControlDiagnosesStage]
+
+const REFERRAL_ARM_CONTROL_STAGES = [
+  ...baseArmControlStages,
+  {
+    ...armControlDiagnosesStage,
+    steps: [...armControlDiagnosesStage.steps, referralStep],
+  },
+]
+
 export default {
+  INTERVENTION_CONSULTATION_STAGE: 2,
+  ARM_CONTROL_ASSESSMENT_STAGE: 2,
   INTERVENTION_STAGES,
   REFERRAL_INTERVENTION_STAGES,
   ARM_CONTROL_STAGES,
+  REFERRAL_ARM_CONTROL_STAGES,
 }

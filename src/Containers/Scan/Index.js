@@ -18,11 +18,14 @@ import { Icon } from '@/Components'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import HandleQr from '@/Store/Scan/HandleQr'
+import LoadPatient from '@/Store/Patient/Load'
+import { transformPatientValues } from '@/Utils/MedicalCase'
+import UpdateNodeFields from '@/Store/MedicalCase/UpdateNodeFields'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
-
-const IndexScanContainer = props => {
+const IndexScanContainer = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigation = useNavigation()
@@ -39,6 +42,7 @@ const IndexScanContainer = props => {
   const handleQrError = useSelector(state => state.scan.handleQr.error)
   const medicalCaseError = useSelector(state => state.medicalCase.create.error)
   const scanData = useSelector(state => state.scan.item)
+  const patientLoadError = useSelector(state => state.patient.load.error)
 
   // Local state definition
   const [generateNewQR, setGenerateNewQR] = useState(false)
@@ -50,15 +54,41 @@ const IndexScanContainer = props => {
    */
   const openMedicalCase = async () => {
     if (scanData.navigate) {
-      const medicalCaseResult = await dispatch(
-        CreateMedicalCase.action({ algorithm }),
-      )
-      if (isFulfilled(medicalCaseResult)) {
+      if (scanData.navigationParams.newMedicalCase) {
         const patientResult = await dispatch(
           CreatePatient.action({ ...scanData.navigationParams }),
         )
         if (isFulfilled(patientResult)) {
-          navigation.navigate('StageWrapper', scanData.navigationParams)
+          const medicalCaseResult = await dispatch(
+            CreateMedicalCase.action({
+              algorithm,
+              patientId: patientResult.payload.id,
+            }),
+          )
+          if (isFulfilled(medicalCaseResult)) {
+            navigation.navigate('StageWrapper', scanData.navigationParams)
+          }
+        }
+      } else {
+        const loadPatientResult = await dispatch(
+          LoadPatient.action({
+            patientId: scanData.navigationParams.patientId,
+          }),
+        )
+        if (isFulfilled(loadPatientResult)) {
+          const medicalCaseResult = await dispatch(
+            CreateMedicalCase.action({
+              algorithm,
+              patientId: scanData.navigationParams.patientId,
+            }),
+          )
+          if (isFulfilled(medicalCaseResult)) {
+            const patientValueNodes = transformPatientValues()
+            await dispatch(
+              UpdateNodeFields.action({ toUpdate: patientValueNodes }),
+            )
+            navigateAndSimpleReset('StageWrapper')
+          }
         }
       }
     }
@@ -125,7 +155,7 @@ const IndexScanContainer = props => {
           </View>
 
           <View style={scan.bottomWrapper(handleQrError)}>
-            {(handleQrError || medicalCaseError) && (
+            {(handleQrError || medicalCaseError || patientLoadError) && (
               <View style={scan.errorWrapper}>
                 {handleQrError && (
                   <Text style={scan.errorTitle}>{handleQrError.message}</Text>
@@ -133,6 +163,11 @@ const IndexScanContainer = props => {
                 {medicalCaseError && (
                   <Text style={scan.errorTitle}>
                     {medicalCaseError.message}
+                  </Text>
+                )}
+                {patientLoadError && (
+                  <Text style={scan.errorTitle}>
+                    {patientLoadError.message}
                   </Text>
                 )}
               </View>

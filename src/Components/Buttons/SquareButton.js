@@ -9,31 +9,28 @@ import { TouchableOpacity, Text, View } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import { FontSize } from '@/Theme/Variables'
 
-const SquareButton = props => {
+const SquareButton = ({
+  label = null,
+  filled,
+  disabled,
+  onPress,
+  icon,
+  big,
+  iconAfter = false,
+  bgColor = null,
+  color = null,
+  iconSize = FontSize.huge,
+  align = null,
+  fullWidth = true,
+}) => {
   // Theme and style elements deconstruction
   const {
     Components: { squareButton },
     Colors,
-    FontSize,
     Layout,
   } = useTheme()
-
-  // Props deconstruction
-  const {
-    label = null,
-    filled,
-    disabled,
-    onPress,
-    icon,
-    big,
-    iconAfter = false,
-    bgColor = null,
-    color = null,
-    iconSize = FontSize.huge,
-    align = null,
-    fullWidth = true,
-  } = props
 
   // Constants definition
   const type = filled ? 'filled' : 'outlined'

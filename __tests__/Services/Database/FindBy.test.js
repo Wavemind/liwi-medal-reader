@@ -10,7 +10,7 @@ import CreatePatient from '@/Store/Patient/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import useDatabase from '@/Services/Database/useDatabase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
-import InsertPatient from '@/Store/Database/Patient/Insert'
+import InsertPatient from '@/Store/DatabasePatient/Insert'
 
 import { store } from '@/Store/index'
 
@@ -34,6 +34,7 @@ describe('findBy should find an object based on a query', () => {
       'first_name',
       'last_name',
       'birth_date',
+      'birth_date_estimated',
       'uid',
       'study_id',
       'group_id',
@@ -47,6 +48,8 @@ describe('findBy should find an object based on a query', () => {
       'updatedAt',
       'fail_safe',
       'medicalCases',
+      'patientValues',
+      'savedInDatabase',
     ]
     const uid = uuid.v4()
     await store.dispatch(
@@ -82,6 +85,7 @@ describe('findBy should find an object based on a query', () => {
       'closedAt',
       'createdAt',
       'updatedAt',
+      'version_id',
     ]
     const id = store.getState().medicalCase.item.id
     const medicalCase = await findBy('MedicalCase', id)

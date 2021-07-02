@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Layout, Gutters, Fonts, Colors } = props
@@ -11,8 +12,19 @@ export default function (props) {
       ...Gutters.regularVMargin,
       ...Layout.row,
     },
-    headerText: {
-      ...Layout.fill,
+    headerName: {
+      ...Fonts.textUppercase,
+      ...Fonts.textColorSecondary,
+      ...Fonts.textBold,
+      width: wp(38),
+    },
+    headerLastVisit: {
+      ...Fonts.textUppercase,
+      ...Fonts.textColorSecondary,
+      ...Fonts.textBold,
+      width: wp(20),
+    },
+    headerStatus: {
       ...Fonts.textUppercase,
       ...Fonts.textColorSecondary,
       ...Fonts.textBold,

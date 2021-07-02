@@ -21,11 +21,11 @@ import subYears from 'date-fns/subYears'
 import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
 import UpdateField from '@/Store/Patient/UpdateField'
+import HandleComplaintCategories from '@/Store/MedicalCase/HandleComplaintCategories'
+import HandleDateFormulas from '@/Store/MedicalCase/HandleDateFormulas'
 
 const DateInput = () => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
   const {
     Components: { select, numeric },
     Colors,
@@ -33,9 +33,16 @@ const DateInput = () => {
     Gutters,
   } = useTheme()
 
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+
+  const birth_date_estimated = useSelector(
+    state => state.patient.item.birth_date_estimated,
+  )
+
   // Local state definition
   const [dateLanguage, setDateLanguage] = useState(enGB)
-  const [isEstimated, setIsEstimated] = useState(false)
+  const [isEstimated, setIsEstimated] = useState(birth_date_estimated)
 
   const [estimatedDateType, setEstimatedDateType] = useState(null)
   const [estimatedValue, setEstimatedValue] = useState('')
@@ -49,7 +56,9 @@ const DateInput = () => {
   const [yearsRange, setYearsRange] = useState([])
 
   // Get values from the store
+  const algorithm = useSelector(state => state.algorithm.item)
   const ageLimit = useSelector(state => state.algorithm.item.config.age_limit)
+
   const systemLanguage = useSelector(state => state.system.language)
   const birth_date = useSelector(state => state.patient.item.birth_date)
 
@@ -78,6 +87,13 @@ const DateInput = () => {
       setYearValue(date.getFullYear())
     }
 
+    // TODO need to remove this, but it crashes without it
+    if (__DEV__) {
+      setDayValue(11)
+      setMonthValue(4)
+      setYearValue(2013)
+    }
+
     const today = new Date()
     const days = range(1, 32)
     const months = range(1, 13)
@@ -94,11 +110,33 @@ const DateInput = () => {
   }, [])
 
   /**
+   * Triggers the related actions when the birth date is set
+   * @param {Timestamp} birthDate
+   */
+  const relatedActions = birthDate => {
+    // Trigger formulas related to birth date
+    dispatch(
+      HandleDateFormulas.action({
+        birthDate: birthDate.getTime(),
+        algorithm,
+      }),
+    )
+
+    // Set default value for complain category
+    dispatch(
+      HandleComplaintCategories.action({
+        birthDate: birthDate.getTime(),
+        algorithm,
+      }),
+    )
+  }
+
+  /**
    * Store birth date
    */
   useEffect(() => {
     if (dayValue !== null && monthValue !== null && yearValue !== null) {
-      const date = parse(
+      const birthDate = parse(
         `${dayValue}-${monthValue}-${yearValue}`,
         'dd-MM-yyyy',
         new Date(),
@@ -106,9 +144,10 @@ const DateInput = () => {
       dispatch(
         UpdateField.action({
           field: 'birth_date',
-          value: date.getTime(),
+          value: birthDate.getTime(),
         }),
       )
+      relatedActions(birthDate)
     }
   }, [dayValue, monthValue, yearValue])
 
@@ -126,13 +165,13 @@ const DateInput = () => {
       } else {
         birthDate = subYears(new Date(), estimatedValue)
       }
-
       dispatch(
         UpdateField.action({
           field: 'birth_date',
           value: birthDate.getTime(),
         }),
       )
+      relatedActions(birthDate)
     }
   }, [estimatedValue, estimatedDateType])
 

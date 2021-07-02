@@ -1,16 +1,16 @@
 /**
  * The external imports
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, ScrollView } from 'react-native'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
 
 /**
  * The internal imports
  */
-import SideBarItem from './SideBarItem'
+import { SideBarItem } from '@/Components'
 import { useTheme } from '@/Theme'
-import Navigation from '@/Config/Navigation'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const SideBar = ({ stageIndex }) => {
   const {
@@ -18,6 +18,8 @@ const SideBar = ({ stageIndex }) => {
   } = useTheme()
 
   const scrollRef = useRef()
+
+  const [stages] = useState(getStages())
 
   // Will scroll to the right tab when moving between stages
   useEffect(() => {
@@ -34,7 +36,7 @@ const SideBar = ({ stageIndex }) => {
         contentContainerStyle={sideBar.container}
         showsVerticalScrollIndicator={false}
       >
-        {Navigation.INTERVENTION_STAGES.map((stage, index) => (
+        {stages.map((stage, index) => (
           <SideBarItem key={`sidebar_${index}`} stage={stage} index={index} />
         ))}
       </ScrollView>

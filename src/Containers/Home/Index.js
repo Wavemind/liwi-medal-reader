@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, View, Animated } from 'react-native'
+import { FlatList, View, Animated, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
@@ -23,7 +23,7 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
-import GetAllMedicalCaseDB from '@/Store/Database/MedicalCase/GetAll'
+import GetAllMedicalCaseDB from '@/Store/DatabaseMedicalCase/GetAll'
 
 const IndexHomeContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
@@ -45,17 +45,18 @@ const IndexHomeContainer = ({ navigation }) => {
   const [firstLoading, setFirstLoading] = useState(true)
 
   const algorithm = useSelector(state => state.algorithm.item)
+
   const medicalCases = useSelector(
-    state => state.database.medicalCase.getAll.item.data,
+    state => state.databaseMedicalCase.getAll.item.data,
   )
   const isLastBatch = useSelector(
-    state => state.database.medicalCase.getAll.item.isLastBatch,
+    state => state.databaseMedicalCase.getAll.item.isLastBatch,
   )
   const medicalCasesLoading = useSelector(
-    state => state.database.medicalCase.getAll.loading,
+    state => state.databaseMedicalCase.getAll.loading,
   )
   const medicalCasesError = useSelector(
-    state => state.database.medicalCase.getAll.error,
+    state => state.databaseMedicalCase.getAll.error,
   )
 
   useEffect(() => {
@@ -89,10 +90,9 @@ const IndexHomeContainer = ({ navigation }) => {
    * Create patient without scanning QR code
    */
   const newPatient = async () => {
-    await dispatch(CreateMedicalCase.action({ algorithm }))
     await dispatch(
       CreatePatient.action({
-        idPatient: null,
+        patientId: null,
         newMedicalCase: true,
         facility: {
           study_id: 'Dynamic Tanzania',
@@ -102,6 +102,10 @@ const IndexHomeContainer = ({ navigation }) => {
         otherFacility: {},
       }),
     )
+    await dispatch(
+      CreateMedicalCase.action({ algorithm, patientId: uuid.v4() }),
+    )
+
     navigation.navigate('StageWrapper')
   }
 
@@ -118,17 +122,17 @@ const IndexHomeContainer = ({ navigation }) => {
               filled
             />
           </View>
-          {__DEV__ && (
-            <View style={home.consultationsButton}>
-              <SquareButton
-                label={t('actions.new_patient')}
-                icon="add"
-                big
-                onPress={newPatient}
-                filled
-              />
-            </View>
-          )}
+          {/* {__DEV__ && ( */}
+          <View style={home.consultationsButton}>
+            <SquareButton
+              label={t('actions.new_patient')}
+              icon="add"
+              big
+              onPress={newPatient}
+              filled
+            />
+          </View>
+          {/* )} */}
         </View>
         <View style={home.buttonListWrapper}>
           <View style={home.patientListButton}>
@@ -153,7 +157,9 @@ const IndexHomeContainer = ({ navigation }) => {
       </View>
 
       <View style={Gutters.regularHMargin}>
-        <SearchBar navigation={navigation} />
+        <TouchableOpacity onPress={() => navigation.navigate('Consultations')}>
+          <SearchBar navigation={navigation} />
+        </TouchableOpacity>
       </View>
 
       <View style={Gutters.regularHMargin}>

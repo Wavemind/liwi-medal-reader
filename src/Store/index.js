@@ -14,34 +14,48 @@ import {
 } from 'redux-persist'
 
 import algorithm from './Algorithm'
-import database from './Database'
+import databaseActivity from './DatabaseActivity'
+import databaseMedicalCase from './DatabaseMedicalCase'
+import databasePatient from './DatabasePatient'
+import databasePatientValues from './DatabasePatientValues'
 import device from './Device'
 import emergency from './Emergency'
+import filters from './Filters'
 import healthFacility from './HealthFacility'
 import medicalCase from './MedicalCase'
-import startup from './Startup'
-import patient from './Patient'
-import system from './System'
-import theme from './Theme'
-import scan from './Scan'
-import user from './User'
 import modal from './Modal'
+import patient from './Patient'
+import questionsPerSystem from './QuestionsPerSystem'
+import startup from './Startup'
+import system from './System'
+import scan from './Scan'
+import theme from './Theme'
+import validation from './Validation'
+import user from './User'
+import synchronization from './Synchronization'
 
 const reducers = combineReducers({
   algorithm,
-  database,
+  databaseActivity,
+  databaseMedicalCase,
+  databasePatient,
+  databasePatientValues,
   device,
   emergency,
+  filters,
   healthFacility,
   medicalCase,
+  modal,
   network,
+  questionsPerSystem,
   startup,
   patient,
   system,
   theme,
   scan,
+  validation,
   user,
-  modal,
+  synchronization,
 })
 
 const persistConfig = {

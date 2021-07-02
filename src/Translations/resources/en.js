@@ -14,6 +14,8 @@ export default {
     scan_consent: 'Scan new consent',
     add: 'Add',
     apply: 'Apply Selection',
+    reset: 'Reset',
+    save: 'Save',
   },
   algorithm: {
     version_id: 'Version id',
@@ -74,7 +76,11 @@ export default {
       navigation: {
         back: 'Prev',
         next: 'Next',
-        quit: 'Quit',
+      },
+      list: {
+        title: 'Consultations',
+        name: 'Name',
+        status: 'Status',
       },
       stages: {
         registration: 'Registration',
@@ -82,6 +88,7 @@ export default {
         consultation: 'Consultation',
         assessments: 'Assessments',
         diagnoses: 'Diagnoses',
+        closed: 'Closed',
       },
       steps: {
         registration: 'Registration',
@@ -90,7 +97,6 @@ export default {
         basic_measurements: 'Basic measurements',
         medical_history: 'Medical history',
         physical_exams: 'Physical exams',
-        comment: 'Comment',
         assessments: 'Assessments',
         final_diagnoses: 'Final diagnoses',
         healthcare_questions: 'Healthcare questions',
@@ -129,7 +135,8 @@ export default {
         no_medicines: 'No medicines available',
       },
       formulations: {
-        title: 'Which formulation of medicine is available and appropriate for your patient ?',
+        title:
+          'Which formulation of medicine is available and appropriate for your patient ?',
       },
       summary: {
         management_consulting: 'Managements & Counselling',
@@ -166,16 +173,10 @@ export default {
         title: 'Consent files',
       },
     },
-    medicalCase: {
-      list: {
-        title: 'Consultations',
-        name: 'Name',
-        status: 'Status',
-      },
-    },
     synchronization: {
       synchronize: 'Synchronize',
       not_synchronized: 'Medical cases not synchronized yet',
+      warning: 'You have not synchronized for over 7 days',
     },
     settings: {
       general: {
@@ -183,6 +184,10 @@ export default {
         environment: 'Environment',
         app_languages: 'App languages',
         algorithm_languages: 'Algorithm languages',
+        languages: {
+          en: 'English',
+          fr: 'Français',
+        },
       },
       algorithm: {
         title: 'Algorithm',
@@ -216,6 +221,12 @@ export default {
           'The patient is presenting a severe/emergency symptom or sign. Click on the emergency button if the child needs emergency care now.',
         emergencyButton: 'GO TO EMERGENCY',
       },
+      exitMedicalCase: {
+        title: 'Leave medical case',
+        content: 'You are leaving the medical case',
+        exitAndSave: 'Exit and save',
+        exitWithoutSave: 'Exit without save',
+      },
     },
     media: {
       file_not_supported: 'File not supported',
@@ -230,6 +241,24 @@ export default {
     os_version: 'OS Version',
     name_not_available: 'no name available',
   },
+  database: {
+    success: {
+      message: 'Save',
+      description: 'Medical case saved successfully',
+    },
+    error: {
+      message: 'Error',
+      description: 'An error occurred while saving the medical case',
+    },
+    createMedicalCaseError: {
+      message: 'Error',
+      description: 'An error occurred while creating the medical case',
+    },
+    patientLoadError: {
+      message: 'Error',
+      description: 'An error occurred while loading the patient',
+    },
+  },
   health_facility: {
     id: 'ID',
     name: 'Name',
@@ -238,7 +267,10 @@ export default {
     area: 'Area',
     local_data_ip: 'MedAL-hub address',
     main_data_ip: 'MedAL-data address',
+    custom_clinician: 'Custom clinician',
+    custom_clinician_subtitle: 'Create a custom clinician',
     roles: {
+      title: 'Roles',
       medical_doctor: 'Medical Doctor (MD)',
       assistant_medical_officer: 'Assistant Medical Officer (AMO)',
       clinical_officer: 'Clinical Officer (CO)',
@@ -253,6 +285,9 @@ export default {
     consultations: 'Consultations',
     patient_list: 'Patient list',
     personal_info: 'Personal information',
+    summary: 'Summary',
+    final_diagnoses: 'Final Diagnoses',
+    questions: 'Questions',
     consent_list: 'Consent files',
     current_consultation: 'Current consultation',
     home: 'Home',
@@ -267,6 +302,10 @@ export default {
     first_name: 'First name',
     last_name: 'Last name',
     birth_date: 'Birth date',
+    reason: 'Reason for changing facility',
+  },
+  medical_case: {
+    comment: 'Comment',
   },
   permissions: {
     message: 'You must grant the relevant permissions for the app to function.',
@@ -319,5 +358,9 @@ export default {
       per: 'per',
       per_administration: 'per administration',
     },
+  },
+  validation: {
+    is_required: '{{ field }} is required',
+    consent_file_blank: "The data processing consent can't be blank",
   },
 }

@@ -1,20 +1,18 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextInput } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import setAnswer from '@/Utils/SetAnswer'
 
 const String = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
-  const dispatch = useDispatch()
-
   const {
     Components: { string },
   } = useTheme()
@@ -26,6 +24,10 @@ const String = ({ questionId, editable = true }) => {
   // Local state definition
   const [value, setValue] = useState(question.value)
 
+  useEffect(() => {
+    setValue(question.value.toString())
+  }, [question.value])
+
   /**
    * Save value in store
    * @param {Event} e
@@ -33,7 +35,7 @@ const String = ({ questionId, editable = true }) => {
   const onEndEditing = e => {
     const newValue = e.nativeEvent.text
     if (question.value !== newValue) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
+      setAnswer(question.id, newValue)
     }
   }
 
@@ -42,7 +44,7 @@ const String = ({ questionId, editable = true }) => {
       style={string.input(editable)}
       onEndEditing={onEndEditing}
       onChangeText={setValue}
-      value={value}
+      value={value.toString()}
       keyboardType="default"
       editable={editable}
     />

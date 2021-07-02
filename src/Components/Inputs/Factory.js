@@ -19,7 +19,7 @@ import {
 } from '@/Components'
 import { Config } from '@/Config'
 
-const Factory = ({ questionId, emergency }) => {
+const Factory = ({ questionId }) => {
   // Get node from algorithm
   const currentNode = useSelector(
     state => state.algorithm.item.nodes[questionId],
@@ -29,9 +29,8 @@ const Factory = ({ questionId, emergency }) => {
     case Config.DISPLAY_FORMAT.radioButton:
       if (currentNode.category === Config.CATEGORIES.complaintCategory) {
         return <Toggle questionId={questionId} />
-      } else {
-        return <Boolean questionId={questionId} emergency={emergency} />
       }
+      return <Boolean questionId={questionId} />
     case Config.DISPLAY_FORMAT.input:
       return <Numeric questionId={questionId} />
     case Config.DISPLAY_FORMAT.string:

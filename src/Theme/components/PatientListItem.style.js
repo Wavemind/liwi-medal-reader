@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { hp } from '@/Theme/Responsive'
+import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
@@ -13,12 +13,12 @@ export default function (props) {
       borderColor: Colors.grey,
     },
     container: {
-      ...Layout.center,
+      ...Layout.alignItemsCenter,
       ...Layout.row,
     },
     titleWrapper: {
-      ...Layout.fill,
-      ...Layout.colum,
+      ...Layout.column,
+      width: wp(38),
     },
     title: {
       ...Fonts.textMedium,
@@ -26,7 +26,8 @@ export default function (props) {
       ...Gutters.tinyBPadding,
     },
     dateWrapper: {
-      flex: 0.5,
+      ...Layout.grow,
+      width: wp(20),
     },
     statusWrapper: {
       ...Layout.center,

@@ -1,28 +1,44 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { View, ScrollView, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import capitalize from 'lodash/capitalize'
+import formatDistanceStrict from 'date-fns/formatDistanceStrict'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import Navigation from '@/Config/Navigation'
-import Item from './Item'
+import { MedicalCaseDrawerItem } from '@/Components'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
-const DrawerItem = () => {
+const MedicalCaseDrawer = () => {
   const { t } = useTranslation()
   const stageIndex = useSelector(
     state => state.medicalCase.item.advancement.stage,
   )
+  const { first_name, last_name, birth_date } = useSelector(
+    state => state.patient.item,
+  )
+  const createdAt = useSelector(state => state.medicalCase.item.createdAt)
+
+  const [stages] = useState(getStages())
 
   const {
     Components: { medicalCaseDrawer },
     Layout,
   } = useTheme()
+
+  /**
+   * Returns the string displaying the age of the patient
+   * @returns {string}
+   */
+  const age = () => {
+    return birth_date ? formatDistanceStrict(createdAt, birth_date) : ''
+  }
 
   return (
     <View style={medicalCaseDrawer.wrapper}>
@@ -31,13 +47,15 @@ const DrawerItem = () => {
           {t('components.medical_case_drawer.current_medical_case')}
         </Text>
         <View style={Layout.rowCenter}>
-          <Text style={medicalCaseDrawer.textPatient}>Alain TODO</Text>
-          <Text style={medicalCaseDrawer.textMonth}>X mois</Text>
+          <Text style={medicalCaseDrawer.textPatient}>
+            {`${capitalize(first_name)} ${capitalize(last_name)}`}
+          </Text>
+          <Text style={medicalCaseDrawer.textMonth}>{age()}</Text>
         </View>
       </View>
       <ScrollView>
-        {Navigation.INTERVENTION_STAGES.map((stage, index) => (
-          <Item
+        {stages.map((stage, index) => (
+          <MedicalCaseDrawerItem
             key={index}
             stage={stage}
             index={index}
@@ -55,4 +73,4 @@ const DrawerItem = () => {
   )
 }
 
-export default DrawerItem
+export default MedicalCaseDrawer

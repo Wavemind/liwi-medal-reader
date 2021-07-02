@@ -50,7 +50,8 @@ export default class MedicalCase extends Model {
   @relation('patients', 'patient_id') patient
   // https://nozbe.github.io/WatermelonDB/Advanced/AdvancedFields.html?highlight=json#json
   @json('json', sanitizeJson) json
-  @json('advancement', sanitizeJson) advancement
+  @field('stage') stage
+  @field('step') step
   @field('synchronized_at') synchronizedAt
   @field('patient_id') patient_id
   @field('fail_safe') fail_safe

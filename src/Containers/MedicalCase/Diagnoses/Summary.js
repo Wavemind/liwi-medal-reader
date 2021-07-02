@@ -10,7 +10,7 @@ import { ScrollView, View } from 'react-native'
 import { Diagnosis, Custom } from '@/Components'
 import { useTheme } from '@/Theme'
 
-const Drugs = () => {
+const SummaryMedicalCaseContainer = () => {
   const { Gutters } = useTheme()
 
   return (
@@ -24,4 +24,4 @@ const Drugs = () => {
   )
 }
 
-export default Drugs
+export default SummaryMedicalCaseContainer

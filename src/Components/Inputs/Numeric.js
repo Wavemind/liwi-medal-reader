@@ -10,18 +10,20 @@ import { useDispatch, useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import setAnswer from '@/Utils/SetAnswer'
+
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 
 const Numeric = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
   const {
     Components: { numeric, booleanButton },
     Layout,
     Gutters,
   } = useTheme()
+
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   // Get node from algorithm
   const question = useSelector(
@@ -43,7 +45,7 @@ const Numeric = ({ questionId, editable = true }) => {
     const newValue = e.nativeEvent.text
 
     if (question.value !== newValue) {
-      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
+      setAnswer(question.id, newValue)
     }
   }
 

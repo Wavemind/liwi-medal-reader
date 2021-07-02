@@ -11,17 +11,11 @@ import { useDispatch, useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Icon, CustomDrawerItem } from '@/Components'
+import { Icon, CustomDrawerItem, MedicalCaseDrawer } from '@/Components'
 import { navigateNestedAndSimpleReset } from '@/Navigators/Root'
 import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
-import MedicalCaseDrawer from './MedicalCase/Drawer/Drawer'
 
-const CustomDrawerContent = props => {
-  // Props deconstruction
-  const { navigation } = props
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-
+const CustomDrawerContent = ({ navigation }) => {
   // Theme and style elements deconstruction
   const {
     Components: { customDrawerContent },
@@ -29,10 +23,16 @@ const CustomDrawerContent = props => {
     Colors,
   } = useTheme()
 
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+
   const consentManagement = useSelector(
     state => state.algorithm.item.config.consent_management,
   )
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const closedAt = useSelector(state => state.medicalCase.item.closedAt)
+  const stageIndex = useSelector(state => state.medicalCase.item.stage)
+  const stepIndex = useSelector(state => state.medicalCase.item.step)
 
   /**
    * Clear clinician and redirect user to clinician list
@@ -55,41 +55,41 @@ const CustomDrawerContent = props => {
             label={t('navigation.home')}
             routeName="Home"
             iconName="home"
-            {...props}
+            navigation={navigation}
           />
           <CustomDrawerItem
             label={t('navigation.scan_qr_code')}
             routeName="Scan"
             iconName="qr-scan"
-            {...props}
+            navigation={navigation}
           />
           <CustomDrawerItem
             label={t('navigation.consultations')}
             routeName="Consultations"
             iconName="consultation"
-            {...props}
+            navigation={navigation}
           />
           <CustomDrawerItem
             label={t('navigation.patient_list')}
             routeName="PatientList"
             iconName="patient-list"
-            {...props}
+            navigation={navigation}
           />
           {consentManagement && (
             <CustomDrawerItem
               label={t('navigation.consent_list')}
               routeName="ConsentList"
               iconName="consent-file"
-              {...props}
+              navigation={navigation}
             />
           )}
-          {medicalCaseId && (
+          {medicalCaseId && closedAt === 0 && (
             <CustomDrawerItem
               label={t('navigation.current_consultation')}
               routeName="StageWrapper"
-              routeParams={{ stageIndex: 0 }}
+              routeParams={{ stageIndex, stepIndex }}
               iconName="summary"
-              {...props}
+              navigation={navigation}
             />
           )}
         </DrawerContentScrollView>
@@ -100,21 +100,21 @@ const CustomDrawerContent = props => {
             label={t('navigation.settings')}
             routeName="Settings"
             iconName="settings"
-            {...props}
+            navigation={navigation}
           />
           <View style={customDrawerContent.separator} />
           <CustomDrawerItem
             label={t('navigation.about')}
             routeName="Study"
             iconName="about"
-            {...props}
+            navigation={navigation}
           />
           <View style={customDrawerContent.separator} />
           <CustomDrawerItem
             label={t('navigation.synchronize')}
             routeName="Synchronization"
             iconName="synchronize"
-            {...props}
+            navigation={navigation}
           />
           <View style={customDrawerContent.separator} />
 
@@ -129,7 +129,7 @@ const CustomDrawerContent = props => {
           />
         </View>
       </View>
-      {medicalCaseId && <MedicalCaseDrawer />}
+      {medicalCaseId && closedAt === 0 && <MedicalCaseDrawer />}
     </View>
   )
 }

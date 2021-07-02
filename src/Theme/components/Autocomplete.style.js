@@ -55,6 +55,6 @@ export default function (props) {
     dropdownItemText: {
       ...Fonts.textSmall,
       color: Colors.text,
-    }
+    },
   })
 }

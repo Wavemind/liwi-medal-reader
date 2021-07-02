@@ -66,12 +66,12 @@ export const Config = {
     triage: { label: 'triage' },
     consultation: { label: 'consultation' },
     tests: { label: 'tests' },
-    finalDiagnostic: { label: 'final_diagnostic' },
+    finalDiagnosis: { label: 'final_diagnosis' },
     close: { label: 'close' },
   },
   NODE_TYPES: {
     diagnosis: 'Diagnosis',
-    finalDiagnostic: 'FinalDiagnostic',
+    finalDiagnosis: 'FinalDiagnosis',
     healthCare: 'HealthCare',
     question: 'Question',
     questionsSequence: 'QuestionsSequence',
@@ -92,6 +92,16 @@ export const Config = {
     date: 'Date',
     present: 'Present',
     positive: 'Positive',
+  },
+  REFERENCES: {
+    z_score_male_table: require('../Assets/ReferenceTables/z_score_male_table.json'),
+    z_score_female_table: require('../Assets/ReferenceTables/z_score_female_table.json'),
+    muac_z_score_female_table: require('../Assets/ReferenceTables/muac_z_score_female.json'),
+    muac_z_score_male_table: require('../Assets/ReferenceTables/muac_z_score_male.json'),
+    bmi_for_age_female_table: require('../Assets/ReferenceTables/bmi_for_age_female.json'),
+    bmi_for_age_male_table: require('../Assets/ReferenceTables/bmi_for_age_male.json'),
+    weight_for_height_female_table: require('../Assets/ReferenceTables/weight_for_height_female.json'),
+    weight_for_height_male_table: require('../Assets/ReferenceTables/weight_for_height_male.json'),
   },
   ADMINISTRATION_ROUTE_CATEGORIES: [
     'Enteral',
@@ -115,5 +125,13 @@ export const Config = {
     gel: 'gel',
     spray: 'spray',
     inhaler: 'inhaler',
-  }
+  },
+  STEP_ORDERS: {
+    basicMeasurements: 'basic_measurements',
+    complaintCategories: 'complaint_categories',
+    firstLookAssessment: 'first_look_assessment',
+    physicalExam: 'physical_exam',
+    referral: 'referral_step',
+    registration: 'registration_step',
+  },
 }

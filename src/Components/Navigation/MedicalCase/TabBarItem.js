@@ -12,12 +12,13 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
 const TabBarItem = ({ status, route, index, navigation }) => {
-  const { t } = useTranslation()
   const {
     Components: { tabBar },
     FontSize,
     Layout,
   } = useTheme()
+
+  const { t } = useTranslation()
 
   return (
     <View style={tabBar.itemWrapper}>

@@ -16,9 +16,6 @@ import { getNoAnswer } from '@/Utils/Answers'
 export const generateQuestion = node => {
   const {
     answer = null,
-    //dd = [],
-    //df = [],
-    //qs = [],
     value = '',
     roundedValue = '',
     estimable = false,
@@ -31,9 +28,6 @@ export const generateQuestion = node => {
   const hash = {
     ..._generateCommon(node),
     answer,
-    //dd,
-    //df,
-    //qs,
     value,
     roundedValue,
     validationMessage,
@@ -61,18 +55,10 @@ export const generateQuestion = node => {
  * @returns {*}
  */
 export const generateQuestionsSequence = node => {
-  const {
-    answer = null,
-    // dd = [],
-    // qs = [],
-    // df = []
-  } = node
+  const { answer = null } = node
   return {
     ..._generateCommon(node),
     answer,
-    // dd,
-    // df,
-    //  qs,
   }
 }
 
@@ -103,11 +89,11 @@ export const generateDrug = node => {
 }
 
 /**
- * Generate new final diagnostic hash used in medical case
+ * Generate new final diagnosis hash used in medical case
  * @param node
  * @returns {*}
  */
-export const generateFinalDiagnostic = node => {
+export const generateFinalDiagnosis = node => {
   return {
     ..._generateCommon(node),
   }
@@ -135,17 +121,10 @@ export default ({ nodes }) => {
         newNodes[node.id] = generateQuestion(node)
         break
       case Config.NODE_TYPES.healthCare:
-      case Config.NODE_TYPES.finalDiagnostic:
-        newNodes[node.id] = generateFinalDiagnostic(node)
-        break
+      case Config.NODE_TYPES.finalDiagnosis:
       default:
-        if (node.category === Config.CATEGORIES.management) {
-          newNodes[node.id] = generateManagement(node)
-        } else if (node.category === Config.CATEGORIES.drug) {
-          newNodes[node.id] = generateDrug(node)
-        } else {
-          newNodes[node.id] = node.id
-        }
+        break
+      //newNodes[node.id] = node.id
     }
   })
   return newNodes

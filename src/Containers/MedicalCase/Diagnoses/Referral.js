@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { Question, EmptyList } from '@/Components'
 
-const ReferralMedicalCaseContainer = props => {
+const ReferralMedicalCaseContainer = () => {
   const { t } = useTranslation()
 
   const questions = useSelector(

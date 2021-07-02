@@ -4,6 +4,7 @@
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
 import { Database, Q } from '@nozbe/watermelondb'
+import uuid from 'react-native-uuid'
 
 /**
  * The internal imports
@@ -48,133 +49,452 @@ const database = new Database({
 export default function () {
   /**
    * Create activities for a releated medical case
-   * @param { array } activities - List of activities to create
    * @param { integer } medicalCaseId
+   * @param { array } activities - List of activities to create
    * @private
    */
-  const _generateActivities = async (activities, medicalCaseId) => {
-    //   await database.action(async () => {
-    //     activities.map(async activity => {
-    //       await database.batch(
-    //         database.get('activities').prepareCreate(record => {
-    //           record._raw.id = activity.id
-    //           record.stage = activity.stage
-    //           record.clinician = activity.clinician
-    //           record.nodes = activity.nodes
-    //           record.mac_address = activity.mac_address
-    //           record.medical_case_id = medicalCaseId
-    //           record.fail_safe = activity.fail_safe
-    //         }),
-    //       )
-    //     })
-    //   }, 'generate activities')
+  const insertActivities = async (medicalCaseId, activities) => {
+    await database.action(async () => {
+      activities.map(async activity => {
+        await database.batch(
+          database.get('activities').prepareCreate(record => {
+            record._raw.id = activity.id
+            record.step = activity.step
+            record.clinician = activity.clinician
+            record.nodes = JSON.stringify(activity.nodes)
+            record.mac_address = activity.mac_address
+            record.medical_case_id = medicalCaseId
+            record.fail_safe = activity.fail_safe
+          }),
+        )
+      })
+    }, 'insert activities')
   }
 
   /**
-   * Generate an object than contains all the data needed to display consent list
-   * @param data
-   * @param columns
-   * @returns {Promise<*>}
-   * @private
-   */
-  const _generateConsentList = async (data, columns) => {
-    // return Promise.all(
-    //   data.map(async entry => {
-    //     const values = await Promise.all(
-    //       columns.map(nodeId => entry.getLabelFromNode(nodeId, algorithm)),
-    //     )
-    //     return {
-    //       id: entry.id,
-    //       consent_file: entry.consent_file,
-    //       values,
-    //     }
-    //   }),
-    // )
-  }
-
-  /**
-   * Generate query with filters
-   * @param {object} filters - Filter object with key and value
-   * @returns {string}
-   * @private
-   */
-  const _generateFilteredQuery = (model, filters) => {
-    // let query = ''
-    // if (!_.isEmpty(filters)) {
-    //   Object.keys(filters).forEach((nodeId, key) => {
-    //     filters[nodeId].map((filter, filterKey) => {
-    //       query +=
-    //         model === 'MedicalCase'
-    //           ? `status == "${filter}"`
-    //           : `(patientValues.node_id == ${nodeId} AND patientValues.answer_id == ${filter})`
-    //       if (filterKey + 1 < filters[nodeId].length) {
-    //         query += ' OR '
-    //       }
-    //     })
-    //     if (key + 1 < Object.keys(filters).length) {
-    //       query += ' AND '
-    //     }
-    //   })
-    // }
-    // return query
-  }
-
-  /**
-   * Generate an object than contains all the data needed to display a model in a list
-   * @param data : an array of of the model we want to display
-   * @param model : name of the model we wanna display
-   * @param columns : array of node id for getting value
-   * @returns { Array[Object] } : The array used to display values in the list
-   * @private
-   */
-  const _generateList = async (data, model, columns) => {
-    // return Promise.all(
-    //   data.map(async entry => {
-    //     if (model === 'Patient') {
-    //       const values = await Promise.all(
-    //         columns.map(nodeId => entry.getLabelFromNode(nodeId, algorithm)),
-    //       )
-    //       return {
-    //         id: entry.id,
-    //         updated_at: entry.updated_at,
-    //         values,
-    //       }
-    //     }
-    //     const values = await Promise.all(
-    //       columns.map(nodeId => entry.getLabelFromNode(nodeId, algorithm)),
-    //     )
-    //     return {
-    //       id: entry.id,
-    //       status: entry.status,
-    //       clinician: entry.clinician,
-    //       mac_address: entry.mac_address,
-    //       updated_at: entry.updated_at,
-    //       values,
-    //     }
-    //   }),
-    // )
-  }
-
-  /**
-   * Returns the medical case
+   * Update or insert value in a existing row
    * @param { string } model - The model name of the data we want to retrieve
-   * @param { object } object - The value of the object
-   * @returns { MedicalCaseModel } returns the medical case
-   * @private
+   * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @returns { Collection } - Updated object
    */
-  const _getMedicalCaseFromModel = async (model, object) => {
-    // switch (model) {
-    //   case 'MedicalCase':
-    //     return object
-    //   case 'Patient':
-    //     const medicalCases = await object.medicalCases
-    //     return _initClasses(
-    //       medicalCases[medicalCases.length - 1],
-    //       'MedicalCase',
-    //     )
-    //   default:
-    //     console.error('Wrong model :', model, object)
+  const update = async (model, id, fields) => {
+    const collection = database.get(_mapModelToTable(model))
+    // if (architecture === 'client_server') {
+    //   fields = { ...fields, fail_safe: true }
     // }
+    await database.action(async () => {
+      const object = await collection.find(id)
+      await database.batch(
+        object.prepareUpdate(record => {
+          fields.map(field => {
+            record[field.name] = field.value
+          })
+        }),
+      )
+    })
+  }
+
+  /**
+   * Inserts the patient values to the DB.
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const insertPatientValues = async (patientValues, patientId) => {
+    const patientValuesCollection = database.get('patient_values')
+    await database.action(async () => {
+      await database.batch(
+        patientValues.map(patientValue =>
+          patientValuesCollection.prepareCreate(record => {
+            record._raw.id = uuid.v4()
+            record.patient_id = patientId
+            record.node_id = parseInt(patientValue.id, 10)
+            record.answer_id = patientValue.answer
+            record.value = patientValue.value?.toString()
+          }),
+        ),
+      )
+    }, 'insert patient values')
+  }
+
+  /**
+   * Updates the patient values in the DB.
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const updatePatientValues = async (patientValues, patientId) => {
+    const patientValuesCollection = database.get('patient_values')
+    await database.action(async () => {
+      const existingPatientValues = await patientValuesCollection
+        .query(Q.where('patient_id', patientId))
+        .fetch()
+      await database.batch(
+        existingPatientValues.map(patientValueRecord =>
+          patientValueRecord.prepareUpdate(record => {
+            const patientValue = patientValues.find(
+              pv => record.node_id === pv.id,
+            )
+            record.answer_id = patientValue.answer
+            record.value = patientValue.value?.toString()
+          }),
+        ),
+      )
+    }, 'update patient values')
+  }
+
+  /**
+   * Finds a object based on a field and a value
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } value - The id of the object we want
+   * @param { string } field - The field we wanna search for
+   * @returns { Collection } - The wanted object
+   */
+  const findBy = async (model, value, field = 'id') => {
+    const collection = database.get(_mapModelToTable(model))
+    const object = await collection.query(Q.where(field, value))
+    return object[0] === undefined ? null : _initClasses(object[0], model)
+  }
+
+  /**
+
+  /**
+   * Gets the list of activities for a given medical case
+   * @param medicalCaseId
+   * @returns {Promise<*>}
+   */
+  const getActivities = async medicalCaseId => {
+    const collection = database.get(_mapModelToTable('Activity'))
+    let result = await collection
+      .query(Q.where('medical_case_id', medicalCaseId))
+      .fetch()
+    return result.map(activity => ({
+      id: activity._raw.id,
+      step: activity.step,
+      clinician: activity.clinician,
+      nodes: JSON.parse(activity.nodes),
+      mac_address: activity.mac_address,
+      medical_case_id: activity.medical_case_id,
+      fail_safe: activity.fail_safe,
+    }))
+  }
+
+  /**
+   * Gets all medical cases in the database
+   * @returns {Promise<*[]|PatientModel|MedicalCaseModel>}
+   */
+  const getMedicalCases = async () => {
+    const collection = database.get(_mapModelToTable('MedicalCase'))
+    let result = await collection.query().fetch()
+    return _initClasses(result, 'MedicalCase')
+  }
+
+  /**
+   * Returns all the entry on a specific model
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } page - Used for pagination,tells what page to show
+   * @param { object } params - options for the request the search query and the filter is in there
+   * @returns { Collection } - A collection of all the data
+   */
+  const getAll = async (model, page = 1, params) => {
+    const queries = []
+    let filtersQuery = ''
+    const collection = database.get(_mapModelToTable(model))
+    let result = await collection.query().fetch()
+
+    if (params) {
+      if (params.terms) {
+        // Search on last_name or first_name
+        const searchQuery = Q.or(
+          Q.where(
+            'last_name',
+            Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
+          ),
+          Q.where(
+            'first_name',
+            Q.like(`%${Q.sanitizeLikeString(params.terms)}%`),
+          ),
+        )
+
+        // search on patient or use the relation
+        if (model === 'Patient') {
+          queries.push(searchQuery)
+        } else if (model === 'MedicalCase') {
+          queries.push(Q.on(_mapModelToTable('Patient'), [searchQuery]))
+        }
+      }
+
+      if (params.filters && Object.keys(params.filters).length > 0) {
+        Object.keys(params.filters).forEach((nodeId, key) => {
+          params.filters[nodeId].map((filter, filterKey) => {
+            filtersQuery += `(patient_values.node_id = ${nodeId} AND patient_values.answer_id = ${filter})`
+            if (filterKey + 1 < params.filters[nodeId].length) {
+              filtersQuery += ' OR '
+            }
+          })
+          if (key + 1 < Object.keys(params.filters).length) {
+            filtersQuery += ' AND '
+          }
+        })
+
+        if (model === 'Patient') {
+          queries.push(
+            Q.on(_mapModelToTable('PatientValue'), [
+              Q.unsafeSqlExpr(filtersQuery),
+            ]),
+          )
+        } else {
+          queries.push(
+            Q.experimentalNestedJoin(
+              _mapModelToTable('Patient'),
+              _mapModelToTable('PatientValue'),
+            ),
+            Q.on(_mapModelToTable('Patient'), [
+              Q.on(_mapModelToTable('PatientValue'), [
+                Q.unsafeSqlExpr(filtersQuery),
+              ]),
+            ]),
+          )
+        }
+      }
+    }
+
+    result = await collection.query(...queries)
+
+    // Order by updatedAt descending
+    result = result.sort(
+      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+    )
+
+    // Pagination
+    result = result.slice(
+      (page - 1) * Config.ELEMENT_PER_PAGE,
+      Config.ELEMENT_PER_PAGE * page,
+    )
+
+    return _initClasses(result, model)
+  }
+
+  /**
+   * Inserts a new medical case into the DB
+   * @param patientId
+   * @param medicalCaseData
+   * @returns {Promise<void>}
+   */
+  const insertMedicalCase = async (patientId, medicalCaseData) => {
+    const patient = await findBy('Patient', patientId)
+    const collection = database.get('medical_cases')
+    // if (architecture === 'client_server') {
+    //   object = { ...object, fail_safe: true }
+    // }
+    await database.action(async () => {
+      await collection.create(record => {
+        record._raw.id = medicalCaseData.id
+        record.json = JSON.stringify({
+          comment: medicalCaseData.comment,
+          consent: medicalCaseData.consent,
+          diagnosis: medicalCaseData.diagnosis,
+          nodes: medicalCaseData.nodes,
+        })
+        record.synchronized_at = medicalCaseData.synchronized_at
+        record.stage = medicalCaseData.advancement.stage
+        record.step = medicalCaseData.advancement.step
+        record.closedAt = null
+        record.fail_safe = false
+        record.version_id = medicalCaseData.version_id
+        record.patient.set(patient)
+      })
+    }, 'create medical case')
+  }
+
+  /**
+   * Fetch patient with consent file
+   * @param { integer } page
+   * @returns {Promise<*>}
+   */
+  const getConsentsFile = async (page = 1) => {
+    const collection = database.get('patients')
+    let result = await collection.query().fetch()
+
+    const queries = []
+
+    result = await collection.query(...queries)
+
+    // Order by updatedAt descending
+    result = result.sort(
+      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+    )
+
+    result = result.filter(patient => !!patient.consent_file)
+
+    // Pagination
+    result = result.slice(
+      (page - 1) * Config.ELEMENT_PER_PAGE,
+      Config.ELEMENT_PER_PAGE * page,
+    )
+    return _initClasses(result, 'Patient')
+  }
+
+  const insertPatient = async (patientData, medicalCaseData) => {
+    const collection = database.get('patients')
+    let patient = null
+    // if (architecture === 'client_server') {
+    //   object = { ...object, fail_safe: true }
+    // }
+    await database.action(async () => {
+      patient = await collection.create(record => {
+        record._raw.id = patientData.id
+        record.first_name = patientData.first_name
+        record.last_name = patientData.last_name
+        record.birth_date = patientData.birth_date
+        record.birth_date_estimated = patientData.birth_date_estimated
+        record.uid = patientData.uid
+        record.study_id = patientData.study_id
+        record.group_id = patientData.group_id
+        record.other_uid = patientData.other_uid
+        record.other_study_id = patientData.other_study_id
+        record.other_group_id = patientData.other_group_id
+        record.reason = patientData.reason
+        record.consent = patientData.consent
+        record.consent_file = patientData.consent_file
+        record.fail_safe = patientData.fail_safe
+      })
+      const nestedCollection = database.get('medical_cases')
+      await nestedCollection.create(nestedRecord => {
+        nestedRecord._raw.id = medicalCaseData.id
+        nestedRecord.json = JSON.stringify({
+          comment: medicalCaseData.comment,
+          consent: medicalCaseData.consent,
+          diagnosis: medicalCaseData.diagnosis,
+          nodes: medicalCaseData.nodes,
+        })
+        nestedRecord.synchronized_at = medicalCaseData.synchronized_at
+        nestedRecord.stage = medicalCaseData.advancement.stage
+        nestedRecord.step = medicalCaseData.advancement.step
+        nestedRecord.closedAt = null
+        nestedRecord.fail_safe = false
+        nestedRecord.version_id = medicalCaseData.version_id
+        nestedRecord.patient.set(patient)
+      })
+    }, 'create patient')
+  }
+
+  const _buildPatient = async watermelonDBPatient => {
+    const watermelonDBMedicalCases =
+      await watermelonDBPatient.medicalCases.fetch()
+    const watermelonDBPatientValues =
+      await watermelonDBPatient.patientValues.fetch()
+
+    // Build medicalCases
+    const medicalCases = await Promise.all(
+      watermelonDBMedicalCases.map(
+        async watermelonDBMedicalCase =>
+          await _buildMedicalCase(watermelonDBMedicalCase, false),
+      ),
+    )
+
+    // Build patient values
+    const patientValues = watermelonDBPatientValues.map(
+      watermelonDBPatientValue => _buildPatientValue(watermelonDBPatientValue),
+    )
+
+    // Build patient
+    const patient = {
+      first_name: watermelonDBPatient.first_name,
+      last_name: watermelonDBPatient.last_name,
+      birth_date: watermelonDBPatient.birth_date.getTime(),
+      birth_date_estimated: watermelonDBPatient.birth_date_estimated,
+      consent: watermelonDBPatient.consent,
+      consent_file: watermelonDBPatient.consent_file,
+      createdAt: watermelonDBPatient.createdAt.getTime(),
+      fail_safe: watermelonDBPatient.fail_safe,
+      group_id: watermelonDBPatient.group_id,
+      id: watermelonDBPatient.id,
+      other_group_id: watermelonDBPatient.other_group_id,
+      other_study_id: watermelonDBPatient.other_study_id,
+      other_uid: watermelonDBPatient.other_uid,
+      reason: watermelonDBPatient.reason,
+      savedInDatabase: true,
+      study_id: watermelonDBPatient.study_id,
+      uid: watermelonDBPatient.uid,
+      updatedAt: watermelonDBPatient.updatedAt.getTime(),
+    }
+
+    return {
+      ...patient,
+      patientValues: patientValues,
+      medicalCases: medicalCases,
+    }
+  }
+
+  const _buildPatientValue = watermelonDBPatientValues => {
+    return {
+      patient_id: watermelonDBPatientValues.patient_id,
+      node_id: watermelonDBPatientValues.node_id,
+      answer_id: watermelonDBPatientValues.answer_id,
+      value: watermelonDBPatientValues.value,
+      fail_safe: watermelonDBPatientValues.fail_safe,
+    }
+  }
+
+  const _buildMedicalCaseLight = async watermelonDBMedicalCase => {
+    const patient = await watermelonDBMedicalCase.patient.fetch()
+
+    return {
+      id: watermelonDBMedicalCase.id,
+      synchronizedAt: watermelonDBMedicalCase.synchronizedAt?.getTime(),
+      advancement: {
+        stage: watermelonDBMedicalCase.stage,
+        step: watermelonDBMedicalCase.step,
+      },
+      json: watermelonDBMedicalCase.json,
+      fail_safe: watermelonDBMedicalCase.fail_safe,
+      createdAt: watermelonDBMedicalCase.createdAt.getTime(),
+      updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
+      closedAt: watermelonDBMedicalCase.closedAt.getTime(),
+      version_id: watermelonDBMedicalCase.version_id,
+      patient: {
+        id: patient.id,
+        first_name: patient.first_name,
+        last_name: patient.last_name,
+        birth_date: patient.birth_date.getTime(),
+      },
+    }
+  }
+
+  const _buildMedicalCase = async (
+    watermelonDBMedicalCase,
+    addPatient = true,
+  ) => {
+    const parsedJson = JSON.parse(watermelonDBMedicalCase.json)
+
+    const medicalCase = {
+      id: watermelonDBMedicalCase.id,
+      activities: [],
+      comment: parsedJson.comment,
+      consent: parsedJson.consent,
+      diagnosis: parsedJson.diagnosis,
+      nodes: parsedJson.nodes,
+      json: watermelonDBMedicalCase.json,
+      synchronized_at: watermelonDBMedicalCase.synchronizedAt,
+      advancement: {
+        stage: watermelonDBMedicalCase.stage,
+        step: watermelonDBMedicalCase.step,
+      },
+      fail_safe: watermelonDBMedicalCase.fail_safe,
+      createdAt: watermelonDBMedicalCase.createdAt.getTime(),
+      updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
+      closedAt: watermelonDBMedicalCase.closedAt.getTime(),
+      version_id: watermelonDBMedicalCase.version_id,
+    }
+
+    if (addPatient) {
+      const patient = await watermelonDBMedicalCase.patient.fetch()
+      medicalCase.patient = patient
+    }
+
+    return medicalCase
   }
 
   /**
@@ -225,376 +545,21 @@ export default function () {
       case 'Activity':
         return 'activities'
       default:
-        console.log("Watermelon table doesn't exist", model)
+        console.error("Watermelon table doesn't exist", model)
     }
-  }
-
-  /**
-   * Saves the patient values based on the activities on the object
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { object } object - The value of the object
-   * @private
-   */
-  const _savePatientValue = async (model, object) => {
-    // const medicalCase = await _getMedicalCaseFromModel(model, object)
-    // // Will update the patient values based on activities so we only take the edits
-    // const activities = await medicalCase.activities
-    // const nodeActivities = JSON.parse(activities[activities.length - 1].nodes)
-    // if (nodeActivities.length > 0) {
-    //   await database.action(async () => {
-    //     database.batch(
-    //       ...nodeActivities.map(node => {
-    //         if (
-    //           [
-    //             Config.CATEGORIES.demographic,
-    //             Config.CATEGORIES.basicDemographic,
-    //           ].includes(medicalCase.nodes[node.id].category)
-    //         ) {
-    //           const patientValuesCollection = database.get('patient_values')
-    //           return patientValuesCollection.prepareCreate(record => {
-    //             record._raw.id = uuid.v4()
-    //             record.value = node.value
-    //             record.node_id = parseInt(node.id)
-    //             record.answer_id =
-    //               node.answer === null ? null : parseInt(node.answer)
-    //             record.patient_id = medicalCase.patient_id
-    //           })
-    //         }
-    //       }),
-    //     )
-    //   }, 'create patient values')
-    // }
-  }
-
-  /**
-   * Clear all table
-   * @returns {Promise<void>}
-   */
-  const clearDatabase = async () => {
-    // const patientsToDelete = await getAll('Patient', null, null, true)
-    // // await delete patientsToDelete
-    // const medicalCasesToDelete = await getAll('MedicalCase', null, null, true)
-    // // await delete medicalCasesToDelete
-    // const patientValuesToDelete = await getAll('PatientValue', null, null, true)
-    // // await delete patientValuesToDelete
-    // const activitiesToDelete = await getAll('Activity', null, null, true)
-    // // await delete activitiesToDelete
-  }
-
-  /**
-   * Finds a object based on a field and a value
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } value - The id of the object we want
-   * @param { string } field - The field we wanna search for
-   * @returns { Collection } - The wanted object
-   */
-  const findBy = async (model, value, field = 'id') => {
-    const collection = database.get(_mapModelToTable(model))
-    const object = await collection.query(Q.where(field, value))
-    return object[0] === undefined ? null : _initClasses(object[0], model)
-  }
-
-  /**
-   * Deletes a specific object from the DB
-   * @param { object } object - the object to delete
-   */
-  // const delete = async object => {
-  //   await database.action(async () => {
-  //     if (object instanceof Array) {
-  //       object.forEach(o => o.destroyPermanently())
-  //     } else {
-  //       object.destroyPermanently()
-  //     }
-  //   })
-  // }
-
-  /**
-   * Returns all the entry on a specific model
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } page - Used for pagination,tells what page to show
-   * @param { object } params - options for the request the search query and the filter is in there
-   * @returns { Collection } - A collection of all the data
-   */
-  const getAll = async (model, page = 1, params, rawData = false) => {
-    const collection = database.get(_mapModelToTable(model))
-    let result = await collection.query().fetch()
-
-    const queries = []
-    // if (page === null) {
-    //   if (!rawData) {
-    //     result = await _initClasses(result, model)
-    //   }
-    //   return result
-    // }
-    // // const filters = _generateFilteredQuery(model, params.filters)
-    // if (params.query !== '' && model === 'Patient') {
-    //   queries.push(
-    //     Q.on(
-    //       'patient_values',
-    //       'value',
-    //       Q.like(`%${Q.sanitizeLikeString(params.query)}%`),
-    //     ),
-    //   )
-    // }
-    // // if (filters !== '') result = await result.filtered(filters);
-    result = await collection.query(...queries)
-    // return _generateList(result, model, params.columns)
-
-    // Order by updatedAt descending
-    result = result.sort(
-      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
-    )
-
-    // Pagination
-    result = result.slice(
-      (page - 1) * Config.ELEMENT_PER_PAGE,
-      Config.ELEMENT_PER_PAGE * page,
-    )
-
-    return _initClasses(result, model)
-  }
-
-  /**
-   * Fetch patient with consent file
-   * @param { integer } page
-   * @param { array } columns - Columns to fetch values
-   * @returns {Promise<*>}
-   */
-  const getConsentsFile = async (page, columns) => {
-    // const queries = []
-    // const collection = database.get('patients')
-    // let result = await collection.query().fetch()
-    // if (page === null) {
-    //   return result
-    // }
-    // queries.push(Q.experimentalSortBy('updated_at', Q.asc))
-    // queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
-    // queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
-    // result = await collection.query(...queries)
-    // result = await _initClasses(result, 'Patient')
-    // return _generateConsentList(result, columns)
-  }
-
-  const insertPatient = async (patientData, medicalCaseData) => {
-    const collection = database.get('patients')
-
-    let patient = null
-    // if (architecture === 'client_server') {
-    //   object = { ...object, fail_safe: true }
-    // }
-    await database.action(async () => {
-      patient = await collection.create(record => {
-        record._raw.id = patientData.id
-        record.first_name = patientData.first_name
-        record.last_name = patientData.last_name
-        record.birth_date = patientData.birth_date
-        record.uid = patientData.uid
-        record.study_id = patientData.study_id
-        record.group_id = patientData.group_id
-        record.other_uid = patientData.other_uid
-        record.other_study_id = patientData.other_study_id
-        record.other_group_id = patientData.other_group_id
-        record.reason = patientData.reason
-        record.consent = patientData.consent
-        record.consent_file = patientData.consent_file
-        record.fail_safe = patientData.fail_safe
-      })
-      const nestedCollection = database.get('medical_cases')
-      await nestedCollection.create(nestedRecord => {
-        nestedRecord._raw.id = medicalCaseData.id
-        nestedRecord.json = {
-          comment: medicalCaseData.comment,
-          consent: medicalCaseData.consent,
-          diagnosis: medicalCaseData.diagnosis,
-          nodes: medicalCaseData.nodes,
-        }
-        nestedRecord.synchronized_at = medicalCaseData.synchronized_at
-        nestedRecord.advancement = medicalCaseData.advancement
-        nestedRecord.closedAt = null
-        nestedRecord.fail_safe = false
-        nestedRecord.patient.set(patient)
-      })
-    }, 'create patient')
-
-    // MedicalCase
-    //await _generateActivities(medicalCaseData.activities, medicalCaseData.id)
-    //await Promise.all([_savePatientValue('patients', patientData)])
-  }
-
-  const _buildPatient = async patient => {
-    const medicalCases = await patient.medicalCases.fetch()
-    const newPatient = patient._raw
-
-    const response = {
-      createdAt: newPatient.created_at,
-      updatedAt: newPatient.updated_at,
-      medicalCases,
-    }
-    delete newPatient._changed
-    delete newPatient._status
-    delete newPatient.created_at
-    delete newPatient.updated_at
-    return {
-      ...newPatient,
-      ...response,
-    }
-  }
-
-  const _buildMedicalCaseLight = async medicalCase => {
-    const patient = await medicalCase.patient.fetch()
-    return {
-      id: medicalCase.id,
-      synchronizedAt: medicalCase.synchronizedAt?.getTime(),
-      advancement: medicalCase.advancement,
-      fail_safe: medicalCase.fail_safe,
-      createdAt: medicalCase.createdAt.getTime(),
-      updatedAt: medicalCase.updatedAt.getTime(),
-      closedAt: medicalCase.closedAt.getTime(),
-      patient: {
-        id: patient.id,
-        first_name: patient.first_name,
-        last_name: patient.last_name,
-        birth_date: patient.birth_date.getTime(),
-      },
-    }
-  }
-
-  const _buildMedicalCase = async medicalCase => {
-    const patient = await medicalCase.patient.fetch()
-    return {
-      id: medicalCase.id,
-      activities: [],
-      comment: medicalCase.json.comment,
-      consent: medicalCase.json.consent,
-      diagnosis: medicalCase.json.diagnosis,
-      nodes: medicalCase.json.nodes,
-      json: '',
-      synchronized_at: medicalCase.synchronizedAt,
-      advancement: medicalCase.advancement,
-      fail_safe: medicalCase.fail_safe,
-      createdAt: medicalCase.createdAt.getTime(),
-      updatedAt: medicalCase.updatedAt.getTime(),
-      closedAt: medicalCase.closedAt.getTime(),
-      patient,
-    }
-  }
-
-  /**
-   * Blank method used in httpInterface
-   */
-  const lockMedicalCase = () => {}
-
-  /**
-   * Push an object in a existing object based on model name and id
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } field - The field to update
-   * @param { any } value - value to update
-   * @returns { Collection } - Updated object
-   */
-  const push = async (model, id, field, value) => {
-    // const object = await findBy(model, id)
-    // if (architecture === 'client_server') {
-    //   value = { ...value, fail_safe: true }
-    // }
-    // if (field === 'medicalCases') {
-    //   const collection = database.get('medical_cases')
-    //   // MedicalCase
-    //   await database.action(async action => {
-    //     await collection.create(record => {
-    //       record._raw.id = value.id
-    //       record.json = value.json
-    //       record.synchronized_at = value.synchronized_at
-    //       record.status = value.status
-    //       record.fail_safe = value.fail_safe
-    //       record.patient_id = id
-    //     })
-    //     await action.subAction(() =>
-    //       _generateActivities(value.activities, value.id),
-    //     )
-    //   }, 'push medicalCase')
-    //   await Promise.all([_savePatientValue(model, object)])
-    // }
-  }
-
-  /**
-   * Blank method used in httpInterface
-   */
-  const unlockMedicalCase = () => {}
-
-  /**
-   * Update or insert value in a existing row
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } fields - The field to update
-   * @param { boolean } updatePatientValue - Flag that tells us if we need to update the patient values
-   * @returns { Collection } - Updated object
-   */
-  const update = async (model, id, fields, updatePatientValue) => {
-    // const collection = database.get(_mapModelToTable(model))
-    // if (architecture === 'client_server') {
-    //   fields = { ...fields, fail_safe: true }
-    // }
-    // const object = await collection.find(id)
-    // await database.action(async () => {
-    //   Object.keys(fields).map(async field => {
-    //     await database.batch(
-    //       object.prepareUpdate(record => {
-    //         if (field !== 'patient' && field !== 'activities') {
-    //           record[field] = fields[field]
-    //         }
-    //       }),
-    //     )
-    //   })
-    // })
-    // // Update patient updated_at value
-    // if (model === 'MedicalCase') {
-    //   await database.action(async () => {
-    //     const patientCollection = database.get('patients')
-    //     const patient = await patientCollection.find(object.patient_id)
-    //     await patient.update(record => (record.updated_at = moment().toDate()))
-    //   })
-    // }
-    // if (
-    //   updatePatientValue &&
-    //   !Object.keys(fields).includes('patientValues') &&
-    //   ['Patient', 'MedicalCase'].includes(model)
-    // ) {
-    //   _savePatientValue(model, object)
-    // }
-  }
-
-  /**
-   * Finds a collection of objects based on a field and a value
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } value - The id of the object we want
-   * @param { string } field - The field we wanna search for
-   * @returns { Collection } - A collection of wanted values
-   */
-  const where = async (model, value, field) => {}
-
-  /**
-   * Get all closed and not synchronized case
-   * @returns {Promise<Realm.Results<Realm.Object>>}
-   */
-  const closedAndNotSynchronized = async () => {
-    // const collection = database.get('medical_cases')
-    // return collection
-    //   .query(Q.where('status', 'close'), Q.where('synchronized_at', null))
-    //   .fetch()
   }
 
   return {
-    clearDatabase,
+    insertActivities,
     findBy,
+    getActivities,
+    getMedicalCases,
     getAll,
     getConsentsFile,
     insertPatient,
-    lockMedicalCase,
-    push,
-    unlockMedicalCase,
+    insertMedicalCase,
+    insertPatientValues,
+    updatePatientValues,
     update,
-    where,
-    closedAndNotSynchronized,
   }
 }

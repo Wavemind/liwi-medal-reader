@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native'
-import { hp } from '@/Theme/Responsive'
+import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Colors, FontSize, Gutters, Layout } = props
+  const { Colors, FontSize, Gutters, Layout, Fonts } = props
 
   return StyleSheet.create({
     container: {
@@ -11,6 +11,37 @@ export default function (props) {
       borderColor: Colors.grey,
       borderTopWidth: 1,
       ...Layout.row,
+    },
+    stageWrapperContainer: {
+      ...Gutters.smallVPadding,
+      ...Gutters.smallHPadding,
+      ...Layout.fill,
+      ...Layout.row,
+    },
+    errorContainer: {
+      ...Gutters.smallVPadding,
+      ...Gutters.smallHPadding,
+      ...Layout.fill,
+      ...Layout.row,
+      backgroundColor: Colors.red,
+    },
+    errorButtonWrapper: {
+      ...Layout.row,
+      width: wp(12),
+    },
+    errorText: {
+      ...Fonts.textLeft,
+      ...Fonts.textRegular,
+      color: Colors.secondary,
+    },
+    errorNumber: {
+      ...Layout.alignItemsCenter,
+      ...Fonts.textRight,
+      ...Fonts.textRegular,
+      color: Colors.secondary,
+    },
+    errorNextButton: {
+      width: wp(5),
     },
     emergencyContainer: {
       flexBasis: 70,
@@ -33,13 +64,21 @@ export default function (props) {
     },
     actions: {
       ...Layout.fill,
-      ...Gutters.regularHPadding,
-      ...Gutters.smallVPadding,
       ...Layout.rowCenter,
     },
     actionButton: {
       ...Layout.fill,
       ...Gutters.smallHMargin,
+    },
+    warningWrapper: {
+      ...Layout.rowHCenter,
+      ...Layout.justifyContentBetween,
+      backgroundColor: Colors.warning,
+      width: wp(89),
+    },
+    warningText: {
+      ...Fonts.textSmall,
+      color: Colors.secondary,
     },
   })
 }

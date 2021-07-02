@@ -11,6 +11,7 @@ export default function (props) {
     },
     errorMessage: {
       ...Fonts.textRegular,
+      ...Fonts.textCenter,
       color: Colors.red,
     },
     switchOuterWrapper: {

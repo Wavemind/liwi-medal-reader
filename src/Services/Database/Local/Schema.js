@@ -1,19 +1,21 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export default appSchema({
-  version: 6,
+  version: 11,
   tables: [
     tableSchema({
       name: 'medical_cases',
       columns: [
         { name: 'json', type: 'string', isOptional: true, isIndexed: true },
-        { name: 'advancement', type: 'string' },
+        { name: 'stage', type: 'number' },
+        { name: 'step', type: 'number' },
         { name: 'synchronized_at', type: 'number', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
         { name: 'closed_at', type: 'number' },
         { name: 'patient_id', type: 'string' },
         { name: 'fail_safe', type: 'boolean' },
+        { name: 'version_id', type: 'number' },
       ],
     }),
     tableSchema({
@@ -22,6 +24,7 @@ export default appSchema({
         { name: 'first_name', type: 'string', isIndexed: true },
         { name: 'last_name', type: 'string', isIndexed: true },
         { name: 'birth_date', type: 'number', isIndexed: true },
+        { name: 'birth_date_estimated', type: 'boolean', isIndexed: true },
         { name: 'uid', type: 'string', isIndexed: true },
         { name: 'study_id', type: 'string' },
         { name: 'group_id', type: 'string' },
@@ -29,7 +32,7 @@ export default appSchema({
         { name: 'other_study_id', type: 'string', isOptional: true },
         { name: 'other_group_id', type: 'string', isOptional: true },
         { name: 'reason', type: 'string', isOptional: true },
-        { name: 'consent', type: 'string', isOptional: true },
+        { name: 'consent', type: 'boolean', isOptional: true },
         { name: 'consent_file', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
@@ -49,7 +52,7 @@ export default appSchema({
     tableSchema({
       name: 'activities',
       columns: [
-        { name: 'stage', type: 'string' },
+        { name: 'step', type: 'string' },
         { name: 'clinician', type: 'string' },
         { name: 'nodes', type: 'string' },
         { name: 'mac_address', type: 'string' },

@@ -3,11 +3,11 @@ import {
   buildAsyncReducers,
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
-import registerDeviceService from '@/Services/Device/Register'
+import { RegisterDeviceService } from '@/Services/Device'
 
 export default {
   initialState: buildAsyncState('register'),
-  action: buildAsyncActions('device/register', registerDeviceService),
+  action: buildAsyncActions('device/register', RegisterDeviceService),
   reducers: buildAsyncReducers({
     errorKey: 'register.error',
     loadingKey: 'register.loading',

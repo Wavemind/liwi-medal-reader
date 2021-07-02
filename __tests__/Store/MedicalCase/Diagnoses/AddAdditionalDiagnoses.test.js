@@ -45,7 +45,7 @@ describe('Handle additional diagnosis addition', () => {
     ).toStrictEqual({
       60: {
         id: 60,
-        managements: [1808, 3352, 3354],
+        managements: [1808, 3354],
         drugs: {
           proposed: [1660, 1709, 3360, 3501],
           agreed: {},

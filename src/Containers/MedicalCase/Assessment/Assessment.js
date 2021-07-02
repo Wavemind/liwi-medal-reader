@@ -1,22 +1,34 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useIsFocused } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
+import { AssessmentQuestionsService } from '@/Services/Steps'
 
-const AssessmentMedicalCaseContainer = props => {
+const AssessmentMedicalCaseContainer = () => {
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
 
-  const questions = useSelector(
-    state => state.algorithm.item.config.full_order.test_step,
-  )
+  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
+
+  const [questions, setQuestions] = useState(AssessmentQuestionsService())
+
+  // Update questions list only if question array change
+  useEffect(() => {
+    const assessmentQuestions = AssessmentQuestionsService()
+    if (!isEqual(assessmentQuestions, questions)) {
+      setQuestions(assessmentQuestions)
+    }
+  }, [isFocused, mcNodes])
 
   return (
     <View>
@@ -26,7 +38,8 @@ const AssessmentMedicalCaseContainer = props => {
         ListEmptyComponent={
           <EmptyList text={t('containers.medical_case.no_questions')} />
         }
-        keyExtractor={item => item.id}
+        removeClippedSubviews={false}
+        keyExtractor={item => item}
       />
     </View>
   )

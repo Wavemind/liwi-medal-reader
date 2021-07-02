@@ -3,7 +3,7 @@
  */
 import React, { useState } from 'react'
 import { View, Text } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import find from 'lodash/find'
 
 /**
@@ -12,29 +12,33 @@ import find from 'lodash/find'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import {
-  Checkbox,
-  Select,
   Icon,
-  InputFactory,
+  DisplayUnavailable,
   QuestionInfoButton,
+  InputFactory,
 } from '@/Components'
 import { Config } from '@/Config'
-import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import { store } from '@/Store'
 
 const Question = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
-  const dispatch = useDispatch()
   const {
     Components: { question },
-    Colors,
     FontSize,
+    Colors,
   } = useTheme()
 
   // Get node from algorithm
-  const mcNode = useSelector(state => state.medicalCase.item.nodes[questionId])
-  const currentNode = useSelector(
-    state => state.algorithm.item.nodes[questionId],
+  const validationType = useSelector(
+    state => state.medicalCase.item.nodes[questionId].validationType,
+  )
+  const validationMessage = useSelector(
+    state => state.medicalCase.item.nodes[questionId].validationMessage,
+  )
+  const fieldError = useSelector(state => state.validation.item[questionId])
+
+  const [currentNode] = useState(
+    store.getState().algorithm.item.nodes[questionId],
   )
 
   // Local state definition
@@ -45,7 +49,6 @@ const Question = ({ questionId, disabled = false }) => {
   const [descriptionAvailable] = useState(
     translate(currentNode.description) !== '',
   )
-  const [isUnavailable, setIsUnavailable] = useState(mcNode.unavailableValue)
 
   // Node can have an unavailable answer
   const [additionalUnavailableAnswer] = useState(
@@ -53,34 +56,12 @@ const Question = ({ questionId, disabled = false }) => {
   )
 
   // Is an emergency question
-  const [emergency] = useState(
-    currentNode.is_danger_sign || currentNode.emergency_status === 'referral',
-  )
-
-  /**
-   * Used only when normal answer can't be set by clinician. A list of predefined answer are displayed
-   */
-  const handleUnavailable = () => {
-    setIsUnavailable(!isUnavailable)
-    dispatch(
-      UpdateNodeField.action({
-        nodeId: questionId,
-        field: 'unavailableValue',
-        value: !isUnavailable,
-      }),
-    )
-  }
-
-  /**
-   * Used only when isUnavailableAnswer have a value
-   */
-  const handleUnavailableAnswer = value => {
-    const answer = value ? additionalUnavailableAnswer.id : null
-    dispatch(SetAnswer.action({ nodeId: questionId, value: answer }))
-  }
+  const emergency =
+    currentNode.emergency_status === 'referral' ||
+    currentNode.emergency_status === 'emergency'
 
   return (
-    <View style={question.wrapper(emergency)}>
+    <View style={[question.wrapper(emergency)]}>
       <View style={question.container}>
         <View style={question.questionWrapper(isFullLength)}>
           {emergency && <Icon name="alert" color={Colors.red} />}
@@ -89,13 +70,15 @@ const Question = ({ questionId, disabled = false }) => {
             style={
               emergency
                 ? question.emergencyText
-                : question.text(question.validationType)
+                : question.text(fieldError ? 'error' : validationType)
             }
           >
             {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
           </Text>
 
-          {descriptionAvailable && <QuestionInfoButton nodeId={questionId} />}
+          {(descriptionAvailable || __DEV__) && (
+            <QuestionInfoButton nodeId={questionId} />
+          )}
 
           <View
             style={
@@ -104,43 +87,30 @@ const Question = ({ questionId, disabled = false }) => {
                 : question.inputWrapper
             }
           >
-            {additionalUnavailableAnswer ? (
-              <>
-                {mcNode.answer !== additionalUnavailableAnswer.id && (
-                  <InputFactory questionId={questionId} emergency={emergency} />
-                )}
-                <Checkbox
-                  label={translate(additionalUnavailableAnswer.label)}
-                  defaultValue={
-                    mcNode.answer === additionalUnavailableAnswer.id
-                  }
-                  onPress={handleUnavailableAnswer}
-                />
-              </>
-            ) : isUnavailable ? (
-              <Select questionId={questionId} />
+            {currentNode.unavailable || additionalUnavailableAnswer ? (
+              <DisplayUnavailable questionId={questionId} />
             ) : (
-              <InputFactory questionId={questionId} emergency={emergency} />
-            )}
-            {currentNode.unavailable && !additionalUnavailableAnswer && (
-              <Checkbox
-                label={translate(currentNode.unavailable_label)}
-                defaultValue={isUnavailable}
-                onPress={handleUnavailable}
-              />
+              <InputFactory questionId={questionId} />
             )}
           </View>
         </View>
 
-        {(mcNode.validationType === 'error' ||
-          mcNode.validationType === 'warning') && (
-          <View style={[question.messageWrapper(question.validationType)]}>
+        {(validationType === 'error' ||
+          validationType === 'warning' ||
+          fieldError) && (
+          <View
+            style={[
+              question.messageWrapper(fieldError ? 'error' : validationType),
+            ]}
+          >
             <Icon
               size={FontSize.regular}
               color={Colors.secondary}
               name="warning"
             />
-            <Text style={question.message}>{mcNode.validationMessage}</Text>
+            <Text style={question.message}>
+              {validationMessage ? validationMessage : fieldError}
+            </Text>
           </View>
         )}
       </View>

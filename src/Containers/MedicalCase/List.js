@@ -1,97 +1,202 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { Animated, View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import debounce from 'lodash/debounce'
 
 /**
  * The internal imports
  */
 import {
-  SearchBar,
   MedicalCaseListItem,
   LoaderList,
   BadgeBar,
+  Autosuggest,
+  Icon,
+  Error,
+  EmptyList,
 } from '@/Components'
+import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
+import { translate } from '@/Translations/algorithm'
+import { GenerateFiltersBadgeObject } from '@/Utils'
+import GetAllMedicalCasesDB from '@/Store/DatabaseMedicalCase/GetAll'
+import ClearFilters from '@/Store/Filters/ClearFilters'
+import ChangeFilters from '@/Store/Filters/ChangeFilters'
 
-const ListMedicalCaseContainer = props => {
+const ListMedicalCaseContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
-  const { navigation } = props
-
-  const { t } = useTranslation()
   const {
     Layout,
     Fonts,
-    Containers: { medicalCaseList },
+    Gutters,
+    FontSize,
+    Colors,
+    Components: { searchBar },
+    Containers: { medicalCaseList, global },
   } = useTheme()
 
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+
+  // Define references
+  const fadeAnim = useRef(new Animated.Value(0)).current
+
   // Local state definition
-  const [data, setData] = useState([])
-  const [refreshing, setRefreshing] = useState(false)
+  const [page, setPage] = useState(1)
+  const [firstLoading, setFirstLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const nodes = useSelector(state => state.algorithm.item.nodes)
+  const medicalCasesFilters = useSelector(state => state.filters.medicalCases)
+  const data = GenerateFiltersBadgeObject(medicalCasesFilters)
+  const medicalCases = useSelector(
+    state => state.databaseMedicalCase.getAll.item.data,
+  )
+  const isLastBatch = useSelector(
+    state => state.databaseMedicalCase.getAll.item.isLastBatch,
+  )
+  const medicalCasesLoading = useSelector(
+    state => state.databaseMedicalCase.getAll.loading,
+  )
+  const medicalCasesError = useSelector(
+    state => state.databaseMedicalCase.getAll.error,
+  )
+
+  // Callback that debounces the search by 500ms
+  const debouncedSearch = useCallback(
+    debounce(term => {
+      dispatch(
+        GetAllMedicalCasesDB.action({
+          page,
+          reset: true,
+          params: { terms: term, filters: medicalCasesFilters },
+        }),
+      )
+    }, 500),
+    [],
+  )
 
   useEffect(() => {
-    let timer = setTimeout(
-      () => setData([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      2 * 1000,
-    )
+    fadeIn(fadeAnim)
+  }, [fadeAnim])
 
-    return () => {
-      clearTimeout(timer)
-    }
+  useEffect(() => {
+    dispatch(GetAllMedicalCasesDB.action({ page, reset: true }))
+    setFirstLoading(false)
   }, [])
+
+  useEffect(() => {
+    if (searchTerm === '') {
+      dispatch(
+        GetAllMedicalCasesDB.action({
+          page,
+          reset: true,
+          params: { filters: medicalCasesFilters },
+        }),
+      )
+    } else if (searchTerm.length >= 2) {
+      debouncedSearch(searchTerm)
+    }
+  }, [searchTerm, medicalCasesFilters])
 
   /**
    * Reset filters and search terms. Fetch 15 latest patients
    */
   const handleRefresh = () => {
-    setRefreshing(true)
-    console.log('TODO: handle refresh')
-    setTimeout(() => setRefreshing(false), 2 * 1000)
+    dispatch(
+      GetAllMedicalCasesDB.action({
+        page: 1,
+        reset: true,
+        params: { filters: medicalCasesFilters },
+      }),
+    )
+    setPage(1)
+    setSearchTerm('')
   }
 
   /**
    * Load more patients
    */
   const loadMore = () => {
-    console.log('TODO: load more')
-    setData(data.concat([11, 12, 13, 14, 15]))
+    if (!isLastBatch) {
+      dispatch(
+        GetAllMedicalCasesDB.action({
+          page: page + 1,
+          params: { filters: medicalCasesFilters },
+        }),
+      )
+      setPage(page + 1)
+    }
   }
 
   return (
-    <View style={Layout.fill}>
-      <SearchBar navigation={navigation} filters />
-      <BadgeBar
-        removeBadge={() => console.log('TODO Remove selected badge')}
-        selected={[
-          { filterBy: 'Gender', value: 'Female' },
-          { filterBy: 'Age', value: '12' },
-        ]}
-        clearBadges={() => console.log('TODO Clear selected badges')}
-        badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
-      />
-
+    <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
+      <View style={[Gutters.regularHMargin, Gutters.smallVMargin]}>
+        {medicalCasesError && <Error message={medicalCasesError.message} />}
+      </View>
+      <View style={Gutters.regularHMargin}>
+        <View style={Layout.row}>
+          <View style={[Layout.grow, Gutters.smallRMargin]}>
+            <Autosuggest
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              handleReset={() => setSearchTerm('')}
+            />
+          </View>
+          <TouchableOpacity
+            style={searchBar.filterButton}
+            onPress={() =>
+              navigation.navigate('Filters', { source: 'medicalCases' })
+            }
+          >
+            <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
+          </TouchableOpacity>
+        </View>
+        <BadgeBar
+          removeBadge={badge =>
+            dispatch(
+              ChangeFilters.action({ source: 'medicalCases', item: badge }),
+            )
+          }
+          selected={data}
+          badgeComponentLabel={badge =>
+            `${translate(nodes[badge.nodeId].label)} : ${translate(
+              nodes[badge.nodeId].answers[badge.answerId].label,
+            )}`
+          }
+          showClearAll
+          onClearAll={() =>
+            dispatch(ClearFilters.action({ source: 'medicalCases' }))
+          }
+        />
+      </View>
       <View style={medicalCaseList.headerTable}>
         <Text style={medicalCaseList.headerText}>
-          {t('containers.medicalCase.list.name')}
+          {t('containers.medical_case.list.name')}
         </Text>
         <Text style={[medicalCaseList.headerText, Fonts.textCenter]}>
-          {t('containers.medicalCase.list.status')}
+          {t('containers.medical_case.list.status')}
         </Text>
       </View>
-
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <MedicalCaseListItem item={item} />}
-        keyExtractor={item => item.id}
-        ListEmptyComponent={<LoaderList />}
-        onRefresh={() => handleRefresh()}
-        refreshing={refreshing}
-        onEndReached={() => loadMore()}
-        onEndReachedThreshold={0.1}
-      />
-    </View>
+      {firstLoading || medicalCasesLoading ? (
+        <LoaderList />
+      ) : (
+        <FlatList
+          data={medicalCases}
+          renderItem={({ item }) => <MedicalCaseListItem item={item} />}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
+          onRefresh={handleRefresh}
+          refreshing={medicalCasesLoading}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.1}
+        />
+      )}
+    </Animated.View>
   )
 }
 

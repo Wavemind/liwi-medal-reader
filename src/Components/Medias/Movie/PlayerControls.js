@@ -10,7 +10,7 @@ import Feather from 'react-native-vector-icons/Feather'
  */
 import { useTheme } from '@/Theme'
 
-export const PlayerControls = ({
+const PlayerControls = ({
   playing,
   showPreviousAndNext,
   showSkip,
@@ -86,3 +86,5 @@ export const PlayerControls = ({
     </View>
   )
 }
+
+export default PlayerControls

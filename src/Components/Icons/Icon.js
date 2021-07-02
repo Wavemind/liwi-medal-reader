@@ -7,8 +7,8 @@ import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 /**
  * The internal imports
  */
-import { useTheme } from '@/Theme'
 import icoMoonConfig from '../../Assets/Fonts/selection.json'
+import { FontSize, Colors } from '@/Theme/Variables'
 
 const CustomIcon = createIconSetFromIcoMoon(
   icoMoonConfig,
@@ -16,10 +16,12 @@ const CustomIcon = createIconSetFromIcoMoon(
   'medAl-reader.ttf',
 )
 
-const Icon = props => {
-  const { Colors, FontSize } = useTheme()
-  const { name, color = Colors.primary, size = FontSize.large, style } = props
-
+const Icon = ({
+  name,
+  color = Colors.primary,
+  size = FontSize.large,
+  style,
+}) => {
   return (
     <CustomIcon
       name={name}
