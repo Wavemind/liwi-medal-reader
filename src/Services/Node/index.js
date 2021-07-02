@@ -1,1 +1,1 @@
-export { default as generateNodes } from './Generate'
+export { default as GenerateNodesService } from './Generate'

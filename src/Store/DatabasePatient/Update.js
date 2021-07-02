@@ -10,7 +10,7 @@ import {
 /**
  * The internal imports
  */
-import { UpdatePatientService } from '@/Services/Patient'
+import UpdatePatientService from '@/Services/Patient/Update'
 
 export default {
   initialState: buildAsyncState('update'),

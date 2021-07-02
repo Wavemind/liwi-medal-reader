@@ -19,7 +19,7 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { ToggleSwitchDarkMode, Loader } from '@/Components'
 
-const PinAuthContainer = props => {
+const PinAuthContainer = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {

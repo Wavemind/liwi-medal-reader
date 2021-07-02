@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { Loader } from '@/Components'
 
-const IndexSynchronizationContainer = props => {
+const IndexSynchronizationContainer = () => {
   // Theme and style elements deconstruction
   const {
     Layout,

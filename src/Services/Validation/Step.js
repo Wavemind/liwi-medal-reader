@@ -4,15 +4,15 @@
 import { store } from '@/Store'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import { QuestionStepValidation } from '@/Utils'
-import RegistrationStepService from '@/Services/Validation/Step/Registration'
+import { RegistrationStepService } from '@/Services/Validation'
 import {
-  BasicMeasurementQuestions,
-  UniqueTriageQuestions,
-  MedicalHistoryQuestions,
-  PhysicalExamQuestions,
-  AssessmentQuestions,
-  ReferralQuestions,
-  TreatmentConditionsQuestions,
+  BasicMeasurementQuestionsService,
+  UniqueTriageQuestionsService,
+  MedicalHistoryQuestionsService,
+  PhysicalExamQuestionsService,
+  AssessmentQuestionsService,
+  ReferralQuestionsService,
+  TreatmentConditionsQuestionsService,
 } from '@/Services/Steps'
 
 export default () => {
@@ -33,29 +33,29 @@ export default () => {
     case 'registration':
       return RegistrationStepService(errors)
     case 'unique_triage_questions':
-      return QuestionStepValidation(UniqueTriageQuestions(), errors)
+      return QuestionStepValidation(UniqueTriageQuestionsService(), errors)
     case 'complaint_categories':
       return {}
     case 'basic_measurements':
-      return QuestionStepValidation(BasicMeasurementQuestions(), errors)
+      return QuestionStepValidation(BasicMeasurementQuestionsService(), errors)
     case 'medical_history':
-      systems = MedicalHistoryQuestions()
+      systems = MedicalHistoryQuestionsService()
       Object.values(systems.medicalHistory).forEach(system => {
         questions = questions.concat(system)
       })
       return QuestionStepValidation(questions, errors)
     case 'physical_exams':
-      systems = PhysicalExamQuestions()
+      systems = PhysicalExamQuestionsService()
       Object.values(systems.physicalExam).forEach(system => {
         questions = questions.concat(system)
       })
       return QuestionStepValidation(questions, errors)
     case 'assessments':
-      return QuestionStepValidation(AssessmentQuestions(), errors)
+      return QuestionStepValidation(AssessmentQuestionsService(), errors)
     case 'final_diagnoses':
       return {}
     case 'healthcare_questions':
-      return QuestionStepValidation(TreatmentConditionsQuestions(), errors)
+      return QuestionStepValidation(TreatmentConditionsQuestionsService(), errors)
     case 'medicines':
       return {}
     case 'formulations':
@@ -64,7 +64,7 @@ export default () => {
       return {}
     case 'referral':
       if (algorithm.config.track_referral) {
-        return QuestionStepValidation(ReferralQuestions(), errors)
+        return QuestionStepValidation(ReferralQuestionsService(), errors)
       }
       return {}
     default:

@@ -13,7 +13,6 @@ import { Icon } from '@/Components'
 
 const Autosuggest = ({ searchTerm, setSearchTerm, handleReset, autofocus }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
   const {
     Layout,
     Colors,
@@ -21,6 +20,7 @@ const Autosuggest = ({ searchTerm, setSearchTerm, handleReset, autofocus }) => {
     Components: { autosuggest },
   } = useTheme()
 
+  const { t } = useTranslation()
   const inputRef = createRef()
 
   // setTimeout waits for the component to load and then focuses the input

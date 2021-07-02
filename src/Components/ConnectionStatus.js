@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
  */
 import { Icon } from '@/Components'
 
-const ConnectionStatus = props => {
+const ConnectionStatus = () => {
   // Get values from the store
   const network = useSelector(state => state.network)
   const architecture = useSelector(

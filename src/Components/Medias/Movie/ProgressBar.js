@@ -10,7 +10,7 @@ import { View, Text } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 
-export const ProgressBar = ({
+const ProgressBar = ({
   currentTime,
   duration,
   onSlideCapture,
@@ -68,3 +68,5 @@ export const ProgressBar = ({
     onSlideCapture({ seekTime: time })
   }
 }
+
+export default ProgressBar

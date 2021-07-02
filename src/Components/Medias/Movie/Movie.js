@@ -16,8 +16,7 @@ import Feather from 'react-native-vector-icons/Feather'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { PlayerControls } from './PlayerControls'
-import { ProgressBar } from './ProgressBar'
+import { PlayerControls, ProgressBar } from '@/Components'
 
 export default function Movie(movie) {
   const {

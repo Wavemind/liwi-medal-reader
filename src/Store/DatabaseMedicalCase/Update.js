@@ -10,13 +10,13 @@ import {
 /**
  * The internal imports
  */
-import updateMedicalCaseService from '@/Services/MedicalCase/Update'
+import UpdateMedicalCaseService from '@/Services/MedicalCase/Update'
 
 export default {
   initialState: buildAsyncState('update'),
   action: buildAsyncActions(
     'databaseMedicalCase/update',
-    updateMedicalCaseService,
+    UpdateMedicalCaseService,
   ),
   reducers: buildAsyncReducers({
     itemKey: null,

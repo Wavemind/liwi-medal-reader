@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 /**
  * The internal imports
  */
-import SquareButton from '@/Components/Buttons/SquareButton'
+import { SquareButton } from '@/Components'
 import { useTheme } from '@/Theme'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { SaveMedicalCaseService } from '@/Services/MedicalCase'
@@ -21,6 +21,7 @@ const ExitMedicalCase = () => {
     Colors,
     Components: { modal },
   } = useTheme()
+
   const dispatch = useDispatch()
   const { t } = useTranslation()
 

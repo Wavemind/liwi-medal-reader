@@ -20,6 +20,7 @@ const ConsentListItem = ({ item }) => {
     Gutters,
     Fonts,
   } = useTheme()
+
   const navigation = useNavigation()
 
   // medicalCases already sorted by updatedAt (service call)

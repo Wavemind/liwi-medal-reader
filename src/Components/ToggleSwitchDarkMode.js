@@ -17,6 +17,7 @@ const ToggleSwitchDarkMode = ({ label }) => {
     Colors,
     Containers: { auth },
   } = useTheme()
+
   const dispatch = useDispatch()
 
   const darkMode = useSelector(state => state.theme.darkMode)

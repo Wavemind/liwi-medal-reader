@@ -8,7 +8,7 @@ import { widthPercentageToDP } from 'react-native-responsive-screen'
 /**
  * The internal imports
  */
-import SideBarItem from './SideBarItem'
+import { SideBarItem } from '@/Components'
 import { useTheme } from '@/Theme'
 import { getStages } from '@/Utils/Navigation/GetStages'
 

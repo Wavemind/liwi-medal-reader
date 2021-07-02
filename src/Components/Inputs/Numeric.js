@@ -16,13 +16,14 @@ import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 
 const Numeric = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
   const {
     Components: { numeric, booleanButton },
     Layout,
     Gutters,
   } = useTheme()
+
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   // Get node from algorithm
   const question = useSelector(

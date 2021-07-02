@@ -8,10 +8,10 @@ import { FlatList } from 'react-native'
  * The internal imports
  */
 import { Question } from '@/Components'
-import { UniqueTriageQuestions } from '@/Services/Steps'
+import { UniqueTriageQuestionsService } from '@/Services/Steps'
 
-const UniqueTriageQuestionsMedicalCaseContainer = props => {
-  const questions = UniqueTriageQuestions()
+const UniqueTriageQuestionsMedicalCaseContainer = () => {
+  const questions = UniqueTriageQuestionsService()
 
   return (
     <FlatList

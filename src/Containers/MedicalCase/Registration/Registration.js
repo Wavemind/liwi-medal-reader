@@ -15,12 +15,12 @@ import {
   PatientString,
   BirthDate,
 } from '@/Components'
-import { RegistrationQuestions } from '@/Services/Steps'
+import { RegistrationQuestionsService } from '@/Services/Steps'
 
 const RegistrationMedicalCaseContainer = () => {
   const { t } = useTranslation()
 
-  const questions = RegistrationQuestions()
+  const questions = RegistrationQuestionsService()
 
   /**
    * Renders the correct question type

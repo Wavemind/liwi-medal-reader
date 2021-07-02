@@ -24,10 +24,11 @@ const PatientString = ({ field }) => {
   // Local state definition
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const patient = useSelector(state => state.patient.item)
-  const [value, setValue] = useState(patient[field])
 
+  const patient = useSelector(state => state.patient.item)
   const fieldError = useSelector(state => state.validation.item[field])
+
+  const [value, setValue] = useState(patient[field])
 
   /**
    * Save value in patient store

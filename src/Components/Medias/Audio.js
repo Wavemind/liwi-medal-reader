@@ -15,14 +15,14 @@ import { useTheme } from '@/Theme'
 
 const Audio = ({ url }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-
   const {
     Components: { audio },
     FontSize,
     Colors,
     Fonts,
   } = useTheme()
+
+  const { t } = useTranslation()
 
   // Local state definition
   const [loading, setLoading] = useState(true)

@@ -12,7 +12,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { System, Comment, Loader } from '@/Components'
 import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
 
-const PhysicalExamMedicalCaseContainer = props => {
+const PhysicalExamMedicalCaseContainer = () => {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
 

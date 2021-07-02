@@ -9,7 +9,7 @@ import uuid from 'react-native-uuid'
 import CreatePatient from '@/Store/Patient/Create'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
-import UpdateDrugs from '@/Services/MedicalCase/UpdateDrug'
+import UpdateDrugService from '@/Services/MedicalCase/UpdateDrug'
 import { store } from '@/Store'
 import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
@@ -74,7 +74,7 @@ describe('Test Drugs Exclusion', () => {
     expect(getAvailableDrugs(pharyngitis)).toEqual(
       expect.arrayContaining([1681]),
     )
-    await UpdateDrugs(257, 1682, true, 'agreed')
+    await UpdateDrugService(257, 1682, true, 'agreed')
 
     expect(getAvailableDrugs(pyelonephritis)).toEqual(
       expect.arrayContaining([1682]),
@@ -113,7 +113,7 @@ describe('Test Drugs Exclusion', () => {
     expect(getAvailableDrugs(pyelonephritis)).not.toEqual(
       expect.arrayContaining([1682]),
     )
-    await UpdateDrugs(257, 1682, true, 'agreed')
+    await UpdateDrugService(257, 1682, true, 'agreed')
     const drugAgreed =
       store.getState().medicalCase.item.diagnosis.agreed[pyelonephritis.id]
         .drugs.agreed

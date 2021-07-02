@@ -11,7 +11,7 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
-import { TreatmentConditionsQuestions } from '@/Services/Steps'
+import { TreatmentConditionsQuestionsService } from '@/Services/Steps'
 import { setBirthDate } from '../../Utils/BirthDate'
 
 beforeAll(async () => {
@@ -61,7 +61,7 @@ describe('Treatment condition questions ', () => {
         },
       }),
     )
-    const questions = TreatmentConditionsQuestions()
+    const questions = TreatmentConditionsQuestionsService()
     expect(questions).toEqual([2103])
   })
 })

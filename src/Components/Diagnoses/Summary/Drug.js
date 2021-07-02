@@ -19,7 +19,7 @@ import {
   Default,
 } from '@/Components'
 import { Config } from '@/Config'
-import { drugDoses } from '@/Services/MedicalCase/DrugDoses'
+import { DrugDosesService } from '@/Services/MedicalCase'
 
 const Drug = ({ drug, isLast }) => {
   // Theme and style elements deconstruction
@@ -39,7 +39,7 @@ const Drug = ({ drug, isLast }) => {
     const formulationIndex = formulations
       .map(formulation => formulation.id)
       .indexOf(drug.formulation_id)
-    const drugDose = drugDoses(formulationIndex, drug.id)
+    const drugDose = DrugDosesService(formulationIndex, drug.id)
 
     if (formulations[formulationIndex] !== undefined) {
       switch (formulations[formulationIndex].medication_form) {
