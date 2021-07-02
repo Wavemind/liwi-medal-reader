@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useEffect, useState } from 'react'
-import { View, Text, BackHandler } from 'react-native'
+import { View, Text, BackHandler, Keyboard } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
@@ -102,11 +102,26 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   }, [])
 
   /**
+   * Re dispatches the step verification process
+   * @returns {Promise<void>}
+   */
+  const revalidateStep = async () => {
+    setLoading(true)
+    Keyboard.dismiss()
+    await new Promise(resolve => setTimeout(resolve, 50))
+    await dispatch(StepValidation.action())
+    setLoading(false)
+  }
+
+  /**
    * Pre check of validation and insert in database patient if we're at registration stage
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
+   * @param {boolean} skipValidation : tells the method to skip the validation process
    */
   const stepVerification = async (direction, skipValidation = false) => {
     setLoading(true)
+    Keyboard.dismiss()
+    await new Promise(resolve => setTimeout(resolve, 50))
     let validation = null
     if (!skipValidation) {
       validation = await dispatch(StepValidation.action())
@@ -279,7 +294,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               color={Colors.primary}
               iconSize={FontSize.large}
               disabled={loading}
-              onPress={() => dispatch(StepValidation.action())}
+              onPress={revalidateStep}
             />
           </View>
         </View>
