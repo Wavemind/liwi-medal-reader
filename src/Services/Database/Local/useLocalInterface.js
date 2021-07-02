@@ -48,7 +48,7 @@ const database = new Database({
 
 export default function () {
   /**
-   * Create activities for a releated medical case
+   * Create activities for a related medical case
    * @param { integer } medicalCaseId
    * @param { array } activities - List of activities to create
    * @private
