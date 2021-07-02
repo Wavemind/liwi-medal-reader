@@ -35,7 +35,7 @@ const Autosuggest = ({ searchTerm, setSearchTerm, handleReset, autofocus }) => {
     <View style={Layout.row}>
       <View style={autosuggest.inputWrapper}>
         <View style={Layout.colCenter}>
-          <Icon name="search" color={Colors.primary} size={FontSize.large} />
+          <Icon name="search" size={FontSize.large} />
         </View>
         <View style={autosuggest.inputTextWrapper}>
           <TextInput

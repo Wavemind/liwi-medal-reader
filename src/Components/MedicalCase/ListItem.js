@@ -81,7 +81,6 @@ const ListItem = ({ item }) => {
               <Icon
                 key={`${item.id}-icon-${stage.icon}`}
                 name={stage.icon}
-                size={FontSize.large}
                 style={medicalCaseListItem.icon(
                   item.closedAt > 0 ? true : index === item.advancement.stage,
                 )}

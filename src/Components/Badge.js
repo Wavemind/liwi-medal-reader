@@ -31,7 +31,7 @@ const Badge = ({ removeBadge, selectedItem, label }) => {
         style={Layout.column}
         onPress={() => removeBadge(false, selectedItem)}
       >
-        <Icon name="close" color={Colors.secondary} size={FontSize.regular} />
+        <Icon name="close" size={FontSize.regular} />
       </TouchableOpacity>
     </View>
   )

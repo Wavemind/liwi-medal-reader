@@ -48,7 +48,7 @@ const CustomDrawerContent = ({ navigation }) => {
         <DrawerContentScrollView contentContainerStyle={Layout.fill}>
           <View style={customDrawerContent.closeWrapper}>
             <TouchableOpacity onPress={() => navigation.closeDrawer()}>
-              <Icon name="close" color={Colors.primary} />
+              <Icon name="close" />
             </TouchableOpacity>
           </View>
           <CustomDrawerItem
@@ -124,7 +124,7 @@ const CustomDrawerContent = ({ navigation }) => {
                 {t('navigation.logout')}
               </Text>
             )}
-            icon={() => <Icon name="logout" color={Colors.primary} />}
+            icon={() => <Icon name="logout" />}
             onPress={() => handleLogout()}
           />
         </View>

@@ -66,7 +66,7 @@ const IndexFiltersContainer = ({ navigation, route }) => {
           <View style={searchAdditional.clearFiltersButtonWrapper}>
             <Icon
               name="refresh"
-              color="red"
+              color={Colors.red}
               size={FontSize.regular}
               style={Gutters.regularRMargin}
             />

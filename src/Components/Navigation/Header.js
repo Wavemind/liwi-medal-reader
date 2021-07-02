@@ -31,7 +31,7 @@ const Header = ({
     <View style={header.wrapper}>
       <View style={header.menu}>
         <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          <Icon name="menu" color={Colors.primary} />
+          <Icon name="menu" />
         </TouchableOpacity>
       </View>
       <View style={header.titleWrapper}>

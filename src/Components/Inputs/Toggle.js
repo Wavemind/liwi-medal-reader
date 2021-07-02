@@ -62,7 +62,7 @@ const ToggleComplaintCategory = ({ questionId }) => {
         }
         rightComponent={
           toggleValue ? (
-            <Icon name="validate" color={Colors.primary} />
+            <Icon name="validate" />
           ) : (
             <Text style={toggleComplaintCategory.rightText}>
               {t('answers.no')}
