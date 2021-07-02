@@ -208,4 +208,17 @@ describe('Final diagnosis are included / excluded correctly', () => {
     const result = SetDiagnoses()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([123]))
   })
+  it('QSS to false - Should propose Viral acute pharyngitis', async () => {
+    await setBirthDate(store, 2337)
+    await setAnswer(12, 20) // CC Ear / Throat / Mouth => Yes
+
+    await setAnswer(39, 74) // Cough To Yes
+    await setAnswer(183, 345) // Sore Throat => Yes
+    await setAnswer(199, 372) // Runny or Blocked nose => Yes
+    await setAnswer(1751, 807) // Tonsillar swelling => Present
+    await setAnswer(1752, 810) // Tonsillar exudate => Absent
+
+    const result = SetDiagnoses()
+    expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([191]))
+  })
 })
