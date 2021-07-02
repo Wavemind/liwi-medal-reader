@@ -1,0 +1,643 @@
+openapi: '3.0.2'
+info:
+  title: Medal Hub API
+  version: '1.0'
+servers:
+  - url: https://medal-hub/v1
+paths:
+  /patients:
+    get:
+      summary: 'Retrieves all the patients'
+      parameters:
+        - in: query
+          name: page
+          required: false
+          description: Pagination (if empty default should be 1)
+          schema:
+            type: integer
+            example: 1
+        - in: query
+          name: params
+          required: true
+          schema:
+            type: string
+            example: { terms: 'John', filter: 'TODO' }
+      responses:
+        '200':
+          description: A JSON object containing patients information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfPatients'
+    post:
+      summary: Inserts a new medical case into the DB
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                medical_case:
+                  $ref: '#/components/schemas/MedicalCase'
+                patient:
+                  $ref: '#/components/schemas/Patient'
+              example: # Sample object
+                medical_case:
+                  {
+                    json:
+                      {
+                        comment: '',
+                        consent: false,
+                        diagnosis:
+                          {
+                            proposed: [],
+                            excluded: [],
+                            additional: {},
+                            agreed: {},
+                            refused: [],
+                            custom: {},
+                          },
+                        nodes: {},
+                      },
+                    closedAt: 1625225668,
+                    patient_id: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94,
+                    advancement: { stage: 0, step: 0 },
+                    synchronizedAt: 1625425668,
+                    version_id: 1,
+                  }
+                patient:
+                  {
+                    first_name: 'Juan',
+                    last_name: 'Nieve',
+                    birth_date: 1625225668,
+                    birth_date_estimated: false,
+                    consent: true,
+                    consent_file: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==',
+                    group_id: '4',
+                    other_group_id: null,
+                    other_study_id: null,
+                    other_uid: null,
+                    reason: 'Because i moved',
+                    study_id: 'Dynamic TZ',
+                    uid: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94,
+                  }
+      responses:
+        '200':
+          description: OK
+  /patients/find_by:
+    get:
+      summary: 'Retrieve one patient'
+      parameters:
+        - in: query
+          name: field
+          required: false
+          description: if empty default should be "id"
+          schema:
+            type: string
+            example: 'other_uid'
+        - in: query
+          name: value
+          required: true
+          schema:
+            type: string
+            example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+      responses:
+        '200':
+          description: A JSON object containing patient information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+  /patients/consent_files:
+    get:
+      summary: Fetch patient with consent file
+      responses:
+        '200':
+          description: A JSON object containing patients information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfPatients'
+  /patients/synchronize:
+    post:
+      summary: Synchronize patients and medical cases with local data
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                patients:
+                  $ref: '#/components/schemas/PatientWithMedicalCases'
+      responses:
+        '200':
+          description: OK
+  /patients/{patient_id}:
+    patch:
+      summary: Update one or many fields in a patient
+      parameters:
+        - in: path
+          name: patient_id
+          required: true
+          schema:
+            type: string
+            example: '7803f0c8-ddc2-4cfa-9a29-a0ee71777b94'
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                fields:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: 'step'
+                      value:
+                        type: string
+                        example: '1'
+
+              example: # Sample object
+                fields:
+                  [
+                    { name: 'stage', value: 0 },
+                    { name: 'step', value: 0 },
+                    { name: 'closedAt', value: 165815188 },
+                  ]
+      responses:
+        '200':
+          description: OK
+  /patients/{patient_id}/medical_cases:
+    post:
+      summary: Inserts a new medical case into the DB
+      parameters:
+        - in: path
+          name: patient_id
+          required: true
+          schema:
+            type: string
+            example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                medical_case:
+                  $ref: '#/components/schemas/MedicalCase'
+      responses:
+        '200':
+          description: OK
+  /patients/{patient_id}/patient_values:
+    post:
+      summary: Inserts the patient values to the DB.
+      parameters:
+        - in: path
+          required: true
+          name: patient_id
+          schema:
+            type: string
+            example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                patient_values:
+                  $ref: '#/components/schemas/PatientValue'
+              example: # Sample object
+                patient_values:
+                  [
+                    {
+                      patient_id: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94,
+                      node_id: 4,
+                      answer_id: 35,
+                      value: '26',
+                    },
+                  ]
+      responses:
+        '200':
+          description: OK
+  /medical_cases:
+    get:
+      summary: 'Retrieves all the medical cases'
+      parameters:
+        - in: query
+          name: page
+          required: false
+          description: Pagination (if empty default should be 1)
+          schema:
+            type: integer
+            example: 1
+        - in: query
+          name: params
+          required: true
+          schema:
+            type: string
+            example: { terms: 'John', filter: 'TODO' }
+      responses:
+        '200':
+          description: A JSON object containing patients information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfMedicalCases'
+  /medical_cases/{medical_case_id}:
+    patch:
+      summary: Update one or many fields in a medical case
+      parameters:
+        - in: path
+          name: medical_case_id
+          required: true
+          schema:
+            type: string
+            example: '7803f0c8-ddc2-4cfa-9a29-a0ee71777b94'
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                fields:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: 'step'
+                      value:
+                        type: string
+                        example: '1'
+
+              example: # Sample object
+                fields:
+                  [
+                    { name: 'stage', value: 0 },
+                    { name: 'step', value: 0 },
+                    { name: 'closedAt', value: 165815188 },
+                  ]
+      responses:
+        '200':
+          description: OK
+  /medical_cases/{medical_case_id}/unlock:
+    post:
+      summary: Unlock a medical case when device is in client server architecture
+      parameters:
+        - in: path
+          name: medical_case_id
+          required: true
+          schema:
+            type: string
+            example: '7803f0c8-ddc2-4cfa-9a29-a0ee71777b94'
+      responses:
+        '200':
+          description: OK
+  /medical_cases/{medical_case_id}/lock:
+    post:
+      summary: lock a medical case when device is in client server architecture
+      parameters:
+        - in: path
+          name: medical_case_id
+          required: true
+          schema:
+            type: string
+            example: '7803f0c8-ddc2-4cfa-9a29-a0ee71777b94'
+      responses:
+        '200':
+          description: OK
+  /medical_cases/find_by:
+    get:
+      summary: 'Retrieve one medical case'
+      parameters:
+        - in: query
+          name: field
+          required: false
+          description: if empty default should be "id"
+          schema:
+            type: string
+            example: 'id'
+        - in: query
+          name: value
+          required: true
+          schema:
+            type: string
+            example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+      responses:
+        '200':
+          description: A JSON object containing medical case information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalCase'
+  /medical_cases/{medical_case_id}/activities:
+    post:
+      summary: Inserts activities for an existing medical case
+      parameters:
+        - in: path
+          name: medical_case_id
+          required: true
+          schema:
+            type: string
+            example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                activities:
+                  $ref: '#/components/schemas/ArrayOfActivities'
+              example: # Sample object
+                activities:
+                  [
+                    {
+                      step: 'registration',
+                      clinician: 'Jean Neymar',
+                      nodes: [{ node_id: 2, previousValue: 37, newValue: 40 }],
+                      mac_address: '00:1B:44:11:3A:B7',
+                      medical_case_id: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94,
+                    },
+                  ]
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Activity:
+      type: object
+      properties:
+        step:
+          type: string
+          example: 'registration'
+        clinician:
+          type: string
+          example: 'Jean Neymar'
+        mac_address:
+          type: string
+          example: '00:1B:44:11:3A:B7'
+        nodes:
+          type: string
+          example: [{ node_id: 2, previousValue: 37, newValue: 40 }]
+        medical_case_id:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+    ArrayOfActivities:
+      type: array
+      items:
+        $ref: '#/components/schemas/Activity'
+    ArrayOfMedicalCases:
+      type: array
+      items:
+        $ref: '#/components/schemas/MedicalCaseWithPatient'
+    ArrayOfPatients:
+      type: array
+      items:
+        $ref: '#/components/schemas/Patient'
+    ArrayOfPatientValues:
+      type: array
+      items:
+        $ref: '#/components/schemas/PatientValue'
+    ArrayOfPatientWithMedicalCases:
+      type: array
+      items:
+        $ref: '#/components/schemas/ArrayOfPatientWithMedicalCases'
+    Patient:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+        first_name:
+          type: string
+          example: 'Jean'
+        last_name:
+          type: string
+          example: 'Neymar'
+        birth_date:
+          type: integer
+          example: 1625225668
+        birth_date_estimated:
+          type: boolean
+          example: true
+        uid:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+        study_id:
+          type: string
+          example: 'Dynamic TZ'
+        group_id:
+          type: string
+          example: '70'
+        other_uid:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+        other_study_id:
+          type: string
+          example: 'Dynamic TZ'
+        other_group_id:
+          type: string
+          example: '70'
+        reason:
+          type: string
+          example: 'Because I moved'
+        consent:
+          type: boolean
+          example: true
+        consent_file:
+          type: string
+          example: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='
+    PatientLight:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+        first_name:
+          type: string
+          example: 'Jean'
+        last_name:
+          type: string
+          example: 'Neymar'
+        birth_date:
+          type: integer
+          example: 1625225668
+    PatientValue:
+      type: object
+      properties:
+        patient_id:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+        node_id:
+          type: integer
+          example: 3
+        answer_id:
+          type: integer
+          example: 3
+        value:
+          type: string
+          example: 'John'
+    PatientWithMedicalCases:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+        first_name:
+          type: string
+          example: 'Jean'
+        last_name:
+          type: string
+          example: 'Neymar'
+        birth_date:
+          type: integer
+          example: 1625225668
+        birth_date_estimated:
+          type: boolean
+          example: true
+        uid:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+        study_id:
+          type: string
+          example: 'Dynamic TZ'
+        group_id:
+          type: string
+          example: '70'
+        other_uid:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+        other_study_id:
+          type: string
+          example: 'Dynamic TZ'
+        other_group_id:
+          type: string
+          example: '70'
+        reason:
+          type: string
+          example: 'Because I moved'
+        consent:
+          type: boolean
+          example: true
+        consent_file:
+          type: string
+          example: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='
+        medical_cases:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicalCase'
+    MedicalCase:
+      type: object
+      properties:
+        json:
+          type: object
+          properties:
+            comment:
+              type: string
+              example: 'I love cakes'
+            consent:
+              type: boolean
+              example: true
+            diagnosis:
+              type: object
+              properties:
+                proposed:
+                  type: array
+                  example: []
+                excluded:
+                  type: array
+                  example: []
+                additional:
+                  type: object
+                  example: {}
+                agreed:
+                  type: object
+                  example: {}
+                refused:
+                  type: array
+                  example: []
+                custom:
+                  type: object
+                  example: {}
+            nodes:
+              type: object
+        advancement:
+          type: object
+          properties:
+            stage:
+              type: integer
+              example: 1
+            step:
+              type: integer
+              example: 1
+        synchronizedAt:
+          type: integer
+          example: 1625225668
+        closedAt:
+          type: integer
+          example: 1625225668
+        version_id:
+          type: integer
+          example: 2
+        patient_id:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+    MedicalCaseWithPatient:
+      type: object
+      properties:
+        json:
+          type: object
+          properties:
+            comment:
+              type: string
+              example: 'I love cakes'
+            consent:
+              type: boolean
+              example: true
+            diagnosis:
+              type: object
+              properties:
+                proposed:
+                  type: array
+                  example: []
+                excluded:
+                  type: array
+                  example: []
+                additional:
+                  type: object
+                  example: {}
+                agreed:
+                  type: object
+                  example: {}
+                refused:
+                  type: array
+                  example: []
+                custom:
+                  type: object
+                  example: {}
+            nodes:
+              type: object
+        advancement:
+          type: object
+          properties:
+            stage:
+              type: integer
+              example: 1
+            step:
+              type: integer
+              example: 1
+        synchronizedAt:
+          type: integer
+          example: 1625225668
+        closedAt:
+          type: integer
+          example: 1625225668
+        version_id:
+          type: integer
+          example: 2
+        patient:
+          $ref: '#/components/schemas/PatientLight'
