@@ -32,13 +32,13 @@ export default function (props) {
     errorText: {
       ...Fonts.textLeft,
       ...Fonts.textRegular,
-      color: Colors.secondary,
+      color: Colors.white,
     },
     errorNumber: {
       ...Layout.alignItemsCenter,
       ...Fonts.textRight,
       ...Fonts.textRegular,
-      color: Colors.secondary,
+      color: Colors.white,
     },
     errorNextButton: {
       width: wp(5),

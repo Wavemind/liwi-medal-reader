@@ -39,7 +39,7 @@ const SquareSelect = ({
           prompt={prompt}
           selectedValue={value}
           onValueChange={(itemValue, itemIndex) => handleOnSelect(itemValue)}
-          dropdownIconColor={Colors.primary}
+          dropdownIconColor={Colors.black}
         >
           <Picker.Item
             key="select-placeholder"

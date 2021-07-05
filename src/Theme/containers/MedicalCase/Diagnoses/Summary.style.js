@@ -50,6 +50,11 @@ export default function (props) {
       ...Fonts.textSmall,
       ...Fonts.textBold,
       maxWidth: wp(70),
+      color: Colors.primary,
+    },
+    drugText: {
+      ...Fonts.textSmall,
+      color: Colors.primary,
     },
     managementWrapper: isLast => ({
       ...Gutters.regularVPadding,

@@ -16,6 +16,7 @@ export default function (props) {
     diagnosisLabel: {
       ...Layout.grow,
       ...Fonts.textSmall,
+      color: Colors.primary,
     },
     booleanButtonWrapper: {
       ...Layout.row,
@@ -42,6 +43,7 @@ export default function (props) {
       ...Fonts.textCenter,
       ...Fonts.textSmall,
       ...Fonts.textItalic,
+      color: Colors.primary,
     },
   })
 }

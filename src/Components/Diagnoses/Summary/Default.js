@@ -15,32 +15,43 @@ import { useTheme } from '@/Theme'
 
 const Default = ({ drug, drugDose }) => {
   // Theme and style elements deconstruction
-  const { Gutters, Fonts } = useTheme()
+  const {
+    Gutters,
+    Containers: { summary },
+  } = useTheme()
 
   const { t } = useTranslation()
 
   let every = ''
 
   if (drug.formulationSelected !== null) {
-    every = `${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t('formulations.drug.h')} ${drug.duration} ${t('formulations.drug.days')}`
+    every = `${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t(
+      'formulations.drug.h',
+    )} ${drug.duration} ${t('formulations.drug.days')}`
   }
 
   return (
     <View>
       <Text>{formulationLabel(drugDose)}</Text>
-      <Text style={Fonts.textSmall}>
+      <Text style={summary.drugText}>
         {t('formulations.drug.d')}: {drug.duration}
       </Text>
       {drug.formulationSelected !== null && (
-        <Text style={Fonts.textSmall}>
+        <Text style={summary.drugText}>
           {t('formulations.drug.admin')}: {drugDose.administration_route_name}
         </Text>
       )}
       {drug.formulationSelected !== null && <Text>{every}</Text>}
-      <Text style={[Gutters.regularTMargin, Fonts.textSmall]}>
+      <Text style={[Gutters.regularTMargin, summary.drugText]}>
         {translate(drugDose.dispensing_description)}
       </Text>
-      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(drugDose.administration_route_category) && <Text key={`text_${drug.id}`}>{translate(drugDose.injection_instructions)}</Text>}
+      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
+        drugDose.administration_route_category,
+      ) && (
+        <Text key={`text_${drug.id}`}>
+          {translate(drugDose.injection_instructions)}
+        </Text>
+      )}
     </View>
   )
 }

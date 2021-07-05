@@ -126,10 +126,10 @@ const SearchAdditionalMedicalCaseContainer = ({
 
   /**
    * Toggles the additional diagnostic selection in the store
-   * @param checkboxValue
-   * @param nodeId
+   * @param item
    */
-  const toggleAdditionalItems = (checkboxValue, nodeId) => {
+  const toggleAdditionalItems = item => {
+    const nodeId = item.id
     const tempAdditionalItems = { ...selected }
     const index = Object.keys(tempAdditionalItems).indexOf(nodeId.toString())
     const currentNode = nodes[nodeId]

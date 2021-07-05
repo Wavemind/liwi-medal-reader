@@ -33,7 +33,7 @@ export default function (props) {
       ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,
       ...Layout.grow,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.white,
       borderWidth: 1,
       borderColor: Colors.grey,
       height: hp(6),
@@ -42,7 +42,7 @@ export default function (props) {
     inputText: {
       ...Fonts.textSmall,
       ...Layout.grow,
-      color: Colors.primary,
+      color: Colors.black,
       padding: 0,
     },
     selectWrapper: {

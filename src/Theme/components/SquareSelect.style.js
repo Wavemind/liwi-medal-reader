@@ -20,7 +20,7 @@ export default function (props) {
     },
     pickerContainer: (withBorder, pickerGrow) => ({
       ...Layout.justifyContentCenter,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.white,
       opacity: 1,
       borderColor: Colors.grey,
       borderRadius: 10,
@@ -30,7 +30,7 @@ export default function (props) {
     }),
     picker: {
       minWidth: wp(28.3),
-      color: Colors.primary,
+      color: Colors.black,
     },
   })
 }

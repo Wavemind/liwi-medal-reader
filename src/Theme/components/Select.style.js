@@ -8,9 +8,11 @@ export default function (props) {
     pickerContainer: disabled => ({
       backgroundColor: Colors.white,
       height: hp(4.4),
-      borderRadius: 20,
       opacity: disabled ? 0.5 : 1,
       justifyContent: 'center',
+      borderRadius: 20,
+      borderColor: Colors.primary,
+      borderWidth: 0.5,
     }),
     picker: {
       width: wp(33.3),

@@ -55,6 +55,7 @@ export default function (props) {
       ...Fonts.textSmall,
       ...Fonts.textBold,
       width: wp(45),
+      color: Colors.primary,
     },
   })
 }

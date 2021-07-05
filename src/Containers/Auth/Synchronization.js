@@ -79,7 +79,7 @@ const SynchronizationAuthContainer = () => {
           {t('containers.auth.synchronization.title')}
         </Text>
         <View style={authSynchronization.descriptionWrapper}>
-          <Text style={Fonts.textRegular}>
+          <Text style={auth.description}>
             {t('containers.auth.synchronization.description')}
           </Text>
         </View>
@@ -87,10 +87,10 @@ const SynchronizationAuthContainer = () => {
         <View style={Gutters.largeVMargin}>
           <View style={Layout.row}>
             <View style={Layout.fill}>
-              <Text style={Fonts.textSmall}>{t('device.name')}</Text>
+              <Text style={auth.itemLabel}>{t('device.name')}</Text>
             </View>
             <View style={Layout.fill}>
-              <Text style={[Fonts.textSmall, Fonts.textBold]}>
+              <Text style={auth.item}>
                 {device.name !== null
                   ? device.name
                   : t('device.name_not_available')}
@@ -100,23 +100,19 @@ const SynchronizationAuthContainer = () => {
 
           <View style={[Layout.row, Gutters.smallTMargin]}>
             <View style={Layout.fill}>
-              <Text style={Fonts.textSmall}>{t('device.model')}</Text>
+              <Text style={auth.itemLabel}>{t('device.model')}</Text>
             </View>
             <View style={Layout.fill}>
-              <Text style={[Fonts.textSmall, Fonts.textBold]}>
-                {device.model}
-              </Text>
+              <Text style={auth.item}>{device.model}</Text>
             </View>
           </View>
 
           <View style={[Layout.row, Gutters.smallTMargin]}>
             <View style={Layout.fill}>
-              <Text style={Fonts.textSmall}>{t('device.mac_address')}</Text>
+              <Text style={auth.itemLabel}>{t('device.mac_address')}</Text>
             </View>
             <View style={Layout.fill}>
-              <Text style={[Fonts.textSmall, Fonts.textBold]}>
-                {device.mac_address}
-              </Text>
+              <Text style={auth.item}>{device.mac_address}</Text>
             </View>
           </View>
         </View>

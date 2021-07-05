@@ -29,9 +29,9 @@ const Badge = ({ removeBadge, selectedItem, label }) => {
       <View style={badge.separator} />
       <TouchableOpacity
         style={Layout.column}
-        onPress={() => removeBadge(false, selectedItem)}
+        onPress={() => removeBadge(selectedItem)}
       >
-        <Icon name="close" size={FontSize.regular} />
+        <Icon name="close" size={FontSize.regular} color={Colors.secondary} />
       </TouchableOpacity>
     </View>
   )

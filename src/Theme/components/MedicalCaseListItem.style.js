@@ -26,6 +26,11 @@ export default function (props) {
       ...Gutters.tinyBPadding,
       color: Colors.primary,
     },
+    birthDate: {
+      ...Fonts.textTiny,
+      ...Gutters.tinyBPadding,
+      color: Colors.primary,
+    },
     dateWrapper: {
       flex: 0.5,
     },
@@ -37,6 +42,7 @@ export default function (props) {
       ...Fonts.textBold,
       ...Fonts.textUppercase,
       ...Gutters.tinyBPadding,
+      color: Colors.primary,
     },
     icon: active => ({
       backgroundColor: active && Colors.primary,

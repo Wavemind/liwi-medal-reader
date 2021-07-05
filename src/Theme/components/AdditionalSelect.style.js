@@ -43,6 +43,7 @@ export default function (props) {
     itemLabel: {
       ...Fonts.textSmall,
       ...Gutters.smallRMargin,
+      color: Colors.primary,
     },
     addAdditionalButton: {
       ...Gutters.smallTMargin,
@@ -58,6 +59,7 @@ export default function (props) {
     addAdditionalButtonText: {
       ...Layout.grow,
       ...Fonts.textSmall,
+      color: Colors.primary,
     },
     addAdditionalButtonCountWrapper: {
       ...Layout.rowVCenter,

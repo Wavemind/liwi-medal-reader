@@ -8,7 +8,6 @@ export default function (props) {
       side,
       active,
       disabled = false,
-      outlined = false,
       inactiveBgColor = Colors.secondary,
     ) => ({
       ...Layout.fill,
@@ -19,12 +18,11 @@ export default function (props) {
       borderTopLeftRadius: side === 'left' ? 20 : 0,
       borderBottomRightRadius: side === 'right' ? 20 : 0,
       borderTopRightRadius: side === 'right' ? 20 : 0,
-      borderRightWidth: side === 'left' || outlined ? 0.5 : 0,
-      borderRightColor:
-        side === 'left' || outlined ? Colors.primary : Colors.transparent,
-      borderLeftWidth: side === 'left' && outlined ? 0.5 : 0,
-      borderTopWidth: outlined ? 0.5 : 0,
-      borderBottomWidth: outlined ? 0.5 : 0,
+      borderColor: Colors.primary,
+      borderLeftWidth: side === 'right' ? 0 : 0.5,
+      borderRightWidth: 0.5,
+      borderTopWidth: 0.5,
+      borderBottomWidth: 0.5,
     }),
     buttonText: active => ({
       ...Gutters.tinyVPadding,

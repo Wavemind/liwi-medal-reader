@@ -23,7 +23,7 @@ export default function (props) {
     inputText: {
       ...Fonts.textSmall,
       ...Layout.grow,
-      color: Colors.text,
+      color: Colors.black,
       padding: 0,
     },
     textArea: {

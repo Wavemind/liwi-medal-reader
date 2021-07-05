@@ -78,7 +78,7 @@ export default function (props) {
       ...Layout.fill,
       ...Fonts.textTiny,
       ...Fonts.textSemiBold,
-      color: Colors.secondary,
+      color: Colors.white,
     },
   })
 }

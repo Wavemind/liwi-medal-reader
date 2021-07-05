@@ -18,10 +18,10 @@ export default function (props) {
       ...Fonts.textSmall,
       width: '100%',
       borderRadius: 10,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.white,
       borderWidth: 1,
       borderColor: Colors.grey,
-      color: Colors.primary,
+      color: Colors.black,
     },
     buttonWrapper: {
       ...Gutters.largeTMargin,

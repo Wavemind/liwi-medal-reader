@@ -105,7 +105,7 @@ const Question = ({ questionId, disabled = false }) => {
           >
             <Icon
               size={FontSize.regular}
-              color={Colors.secondary}
+              color={Colors.white}
               name="warning"
             />
             <Text style={question.message}>

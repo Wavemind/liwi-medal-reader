@@ -32,12 +32,21 @@ export default function (props) {
     leftColumn: {
       width: wp(48),
     },
+    label: {
+      ...Fonts.textRegular,
+      ...Fonts.textBold,
+      color: Colors.primary,
+    },
+    relatedDiagnoses: {
+      ...Fonts.textSmall,
+      color: Colors.primary,
+    },
     rightColumn: {
       width: wp(30),
     },
     pickerWrapper: {
       ...Layout.justifyContentCenter,
-      backgroundColor: Colors.lightGrey,
+      backgroundColor: Colors.white,
       height: hp(4.4),
       borderRadius: 20,
       borderColor: Colors.grey,
@@ -45,12 +54,13 @@ export default function (props) {
     },
     picker: {
       width: wp(29),
-      color: Colors.primary,
+      color: Colors.black,
     },
     selectedFormulationText: {
       ...Fonts.textTiny,
       ...Fonts.textBold,
       ...Gutters.tinyVMargin,
+      color: Colors.primary,
     },
   })
 }

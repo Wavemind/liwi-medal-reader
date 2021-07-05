@@ -63,7 +63,9 @@ const ListItem = ({ item }) => {
           <Text style={medicalCaseListItem.title}>
             {`${item.patient.first_name} ${item.patient.last_name}`}
           </Text>
-          <Text>{format(item.patient.birth_date, 'dd.MM.yyyy')}</Text>
+          <Text style={medicalCaseListItem.birthDate}>
+            {format(item.patient.birth_date, 'dd.MM.yyyy')}
+          </Text>
         </View>
 
         <View style={medicalCaseListItem.statusWrapper}>

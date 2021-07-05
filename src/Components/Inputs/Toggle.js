@@ -51,34 +51,39 @@ const ToggleComplaintCategory = ({ questionId }) => {
   }, [toggleValue])
 
   return (
-    <View style={Layout.center}>
+    <View style={toggleComplaintCategory.wrapper}>
       <Toggle
         value={toggleValue}
         onPress={newState => setToggleValue(newState)}
         leftComponent={
           <Text style={toggleComplaintCategory.leftText(toggleValue)}>
-            {t('answers.yes')}
+            {toggleValue && t('answers.yes')}
           </Text>
         }
-        rightComponent={
-          toggleValue ? (
+        thumbActiveComponent={
+          <View style={toggleComplaintCategory.iconStyle}>
             <Icon name="validate" />
-          ) : (
-            <Text style={toggleComplaintCategory.rightText}>
-              {t('answers.no')}
-            </Text>
-          )
+          </View>
+        }
+        rightComponent={
+          <Text style={toggleComplaintCategory.rightText}>
+            {!toggleValue && t('answers.no')}
+          </Text>
         }
         trackBarStyle={toggleComplaintCategory.trackBarStyle}
         trackBar={{
           activeBackgroundColor: Colors.primary,
           inActiveBackgroundColor: Colors.secondary,
-          borderWidth: 1,
           width: wp(19),
         }}
         thumbButton={{
           activeBackgroundColor: Colors.secondary,
           inActiveBackgroundColor: Colors.primary,
+        }}
+        thumbStyle={{
+          borderWidth: wp(0.5),
+          borderColor: Colors.primary,
+          backgroundColor: Colors.secondary,
         }}
       />
     </View>
