@@ -8,6 +8,7 @@ import {
   getValidDiagnoses,
   getTopConditions,
   handleChildren,
+  uniq,
 } from '@/Utils/MedicalCase'
 
 export default () => {
@@ -49,6 +50,11 @@ export default () => {
       updatedSystems[system.title] = newQuestions
     }
   })
+
+  updatedSystems.follow_up_questions = uniq(
+    questionPerSystems.follow_up_questions,
+  )
+
   return {
     ...state.questionsPerSystem.item,
     physicalExam: {

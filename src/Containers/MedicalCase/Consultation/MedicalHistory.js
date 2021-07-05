@@ -26,13 +26,11 @@ const MedicalHistoryMedicalCaseContainer = () => {
   useEffect(() => {
     if (isFocused) {
       dispatch(MedicalHistory.action())
+      if (loading) {
+        setLoading(false)
+      }
     }
   }, [isFocused])
-
-  useEffect(() => {
-    dispatch(MedicalHistory.action())
-    setLoading(false)
-  }, [])
 
   if (loading) {
     return <Loader />

@@ -14,9 +14,9 @@ export default function (props) {
       borderBottomWidth: isLastItem ? 0 : 1,
     }),
     diagnosisLabel: {
-      ...Layout.grow,
       ...Fonts.textSmall,
       color: Colors.primary,
+      width: wp(40),
     },
     booleanButtonWrapper: {
       ...Layout.row,
