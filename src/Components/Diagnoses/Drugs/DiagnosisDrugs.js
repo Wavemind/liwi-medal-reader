@@ -109,7 +109,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
                   diagnosisKey={diagnosisKey}
                 />
               </View>
-              <Text style={Fonts.textSmall}>
+              <Text style={drugs.drugDescription}>
                 {translate(algorithm.nodes[drugId].description)}
               </Text>
             </View>

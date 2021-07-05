@@ -57,5 +57,9 @@ export default function (props) {
       width: wp(45),
       color: Colors.primary,
     },
+    drugDescription: {
+      ...Fonts.textSmall,
+      color: Colors.primary,
+    },
   })
 }
