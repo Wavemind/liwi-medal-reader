@@ -191,9 +191,10 @@ const addQuestionToSystem = (
     const isAlreadyDisplayed = visibleNodes.includes(questionId)
 
     if (
-      !isAlreadyDisplayed &&
-      visibleNodes.length > 0 &&
-      currentQuestionSystemIndex < oldSystemIndex
+      (!isAlreadyDisplayed &&
+        visibleNodes.length > 0 &&
+        currentQuestionSystemIndex < oldSystemIndex) ||
+      currentSystems?.follow_up_questions?.includes(questionId)
     ) {
       if ('follow_up_questions' in questionsToDisplay) {
         questionsToDisplay.follow_up_questions.push(questionId)
