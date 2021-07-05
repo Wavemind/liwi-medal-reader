@@ -36,7 +36,7 @@ export default function (props) {
     },
     itemLabelWrapper: {
       ...Layout.row,
-      ...Layout.alignItemsStart,
+      ...Layout.alignItemsCenter,
       width: labelWidth,
     },
     itemLabel: {
