@@ -26,13 +26,11 @@ const PhysicalExamMedicalCaseContainer = () => {
   useEffect(() => {
     if (isFocused) {
       dispatch(PhysicalExam.action())
+      if (loading) {
+        setLoading(false)
+      }
     }
   }, [isFocused])
-
-  useEffect(() => {
-    dispatch(PhysicalExam.action())
-    setLoading(false)
-  }, [])
 
   if (loading) {
     return <Loader />

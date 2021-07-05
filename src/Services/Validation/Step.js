@@ -55,7 +55,10 @@ export default () => {
     case 'final_diagnoses':
       return {}
     case 'healthcare_questions':
-      return QuestionStepValidation(TreatmentConditionsQuestionsService(), errors)
+      return QuestionStepValidation(
+        TreatmentConditionsQuestionsService(),
+        errors,
+      )
     case 'medicines':
       return {}
     case 'formulations':
