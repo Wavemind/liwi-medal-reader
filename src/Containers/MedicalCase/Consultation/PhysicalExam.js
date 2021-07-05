@@ -36,7 +36,6 @@ const PhysicalExamMedicalCaseContainer = () => {
     return <Loader />
   }
 
-  console.log('je render', isFocused)
   return (
     <ScrollView>
       {physicalExamStep.map(system => (
