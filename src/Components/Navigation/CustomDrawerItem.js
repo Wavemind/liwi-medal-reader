@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
+import { navigate } from '@/Navigators/Root'
 
 const CustomDrawerItem = ({
   label,
@@ -46,7 +46,7 @@ const CustomDrawerItem = ({
       )
       await dispatch(ToggleVisibility.action({}))
     } else {
-      navigateAndSimpleReset(routeName, routeParams)
+      navigate(routeName, routeParams)
     }
   }
 
