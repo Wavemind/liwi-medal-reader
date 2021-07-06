@@ -77,7 +77,11 @@ const Diagnosis = ({ diagnosisKey }) => {
             )}
           </View>
           <Text style={summary.diagnosisKey}>
-            {t(`containers.medical_case.drugs.${diagnosisKey === 'agreed' ? 'proposed' : 'additional'}`)}
+            {t(
+              `containers.medical_case.drugs.${
+                diagnosisKey === 'agreed' ? 'proposed' : 'additional'
+              }`,
+            )}
           </Text>
         </View>
         <View style={[Gutters.regularHPadding, Gutters.regularVMargin]}>

@@ -41,6 +41,7 @@ const Drugs = ({ diagnosis }) => {
             <Drug
               key={`summary_diagnosis_drugs-${drug.id}`}
               drug={drug}
+              diagnosisId={diagnosis.id}
               isLast={i === Object.keys(diagnosis.drugs[key]).length - 1}
             />
           )),
