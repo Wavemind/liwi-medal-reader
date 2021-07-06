@@ -15,45 +15,50 @@ export const Colors = {
   secondary: '#ececec',
   background: '#f2f1ee',
   whiteToBlack: '#ffffff',
+  mcDrawerNotDone: '#f2f1ee',
 
   // CONSTANTS
-  black: '#000000',
-  lightBlack: '#121212',
+  black: '#121212',
   white: '#ffffff',
   offWhite: '#ececec',
   red: '#d20730',
   warning: '#e27900',
+  darkGrey: '#323232',
+  disabled: '#d3d1cf',
+  lightGrey: '#f2f1ee',
+  border: '#9f9f9f',
+  separator: '#e1e1e1',
+  info: '#686868',
+
+
 
   // WHITES
   whiteToLightPink: '#ffffff',
-  whiteToLightGrey: '#ffffff',
 
+  whiteToLightGrey: '#ffffff',
   // LIGHT GREYS
-  lightGrey: '#f2f1ee',
   lightGreyToAnotherLightGrey: '#f2f1ee',
+
   lightGreyToDarkGrey: '#f2f1ee',
 
   // DARK GREYS
   darkGreyToLightGrey: '#121212',
 
-  // DARK LIGHT GREYS
-  darkLightGrey: '#afafaf',
-
   // ORANGES
 
+  // DARK LIGHT GREYS
+  darkLightGrey: '#afafaf',
   // SOME OTHER LIGHT GREYS
-  disabled: '#d3d1cf',
   grey: '#6f6f6f',
   abitDarkerLightGrey: '#6f6f6f',
   abitLighterDarkLightGrey: '#686868',
-  darkerLightGreyToBlack: '#e1e1e1',
 
+  darkerLightGreyToBlack: '#e1e1e1',
   // SOME OTHER DARK GREYS
   darkerDarkGrey: '#0e1511',
   lighterDarkGrey: '#afafaf',
   middleDarkGreyToLightGrey: '#3c3c3c',
   middleDarkGreyToAnotherLightGrey: '#3c3c3c',
-  darkGrey: '#323232',
 
   // Colors that don't change in dark mode
   primaryLowOpacity: '#00000088',

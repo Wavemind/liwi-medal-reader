@@ -8,7 +8,7 @@ export default function (props) {
       side,
       active,
       disabled = false,
-      inactiveBgColor = Colors.secondary,
+      inactiveBgColor = Colors.whiteToBlack,
     ) => ({
       ...Layout.fill,
       ...Gutters.tinyVPadding,

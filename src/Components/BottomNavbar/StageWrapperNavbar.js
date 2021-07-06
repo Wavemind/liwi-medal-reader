@@ -289,7 +289,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               filled
               icon="right-arrow"
               iconAfter
-              bgColor={Colors.white}
+              bgColor={Colors.offWhite}
               color={Colors.black}
               iconSize={FontSize.large}
               disabled={loading}

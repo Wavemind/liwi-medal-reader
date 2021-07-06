@@ -11,7 +11,9 @@ export default function (props) {
       height: roundSize,
       borderRadius: roundSize / 2,
       backgroundColor:
-        status === 'current' && !thinLines ? Colors.primary : Colors.secondary,
+        status === 'current' && !thinLines
+          ? Colors.primary
+          : Colors.whiteToBlack,
       borderColor:
         status === 'notDone'
           ? Colors.grey
@@ -51,6 +53,9 @@ export default function (props) {
       ...Gutters.smallVPadding,
       ...Gutters.regularBPadding,
       ...Layout.center,
+      borderBottomWidth: 1,
+      borderTopWidth: 1,
+      borderColor: Colors.border,
     }),
     text: status => ({
       overflow: 'visible',

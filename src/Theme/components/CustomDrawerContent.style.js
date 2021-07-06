@@ -16,7 +16,7 @@ export default function (props) {
     },
     separator: {
       height: 1,
-      backgroundColor: Colors.lightGrey,
+      backgroundColor: Colors.separator,
     },
     wrapper: {
       ...Layout.fill,

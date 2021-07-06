@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 const QuestionInfoButton = ({ nodeId, color }) => {
   const { Colors } = useTheme()
 
-  const iconColor = color || Colors.primary
+  const iconColor = color || Colors.info
 
   return (
     <TouchableOpacity onPress={() => navigate('QuestionInfo', { nodeId })}>

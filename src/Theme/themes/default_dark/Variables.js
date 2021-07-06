@@ -14,7 +14,8 @@ const Colors = {
   primary: '#ececec',
   secondary: '#121212',
   background: '#1f1f1f',
-  whiteToBlack: '#000000',
+  whiteToBlack: '#121212',
+  mcDrawerNotDone: '#323232',
 
   // WHITES
 
@@ -40,7 +41,6 @@ const Colors = {
 
 
   // SOME OTHER LIGHT GREYS
-  disabled: '#9f9f9f',
   abitDarkerLightGrey: '#9f9f9f',
   abitLighterDarkLightGrey: '#a8a8a8',
   darkerLightGreyToBlack: '#000000',

@@ -106,11 +106,7 @@ const Consent = () => {
       )}
       {consentError && (
         <View style={[question.messageWrapper(consentError ? 'error' : null)]}>
-          <Icon
-            size={FontSize.regular}
-            color={Colors.white}
-            name="warning"
-          />
+          <Icon size={FontSize.regular} color={Colors.white} name="warning" />
           <Text style={question.message}>{consentError}</Text>
         </View>
       )}

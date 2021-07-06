@@ -7,7 +7,7 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Layout.fill,
-      backgroundColor: Colors.lightGrey,
+      backgroundColor: Colors.mcDrawerNotDone,
     },
     header: {
       backgroundColor: Colors.darkGrey,
@@ -32,7 +32,7 @@ export default function (props) {
     },
     itemWrapper: (open, status) => ({
       backgroundColor:
-        status === 'notDone' ? Colors.lightGrey : Colors.secondary,
+        status === 'notDone' ? Colors.mcDrawerNotDone : Colors.whiteToBlack,
       ...(open ? Gutters.regularBPadding : null),
     }),
     stage: (open, status) => ({
@@ -44,8 +44,8 @@ export default function (props) {
         status === 'current'
           ? Colors.primary
           : status === 'notDone'
-          ? Colors.lightGrey
-          : Colors.secondary,
+          ? Colors.mcDrawerNotDone
+          : Colors.whiteToBlack,
       borderColor: Colors.grey,
       borderTopWidth: 1,
       borderBottomWidth: open ? 1 : 0,

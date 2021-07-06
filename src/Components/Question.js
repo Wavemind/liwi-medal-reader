@@ -103,11 +103,7 @@ const Question = ({ questionId, disabled = false }) => {
               question.messageWrapper(fieldError ? 'error' : validationType),
             ]}
           >
-            <Icon
-              size={FontSize.regular}
-              color={Colors.white}
-              name="warning"
-            />
+            <Icon size={FontSize.regular} color={Colors.white} name="warning" />
             <Text style={question.message}>
               {validationMessage ? validationMessage : fieldError}
             </Text>
