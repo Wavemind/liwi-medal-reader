@@ -42,7 +42,7 @@ const Dot = ({ status, step, stepIndex, stageIndex, thinLines }) => {
     if (stageIndex === advancement.stage) {
       navigation.navigate(step.label)
     } else {
-      navigateToStage(stageIndex, 0)
+      navigateToStage(stageIndex, stepIndex)
     }
   }
 
