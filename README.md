@@ -113,7 +113,7 @@ return <Icon name="about" />
 ```
 
 ### API
-![Swagger](https://wavemind.github.io/liwi-medal-reader 'API')
+[Swagger](https://wavemind.github.io/liwi-medal-reader)
 
 ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/setIcons-1.jpg?raw=true 'section 1')
 ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/setIcons-2.jpg?raw=true 'section 2')
