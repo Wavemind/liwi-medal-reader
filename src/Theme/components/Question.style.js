@@ -40,7 +40,7 @@ export default function (props) {
     },
     text: status => {
       let customStyle = {
-        color: Colors.text,
+        color: Colors.primary,
       }
 
       if (status === 'error') {

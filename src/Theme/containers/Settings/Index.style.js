@@ -8,7 +8,7 @@ export default function (props) {
       ...Gutters.regularLMargin,
       ...Gutters.regularVMargin,
       ...Fonts.textSectionHeader,
-      color: Colors.text,
+      color: Colors.primary,
     },
     item: {
       ...Layout.row,

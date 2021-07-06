@@ -15,7 +15,7 @@ export default function (props) {
     },
     label: {
       ...Fonts.textSmall,
-      color: Colors.text,
+      color: Colors.primary,
     },
     switchContainer: {
       ...Layout.justifyContentCenter,

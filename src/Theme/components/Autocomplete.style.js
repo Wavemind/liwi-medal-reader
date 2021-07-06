@@ -31,7 +31,7 @@ export default function (props) {
       ...Layout.grow,
       ...Gutters.smallVPadding,
       ...Gutters.smallHPadding,
-      color: Colors.text,
+      color: Colors.primary,
       textAlignVertical: 'top',
     },
     searchIcon: {
@@ -54,7 +54,7 @@ export default function (props) {
     }),
     dropdownItemText: {
       ...Fonts.textSmall,
-      color: Colors.text,
+      color: Colors.primary,
     },
   })
 }

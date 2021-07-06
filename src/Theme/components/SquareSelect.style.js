@@ -16,7 +16,7 @@ export default function (props) {
     }),
     label: {
       ...Fonts.textSmall,
-      color: Colors.text,
+      color: Colors.primary,
     },
     pickerContainer: (withBorder, pickerGrow) => ({
       ...Layout.justifyContentCenter,

@@ -7,6 +7,7 @@ export default function (props) {
     container: {
       ...Layout.fill,
       ...Layout.row,
+      backgroundColor: Colors.whiteToBlack,
     },
     closeWrapper: {
       ...Layout.flex,

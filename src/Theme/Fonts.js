@@ -11,7 +11,7 @@ import { StyleSheet } from 'react-native'
 export default function ({ FontSize, Colors }) {
   return StyleSheet.create({
     textColorText: {
-      color: Colors.text,
+      color: Colors.primary,
       fontFamily: 'ZeitungPro',
     },
     textColorPrimary: {

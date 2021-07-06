@@ -6,7 +6,7 @@ export default function (props) {
 
   return StyleSheet.create({
     pickerContainer: disabled => ({
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.secondary,
       height: hp(4.4),
       opacity: disabled ? 0.5 : 1,
       justifyContent: 'center',
