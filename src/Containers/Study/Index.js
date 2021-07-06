@@ -49,7 +49,7 @@ const IndexStudyContainer = ({
 
   return (
     <View style={study.wrapper}>
-      <TouchableOpacity onPress={() => handlePress()} style={study.closeButton}>
+      <TouchableOpacity onPress={handlePress} style={study.closeButton}>
         <Text style={study.closeButtonText}>{t('actions.continue')}</Text>
       </TouchableOpacity>
       <View style={study.contentWrapper}>
