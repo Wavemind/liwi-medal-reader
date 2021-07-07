@@ -7,7 +7,7 @@ export default function (props) {
   return StyleSheet.create({
     container: {
       display: 'flex',
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToLightBlack,
       borderColor: Colors.grey,
       borderTopWidth: 1,
       ...Layout.row,
