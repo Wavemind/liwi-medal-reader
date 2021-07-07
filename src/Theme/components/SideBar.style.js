@@ -13,7 +13,7 @@ export default function (props) {
       backgroundColor:
         status === 'current' && !thinLines
           ? Colors.primary
-          : Colors.whiteToBlack,
+          : Colors.whiteToSecondary,
       borderColor:
         status === 'notDone'
           ? Colors.grey

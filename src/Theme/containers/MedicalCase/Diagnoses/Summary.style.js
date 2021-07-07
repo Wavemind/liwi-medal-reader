@@ -8,7 +8,7 @@ export default function (props) {
     wrapper: {
       ...Gutters.regularHMargin,
       ...Gutters.regularTMargin,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToLightBlack,
     },
     diagnosisHeaderWrapper: {
       ...Gutters.regularHPadding,

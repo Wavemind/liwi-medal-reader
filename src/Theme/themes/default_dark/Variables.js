@@ -14,7 +14,7 @@ const Colors = {
   primary: '#ececec',
   secondary: '#121212',
   background: '#000000',
-  whiteToBlack: '#121212',
+  whiteToSecondary: '#121212',
   whiteToLightBlack: '#1f1f1f',
   mcDrawerNotDone: '#323232',
   emergency: '#d2073044',

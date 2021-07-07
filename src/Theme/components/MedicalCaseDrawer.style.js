@@ -32,7 +32,7 @@ export default function (props) {
     },
     itemWrapper: (open, status) => ({
       backgroundColor:
-        status === 'notDone' ? Colors.mcDrawerNotDone : Colors.whiteToBlack,
+        status === 'notDone' ? Colors.mcDrawerNotDone : Colors.whiteToSecondary,
       ...(open ? Gutters.regularBPadding : null),
     }),
     stage: (open, status) => ({
@@ -45,7 +45,7 @@ export default function (props) {
           ? Colors.primary
           : status === 'notDone'
           ? Colors.mcDrawerNotDone
-          : Colors.whiteToBlack,
+          : Colors.whiteToSecondary,
       borderColor: Colors.grey,
       borderTopWidth: 1,
       borderBottomWidth: open ? 1 : 0,

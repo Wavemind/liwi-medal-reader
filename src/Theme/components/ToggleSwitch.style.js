@@ -19,7 +19,7 @@ export default function (props) {
     },
     switchContainer: {
       ...Layout.justifyContentCenter,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToLightBlack,
       height: hp(4.4),
       opacity: 1,
       borderRadius: 10,

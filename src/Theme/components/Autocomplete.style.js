@@ -8,7 +8,7 @@ export default function (props) {
       ...Gutters.smallVPadding,
       ...Layout.row,
       ...Layout.fill,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToSecondary,
       borderWidth: 1,
       borderBottomWidth: resultsOpen ? 0 : 1,
       borderColor: Colors.grey,
@@ -31,7 +31,7 @@ export default function (props) {
       ...Layout.grow,
       ...Gutters.smallVPadding,
       ...Gutters.smallHPadding,
-      color: Colors.primary,
+      color: Colors.whiteToSecondary,
       textAlignVertical: 'top',
     },
     searchIcon: {
@@ -39,7 +39,7 @@ export default function (props) {
       ...Gutters.smallRMargin,
     },
     resultsDropdown: {
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToSecondary,
       position: 'relative',
       top: -1,
       borderColor: Colors.grey,
