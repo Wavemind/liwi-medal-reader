@@ -12,7 +12,7 @@ export default function (props) {
     wrapper: {
       ...Gutters.regularHMargin,
       ...Gutters.regularTMargin,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToLightBlack,
     },
     diagnosisHeaderWrapper: {
       ...Gutters.regularHPadding,
@@ -55,6 +55,11 @@ export default function (props) {
       ...Fonts.textSmall,
       ...Fonts.textBold,
       width: wp(45),
+      color: Colors.primary,
+    },
+    drugDescription: {
+      ...Fonts.textSmall,
+      color: Colors.primary,
     },
   })
 }

@@ -7,7 +7,7 @@ export default function (props) {
   return StyleSheet.create({
     container: {
       display: 'flex',
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToLightBlack,
       borderColor: Colors.grey,
       borderTopWidth: 1,
       ...Layout.row,
@@ -32,13 +32,13 @@ export default function (props) {
     errorText: {
       ...Fonts.textLeft,
       ...Fonts.textRegular,
-      color: Colors.secondary,
+      color: Colors.white,
     },
     errorNumber: {
       ...Layout.alignItemsCenter,
       ...Fonts.textRight,
       ...Fonts.textRegular,
-      color: Colors.secondary,
+      color: Colors.white,
     },
     errorNextButton: {
       width: wp(5),
@@ -59,7 +59,7 @@ export default function (props) {
     },
     emergency: {
       fontSize: FontSize.large,
-      color: Colors.secondary,
+      color: Colors.white,
       ...Layout.selfCenter,
     },
     actions: {

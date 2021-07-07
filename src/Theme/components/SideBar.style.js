@@ -11,7 +11,9 @@ export default function (props) {
       height: roundSize,
       borderRadius: roundSize / 2,
       backgroundColor:
-        status === 'current' && !thinLines ? Colors.primary : Colors.secondary,
+        status === 'current' && !thinLines
+          ? Colors.primary
+          : Colors.whiteToSecondary,
       borderColor:
         status === 'notDone'
           ? Colors.grey
@@ -45,12 +47,15 @@ export default function (props) {
       marginLeft: 4,
     }),
     barItem: status => ({
-      backgroundColor: status === 'current' ? Colors.primary : Colors.secondary,
+      backgroundColor: status === 'current' ? Colors.primary : Colors.whiteToLightBlack,
       display: 'flex',
       width: wp(9.1),
       ...Gutters.smallVPadding,
       ...Gutters.regularBPadding,
       ...Layout.center,
+      borderBottomWidth: 1,
+      borderTopWidth: 1,
+      borderColor: Colors.border,
     }),
     text: status => ({
       overflow: 'visible',

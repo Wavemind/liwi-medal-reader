@@ -11,10 +11,13 @@ export default function (props) {
       ...Gutters.regularHPadding,
       display: 'flex',
       backgroundColor: active ? Colors.primary : Colors.secondary,
+      borderBottomWidth: 2,
+      borderColor: Colors.primary,
     }),
     tabText: active => ({
+      ...Fonts.textSmall,
       ...Fonts.textUppercase,
-      ...Fonts.textBold,
+      ...(active ? Fonts.textBold : null),
       color: active ? Colors.secondary : Colors.primary,
     }),
   })

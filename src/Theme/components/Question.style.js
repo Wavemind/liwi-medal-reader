@@ -12,7 +12,7 @@ export default function (props) {
 
       if (emergency) {
         customStyle = {
-          backgroundColor: Colors.softRed,
+          backgroundColor: Colors.emergency,
         }
       }
 
@@ -40,7 +40,7 @@ export default function (props) {
     },
     text: status => {
       let customStyle = {
-        color: Colors.text,
+        color: Colors.primary,
       }
 
       if (status === 'error') {
@@ -78,7 +78,7 @@ export default function (props) {
       ...Layout.fill,
       ...Fonts.textTiny,
       ...Fonts.textSemiBold,
-      color: Colors.secondary,
+      color: Colors.white,
     },
   })
 }

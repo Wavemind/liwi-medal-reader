@@ -10,18 +10,31 @@ import { hp } from '@/Theme/Responsive'
  * Colors
  */
 export const Colors = {
-  primary: '#000000',
-  primaryLowOpacity: '#00000088',
-  secondary: '#ffffff',
+  // Colors that change in dark mode
+  primary: '#121212',
+  secondary: '#ececec',
+  background: '#f2f1ee',
+  whiteToSecondary: '#ffffff',
+  whiteToLightBlack: '#ffffff',
+  mcDrawerNotDone: '#f2f1ee',
+  emergency: '#fbdedb',
+
+  // CONSTANTS
+  black: '#121212',
+  white: '#ffffff',
+  offWhite: '#ececec',
   red: '#d20730',
-  softRed: '#fbdedb',
-  redLowOpacity: '#d2073044',
-  grey: '#6f6f6f',
-  disabled: '#d3d1cf',
   warning: '#e27900',
+  grey: '#6f6f6f',
+  darkGrey: '#323232',
+  disabled: '#d3d1cf',
   lightGrey: '#f2f1ee',
+  border: '#9f9f9f',
+  separator: '#e1e1e1',
+  info: '#686868',
+  redLowOpacity: '#d2073044',
   transparent: 'rgba(0,0,0,0)',
-  text: '#121212',
+  primaryLowOpacity: '#00000088',
 }
 
 export const NavigationColors = {

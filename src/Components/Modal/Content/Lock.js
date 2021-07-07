@@ -37,21 +37,24 @@ const Lock = () => {
   return (
     <View>
       <Text style={modal.header}>{t('components.modals.lock.title')}</Text>
-      <Text style={modal.body}>{t('components.modals.lock.content', { name: 'Jean Neige' })}</Text>
+      <Text style={modal.body}>
+        {t('components.modals.lock.content', { name: 'Jean Neige' })}
+      </Text>
 
       <View style={modal.buttonWrapper}>
         <SquareButton
           label={t('components.modals.lock.unlockButton')}
           filled
           onPress={handleForceUnlock}
-          bgColor={Colors.red}
+          bgColor={Colors.grey}
+          color={Colors.white}
           fullWidth={false}
         />
         <SquareButton
           label={t('components.modals.lock.summaryButton')}
           filled
           onPress={handleSummary}
-          bgColor={Colors.grey}
+          bgColor={Colors.primary}
           fullWidth={false}
         />
       </View>

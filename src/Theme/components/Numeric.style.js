@@ -11,7 +11,10 @@ export default function (props) {
       ...Fonts.textSmall,
       width: wp(33.3),
       borderRadius: 20,
-      backgroundColor: editable ? Colors.secondary : Colors.disabled,
+      borderColor: Colors.primary,
+      borderWidth: 0.5,
+      backgroundColor: editable ? Colors.whiteToSecondary : Colors.disabled,
+      color: editable ? Colors.primary : Colors.black,
     }),
   })
 }

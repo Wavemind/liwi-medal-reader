@@ -21,8 +21,8 @@ const ToggleSwitch = ({ label, handleToggle, value }) => {
       <Text style={toggleSwitch.label}>{label}</Text>
       <View style={toggleSwitch.switchContainer}>
         <Switch
-          trackColor={{ false: Colors.grey, true: Colors.secondary }}
-          thumbColor={value ? Colors.primary : Colors.secondary}
+          trackColor={{ false: Colors.grey, true: Colors.primary }}
+          thumbColor={Colors.red}
           onValueChange={handleToggle}
           value={value}
         />

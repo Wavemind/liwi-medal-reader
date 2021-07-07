@@ -289,8 +289,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               filled
               icon="right-arrow"
               iconAfter
-              bgColor={Colors.secondary}
-              color={Colors.primary}
+              bgColor={Colors.offWhite}
+              color={Colors.black}
               iconSize={FontSize.large}
               disabled={loading}
               onPress={revalidateStep}
@@ -309,7 +309,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             <SquareButton
               label={t('containers.medical_case.navigation.back')}
               filled
-              bgColor={Colors.secondary}
+              bgColor={Colors.whiteToLightBlack}
               color={Colors.primary}
               icon="left-arrow"
               align={Layout.alignItemsStart}
@@ -340,6 +340,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               bgColor={Colors.grey}
               icon="save-quit"
               iconSize={FontSize.large}
+              color={Colors.white}
               onPress={() =>
                 SaveMedicalCaseService({
                   stageIndex: advancement.stage,

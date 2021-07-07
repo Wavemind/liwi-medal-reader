@@ -86,7 +86,7 @@ const ConsultationListItem = ({ item }) => {
           {Object.values(allDiagnoses).map(diagnosis => (
             <Text
               key={`consultation_diagnosis_${diagnosis.id}`}
-              style={Fonts.textTiny}
+              style={consultationListItem.diagnosis}
             >
               - {renderLabel(diagnosis)}
             </Text>

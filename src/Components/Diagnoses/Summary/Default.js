@@ -16,7 +16,10 @@ import { useSelector } from 'react-redux'
 
 const Default = ({ drug, drugDose, diagnosisId }) => {
   // Theme and style elements deconstruction
-  const { Gutters, Fonts } = useTheme()
+  const {
+    Gutters,
+    Containers: { summary },
+  } = useTheme()
 
   const { t } = useTranslation()
 
@@ -34,16 +37,16 @@ const Default = ({ drug, drugDose, diagnosisId }) => {
   return (
     <View>
       <Text>{formulationLabel(drugDose)}</Text>
-      <Text style={Fonts.textSmall}>
+      <Text style={summary.drugText}>
         {t('formulations.drug.d')}: {drugInstance.duration}
       </Text>
       {drug.formulationSelected !== null && (
-        <Text style={Fonts.textSmall}>
+        <Text style={summary.drugText}>
           {t('formulations.drug.admin')}: {drugDose.administration_route_name}
         </Text>
       )}
       {drug.formulationSelected !== null && <Text>{every}</Text>}
-      <Text style={[Gutters.regularTMargin, Fonts.textSmall]}>
+      <Text style={[Gutters.regularTMargin, summary.drugText]}>
         {translate(drugDose.dispensing_description)}
       </Text>
       {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(

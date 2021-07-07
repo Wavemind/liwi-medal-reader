@@ -81,7 +81,7 @@ const CurrentConsultation = ({ navigation, consultation }) => {
           </View>
         ))}
       </View>
-      <Text style={Fonts.textTiny}>
+      <Text style={currentConsultation.date}>
         {format(consultation.createdAt, 'dd.MM.yyyy')}
       </Text>
       <Icon name="right-arrow" size={FontSize.large} />

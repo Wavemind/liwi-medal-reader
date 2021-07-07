@@ -8,7 +8,7 @@ export default function (props) {
     inputWrapper: {
       backgroundColor: Colors.secondary,
       borderWidth: 1,
-      borderColor: Colors.grey,
+      borderColor: Colors.primary,
       height: hp(6),
       borderRadius: 10,
       ...Gutters.smallVMargin,

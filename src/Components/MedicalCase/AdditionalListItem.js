@@ -22,7 +22,7 @@ const AdditionalListItem = ({ item, handlePress, selected }) => {
       <Checkbox
         nodeId={item.id}
         label={translate(item.label)}
-        onPress={handlePress}
+        onPress={() => handlePress(item)}
         defaultValue={Object.keys(selected).includes(item.id.toString())}
       />
     </View>

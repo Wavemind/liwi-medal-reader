@@ -21,6 +21,7 @@ export default function (props) {
     },
     title: {
       ...Fonts.titleSmall,
+      color: Colors.primary,
     },
     connectionStatusWrapper: {
       ...Layout.fill,

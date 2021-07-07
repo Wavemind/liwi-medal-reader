@@ -8,7 +8,7 @@ export default function (props) {
     wrapper: {
       ...Gutters.regularHMargin,
       ...Gutters.regularVMargin,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToLightBlack,
     },
     formulationsHeaderWrapper: {
       ...Gutters.regularHPadding,
@@ -32,12 +32,21 @@ export default function (props) {
     leftColumn: {
       width: wp(48),
     },
+    label: {
+      ...Fonts.textRegular,
+      ...Fonts.textBold,
+      color: Colors.primary,
+    },
+    relatedDiagnoses: {
+      ...Fonts.textSmall,
+      color: Colors.primary,
+    },
     rightColumn: {
       width: wp(30),
     },
     pickerWrapper: {
       ...Layout.justifyContentCenter,
-      backgroundColor: Colors.lightGrey,
+      backgroundColor: Colors.secondary,
       height: hp(4.4),
       borderRadius: 20,
       borderColor: Colors.grey,
@@ -51,6 +60,7 @@ export default function (props) {
       ...Fonts.textTiny,
       ...Fonts.textBold,
       ...Gutters.tinyVMargin,
+      color: Colors.primary,
     },
   })
 }

@@ -23,6 +23,7 @@ const CustomElement = ({
   const {
     Gutters,
     FontSize,
+    Colors,
     Components: { additionalSelect },
     Containers: { finalDiagnoses },
   } = useTheme()
@@ -99,6 +100,7 @@ const CustomElement = ({
               diagnosisId ? 'drugs' : 'diagnoses'
             }.custom_placeholder`,
           )}
+          placeholderTextColor={Colors.grey}
         />
         <RoundedButton
           label={t('actions.add')}

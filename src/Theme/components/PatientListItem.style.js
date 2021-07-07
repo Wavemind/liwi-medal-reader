@@ -24,6 +24,11 @@ export default function (props) {
       ...Fonts.textMedium,
       ...Fonts.textBold,
       ...Gutters.tinyBPadding,
+      color: Colors.primary,
+    },
+    date: {
+      ...Fonts.textSemiBold,
+      color: Colors.primary,
     },
     dateWrapper: {
       ...Layout.grow,
@@ -37,6 +42,7 @@ export default function (props) {
       ...Fonts.textBold,
       ...Fonts.textUppercase,
       ...Gutters.tinyBPadding,
+      color: Colors.primary,
     },
     icon: active => ({
       backgroundColor: active && Colors.primary,

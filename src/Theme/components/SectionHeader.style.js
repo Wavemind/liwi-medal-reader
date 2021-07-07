@@ -11,19 +11,19 @@ export default function (props) {
     },
     before: {
       ...Layout.selfCenter,
-      backgroundColor: Colors.text,
+      backgroundColor: Colors.primary,
       height: 2,
       width: wp(8.2),
     },
     label: {
       ...Fonts.textSectionHeader,
       ...Gutters.largeRPadding,
-      color: Colors.text,
+      color: Colors.primary,
     },
     after: {
       ...Layout.selfCenter,
       ...Layout.fill,
-      backgroundColor: Colors.text,
+      backgroundColor: Colors.primary,
       height: 2,
     },
   })

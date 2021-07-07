@@ -26,6 +26,7 @@ export default function (props) {
       ...Fonts.textCenter,
       ...Gutters.largeBMargin,
       ...Gutters.regularHPadding,
+      color: Colors.primary,
     },
     buttonWrapper: {
       ...Layout.row,

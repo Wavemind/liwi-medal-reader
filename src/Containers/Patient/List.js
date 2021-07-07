@@ -151,7 +151,7 @@ const ListPatientContainer = ({ navigation }) => {
               navigation.navigate('Filters', { source: 'patients' })
             }
           >
-            <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
+            <Icon name="filters" size={FontSize.big} color={Colors.white} />
           </TouchableOpacity>
         </View>
         <BadgeBar

@@ -7,7 +7,7 @@ export default function (props) {
     question: {
       ...Layout.fill,
       ...Fonts.textMedium,
-      color: Colors.text,
+      color: Colors.primary,
     },
     buttonsWrapper: {
       ...Layout.row,

@@ -9,12 +9,16 @@ import { TouchableOpacity } from 'react-native'
  */
 import { navigate } from '@/Navigators/Root'
 import { Icon } from '@/Components'
-import { Colors } from '@/Theme/Variables'
+import { useTheme } from '@/Theme'
 
-const QuestionInfoButton = ({ nodeId, color = Colors.primary }) => {
+const QuestionInfoButton = ({ nodeId, color }) => {
+  const { Colors } = useTheme()
+
+  const iconColor = color || Colors.info
+
   return (
     <TouchableOpacity onPress={() => navigate('QuestionInfo', { nodeId })}>
-      <Icon name="simple-info" color={color} />
+      <Icon name="simple-info" color={iconColor} />
     </TouchableOpacity>
   )
 }

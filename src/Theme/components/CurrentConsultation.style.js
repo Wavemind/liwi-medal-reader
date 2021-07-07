@@ -20,9 +20,11 @@ export default function (props) {
       ...Fonts.textBold,
       ...Fonts.textUppercase,
       ...Gutters.tinyBPadding,
+      color: Colors.primary,
     },
     subtitle: {
       ...Fonts.textTiny,
+      color: Colors.primary,
     },
     statusWrapper: {
       ...Layout.rowHCenter,
@@ -38,5 +40,9 @@ export default function (props) {
       ...Gutters.tinyHPadding,
       color: active ? Colors.secondary : Colors.grey,
     }),
+    date: {
+      ...Fonts.textTiny,
+      color: Colors.primary,
+    },
   })
 }

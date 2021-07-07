@@ -28,6 +28,7 @@ const IndexStudyContainer = ({
 
   // Theme and style elements deconstruction
   const {
+    Colors,
     Containers: { study },
   } = useTheme()
 
@@ -47,6 +48,7 @@ const IndexStudyContainer = ({
     }
   }
 
+  // TODO figure out how to style the webview with it's text and all that
   return (
     <View style={study.wrapper}>
       <TouchableOpacity onPress={handlePress} style={study.closeButton}>
@@ -54,7 +56,7 @@ const IndexStudyContainer = ({
       </TouchableOpacity>
       <View style={study.contentWrapper}>
         <View style={study.innerWrapper}>
-          <WebView source={{ html: htmlContent }} scalesPageToFit={false} />
+          <WebView source={{ html: htmlContent }} scalesPageToFit={false} style={{ backgroundColor: 'transparent' }} />
         </View>
       </View>
     </View>

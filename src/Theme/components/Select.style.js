@@ -6,11 +6,13 @@ export default function (props) {
 
   return StyleSheet.create({
     pickerContainer: disabled => ({
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToSecondary,
       height: hp(4.4),
-      borderRadius: 20,
       opacity: disabled ? 0.5 : 1,
       justifyContent: 'center',
+      borderRadius: 20,
+      borderColor: Colors.primary,
+      borderWidth: 0.5,
     }),
     picker: {
       width: wp(33.3),
