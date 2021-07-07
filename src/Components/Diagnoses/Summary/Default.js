@@ -12,8 +12,9 @@ import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 import { translate } from '@/Translations/algorithm'
 import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
+import { useSelector } from 'react-redux'
 
-const Default = ({ drug, drugDose }) => {
+const Default = ({ drug, drugDose, diagnosisId }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -22,19 +23,22 @@ const Default = ({ drug, drugDose }) => {
 
   const { t } = useTranslation()
 
+  const drugInstance = useSelector(
+    state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
+  )
   let every = ''
 
   if (drug.formulationSelected !== null) {
     every = `${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t(
       'formulations.drug.h',
-    )} ${drug.duration} ${t('formulations.drug.days')}`
+    )} ${drugInstance.duration} ${t('formulations.drug.days')}`
   }
 
   return (
     <View>
       <Text>{formulationLabel(drugDose)}</Text>
       <Text style={summary.drugText}>
-        {t('formulations.drug.d')}: {drug.duration}
+        {t('formulations.drug.d')}: {drugInstance.duration}
       </Text>
       {drug.formulationSelected !== null && (
         <Text style={summary.drugText}>

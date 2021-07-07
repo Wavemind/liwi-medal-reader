@@ -4,6 +4,7 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -15,7 +16,7 @@ import { Config } from '@/Config'
 import { breakableFraction } from '@/Utils/Formulations/BreakableFraction'
 import { useTheme } from '@/Theme'
 
-const Breakable = ({ drug, drugDose }) => {
+const Breakable = ({ drug, drugDose, diagnosisId }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -25,6 +26,10 @@ const Breakable = ({ drug, drugDose }) => {
   const { t } = useTranslation()
 
   const fractionString = breakableFraction(drugDose)
+
+  const drugInstance = useSelector(
+    state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
+  )
 
   return (
     <View>
@@ -51,7 +56,7 @@ const Breakable = ({ drug, drugDose }) => {
           </Text>
           <Text style={summary.drugText}>{`${t('formulations.drug.every')} ${
             drugDose.recurrence
-          } ${t('formulations.drug.h')} ${drug.duration} ${t(
+          } ${t('formulations.drug.h')} ${drugInstance.duration} ${t(
             'formulations.drug.days',
           )}`}</Text>
           <Text style={[Gutters.regularTMargin, summary.drugText]}>

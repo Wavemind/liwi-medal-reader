@@ -21,7 +21,7 @@ import {
 import { Config } from '@/Config'
 import { DrugDosesService } from '@/Services/MedicalCase'
 
-const Drug = ({ drug, isLast }) => {
+const Drug = ({ drug, isLast, diagnosisId }) => {
   // Theme and style elements deconstruction
   const {
     Containers: { finalDiagnoses, summary },
@@ -47,14 +47,34 @@ const Drug = ({ drug, isLast }) => {
         case Config.MEDICATION_FORMS.suspension:
         case Config.MEDICATION_FORMS.powder_for_injection:
         case Config.MEDICATION_FORMS.solution:
-          return <Liquid drug={drug} drugDose={drugDose} />
+          return (
+            <Liquid diagnosisId={diagnosisId} drug={drug} drugDose={drugDose} />
+          )
         case Config.MEDICATION_FORMS.tablet:
         case Config.MEDICATION_FORMS.dispersible_tablet:
-          return <Breakable drug={drug} drugDose={drugDose} />
+          return (
+            <Breakable
+              diagnosisId={diagnosisId}
+              drug={drug}
+              drugDose={drugDose}
+            />
+          )
         case Config.MEDICATION_FORMS.capsule:
-          return <Capsule drug={drug} drugDose={drugDose} />
+          return (
+            <Capsule
+              diagnosisId={diagnosisId}
+              drug={drug}
+              drugDose={drugDose}
+            />
+          )
         default:
-          return <Default drug={drug} drugDose={drugDose} />
+          return (
+            <Default
+              diagnosisId={diagnosisId}
+              drug={drug}
+              drugDose={drugDose}
+            />
+          )
       }
     } else {
       return (

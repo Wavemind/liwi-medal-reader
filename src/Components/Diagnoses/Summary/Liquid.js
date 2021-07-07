@@ -4,6 +4,7 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -14,7 +15,7 @@ import { translate } from '@/Translations/algorithm'
 import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
 
-const Liquid = ({ drug, drugDose }) => {
+const Liquid = ({ drug, drugDose, diagnosisId }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -25,6 +26,10 @@ const Liquid = ({ drug, drugDose }) => {
 
   const ratio = drugDose.liquid_concentration / drugDose.dose_form
 
+  const drugInstance = useSelector(
+    state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
+  )
+
   return (
     <View>
       <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
@@ -33,7 +38,7 @@ const Liquid = ({ drug, drugDose }) => {
           drugDose.unique_dose,
         )}ml ${t('formulations.medication_form.per_administration')} ${t(
           'formulations.drug.during',
-        )} ${drug.duration} ${t('formulations.drug.days')}`}</Text>
+        )} ${drugInstance.duration} ${t('formulations.drug.days')}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
       ) : (
@@ -48,7 +53,7 @@ const Liquid = ({ drug, drugDose }) => {
           </Text>
           <Text style={summary.drugText}>{`${t('formulations.drug.every')} ${
             drugDose.recurrence
-          } ${t('formulations.drug.h')} ${drug.duration} ${t(
+          } ${t('formulations.drug.h')} ${drugInstance.duration} ${t(
             'formulations.drug.days',
           )}`}</Text>
           <Text style={[Gutters.regularTMargin, summary.drugText]}>

@@ -51,7 +51,7 @@ const IndexStudyContainer = ({
   // TODO figure out how to style the webview with it's text and all that
   return (
     <View style={study.wrapper}>
-      <TouchableOpacity onPress={() => handlePress()} style={study.closeButton}>
+      <TouchableOpacity onPress={handlePress} style={study.closeButton}>
         <Text style={study.closeButtonText}>{t('actions.continue')}</Text>
       </TouchableOpacity>
       <View style={study.contentWrapper}>
