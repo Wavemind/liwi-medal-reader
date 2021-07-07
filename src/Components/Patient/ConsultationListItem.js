@@ -71,7 +71,7 @@ const ConsultationListItem = ({ item }) => {
       onPress={handlePress}
     >
       <View style={consultationListItem.container}>
-        {!item.synchronized_at && (
+        {!item.synchronizedAt && (
           <View style={[Layout.column, Gutters.regularRMargin]}>
             <Icon name="alert" size={FontSize.large} color={Colors.red} />
           </View>
@@ -93,7 +93,7 @@ const ConsultationListItem = ({ item }) => {
           ))}
         </View>
         <Text style={consultationListItem.date}>
-          {item.synchronized_at && format(item.synchronized_at, 'dd.MM.yyyy')}
+          {item.synchronizedAt && format(item.synchronizedAt, 'dd.MM.yyyy')}
         </Text>
         <Icon name="right-arrow" size={FontSize.large} />
       </View>

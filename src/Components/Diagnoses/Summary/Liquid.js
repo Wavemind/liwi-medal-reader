@@ -30,15 +30,17 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
     state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
   )
 
+  const duration = drugInstance ? drugInstance.duration : drug.duration
+
   return (
     <View>
       <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
       {drugDose.by_age ? (
-        <Text style={summary.drugText}>{`${roundSup(
-          drugDose.unique_dose,
-        )}ml ${t('formulations.medication_form.per_administration')} ${t(
-          'formulations.drug.during',
-        )} ${drugInstance.duration} ${t('formulations.drug.days')}`}</Text>
+        <Text style={summary.drugText}>{`${roundSup(drugDose.unique_dose)}ml ${t(
+          'formulations.medication_form.per_administration',
+        )} ${t('formulations.drug.during')} ${duration} ${t(
+          'formulations.drug.days',
+        )}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
       ) : (
@@ -53,7 +55,7 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
           </Text>
           <Text style={summary.drugText}>{`${t('formulations.drug.every')} ${
             drugDose.recurrence
-          } ${t('formulations.drug.h')} ${drugInstance.duration} ${t(
+          } ${t('formulations.drug.h')} ${duration} ${t(
             'formulations.drug.days',
           )}`}</Text>
           <Text style={[Gutters.regularTMargin, summary.drugText]}>

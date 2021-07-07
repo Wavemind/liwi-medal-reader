@@ -28,6 +28,8 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
     state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
   )
 
+  const duration = drugInstance ? drugInstance.duration : drug.duration
+
   return (
     <View>
       <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
@@ -38,7 +40,7 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
           'formulations.drug.every',
         )} ${drugDose.recurrence} ${t('formulations.drug.h')} ${t(
           'formulations.drug.during',
-        )} ${drugInstance.duration} ${t('formulations.drug.days')}`}</Text>
+        )} ${duration} ${t('formulations.drug.days')}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
       ) : (
@@ -52,7 +54,7 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
           </Text>
           <Text style={summary.drugText}>{`${t('formulations.drug.every')} ${
             drugDose.recurrence
-          } ${t('formulations.drug.h')} ${drugInstance.duration} ${t(
+          } ${t('formulations.drug.h')} ${duration} ${t(
             'formulations.drug.days',
           )}`}</Text>
           <Text style={[Gutters.regularTMargin, summary.drugText]}>

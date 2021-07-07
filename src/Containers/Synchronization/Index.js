@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 /**
  * The internal imports
  */
+import { GetNonSynchronizedService } from '@/Services/MedicalCase'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { Loader } from '@/Components'
@@ -25,17 +26,17 @@ const IndexSynchronizationContainer = () => {
 
   const syncError = useSelector(state => state.synchronization.error)
   const syncLoading = useSelector(state => state.synchronization.loading)
-  const medicalCases = useSelector(
-    state => state.databaseMedicalCase.getAll.item.data,
-  )
+
+  // Local state definition
+  const [unsynced, setUnsynced] = useState([])
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
-  // Local state definition
-  const [unSynced] = useState(
-    medicalCases.filter(medicalCase => medicalCase.synchronizedAt === 0),
-  )
+  useEffect(async () => {
+    const result = await GetNonSynchronizedService()
+    setUnsynced(result)
+  }, [])
 
   useEffect(() => {
     fadeIn(fadeAnim)
@@ -49,7 +50,7 @@ const IndexSynchronizationContainer = () => {
         <Text style={synchronization.notSynchronized}>
           {t('containers.synchronization.not_synchronized')}
         </Text>
-        <Text style={synchronization.counter}>{unSynced.length}</Text>
+        <Text style={synchronization.counter}>{unsynced.length}</Text>
         {syncError && (
           <Text style={auth.errorMessage}>{syncError.message}</Text>
         )}

@@ -10,7 +10,7 @@ Below you'll find information about performing common tasks.
 
 ## Table of Contents
 
-- [MedAl-reader](#medal-reader)
+- [MedAl-reader ![CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)](#medal-reader-)
   - [Setup](#setup)
   - [Table of Contents](#table-of-contents)
   - [Available Scripts](#available-scripts)
@@ -23,9 +23,10 @@ Below you'll find information about performing common tasks.
   - [Data Structure](#data-structure)
     - [Medical Case](#medical-case)
   - [Icons available](#icons-available)
+  - [Date](#date)
     - [ColoredIcon](#coloredicon)
     - [Icon](#icon)
-  - [Date](#date)
+    - [API](#api)
   - [Writing and Running Tests](#writing-and-running-tests)
   - [Publishing](#publishing)
 
@@ -74,6 +75,7 @@ Please refer to [TheCodingMachine React Native boilerplate](https://github.com/t
 | synchronized_at | `datetime`                   | Date & Time when the patient was sent to Medal-Data or Medal-hub             |
 | updated_at      | `string (UUID)`              | Date & Time when the patient was updated for the last time                   |
 | version_id      | `integer`                    | Medal-Creator's id of the version used                                       |
+| json_version    | `integer`                    | Medal-Creator's incremental of the version used                              |
 
 ## Icons available
 
