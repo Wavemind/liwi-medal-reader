@@ -1,20 +1,30 @@
 import { StyleSheet } from 'react-native'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Colors, Fonts } = props
+  const { Colors, Fonts, Gutters, Layout } = props
 
   return StyleSheet.create({
+    wrapper: {
+      ...Layout.center,
+    },
+    iconStyle: {
+      ...Layout.fill,
+      ...Layout.rowCenter,
+    },
     rightText: {
       ...Fonts.textSmall,
       ...Fonts.textBold,
+      color: Colors.primary,
     },
     leftText: toggleValue => ({
       ...Fonts.textSmall,
-      color: toggleValue ? Colors.secondary : Colors.primary,
       ...Fonts.textBold,
+      color: toggleValue ? Colors.secondary : Colors.primary,
     }),
     trackBarStyle: {
-      borderColor: Colors.grey,
+      borderWidth: 1,
+      borderColor: Colors.primary,
     },
   })
 }

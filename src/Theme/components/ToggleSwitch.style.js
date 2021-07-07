@@ -15,11 +15,11 @@ export default function (props) {
     },
     label: {
       ...Fonts.textSmall,
-      color: Colors.text,
+      color: Colors.primary,
     },
     switchContainer: {
       ...Layout.justifyContentCenter,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToLightBlack,
       height: hp(4.4),
       opacity: 1,
       borderRadius: 10,

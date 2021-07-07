@@ -124,7 +124,7 @@ export default function () {
    * @param patientId
    * @returns {Promise<void>}
    */
-  const updatePatientValues = async (patientValues, patientId) => {
+  const updatePatientValues = async (patientValues, patientId) =>   {
     const patientValuesCollection = database.get('patient_values')
     await database.action(async () => {
       const existingPatientValues = await patientValuesCollection

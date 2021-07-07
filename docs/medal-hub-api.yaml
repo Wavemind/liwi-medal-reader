@@ -5,7 +5,7 @@ info:
 servers:
   - url: https://medal-hub/v1
 paths:
-  /patients:
+  1 - /patients:
     get:
       summary: 'Retrieves all the patients'
       parameters:
@@ -84,7 +84,7 @@ paths:
       responses:
         '200':
           description: OK
-  /patients/find_by:
+  2 - /patients/find_by:
     get:
       summary: 'Retrieve one patient'
       parameters:
@@ -107,8 +107,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Patient'
-  /patients/consent_files:
+                $ref: '#/components/schemas/PatientWithMedicalCases'
+  3 - /patients/consent_files:
     get:
       summary: Fetch patient with consent file
       responses:
@@ -118,7 +118,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArrayOfPatients'
-  /patients/synchronize:
+  2 - /patients/synchronize:
     post:
       summary: Synchronize patients and medical cases with local data
       requestBody:
@@ -132,7 +132,7 @@ paths:
       responses:
         '200':
           description: OK
-  /patients/{patient_id}:
+  1 - /patients/{patient_id}:
     patch:
       summary: Update one or many fields in a patient
       parameters:
@@ -170,7 +170,7 @@ paths:
       responses:
         '200':
           description: OK
-  /patients/{patient_id}/medical_cases:
+  1 - /patients/{patient_id}/medical_cases:
     post:
       summary: Inserts a new medical case into the DB
       parameters:
@@ -191,7 +191,7 @@ paths:
       responses:
         '200':
           description: OK
-  /patients/{patient_id}/patient_values:
+  1 - /patients/{patient_id}/patient_values:
     post:
       summary: Inserts the patient values to the DB.
       parameters:
@@ -222,7 +222,7 @@ paths:
       responses:
         '200':
           description: OK
-  /medical_cases:
+  3 - /medical_cases:
     get:
       summary: 'Retrieves all the medical cases'
       parameters:
@@ -246,7 +246,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArrayOfMedicalCases'
-  /medical_cases/{medical_case_id}:
+  1 - /medical_cases/{medical_case_id}:
     patch:
       summary: Update one or many fields in a medical case
       parameters:
@@ -284,7 +284,7 @@ paths:
       responses:
         '200':
           description: OK
-  /medical_cases/{medical_case_id}/unlock:
+  3 - /medical_cases/{medical_case_id}/unlock:
     post:
       summary: Unlock a medical case when device is in client server architecture
       parameters:
@@ -297,7 +297,7 @@ paths:
       responses:
         '200':
           description: OK
-  /medical_cases/{medical_case_id}/lock:
+  3 - /medical_cases/{medical_case_id}/lock:
     post:
       summary: lock a medical case when device is in client server architecture
       parameters:
@@ -307,10 +307,18 @@ paths:
           schema:
             type: string
             example: '7803f0c8-ddc2-4cfa-9a29-a0ee71777b94'
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                patient_values:
+                  $ref: '#/components/schemas/LockValues'
       responses:
         '200':
           description: OK
-  /medical_cases/find_by:
+  2 - /medical_cases/find_by:
     get:
       summary: 'Retrieve one medical case'
       parameters:
@@ -334,7 +342,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MedicalCase'
-  /medical_cases/{medical_case_id}/activities:
+  3 - /medical_cases/{medical_case_id}/activities:
     post:
       summary: Inserts activities for an existing medical case
       parameters:
@@ -406,6 +414,15 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/ArrayOfPatientWithMedicalCases'
+    LockValues:
+      type: object
+      properties:
+        mac_address:
+          type: string
+          example: '00:1B:44:11:3A:B7'
+        clinician:
+          type: string
+          example: 'Juan Nieve'
     Patient:
       type: object
       properties:
@@ -530,6 +547,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MedicalCase'
+        patient_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/PatientValue'
     MedicalCase:
       type: object
       properties:
@@ -586,6 +607,12 @@ components:
         patient_id:
           type: string
           example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
+        mac_address:
+          type: string
+          example: '00:1B:44:11:3A:B7'
+        clinician:
+          type: string
+          example: 'Juan Nieve'
     MedicalCaseWithPatient:
       type: object
       properties:
@@ -636,6 +663,12 @@ components:
         closedAt:
           type: integer
           example: 1625225668
+        mac_address:
+          type: string
+          example: '00:1B:44:11:3A:B7'
+        clinician:
+          type: string
+          example: 'Juan Nieve'
         version_id:
           type: integer
           example: 2

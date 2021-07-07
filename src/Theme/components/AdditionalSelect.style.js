@@ -4,7 +4,7 @@ import { hp, wp } from '@/Theme/Responsive'
 export default function (props) {
   const { Colors, Fonts, Gutters, Layout } = props
 
-  const labelWidth = wp(50)
+  const labelWidth = wp(42)
   const inputWidth = wp(18)
 
   return StyleSheet.create({
@@ -22,6 +22,9 @@ export default function (props) {
       color: Colors.grey,
       width: inputWidth,
     },
+    durationWrapper: {
+      height: hp(5),
+    },
     durationInput: {
       ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,
@@ -32,7 +35,8 @@ export default function (props) {
       borderRadius: 30,
       borderColor: Colors.primary,
       borderWidth: 1,
-      backgroundColor: Colors.lightGrey,
+      backgroundColor: Colors.white,
+      color: Colors.black,
     },
     itemLabelWrapper: {
       ...Layout.row,
@@ -42,6 +46,8 @@ export default function (props) {
     itemLabel: {
       ...Fonts.textSmall,
       ...Gutters.smallRMargin,
+      color: Colors.primary,
+      width: wp(40),
     },
     addAdditionalButton: {
       ...Gutters.smallTMargin,
@@ -57,6 +63,7 @@ export default function (props) {
     addAdditionalButtonText: {
       ...Layout.grow,
       ...Fonts.textSmall,
+      color: Colors.primary,
     },
     addAdditionalButtonCountWrapper: {
       ...Layout.rowVCenter,

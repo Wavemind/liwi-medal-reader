@@ -8,6 +8,20 @@ export default function (props) {
       ...Fonts.textUppercase,
       ...Fonts.titleLarge,
       ...Fonts.textCenter,
+      color: Colors.primary,
+    },
+    description: {
+      ...Fonts.textRegular,
+      color: Colors.primary,
+    },
+    itemLabel: {
+      ...Fonts.textSmall,
+      color: Colors.primary,
+    },
+    item: {
+      ...Fonts.textSmall,
+      ...Fonts.textBold,
+      color: Colors.primary,
     },
     errorMessage: {
       ...Fonts.textRegular,

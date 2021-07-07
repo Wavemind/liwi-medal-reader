@@ -38,8 +38,8 @@ const ToggleSwitchDarkMode = ({ label }) => {
       <Text style={auth.switchLabel}>{label}</Text>
       <View style={auth.switchInnerWrapper}>
         <Switch
-          trackColor={{ false: Colors.grey, true: Colors.secondary }}
-          thumbColor={isEnabled ? Colors.primary : Colors.secondary}
+          trackColor={{ false: Colors.grey, true: Colors.primary }}
+          thumbColor={Colors.red}
           onValueChange={() => changeTheme({ theme: 'default' })}
           value={isEnabled}
         />

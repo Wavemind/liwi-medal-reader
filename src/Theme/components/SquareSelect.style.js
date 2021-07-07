@@ -16,11 +16,11 @@ export default function (props) {
     }),
     label: {
       ...Fonts.textSmall,
-      color: Colors.text,
+      color: Colors.primary,
     },
     pickerContainer: (withBorder, pickerGrow) => ({
       ...Layout.justifyContentCenter,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.white,
       opacity: 1,
       borderColor: Colors.grey,
       borderRadius: 10,
@@ -30,7 +30,7 @@ export default function (props) {
     }),
     picker: {
       minWidth: wp(28.3),
-      color: Colors.primary,
+      color: Colors.black,
     },
   })
 }

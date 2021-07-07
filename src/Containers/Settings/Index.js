@@ -111,7 +111,7 @@ const IndexSettingsContainer = () => {
 
   return (
     <Animated.ScrollView style={[global.animation(fadeAnim)]}>
-      <Text style={[settings.title]}>
+      <Text style={settings.title}>
         {t('containers.settings.general.title')}
       </Text>
       <View style={settings.item}>

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { hp, wp } from '@/Theme/Responsive'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
@@ -24,6 +24,12 @@ export default function (props) {
       ...Fonts.textMedium,
       ...Fonts.textBold,
       ...Gutters.tinyBPadding,
+      color: Colors.primary,
+    },
+    birthDate: {
+      ...Fonts.textTiny,
+      ...Gutters.tinyBPadding,
+      color: Colors.primary,
     },
     dateWrapper: {
       flex: 0.5,
@@ -36,6 +42,7 @@ export default function (props) {
       ...Fonts.textBold,
       ...Fonts.textUppercase,
       ...Gutters.tinyBPadding,
+      color: Colors.primary,
     },
     icon: active => ({
       backgroundColor: active && Colors.primary,

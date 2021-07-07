@@ -25,11 +25,13 @@ export default function (props) {
       ...Fonts.textSmall,
       ...Gutters.smallHMargin,
       maxWidth: wp(50),
+      color: Colors.primary,
     },
     value: {
       ...Fonts.textRight,
       ...Fonts.textSmall,
       ...Fonts.textBold,
+      color: Colors.primary,
     },
   })
 }

@@ -43,7 +43,7 @@ const SelectedItem = ({
           )}
       </View>
       {withDuration && (
-        <View>
+        <View style={additionalSelect.durationWrapper}>
           <TextInput
             style={additionalSelect.durationInput}
             onChangeText={duration =>

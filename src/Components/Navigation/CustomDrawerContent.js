@@ -20,6 +20,7 @@ const CustomDrawerContent = ({ navigation }) => {
   const {
     Components: { customDrawerContent },
     Layout,
+    Colors,
   } = useTheme()
 
   const { t } = useTranslation()

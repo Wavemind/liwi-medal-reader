@@ -20,19 +20,26 @@ export default function (props) {
       ...Fonts.textRegular,
       ...Fonts.textBold,
       ...Gutters.regularRMargin,
+      color: Colors.primary,
     },
     count: {
       ...Fonts.textRegular,
       ...Fonts.textBold,
       ...Gutters.largeRMargin,
+      color: Colors.primary,
     },
     diagnosesWrapper: {
       ...Layout.grow,
       ...Layout.column,
     },
+    diagnosis: {
+      ...Fonts.textTiny,
+      color: Colors.primary,
+    },
     date: {
       ...Fonts.textTiny,
       ...Gutters.regularRMargin,
+      color: Colors.primary
     },
   })
 }

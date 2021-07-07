@@ -127,6 +127,7 @@ const Autocomplete = ({ questionId }) => {
             onEndEditing={onEndEditing}
             value={searchTerm}
             placeholder={t('application.search')}
+            placeholderTextColor={Colors.grey}
           />
         </View>
         <View style={autocomplete.searchIcon}>

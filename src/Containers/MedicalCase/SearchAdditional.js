@@ -126,10 +126,10 @@ const SearchAdditionalMedicalCaseContainer = ({
 
   /**
    * Toggles the additional diagnostic selection in the store
-   * @param checkboxValue
-   * @param nodeId
+   * @param item
    */
-  const toggleAdditionalItems = (checkboxValue, nodeId) => {
+  const toggleAdditionalItems = item => {
+    const nodeId = item.id
     const tempAdditionalItems = { ...selected }
     const index = Object.keys(tempAdditionalItems).indexOf(nodeId.toString())
     const currentNode = nodes[nodeId]
@@ -216,7 +216,7 @@ const SearchAdditionalMedicalCaseContainer = ({
             style={searchAdditional.closeButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="close" color={Colors.secondary} />
+            <Icon name="close" color={Colors.white} />
           </TouchableOpacity>
         </View>
         <Autosuggest
@@ -258,7 +258,7 @@ const SearchAdditionalMedicalCaseContainer = ({
             <View style={searchAdditional.clearFiltersButtonWrapper}>
               <Icon
                 name="refresh"
-                color="red"
+                color={Colors.red}
                 size={FontSize.regular}
                 style={Gutters.regularRMargin}
               />

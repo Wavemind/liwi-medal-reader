@@ -63,7 +63,9 @@ const ListItem = ({ item }) => {
           <Text style={medicalCaseListItem.title}>
             {`${item.patient.first_name} ${item.patient.last_name}`}
           </Text>
-          <Text>{format(item.patient.birth_date, 'dd.MM.yyyy')}</Text>
+          <Text style={medicalCaseListItem.birthDate}>
+            {format(item.patient.birth_date, 'dd.MM.yyyy')}
+          </Text>
         </View>
 
         <View style={medicalCaseListItem.statusWrapper}>
@@ -81,7 +83,6 @@ const ListItem = ({ item }) => {
               <Icon
                 key={`${item.id}-icon-${stage.icon}`}
                 name={stage.icon}
-                size={FontSize.large}
                 style={medicalCaseListItem.icon(
                   item.closedAt > 0 ? true : index === item.advancement.stage,
                 )}

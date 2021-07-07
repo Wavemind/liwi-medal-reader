@@ -14,7 +14,7 @@ export default function (props) {
       ...Fonts.textTiny,
       fontFamily: status === 'current' ? 'ZeitungPro-Bold' : 'ZeitungPro',
       borderBottomColor:
-        status === 'current' ? Colors.primary : Colors.secondary,
+        status === 'current' ? Colors.primary : Colors.whiteToLightBlack,
       borderBottomWidth: 5,
       ...Layout.fill,
       ...Fonts.textCenter,
@@ -28,7 +28,7 @@ export default function (props) {
     },
     wrapper: {
       minWidth: '100%',
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.whiteToLightBlack,
       ...Layout.row,
       ...Layout.center,
     },

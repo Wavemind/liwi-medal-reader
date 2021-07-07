@@ -18,6 +18,7 @@ const FormulationsMedicalCaseContainer = () => {
   // Theme and style elements deconstruction
   const {
     Gutters,
+    Colors,
     Containers: { formulations },
   } = useTheme()
 

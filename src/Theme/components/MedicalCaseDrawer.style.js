@@ -7,32 +7,32 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Layout.fill,
-      backgroundColor: Colors.lightGrey,
+      backgroundColor: Colors.mcDrawerNotDone,
     },
     header: {
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.darkGrey,
       flexBasis: hp(13),
       ...Layout.center,
     },
     textHeader: {
-      color: Colors.secondary,
+      color: Colors.white,
       ...Fonts.textRegular,
       ...Fonts.textUppercase,
     },
     textPatient: {
-      color: Colors.secondary,
+      color: Colors.white,
       ...Fonts.textRegular,
       ...Fonts.textBold,
     },
     textMonth: {
-      color: Colors.secondary,
+      color: Colors.white,
       ...Layout.smallLPadding,
       ...Fonts.textSmall,
       ...Gutters.regularHPadding,
     },
     itemWrapper: (open, status) => ({
       backgroundColor:
-        status === 'notDone' ? Colors.lightGrey : Colors.secondary,
+        status === 'notDone' ? Colors.mcDrawerNotDone : Colors.whiteToSecondary,
       ...(open ? Gutters.regularBPadding : null),
     }),
     stage: (open, status) => ({
@@ -44,8 +44,8 @@ export default function (props) {
         status === 'current'
           ? Colors.primary
           : status === 'notDone'
-          ? Colors.lightGrey
-          : Colors.secondary,
+          ? Colors.mcDrawerNotDone
+          : Colors.whiteToSecondary,
       borderColor: Colors.grey,
       borderTopWidth: 1,
       borderBottomWidth: open ? 1 : 0,

@@ -45,6 +45,7 @@ const Emergency = () => {
           filled
           onPress={handleOnPress}
           bgColor={Colors.red}
+          color={Colors.white}
           fullWidth={false}
         />
       </View>

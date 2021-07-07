@@ -61,10 +61,12 @@ const ListItem = ({ item }) => {
           <Text style={patientListItem.title}>
             {`${item.first_name} ${item.last_name}`}
           </Text>
-          <Text>{format(item.birth_date, 'dd.MM.yyyy')}</Text>
+          <Text style={patientListItem.date}>
+            {format(item.birth_date, 'dd.MM.yyyy')}
+          </Text>
         </View>
         <View style={patientListItem.dateWrapper}>
-          <Text style={Fonts.textSemiBold}>
+          <Text style={patientListItem.date}>
             {format(item.updatedAt, 'dd.MM.yyyy')}
           </Text>
         </View>

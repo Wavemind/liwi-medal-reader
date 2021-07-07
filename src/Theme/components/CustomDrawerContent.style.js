@@ -7,6 +7,7 @@ export default function (props) {
     container: {
       ...Layout.fill,
       ...Layout.row,
+      backgroundColor: Colors.whiteToSecondary,
     },
     closeWrapper: {
       ...Layout.flex,
@@ -15,7 +16,7 @@ export default function (props) {
     },
     separator: {
       height: 1,
-      backgroundColor: Colors.lightGrey,
+      backgroundColor: Colors.separator,
     },
     wrapper: {
       ...Layout.fill,

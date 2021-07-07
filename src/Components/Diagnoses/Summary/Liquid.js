@@ -17,7 +17,10 @@ import { useTheme } from '@/Theme'
 
 const Liquid = ({ drug, drugDose, diagnosisId }) => {
   // Theme and style elements deconstruction
-  const { Gutters, Fonts } = useTheme()
+  const {
+    Gutters,
+    Containers: { summary },
+  } = useTheme()
 
   const { t } = useTranslation()
 
@@ -31,18 +34,18 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
 
   return (
     <View>
-      <Text style={Fonts.textSmall}>{formulationLabel(drugDose)}</Text>
+      <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
       {drugDose.by_age ? (
-        <Text style={Fonts.textSmall}>{`${roundSup(drugDose.unique_dose)}ml ${t(
+        <Text style={summary.drugText}>{`${roundSup(drugDose.unique_dose)}ml ${t(
           'formulations.medication_form.per_administration',
         )} ${t('formulations.drug.during')} ${duration} ${t(
           'formulations.drug.days',
         )}`}</Text>
       ) : drugDose.doseResult === null ? (
-        <Text style={Fonts.textSmall}>{drugDose.no_possibility}</Text>
+        <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
       ) : (
         <View>
-          <Text style={Fonts.textSmall}>
+          <Text style={summary.drugText}>
             {t('formulations.drug.give')} {ratio * drugDose.doseResult}
             {t('formulations.drug.mg')}: {drugDose.doseResult}
             {t('formulations.drug.ml')} {t('formulations.drug.of')}{' '}
@@ -50,12 +53,12 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
             {t('formulations.drug.mg')}/{drugDose.dose_form}
             {t('formulations.drug.ml')}
           </Text>
-          <Text style={Fonts.textSmall}>{`${t('formulations.drug.every')} ${
+          <Text style={summary.drugText}>{`${t('formulations.drug.every')} ${
             drugDose.recurrence
           } ${t('formulations.drug.h')} ${duration} ${t(
             'formulations.drug.days',
           )}`}</Text>
-          <Text style={[Gutters.regularTMargin, Fonts.textSmall]}>
+          <Text style={[Gutters.regularTMargin, summary.drugText]}>
             {translate(drugDose.dispensing_description)}
           </Text>
         </View>
@@ -63,7 +66,7 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
       {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
         drugDose.administration_route_category,
       ) && (
-        <Text style={Fonts.textSmall} key={`text_${drug.id}`}>
+        <Text style={summary.drugText} key={`text_${drug.id}`}>
           {translate(drugDose.injection_instructions)}
         </Text>
       )}
