@@ -47,7 +47,7 @@ export default function (props) {
       marginLeft: 4,
     }),
     barItem: status => ({
-      backgroundColor: status === 'current' ? Colors.primary : Colors.secondary,
+      backgroundColor: status === 'current' ? Colors.primary : Colors.whiteToLightBlack,
       display: 'flex',
       width: wp(9.1),
       ...Gutters.smallVPadding,

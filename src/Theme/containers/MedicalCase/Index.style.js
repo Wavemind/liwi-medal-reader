@@ -10,7 +10,10 @@ export default function (props) {
       flex: 1,
       flexDirection: 'row',
     },
-    medicalCaseWrapper: { flex: 1, display: 'flex' },
+    medicalCaseWrapper: {
+      flex: 1,
+      display: 'flex',
+    },
     titleWrapper: {
       height: hp(6),
       elevation: 5,

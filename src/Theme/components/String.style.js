@@ -13,8 +13,8 @@ export default function (props) {
       borderRadius: 20,
       borderColor: Colors.primary,
       borderWidth: 0.5,
-      backgroundColor: editable ? Colors.white : Colors.disabled,
-      color: Colors.black,
+      backgroundColor: editable ? Colors.secondary : Colors.disabled,
+      color: editable ? Colors.primary : Colors.black,
     }),
   })
 }

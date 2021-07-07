@@ -11,11 +11,15 @@ import { useTheme } from '@/Theme'
 
 const EmptyList = ({ text }) => {
   // Theme and style elements deconstruction
-  const { Layout, Gutters, Fonts } = useTheme()
+  const {
+    Layout,
+    Gutters,
+    Containers: { finalDiagnoses },
+  } = useTheme()
 
   return (
     <View style={[Layout.alignItemsCenter, Gutters.regularTMargin]}>
-      <Text style={Fonts.textMedium}>{text}</Text>
+      <Text style={finalDiagnoses.emptyQuestions}>{text}</Text>
     </View>
   )
 }

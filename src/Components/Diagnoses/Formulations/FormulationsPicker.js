@@ -30,7 +30,7 @@ const FormulationsPicker = ({ drug, updateFormulations }) => {
       selectedValue={drug.selectedFormulationId}
       prompt="Formulations"
       onValueChange={value => updateFormulations(drug.id, value)}
-      dropdownIconColor={Colors.black}
+      dropdownIconColor={Colors.primary}
     >
       <Picker.Item
         key="select-placeholder"

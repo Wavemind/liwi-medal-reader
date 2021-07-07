@@ -340,6 +340,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               bgColor={Colors.grey}
               icon="save-quit"
               iconSize={FontSize.large}
+              color={Colors.white}
               onPress={() =>
                 SaveMedicalCaseService({
                   stageIndex: advancement.stage,

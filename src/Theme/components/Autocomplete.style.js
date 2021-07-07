@@ -8,7 +8,7 @@ export default function (props) {
       ...Gutters.smallVPadding,
       ...Layout.row,
       ...Layout.fill,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.secondary,
       borderWidth: 1,
       borderBottomWidth: resultsOpen ? 0 : 1,
       borderColor: Colors.grey,
@@ -23,7 +23,7 @@ export default function (props) {
     inputText: {
       ...Fonts.textSmall,
       ...Layout.grow,
-      color: Colors.black,
+      color: Colors.primary,
       padding: 0,
     },
     textArea: {
@@ -39,7 +39,7 @@ export default function (props) {
       ...Gutters.smallRMargin,
     },
     resultsDropdown: {
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.secondary,
       position: 'relative',
       top: -1,
       borderColor: Colors.grey,
@@ -54,7 +54,7 @@ export default function (props) {
     }),
     dropdownItemText: {
       ...Fonts.textSmall,
-      color: Colors.black,
+      color: Colors.primary,
     },
   })
 }

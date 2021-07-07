@@ -46,7 +46,7 @@ export default function (props) {
     },
     pickerWrapper: {
       ...Layout.justifyContentCenter,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.secondary,
       height: hp(4.4),
       borderRadius: 20,
       borderColor: Colors.grey,
@@ -54,7 +54,7 @@ export default function (props) {
     },
     picker: {
       width: wp(29),
-      color: Colors.black,
+      color: Colors.primary,
     },
     selectedFormulationText: {
       ...Fonts.textTiny,

@@ -15,6 +15,7 @@ export const Colors = {
   secondary: '#ececec',
   background: '#f2f1ee',
   whiteToBlack: '#ffffff',
+  whiteToLightBlack: '#ffffff',
   mcDrawerNotDone: '#f2f1ee',
   emergency: '#fbdedb',
 

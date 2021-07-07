@@ -216,7 +216,7 @@ const SearchAdditionalMedicalCaseContainer = ({
             style={searchAdditional.closeButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="close" color={Colors.secondary} />
+            <Icon name="close" color={Colors.white} />
           </TouchableOpacity>
         </View>
         <Autosuggest

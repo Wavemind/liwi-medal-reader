@@ -45,5 +45,9 @@ export default function (props) {
       ...Fonts.textItalic,
       color: Colors.primary,
     },
+    emptyQuestions: {
+      ...Fonts.textMedium,
+      color: Colors.primary,
+    },
   })
 }
