@@ -298,6 +298,7 @@ export default function () {
           nodes: medicalCaseData.nodes,
         })
         record.synchronized_at = medicalCaseData.synchronized_at
+        record.json_version = medicalCaseData.json_version
         record.stage = medicalCaseData.advancement.stage
         record.step = medicalCaseData.advancement.step
         record.closedAt = null
@@ -370,6 +371,7 @@ export default function () {
           nodes: medicalCaseData.nodes,
         })
         nestedRecord.synchronized_at = medicalCaseData.synchronized_at
+        nestedRecord.json_version = medicalCaseData.json_version
         nestedRecord.stage = medicalCaseData.advancement.stage
         nestedRecord.step = medicalCaseData.advancement.step
         nestedRecord.closedAt = null
@@ -478,6 +480,7 @@ export default function () {
       nodes: parsedJson.nodes,
       json: watermelonDBMedicalCase.json,
       synchronized_at: watermelonDBMedicalCase.synchronizedAt,
+      json_version: watermelonDBMedicalCase.json_version,
       advancement: {
         stage: watermelonDBMedicalCase.stage,
         step: watermelonDBMedicalCase.step,

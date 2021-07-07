@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export default appSchema({
-  version: 11,
+  version: 12,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -16,6 +16,7 @@ export default appSchema({
         { name: 'patient_id', type: 'string' },
         { name: 'fail_safe', type: 'boolean' },
         { name: 'version_id', type: 'number' },
+        { name: 'json_version', type: 'number' },
       ],
     }),
     tableSchema({
