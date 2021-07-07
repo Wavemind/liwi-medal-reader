@@ -297,11 +297,11 @@ export default function () {
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
         })
-        record.synchronized_at = medicalCaseData.synchronized_at
         record.json_version = medicalCaseData.json_version
         record.stage = medicalCaseData.advancement.stage
         record.step = medicalCaseData.advancement.step
-        record.closedAt = null
+        record.synchronizedAt = medicalCaseData.synchronizedAt
+        record.closedAt = medicalCaseData.closedAt
         record.fail_safe = false
         record.version_id = medicalCaseData.version_id
         record.patient.set(patient)
@@ -337,6 +337,11 @@ export default function () {
     return _initClasses(result, 'Patient')
   }
 
+  /**
+   * Insert patient and add a medical case
+   * @param {object} patientData - patient info to save
+   * @params {objet} medicalCaseData - medical case info to save
+   */
   const insertPatient = async (patientData, medicalCaseData) => {
     const collection = database.get('patients')
     let patient = null
@@ -370,11 +375,11 @@ export default function () {
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
         })
-        nestedRecord.synchronized_at = medicalCaseData.synchronized_at
         nestedRecord.json_version = medicalCaseData.json_version
         nestedRecord.stage = medicalCaseData.advancement.stage
         nestedRecord.step = medicalCaseData.advancement.step
-        nestedRecord.closedAt = null
+        nestedRecord.synchronizedAt = medicalCaseData.synchronizedAt
+        nestedRecord.closedAt = medicalCaseData.closedAt
         nestedRecord.fail_safe = false
         nestedRecord.version_id = medicalCaseData.version_id
         nestedRecord.patient.set(patient)
@@ -442,10 +447,8 @@ export default function () {
 
   const _buildMedicalCaseLight = async watermelonDBMedicalCase => {
     const patient = await watermelonDBMedicalCase.patient.fetch()
-
     return {
       id: watermelonDBMedicalCase.id,
-      synchronizedAt: watermelonDBMedicalCase.synchronizedAt?.getTime(),
       advancement: {
         stage: watermelonDBMedicalCase.stage,
         step: watermelonDBMedicalCase.step,
@@ -454,6 +457,7 @@ export default function () {
       fail_safe: watermelonDBMedicalCase.fail_safe,
       createdAt: watermelonDBMedicalCase.createdAt.getTime(),
       updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
+      synchronizedAt: watermelonDBMedicalCase.synchronizedAt.getTime(),
       closedAt: watermelonDBMedicalCase.closedAt.getTime(),
       version_id: watermelonDBMedicalCase.version_id,
       patient: {
@@ -479,13 +483,13 @@ export default function () {
       diagnosis: parsedJson.diagnosis,
       nodes: parsedJson.nodes,
       json: watermelonDBMedicalCase.json,
-      synchronized_at: watermelonDBMedicalCase.synchronizedAt,
       json_version: watermelonDBMedicalCase.json_version,
       advancement: {
         stage: watermelonDBMedicalCase.stage,
         step: watermelonDBMedicalCase.step,
       },
       fail_safe: watermelonDBMedicalCase.fail_safe,
+      synchronizedAt: watermelonDBMedicalCase.synchronizedAt.getTime(),
       createdAt: watermelonDBMedicalCase.createdAt.getTime(),
       updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
       closedAt: watermelonDBMedicalCase.closedAt.getTime(),

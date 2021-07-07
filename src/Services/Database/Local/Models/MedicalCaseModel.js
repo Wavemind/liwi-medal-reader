@@ -29,10 +29,10 @@ export default class MedicalCase extends Model {
   @json('json', sanitizeJson) json
   @field('stage') stage
   @field('step') step
-  @field('synchronized_at') synchronizedAt
   @field('json_version') json_version
   @field('patient_id') patient_id
   @field('fail_safe') fail_safe
+  @date('synchronized_at') synchronizedAt
   @date('closed_at') closedAt
   @date('created_at') createdAt
   @date('updated_at') updatedAt

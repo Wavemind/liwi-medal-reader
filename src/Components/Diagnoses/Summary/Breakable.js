@@ -53,9 +53,9 @@ const Breakable = ({ drug, drugDose, diagnosisId }) => {
           </Text>
           <Text style={Fonts.textSmall}>{`${t('formulations.drug.every')} ${
             drugDose.recurrence
-          } ${t('formulations.drug.h')} ${drugInstance.duration} ${t(
-            'formulations.drug.days',
-          )}`}</Text>
+          } ${t('formulations.drug.h')} ${
+            drugInstance ? drugInstance.duration : drug.duration
+          } ${t('formulations.drug.days')}`}</Text>
           <Text style={[Gutters.regularTMargin, Fonts.textSmall]}>
             {translate(drugDose.dispensing_description)}
           </Text>

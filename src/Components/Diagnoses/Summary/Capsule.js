@@ -35,7 +35,9 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
           'formulations.drug.every',
         )} ${drugDose.recurrence} ${t('formulations.drug.h')} ${t(
           'formulations.drug.during',
-        )} ${drugInstance.duration} ${t('formulations.drug.days')}`}</Text>
+        )} ${drugInstance ? drugInstance.duration : drug.duration} ${t(
+          'formulations.drug.days',
+        )}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text style={Fonts.textSmall}>{drugDose.no_possibility}</Text>
       ) : (
@@ -49,9 +51,9 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
           </Text>
           <Text style={Fonts.textSmall}>{`${t('formulations.drug.every')} ${
             drugDose.recurrence
-          } ${t('formulations.drug.h')} ${drugInstance.duration} ${t(
-            'formulations.drug.days',
-          )}`}</Text>
+          } ${t('formulations.drug.h')} ${
+            drugInstance ? drugInstance.duration : drug.duration
+          } ${t('formulations.drug.days')}`}</Text>
           <Text style={[Gutters.regularTMargin, Fonts.textSmall]}>
             {translate(drugDose.dispensing_description)}
           </Text>

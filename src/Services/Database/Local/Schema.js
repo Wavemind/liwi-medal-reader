@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export default appSchema({
-  version: 12,
+  version: 15,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -9,7 +9,7 @@ export default appSchema({
         { name: 'json', type: 'string', isOptional: true, isIndexed: true },
         { name: 'stage', type: 'number' },
         { name: 'step', type: 'number' },
-        { name: 'synchronized_at', type: 'number', isOptional: true },
+        { name: 'synchronized_at', type: 'number' },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
         { name: 'closed_at', type: 'number' },
