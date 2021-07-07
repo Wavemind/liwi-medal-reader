@@ -12,7 +12,7 @@ import useDatabase from '@/Services/Database/useDatabase'
 export default async () => {
   const { getMedicalCases } = useDatabase()
   const medicalCases = await getMedicalCases()
-  console.log('ici', medicalCases)
+
   return medicalCases.filter(
     medicalCase =>
       medicalCase.synchronizedAt === 0 &&
