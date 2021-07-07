@@ -16,39 +16,7 @@ const Colors = {
   background: '#1f1f1f',
   whiteToBlack: '#121212',
   mcDrawerNotDone: '#323232',
-
-  // WHITES
-
-  whiteToLightPink: '#ffcece',
-  whiteToLightGrey: '#ececec',
-
-  // LIGHT GREYS
-
-  lightGreyToAnotherLightGrey: '#ececec',
-  lightGreyToDarkGrey: '#323232',
-
-  // DARK GREYS
-  darkGreyToLightGrey: '#ececec',
-
-
-
-
-
-
-
-
-
-
-
-  // SOME OTHER LIGHT GREYS
-  abitDarkerLightGrey: '#9f9f9f',
-  abitLighterDarkLightGrey: '#a8a8a8',
-  darkerLightGreyToBlack: '#000000',
-
-  // SOME OTHER DARK GREYS
-  darkerDarkGrey: '#ececec',
-  middleDarkGreyToLightGrey: '#e0e0e0',
-  middleDarkGreyToAnotherLightGrey: '#ececec',
+  emergency: '#d2073044',
 }
 
 const NavigationColors = {

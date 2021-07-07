@@ -12,7 +12,7 @@ export default function (props) {
 
       if (emergency) {
         customStyle = {
-          backgroundColor: Colors.softRed,
+          backgroundColor: Colors.emergency,
         }
       }
 

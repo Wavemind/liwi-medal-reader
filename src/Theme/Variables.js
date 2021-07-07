@@ -16,6 +16,7 @@ export const Colors = {
   background: '#f2f1ee',
   whiteToBlack: '#ffffff',
   mcDrawerNotDone: '#f2f1ee',
+  emergency: '#fbdedb',
 
   // CONSTANTS
   black: '#121212',
@@ -23,48 +24,16 @@ export const Colors = {
   offWhite: '#ececec',
   red: '#d20730',
   warning: '#e27900',
+  grey: '#6f6f6f',
   darkGrey: '#323232',
   disabled: '#d3d1cf',
   lightGrey: '#f2f1ee',
   border: '#9f9f9f',
   separator: '#e1e1e1',
   info: '#686868',
-
-
-
-  // WHITES
-  whiteToLightPink: '#ffffff',
-
-  whiteToLightGrey: '#ffffff',
-  // LIGHT GREYS
-  lightGreyToAnotherLightGrey: '#f2f1ee',
-
-  lightGreyToDarkGrey: '#f2f1ee',
-
-  // DARK GREYS
-  darkGreyToLightGrey: '#121212',
-
-  // ORANGES
-
-  // DARK LIGHT GREYS
-  darkLightGrey: '#afafaf',
-  // SOME OTHER LIGHT GREYS
-  grey: '#6f6f6f',
-  abitDarkerLightGrey: '#6f6f6f',
-  abitLighterDarkLightGrey: '#686868',
-
-  darkerLightGreyToBlack: '#e1e1e1',
-  // SOME OTHER DARK GREYS
-  darkerDarkGrey: '#0e1511',
-  lighterDarkGrey: '#afafaf',
-  middleDarkGreyToLightGrey: '#3c3c3c',
-  middleDarkGreyToAnotherLightGrey: '#3c3c3c',
-
-  // Colors that don't change in dark mode
-  primaryLowOpacity: '#00000088',
-  softRed: '#fbdedb',
   redLowOpacity: '#d2073044',
   transparent: 'rgba(0,0,0,0)',
+  primaryLowOpacity: '#00000088',
 }
 
 export const NavigationColors = {

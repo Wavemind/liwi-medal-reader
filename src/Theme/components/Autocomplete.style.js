@@ -39,7 +39,7 @@ export default function (props) {
       ...Gutters.smallRMargin,
     },
     resultsDropdown: {
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.white,
       position: 'relative',
       top: -1,
       borderColor: Colors.grey,
@@ -54,7 +54,7 @@ export default function (props) {
     }),
     dropdownItemText: {
       ...Fonts.textSmall,
-      color: Colors.primary,
+      color: Colors.black,
     },
   })
 }

@@ -81,14 +81,15 @@ const ExitMedicalCase = () => {
           filled
           disabled={!patientSavedInDatabase}
           onPress={exitAndSave}
-          bgColor={Colors.red}
+          bgColor={Colors.grey}
+          color={Colors.white}
           fullWidth={false}
         />
         <SquareButton
           label={t('components.modals.exitMedicalCase.exitWithoutSave')}
           filled
           onPress={exitWithoutSave}
-          bgColor={Colors.grey}
+          bgColor={Colors.primary}
           fullWidth={false}
         />
       </View>
