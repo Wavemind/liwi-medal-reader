@@ -27,15 +27,17 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
     state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
   )
 
+  const duration = drugInstance ? drugInstance.duration : drug.duration
+
   return (
     <View>
       <Text style={Fonts.textSmall}>{formulationLabel(drugDose)}</Text>
       {drugDose.by_age ? (
         <Text style={Fonts.textSmall}>{`${roundSup(drugDose.unique_dose)}ml ${t(
           'formulations.medication_form.per_administration',
-        )} ${t('formulations.drug.during')} ${
-          drugInstance ? drugInstance.duration : drug.duration
-        } ${t('formulations.drug.days')}`}</Text>
+        )} ${t('formulations.drug.during')} ${duration} ${t(
+          'formulations.drug.days',
+        )}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text style={Fonts.textSmall}>{drugDose.no_possibility}</Text>
       ) : (
@@ -50,9 +52,9 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
           </Text>
           <Text style={Fonts.textSmall}>{`${t('formulations.drug.every')} ${
             drugDose.recurrence
-          } ${t('formulations.drug.h')} ${
-            drugInstance ? drugInstance.duration : drug.duration
-          } ${t('formulations.drug.days')}`}</Text>
+          } ${t('formulations.drug.h')} ${duration} ${t(
+            'formulations.drug.days',
+          )}`}</Text>
           <Text style={[Gutters.regularTMargin, Fonts.textSmall]}>
             {translate(drugDose.dispensing_description)}
           </Text>

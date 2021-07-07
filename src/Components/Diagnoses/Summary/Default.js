@@ -25,20 +25,19 @@ const Default = ({ drug, drugDose, diagnosisId }) => {
   )
   let every = ''
 
+  const duration = drugInstance ? drugInstance.duration : drug.duration
+
   if (drug.formulationSelected !== null) {
     every = `${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t(
       'formulations.drug.h',
-    )} ${drugInstance ? drugInstance.duration : drug.duration} ${t(
-      'formulations.drug.days',
-    )}`
+    )} ${duration} ${t('formulations.drug.days')}`
   }
 
   return (
     <View>
       <Text>{formulationLabel(drugDose)}</Text>
       <Text style={Fonts.textSmall}>
-        {t('formulations.drug.d')}:{' '}
-        {drugInstance ? drugInstance.duration : drug.duration}
+        {t('formulations.drug.d')}: {duration}
       </Text>
       {drug.formulationSelected !== null && (
         <Text style={Fonts.textSmall}>

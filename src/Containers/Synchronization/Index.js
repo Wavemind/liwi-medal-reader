@@ -28,14 +28,14 @@ const IndexSynchronizationContainer = () => {
   const syncLoading = useSelector(state => state.synchronization.loading)
 
   // Local state definition
-  const [unSynced, setUnSynced] = useState([])
+  const [unsynced, setUnsynced] = useState([])
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   useEffect(async () => {
     const result = await GetNonSynchronizedService()
-    setUnSynced(result)
+    setUnsynced(result)
   }, [])
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const IndexSynchronizationContainer = () => {
         <Text style={synchronization.notSynchronized}>
           {t('containers.synchronization.not_synchronized')}
         </Text>
-        <Text style={synchronization.counter}>{unSynced.length}</Text>
+        <Text style={synchronization.counter}>{unsynced.length}</Text>
         {syncError && (
           <Text style={auth.errorMessage}>{syncError.message}</Text>
         )}

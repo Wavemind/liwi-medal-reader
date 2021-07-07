@@ -13,6 +13,7 @@ import useDatabase from '@/Services/Database/useDatabase'
 export default async currentRoute => {
   const medicalCaseInStore =
     Object.keys(store.getState().medicalCase.item).length > 0
+
   if (currentRoute === 'Synchronization' || medicalCaseInStore) {
     return false
   }

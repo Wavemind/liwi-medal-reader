@@ -22,7 +22,9 @@ const Custom = () => {
 
   const { t } = useTranslation()
 
-  const diagnoses = useSelector(state => state.medicalCase.item.diagnosis.custom)
+  const diagnoses = useSelector(
+    state => state.medicalCase.item.diagnosis.custom,
+  )
 
   return Object.values(diagnoses).map(diagnosis => {
     const drugs = Object.values(diagnosis.drugs)
@@ -54,7 +56,8 @@ const Custom = () => {
                 >
                   <Text style={summary.drugTitle}>{drug.name}</Text>
                   <Text style={Fonts.textSmall}>
-                    {t('formulations.drug.d')} : {drug.duration} {t('formulations.drug.days')}
+                    {t('formulations.drug.d')} : {drug.duration}{' '}
+                    {t('formulations.drug.days')}
                   </Text>
                 </View>
               ))

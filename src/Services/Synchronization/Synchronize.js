@@ -57,8 +57,6 @@ export default async () => {
         (key, value) => (typeof value === 'undefined' ? null : value),
       )
 
-      console.log(medicalCaseJson)
-
       await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson)
     }),
   )
