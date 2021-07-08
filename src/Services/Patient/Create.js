@@ -15,7 +15,7 @@ export default async props => {
   return {
     first_name: __DEV__ ? faker.name.firstName() : '',
     last_name: __DEV__ ? faker.name.lastName() : '',
-    birth_date: '',
+    birth_date: null,
     birth_date_estimated: false,
     birth_date_estimated_type: null,
     consent: true,
