@@ -19,6 +19,8 @@ export default class Patient extends Model {
   @field('first_name') first_name
   @field('last_name') last_name
   @date('birth_date') birth_date
+  @field('birth_date_estimated') birth_date_estimated
+  @field('birth_date_estimated_type') birth_date_estimated_type
   @field('uid') uid
   @field('study_id') study_id
   @field('group_id') group_id
