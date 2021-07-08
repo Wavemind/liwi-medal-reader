@@ -94,7 +94,6 @@ const DateInput = () => {
       }
     }
 
-    // TODO need to remove this, but it crashes without it
     if (__DEV__) {
       setDayValue(11)
       setMonthValue(4)
@@ -208,6 +207,7 @@ const DateInput = () => {
    * Reset the value of the field when we check and store the value in the patient store
    */
   const handleIsEstimated = value => {
+    // TODO Improve it
     setIsEstimated(value)
     setEstimatedValue('')
     setEstimatedDateType(null)
