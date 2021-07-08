@@ -35,6 +35,7 @@ describe('findBy should find an object based on a query', () => {
       'last_name',
       'birth_date',
       'birth_date_estimated',
+      'birth_date_estimated_type',
       'uid',
       'study_id',
       'group_id',
