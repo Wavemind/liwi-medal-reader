@@ -14,6 +14,9 @@ import enGB from 'date-fns/locale/en-GB'
 import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
 import subYears from 'date-fns/subYears'
+import differenceInDays from 'date-fns/differenceInDays'
+import differenceInMonths from 'date-fns/differenceInMonths'
+import differenceInYears from 'date-fns/differenceInYears'
 
 /**
  * The internal imports
@@ -36,15 +39,24 @@ const DateInput = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const birth_date_estimated = useSelector(
+  const birthDateEstimated = useSelector(
     state => state.patient.item.birth_date_estimated,
+  )
+  const medicalCaseCreatedAt = useSelector(
+    state => state.medicalCase.item.createdAt,
+  )
+
+  const birthDateEstimatedType = useSelector(
+    state => state.patient.item.birth_date_estimated_type,
   )
 
   // Local state definition
   const [dateLanguage, setDateLanguage] = useState(enGB)
-  const [isEstimated, setIsEstimated] = useState(birth_date_estimated)
+  const [isEstimated, setIsEstimated] = useState(birthDateEstimated)
 
-  const [estimatedDateType, setEstimatedDateType] = useState(null)
+  const [estimatedDateType, setEstimatedDateType] = useState(
+    birthDateEstimatedType,
+  )
   const [estimatedValue, setEstimatedValue] = useState('')
 
   const [dayValue, setDayValue] = useState(null)
@@ -62,29 +74,24 @@ const DateInput = () => {
   const systemLanguage = useSelector(state => state.system.language)
   const birth_date = useSelector(state => state.patient.item.birth_date)
 
-  /**
-   * Reset the value of the field when we check and store the value in the patient store
-   */
-  useEffect(() => {
-    setEstimatedValue('')
-    setEstimatedDateType(null)
-    setDayValue(null)
-    setMonthValue(null)
-    setYearValue(null)
-    dispatch(
-      UpdateField.action({
-        field: 'birth_date_estimated',
-        value: isEstimated,
-      }),
-    )
-  }, [isEstimated])
-
   useEffect(() => {
     if (birth_date !== null) {
       const date = new Date(birth_date)
-      setDayValue(date.getDate())
-      setMonthValue(date.getMonth() + 1)
-      setYearValue(date.getFullYear())
+      if (estimatedDateType) {
+        let value = ''
+        if (estimatedDateType === 'day') {
+          value = differenceInDays(new Date(medicalCaseCreatedAt), date)
+        } else if (estimatedDateType === 'month') {
+          value = differenceInMonths(new Date(medicalCaseCreatedAt), date)
+        } else {
+          value = differenceInYears(new Date(medicalCaseCreatedAt), date)
+        }
+        setEstimatedValue(value + 1)
+      } else {
+        setDayValue(date.getDate())
+        setMonthValue(date.getMonth() + 1)
+        setYearValue(date.getFullYear())
+      }
     }
 
     // TODO need to remove this, but it crashes without it
@@ -179,9 +186,46 @@ const DateInput = () => {
    * Check if there is no unpermitted char
    * @param {Event} e
    */
-  const onChange = value => {
+  const handleEstimatedValue = value => {
     value = value.replace(/[^0-9]/g, '')
     setEstimatedValue(value)
+  }
+
+  /**
+   * Save in state + store estimated type
+   */
+  const handleEstimatedType = value => {
+    setEstimatedDateType(value)
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date_estimated_type',
+        value: value,
+      }),
+    )
+  }
+
+  /**
+   * Reset the value of the field when we check and store the value in the patient store
+   */
+  const handleIsEstimated = value => {
+    setIsEstimated(value)
+    setEstimatedValue('')
+    setEstimatedDateType(null)
+    setDayValue(null)
+    setMonthValue(null)
+    setYearValue(null)
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date_estimated_type',
+        value: null,
+      }),
+    )
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date_estimated',
+        value: value,
+      }),
+    )
   }
 
   return (
@@ -193,7 +237,7 @@ const DateInput = () => {
               style={select.picker}
               selectedValue={estimatedDateType}
               mode="dropdown"
-              onValueChange={setEstimatedDateType}
+              onValueChange={handleEstimatedType}
               dropdownIconColor={Colors.black}
             >
               <Picker.Item
@@ -222,7 +266,7 @@ const DateInput = () => {
             <TextInput
               style={[numeric.input(true), Gutters.smallTMargin]}
               keyboardType="decimal-pad"
-              onChangeText={onChange}
+              onChangeText={handleEstimatedValue}
               value={String(estimatedValue)}
             />
           </View>
@@ -304,7 +348,7 @@ const DateInput = () => {
       <Checkbox
         label={t('answers.estimated')}
         defaultValue={isEstimated}
-        onPress={setIsEstimated}
+        onPress={handleIsEstimated}
       />
     </View>
   )

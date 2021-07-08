@@ -17,6 +17,7 @@ export default async props => {
     last_name: __DEV__ ? faker.name.lastName() : '',
     birth_date: '',
     birth_date_estimated: false,
+    birth_date_estimated_type: null,
     consent: true,
     consent_file: null,
     createdAt: new Date().getTime() / 1000, // Transform ms to s
