@@ -147,6 +147,7 @@ const DateInput = () => {
         'dd-MM-yyyy',
         new Date(),
       )
+
       dispatch(
         UpdateField.action({
           field: 'birth_date',

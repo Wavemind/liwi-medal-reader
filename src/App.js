@@ -8,9 +8,12 @@ import Appsignal from '@appsignal/javascript'
 import { ErrorBoundary } from '@appsignal/react'
 
 const appsignal = new Appsignal({ key: '9c0f7538-551f-41a5-b331-864ba2e04705' })
-const FallbackComponent = () => (
-  <View>
-    <Text>Uh oh! There was an error :(</Text>
+const FallbackComponent = error => (
+  <View style={{ flex: 1 }}>
+    <Text style={{ fontSize: 20, color: 'white' }}>AN ERROR OCCURED</Text>
+    <Text style={{ fontSize: 18, color: 'white' }}>
+      {JSON.stringify(error)}
+    </Text>
   </View>
 )
 
