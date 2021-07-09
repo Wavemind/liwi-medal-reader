@@ -81,8 +81,6 @@ export const calculateReference = (nodeId, newNodes) => {
     } else if (reference !== null && z !== null) {
       value = processReferenceTable3D(reference, x, y, z)
     }
-  } else {
-    value = null
   }
 
   return value
