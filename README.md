@@ -10,7 +10,7 @@ Below you'll find information about performing common tasks.
 
 ## Table of Contents
 
-- [MedAl-reader ![CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)](#medal-reader-)
+- [MedAl-reader](#medal-reader-)
   - [Setup](#setup)
   - [Table of Contents](#table-of-contents)
   - [Available Scripts](#available-scripts)
