@@ -14,6 +14,11 @@ export default function (props) {
       ...Layout.center,
       ...Gutters.regularTMargin,
     },
+    scrollViewWrapper: {
+      ...Layout.grow,
+      height: hp(82),
+      ...Gutters.regularBPadding,
+    },
     title: {
       ...Layout.fill,
       ...Fonts.textUppercase,
