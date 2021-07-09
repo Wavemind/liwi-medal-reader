@@ -39,8 +39,10 @@ const MainNavigator = ({ route }) => {
 
   // Destroy medical case in store after closing a medical case
   useEffect(() => {
-    dispatch(DestroyMedicalCase.action())
-    dispatch(DestroyPatient.action())
+    if (route.state?.routes[0].params?.destroyCurrentConsultation) {
+      dispatch(DestroyMedicalCase.action())
+      dispatch(DestroyPatient.action())
+    }
   }, [route.state?.routes[0].params?.destroyCurrentConsultation])
 
   return (
