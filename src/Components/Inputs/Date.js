@@ -123,7 +123,7 @@ const DateInput = () => {
     // Trigger formulas related to birth date
     dispatch(
       HandleDateFormulas.action({
-        birthDate: birthDate.getTime(),
+        birthDate: birthDate,
         algorithm,
       }),
     )
@@ -131,7 +131,7 @@ const DateInput = () => {
     // Set default value for complain category
     dispatch(
       HandleComplaintCategories.action({
-        birthDate: birthDate.getTime(),
+        birthDate: birthDate,
         algorithm,
       }),
     )
@@ -154,7 +154,7 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
-      relatedActions(birthDate)
+      relatedActions(birthDate.getTime())
     }
   }, [dayValue, monthValue, yearValue])
 
@@ -178,7 +178,7 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
-      relatedActions(birthDate)
+      relatedActions(birthDate.getTime())
     }
   }, [estimatedValue, estimatedDateType])
 
@@ -227,6 +227,7 @@ const DateInput = () => {
         value: value,
       }),
     )
+    relatedActions(null)
   }
 
   return (
