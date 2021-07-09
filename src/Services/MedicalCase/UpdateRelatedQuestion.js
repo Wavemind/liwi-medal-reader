@@ -30,29 +30,28 @@ export default ({ nodeId, newNodes, mcNodes }) => {
       value = calculateReference(questionId, { ...mcNodes, ...newNodes })
     }
 
-    if (value !== null) {
-      const validation = QuestionValidationService(mcNode, node, value)
+    const validation = QuestionValidationService(mcNode, node, value)
 
-      if (validation.validationType === 'error') {
-        newNodes[node.id] = {
-          ...mcNode,
-          ...validation,
-        }
-      } else {
-        const newQuestionValues = handleNumeric(mcNode, node, value)
-        // Set the question value in the store
-        newNodes[questionId] = { ...mcNodes[questionId], ...newQuestionValues }
+    if (validation.validationType === 'error') {
+      newNodes[node.id] = {
+        ...mcNode,
+        ...validation,
       }
-      questionsToUpdate = questionsToUpdate.concat(node.referenced_in)
-
-      // uniq to avoid processing same question multiple time
-      // Slice to remove element we just handled
-      newNodes = UpdateQuestionSequenceService({
-        nodeId: questionId,
-        newNodes,
-        mcNodes,
-      })
+    } else {
+      const newQuestionValues = handleNumeric(mcNode, node, value)
+      // Set the question value in the store
+      newNodes[questionId] = { ...mcNodes[questionId], ...newQuestionValues }
     }
+    questionsToUpdate = questionsToUpdate.concat(node.referenced_in)
+
+    // uniq to avoid processing same question multiple time
+    // Slice to remove element we just handled
+    newNodes = UpdateQuestionSequenceService({
+      nodeId: questionId,
+      newNodes,
+      mcNodes,
+    })
+
     questionsToUpdate = uniq(questionsToUpdate.slice(1))
   }
   return newNodes
