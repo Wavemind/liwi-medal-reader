@@ -20,7 +20,6 @@ const IndexFiltersContainer = ({ navigation, route }) => {
     Colors,
     Gutters,
     FontSize,
-    Layout,
     Containers: { filters, searchAdditional },
   } = useTheme()
 
@@ -47,7 +46,7 @@ const IndexFiltersContainer = ({ navigation, route }) => {
             <Icon name="close" color={Colors.secondary} />
           </TouchableOpacity>
         </View>
-        <ScrollView style={Layout.grow}>
+        <ScrollView style={filters.scrollViewWrapper}>
           <SectionHeader label={t('containers.filters.patient_info')} />
           {data.map(item => (
             <Accordion
