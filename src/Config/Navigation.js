@@ -154,10 +154,6 @@ const baseArmControlStages = [
     component: 'FirstAssessmentsWrapper',
     steps: [
       {
-        label: 'unique_triage_questions',
-        component: UniqueTriageQuestionsMedicalCaseContainer,
-      },
-      {
         label: 'complaint_categories',
         component: ComplaintCategoryMedicalCaseContainer,
       },
