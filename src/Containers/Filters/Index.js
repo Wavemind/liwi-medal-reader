@@ -20,7 +20,6 @@ const IndexFiltersContainer = ({ navigation, route }) => {
     Colors,
     Gutters,
     FontSize,
-    Layout,
     Containers: { filters, searchAdditional },
   } = useTheme()
 
