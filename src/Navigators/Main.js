@@ -23,6 +23,7 @@ import {
 } from '@/Containers'
 import DestroyMedicalCase from '@/Store/MedicalCase/Destroy'
 import DestroyPatient from '@/Store/Patient/Destroy'
+import ResetValidation from '@/Store/Validation/Reset'
 import { useTheme } from '@/Theme'
 
 const Drawer = createDrawerNavigator()
@@ -42,8 +43,10 @@ const MainNavigator = ({ route }) => {
     if (route.state?.routes[0].params?.destroyCurrentConsultation) {
       dispatch(DestroyMedicalCase.action())
       dispatch(DestroyPatient.action())
+      dispatch(ResetValidation.action())
+      delete route.state?.routes[0].params?.destroyCurrentConsultation
     }
-  }, [route.state?.routes[0].params?.destroyCurrentConsultation])
+  }, [route.state?.routes[0].params?.destroyCurrentConsultation, medicalCaseId])
 
   return (
     <>
