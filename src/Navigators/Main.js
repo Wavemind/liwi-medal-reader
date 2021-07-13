@@ -36,7 +36,6 @@ const MainNavigator = ({ route }) => {
 
   const clinician = useSelector(state => state.healthFacility.clinician)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
-  const closedAt = useSelector(state => state.medicalCase.item.closedAt)
 
   // Destroy medical case in store after closing a medical case
   useEffect(() => {
@@ -53,9 +52,7 @@ const MainNavigator = ({ route }) => {
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
-        drawerStyle={
-          medicalCaseId && closedAt === 0 ? Layout.fullWidth : Layout.halfWidth
-        }
+        drawerStyle={Layout.fullWidth}
         screenOptions={{
           headerShown: true,
           header: ({ scene }) => {
