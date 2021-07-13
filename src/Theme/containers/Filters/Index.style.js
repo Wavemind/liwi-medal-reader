@@ -17,7 +17,7 @@ export default function (props) {
     scrollViewWrapper: {
       ...Layout.grow,
       ...Gutters.regularBPadding,
-      height: hp(81),
+      height: hp(80),
     },
     title: {
       ...Layout.fill,
