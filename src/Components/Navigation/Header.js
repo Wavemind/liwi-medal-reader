@@ -19,7 +19,6 @@ const Header = ({
 }) => {
   // Theme and style elements deconstruction
   const {
-    Colors,
     Components: { header },
   } = useTheme()
 
