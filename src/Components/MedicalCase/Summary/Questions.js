@@ -14,15 +14,17 @@ import { RemoveQuestionService } from '@/Services/MedicalCase'
 const SummaryQuestions = () => {
   const { Gutters } = useTheme()
 
-  const questions = RemoveQuestionService()
+  const answeredQuestions = Object.values(RemoveQuestionService()).filter(
+    question => {
+      return question.answer || question.value !== ''
+    },
+  )
 
   return (
     <View style={Gutters.regularHMargin}>
       <FlatList
-        data={Object.values(questions)}
-        renderItem={({ item }) => (
-          <SummaryQuestionItem questions={questions} questionId={item.id} />
-        )}
+        data={answeredQuestions}
+        renderItem={({ item }) => <SummaryQuestionItem question={item} />}
         keyExtractor={item => item.id}
       />
     </View>
