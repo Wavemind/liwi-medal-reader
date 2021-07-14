@@ -55,12 +55,20 @@ const MainNavigator = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = async () => {
-        await dispatch(
-          SetParams.action({
-            type: 'exitApp',
-          }),
-        )
-        await dispatch(ToggleVisibility.action({}))
+        if (
+          navigation.dangerouslyGetState()?.routes[0]?.state?.index &&
+          !navigation.dangerouslyGetState()?.routes[0]?.state?.index !==
+            route.key
+        ) {
+          navigation.goBack()
+        } else {
+          await dispatch(
+            SetParams.action({
+              type: 'exitApp',
+            }),
+          )
+          await dispatch(ToggleVisibility.action({}))
+        }
       }
 
       BackHandler.addEventListener('hardwareBackPress', onBackPress)
