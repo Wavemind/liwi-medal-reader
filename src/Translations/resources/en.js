@@ -184,6 +184,7 @@ export default {
         environment: 'Environment',
         app_languages: 'App languages',
         algorithm_languages: 'Algorithm languages',
+        app_version: 'App version',
         languages: {
           en: 'English',
           fr: 'Français',
