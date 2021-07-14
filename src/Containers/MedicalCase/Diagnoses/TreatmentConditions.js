@@ -20,9 +20,7 @@ const TreatmentConditionsMedicalCaseContainer = () => {
 
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)
 
-  const [questions, setQuestions] = useState(
-    TreatmentConditionsQuestionsService(),
-  )
+  const [questions, setQuestions] = useState(TreatmentConditionsQuestionsService())
 
   // Update questions list only if question array change
   useEffect(() => {

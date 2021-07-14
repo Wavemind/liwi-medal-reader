@@ -10,8 +10,9 @@ import Modal from 'react-native-modal'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { Icon } from '@/Components'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
-import { Emergency, Lock, ExitMedicalCase, ExitApp, Icon } from '@/Components'
+import { Emergency, Lock, ExitMedicalCase } from '@/Components'
 
 const CustomModal = () => {
   // Theme and style elements deconstruction
@@ -42,8 +43,6 @@ const CustomModal = () => {
         return <Lock />
       case 'exitMedicalCase':
         return <ExitMedicalCase />
-      case 'exitApp':
-        return <ExitApp />
       default:
         return null
     }
@@ -53,7 +52,6 @@ const CustomModal = () => {
     <Modal
       isVisible={visible}
       onBackdropPress={closeModal}
-      onBackButtonPress={closeModal}
       hideModalContentWhileAnimating
     >
       <View style={modal.wrapper}>
