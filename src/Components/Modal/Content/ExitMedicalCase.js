@@ -1,11 +1,10 @@
 /**
  * The external imports
  */
-import React, { useEffect } from 'react'
-import { View, Text, BackHandler } from 'react-native'
+import React from 'react'
+import { View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { useFocusEffect } from '@react-navigation/native'
 
 /**
  * The internal imports
