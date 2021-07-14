@@ -4,7 +4,7 @@
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
-import { handleChildren, getTopConditions } from '@/Utils/MedicalCase'
+import { handleChildren, getTopConditions, uniq } from '@/Utils/MedicalCase'
 
 export default () => {
   const state = store.getState()
@@ -34,5 +34,5 @@ export default () => {
     )
   })
 
-  return questionsToDisplay
+  return uniq(questionsToDisplay)
 }
