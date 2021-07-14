@@ -5,6 +5,8 @@ import React, { useEffect } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useFocusEffect } from '@react-navigation/native'
+import { BackHandler } from 'react-native'
 
 /**
  * The internal imports
@@ -24,10 +26,12 @@ import {
 import DestroyMedicalCase from '@/Store/MedicalCase/Destroy'
 import DestroyPatient from '@/Store/Patient/Destroy'
 import ResetValidation from '@/Store/Validation/Reset'
+import SetParams from '@/Store/Modal/SetParams'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import { useTheme } from '@/Theme'
 
 const Drawer = createDrawerNavigator()
-const MainNavigator = ({ route }) => {
+const MainNavigator = ({ route, navigation }) => {
   // Theme and style elements deconstruction
   const { Layout } = useTheme()
 
@@ -46,6 +50,25 @@ const MainNavigator = ({ route }) => {
       delete route.state?.routes[0].params?.destroyCurrentConsultation
     }
   }, [route.state?.routes[0].params?.destroyCurrentConsultation, medicalCaseId])
+
+  // Prompt the user before leaving the screen
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = async () => {
+        await dispatch(
+          SetParams.action({
+            type: 'exitApp',
+          }),
+        )
+        await dispatch(ToggleVisibility.action({}))
+      }
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress)
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress)
+    }, []),
+  )
 
   return (
     <>

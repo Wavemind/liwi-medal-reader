@@ -1,10 +1,11 @@
 /**
  * The external imports
  */
-import React from 'react'
-import { View, Text } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, Text, BackHandler } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { useFocusEffect } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -69,15 +70,15 @@ const ExitMedicalCase = () => {
   return (
     <View>
       <Text style={modal.header}>
-        {t('components.modals.exitMedicalCase.title')}
+        {t('components.modals.exit_medical_case.title')}
       </Text>
       <Text style={modal.body}>
-        {t('components.modals.exitMedicalCase.content')}
+        {t('components.modals.exit_medical_case.content')}
       </Text>
 
       <View style={modal.buttonWrapper}>
         <SquareButton
-          label={t('components.modals.exitMedicalCase.exitAndSave')}
+          label={t('components.modals.exit_medical_case.exit_and_save')}
           filled
           disabled={!patientSavedInDatabase}
           onPress={exitAndSave}
@@ -86,7 +87,7 @@ const ExitMedicalCase = () => {
           fullWidth={false}
         />
         <SquareButton
-          label={t('components.modals.exitMedicalCase.exitWithoutSave')}
+          label={t('components.modals.exit_medical_case.exit_without_save')}
           filled
           onPress={exitWithoutSave}
           bgColor={Colors.primary}
