@@ -43,7 +43,7 @@ const Lock = () => {
 
       <View style={modal.buttonWrapper}>
         <SquareButton
-          label={t('components.modals.lock.unlockButton')}
+          label={t('components.modals.lock.unlock_button')}
           filled
           onPress={handleForceUnlock}
           bgColor={Colors.grey}
@@ -51,7 +51,7 @@ const Lock = () => {
           fullWidth={false}
         />
         <SquareButton
-          label={t('components.modals.lock.summaryButton')}
+          label={t('components.modals.lock.summary_button')}
           filled
           onPress={handleSummary}
           bgColor={Colors.primary}
