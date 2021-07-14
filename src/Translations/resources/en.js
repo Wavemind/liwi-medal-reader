@@ -229,7 +229,7 @@ export default {
       },
       exit_app: {
         title: 'Leave app',
-        content: 'Do you really want to leave the app?e',
+        content: 'Do you really want to leave the app ?',
         ok: 'Ok',
         back: 'Back',
       },
