@@ -212,8 +212,8 @@ export default {
       lock: {
         title: 'Consultation not available',
         content: 'Case is locked by {{ name }}',
-        unlock_button: 'FORCE UNLOCK',
-        summary_button: 'SUMMARY',
+        unlockButton: 'FORCE UNLOCK',
+        summaryButton: 'SUMMARY',
       },
       emergency: {
         title: 'Emergency Assistance',
@@ -221,17 +221,11 @@ export default {
           'The patient is presenting a severe/emergency symptom or sign. Click on the emergency button if the child needs emergency care now.',
         emergencyButton: 'GO TO EMERGENCY',
       },
-      exit_medical_case: {
+      exitMedicalCase: {
         title: 'Leave medical case',
         content: 'You are leaving the medical case',
-        exit_and_save: 'Exit and save',
-        exit_without_save: 'Exit without save',
-      },
-      exit_app: {
-        title: 'Leave app',
-        content: 'Do you really want to leave the app ?',
-        ok: 'Ok',
-        back: 'Back',
+        exitAndSave: 'Exit and save',
+        exitWithoutSave: 'Exit without save',
       },
     },
     media: {
