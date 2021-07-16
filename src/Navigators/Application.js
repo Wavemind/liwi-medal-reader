@@ -7,6 +7,7 @@ import { SafeAreaView, StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { ReduxNetworkProvider } from 'react-native-offline'
 import { useSelector } from 'react-redux'
+
 /**
  * The internal imports
  */
@@ -30,7 +31,6 @@ import { CustomModal } from '@/Components'
 
 const Stack = createStackNavigator()
 
-// let MainNavigator
 let AuthNavigator
 let MainNavigator
 
@@ -64,6 +64,7 @@ const ApplicationNavigator = () => {
     },
     [],
   )
+
   return (
     <ReduxNetworkProvider
       shouldPing={healthFacility?.architecture === 'client-server'}
@@ -104,8 +105,8 @@ const ApplicationNavigator = () => {
               <Stack.Screen name="Home" component={MainNavigator} />
             )}
           </Stack.Navigator>
+          <CustomModal />
         </NavigationContainer>
-        <CustomModal />
       </SafeAreaView>
     </ReduxNetworkProvider>
   )
