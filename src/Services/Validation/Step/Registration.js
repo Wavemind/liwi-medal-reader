@@ -41,6 +41,7 @@ export default async errors => {
     if (patient[element] === '') {
       errors[element] = i18n.t('validation.is_required', {
         field: i18n.t(`patient.${element}`),
+        interpolation: { escapeValue: false },
       })
     }
   })
@@ -49,11 +50,12 @@ export default async errors => {
   if (isNaN(patient.birth_date)) {
     errors.birth_date = i18n.t('validation.is_required', {
       field: i18n.t('patient.birth_date'),
+      interpolation: { escapeValue: false },
     })
   } else {
     const formattedDate = new Date(patient.birth_date)
     const formattedMedicalCaseCreatedAt = new Date(medicalCaseCreatedAt)
-    
+
     if (
       differenceInYears(formattedMedicalCaseCreatedAt, formattedDate) >=
         algorithm.config.age_limit ||

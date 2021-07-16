@@ -77,6 +77,7 @@ export default (questions, errors, validateInArmControl = false) => {
           const label = translate(node.label)
           errors[questionId] = i18n.t('validation.is_required', {
             field: label,
+            interpolation: { escapeValue: false },
           })
         }
       }

@@ -15,7 +15,7 @@ export default {
     add: 'Ajouter',
     apply: 'Appliquer',
     reset: 'Réinitialiser',
-    save: 'Enregistrer',
+    save: 'Enr.',
   },
   algorithm: {
     version_id: 'ID de version',
@@ -99,7 +99,7 @@ export default {
         physical_exams: 'Examen physique',
         assessments: 'Tests',
         final_diagnoses: 'Diagnostics',
-        healthcare_questions: 'Questions prise en charge',
+        healthcare_questions: 'Questions de prise en charge',
         medicines: 'Médicaments',
         formulations: 'Formulations',
         summary: 'Récapitulatif',
@@ -252,7 +252,7 @@ export default {
   },
   database: {
     success: {
-      message: 'Enr.',
+      message: 'Enregistrer',
       description: 'Consultation enregistrée avec succès',
     },
     error: {

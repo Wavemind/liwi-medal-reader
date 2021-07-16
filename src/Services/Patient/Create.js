@@ -28,7 +28,7 @@ export default async props => {
     other_group_id: otherFacility.group_id || null,
     other_study_id: otherFacility.study_id || null,
     other_uid: otherFacility.uid || null,
-    patient_values: [],
+    patientValues: [],
     reason: null,
     savedInDatabase: !newMedicalCase, // TODO check if we can set false directly
     study_id,
