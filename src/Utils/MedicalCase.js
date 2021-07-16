@@ -50,9 +50,9 @@ export const respectsCutOff = (cut_off_start, cut_off_end) => {
     return cut_off_end > ageInDays
   }
   if (cut_off_end === null) {
-    return cut_off_start < ageInDays
+    return cut_off_start <= ageInDays
   } else {
-    return cut_off_start < ageInDays && cut_off_end > ageInDays
+    return cut_off_start <= ageInDays && cut_off_end > ageInDays
   }
 }
 
