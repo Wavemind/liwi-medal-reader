@@ -23,7 +23,6 @@ const SynchronizationAuthContainer = () => {
   const dispatch = useDispatch()
   const {
     Containers: { authSynchronization, auth, global },
-    Fonts,
     Layout,
     Gutters,
   } = useTheme()

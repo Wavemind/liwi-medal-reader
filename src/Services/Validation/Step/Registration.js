@@ -46,7 +46,7 @@ export default async errors => {
   }
 
   // Questions
-  errors = QuestionStepValidation(questions, errors)
+  errors = QuestionStepValidation(questions, errors, true)
 
   return errors
 }

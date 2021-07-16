@@ -67,7 +67,7 @@ export default () => {
       return {}
     case 'referral':
       if (algorithm.config.track_referral) {
-        return QuestionStepValidation(ReferralQuestionsService(), errors)
+        return QuestionStepValidation(ReferralQuestionsService(), errors, true)
       }
       return {}
     default:

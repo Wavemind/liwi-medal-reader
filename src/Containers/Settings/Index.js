@@ -115,7 +115,9 @@ const IndexSettingsContainer = () => {
         {t('containers.settings.general.title')}
       </Text>
       <View style={settings.item}>
-        <Text style={settings.text}>App version</Text>
+        <Text style={settings.text}>
+          {t('containers.settings.general.app_version')}
+        </Text>
         <Text style={[settings.text, Fonts.textBold]}>
           {`${appVersion}.${appBuildNumber}`}
         </Text>
