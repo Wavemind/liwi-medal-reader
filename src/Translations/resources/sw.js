@@ -92,7 +92,7 @@ export default {
       },
       steps: {
         registration: 'Registration',
-        unique_triage_questions: 'Unique triage questions',
+        unique_triage_questions: 'Potential emergencies',
         complaint_categories: 'Complaint categories',
         basic_measurements: 'Basic measurements',
         medical_history: 'Medical history',
@@ -115,28 +115,28 @@ export default {
       diagnoses: {
         diagnoses: 'Diagnoses',
         proposed_title: 'Diagnoses proposed by {{ version_name }}',
-        additional_title: 'Additional selected',
+        additional_title: 'Additional diagnoses selected',
         additional_placeholder: 'Select additional {{ item }}',
-        custom_title: 'Your proposition',
-        custom_placeholder: 'Add your diagnosis',
+        custom_title: 'Manually added diagnoses',
+        custom_placeholder: 'Add diagnoses manually',
         no_proposed: 'No diagnoses proposed',
-        no_additional: 'No additional diagnoses',
-        no_custom: 'No custom diagnoses',
+        no_additional: 'No additional diagnoses selected',
+        no_custom: 'No diagnoses added manually',
       },
       drugs: {
         drugs: 'Drugs',
         proposed: 'Proposed',
         additional: 'Additional',
-        custom: 'Custom',
+        custom: 'Added manually',
         custom_placeholder: 'Add your drugs',
         no_proposed: 'No drugs proposed',
-        no_additional: 'No additional drugs',
-        no_custom: 'No custom drugs',
+        no_additional: 'No additional drugs selected',
+        no_custom: 'No drugs added manually',
         no_medicines: 'No medicines available',
       },
       formulations: {
         title:
-          'Which formulation of medicine is available and appropriate for your patient ?',
+          'Which drug formulation is available and suited for your patient?',
       },
       summary: {
         management_consulting: 'Managements & Counselling',
@@ -182,8 +182,8 @@ export default {
       general: {
         title: 'General',
         environment: 'Environment',
-        app_languages: 'App languages',
-        algorithm_languages: 'Algorithm languages',
+        app_languages: 'App language',
+        algorithm_languages: 'Algorithm language',
         app_version: 'App version',
         languages: {
           en: 'English',
@@ -204,7 +204,7 @@ export default {
   components: {
     consent: {
       title: 'Consent',
-      question: 'Consent to data processing for this visit. No if revoked',
+      question: 'Consent to data processing for this visit (No if revoked)',
     },
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
@@ -223,16 +223,16 @@ export default {
         emergencyButton: 'GO TO EMERGENCY',
       },
       exit_medical_case: {
-        title: 'Leave medical case',
-        content: 'You are leaving the medical case',
-        exit_and_save: 'Exit and save',
-        exit_without_save: 'Exit without save',
+        title: 'Leave consultation',
+        content: 'You are leaving the consultation',
+        exit_and_save: 'Exit & save',
+        exit_without_save: "Exit, don't save",
       },
       exit_app: {
         title: 'Leave app',
-        content: 'Do you really want to leave the app ?',
-        ok: 'Ok',
-        back: 'Back',
+        content: 'Do you really want to leave the app?',
+        ok: 'OK',
+        back: 'Cancel',
       },
     },
     media: {
@@ -251,15 +251,15 @@ export default {
   database: {
     success: {
       message: 'Save',
-      description: 'Medical case saved successfully',
+      description: 'Consultation saved successfully',
     },
     error: {
       message: 'Error',
-      description: 'An error occurred while saving the medical case',
+      description: 'An error occurred while saving the consultation',
     },
     createMedicalCaseError: {
       message: 'Error',
-      description: 'An error occurred while creating the medical case',
+      description: 'An error occurred while creating the consultation',
     },
     patientLoadError: {
       message: 'Error',
@@ -272,10 +272,10 @@ export default {
     architecture: 'Architecture',
     country: 'Country',
     area: 'Area',
-    local_data_ip: 'MedAL-hub address',
-    main_data_ip: 'MedAL-data address',
-    custom_clinician: 'Custom clinician',
-    custom_clinician_subtitle: 'Create a custom clinician',
+    local_data_ip: 'medAL-hub address',
+    main_data_ip: 'medAL-data address',
+    custom_clinician: 'New staff member',
+    custom_clinician_subtitle: 'Create staff member',
     roles: {
       title: 'Roles',
       medical_doctor: 'Medical Doctor (MD)',
@@ -308,14 +308,14 @@ export default {
   patient: {
     first_name: 'First name',
     last_name: 'Last name',
-    birth_date: 'Birth date',
+    birth_date: 'Date of Birth',
     reason: 'Reason for changing facility',
   },
   medical_case: {
     comment: 'Comment',
   },
   permissions: {
-    message: 'You must grant the relevant permissions for the app to function.',
+    message: 'You must grant the relevant permissions for the app to work.',
     instructions:
       'Please go to Permissions in the tablet Settings and grant all required permissions',
   },
@@ -323,10 +323,10 @@ export default {
     drug: {
       give: 'Give',
       mg: 'mg',
-      caps: 'capsule of',
+      caps: 'capsule(s) of',
       every: 'every',
-      h: 'hours for',
-      days: 'days',
+      h: 'hour(s) for',
+      days: 'day(s)',
       mode: 'Mode',
       tablet: 'tablet of',
       d: 'duration',
@@ -343,7 +343,7 @@ export default {
       no_formulation: ' No formulation selected',
       missing_medicine_formulation: 'Please select a medicine formulation',
       no_options: 'No compatible option',
-      medication_form_not_handled: 'Medication form not handled',
+      medication_form_not_handled: 'Medication form not managed',
     },
     medication_form: {
       tablet: 'Tablet',
@@ -367,7 +367,7 @@ export default {
     },
   },
   validation: {
-    is_required: '{{ field }} is required',
+    is_required: 'Field "{{ field }}" is mandatory',
     consent_file_blank: "The data processing consent can't be blank",
   },
 }

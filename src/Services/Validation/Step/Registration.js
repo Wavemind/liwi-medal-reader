@@ -1,9 +1,15 @@
 /**
+ * The external imports
+ */
+import differenceInYears from 'date-fns/differenceInYears'
+import differenceInDays from 'date-fns/differenceInDays'
+
+/**
  * The internal imports
  */
 import { store } from '@/Store'
-
 import i18n from '@/Translations/index'
+import { translate } from '@/Translations/algorithm'
 import { QuestionStepValidation } from '@/Utils'
 import { RegistrationQuestionsService } from '@/Services/Steps'
 
@@ -12,6 +18,7 @@ export default async errors => {
 
   const algorithm = state.algorithm.item
   const patient = state.patient.item
+  const medicalCaseCreatedAt = state.medicalCase.item.createdAt
 
   const questions = RegistrationQuestionsService().filter(
     question => typeof question === 'number',
@@ -43,6 +50,18 @@ export default async errors => {
     errors.birth_date = i18n.t('validation.is_required', {
       field: i18n.t('patient.birth_date'),
     })
+  } else {
+    const formattedDate = new Date(patient.birth_date)
+    const formattedMedicalCaseCreatedAt = new Date(medicalCaseCreatedAt)
+    
+    if (
+      differenceInYears(formattedMedicalCaseCreatedAt, formattedDate) >=
+        algorithm.config.age_limit ||
+      differenceInDays(formattedMedicalCaseCreatedAt, formattedDate) <
+        algorithm.config.minimum_age
+    ) {
+      errors.birth_date = translate(algorithm.config.age_limit_message)
+    }
   }
 
   // Questions
