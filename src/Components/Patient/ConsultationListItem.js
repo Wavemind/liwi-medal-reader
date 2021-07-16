@@ -20,7 +20,6 @@ import { translate } from '@/Translations/algorithm'
 const ConsultationListItem = ({ item }) => {
   // Theme and style elements deconstruction
   const {
-    Fonts,
     FontSize,
     Layout,
     Gutters,
@@ -93,7 +92,7 @@ const ConsultationListItem = ({ item }) => {
           ))}
         </View>
         <Text style={consultationListItem.date}>
-          {item.synchronizedAt && format(item.synchronizedAt, 'dd.MM.yyyy')}
+          {item.synchronizedAt > 0 && format(item.synchronizedAt, 'dd.MM.yyyy')}
         </Text>
         <Icon name="right-arrow" size={FontSize.large} />
       </View>
