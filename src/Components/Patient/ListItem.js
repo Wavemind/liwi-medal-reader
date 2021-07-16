@@ -24,7 +24,6 @@ const ListItem = ({ item }) => {
     Components: { patientListItem },
     Layout,
     Gutters,
-    Fonts,
     FontSize,
   } = useTheme()
 
@@ -49,7 +48,10 @@ const ListItem = ({ item }) => {
     )
     if (isFulfilled(loadPatient)) {
       navigation.navigate('PatientProfile', {
-        title: `${item.first_name} ${item.last_name}`,
+        title: `${item.first_name} ${item.last_name} - ${format(
+          item.birth_date,
+          'dd.MM.yyyy',
+        )}`,
       })
     }
   }

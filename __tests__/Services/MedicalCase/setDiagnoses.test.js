@@ -208,6 +208,7 @@ describe('Final diagnosis are included / excluded correctly', () => {
     const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([123]))
   })
+
   it('QSS to false - Should propose Viral acute pharyngitis', async () => {
     await setBirthDate(store, 2337)
     await setAnswer(12, 20) // CC Ear / Throat / Mouth => Yes

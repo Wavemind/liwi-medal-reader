@@ -52,7 +52,7 @@ const Dot = ({ status, step, stepIndex, stageIndex, thinLines }) => {
         <View style={sideBar.separator(status, thinLines)} />
       )}
       <TouchableOpacity
-        disabled={!active}
+        disabled={!active || advancement.step === stepIndex}
         onPress={handlePress}
         style={sideBar.circleHitBox}
       >

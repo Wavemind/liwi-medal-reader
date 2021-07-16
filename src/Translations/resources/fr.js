@@ -4,7 +4,7 @@ export default {
     login: 'Connexion',
     new_patient: 'Nouveau patient',
     search: 'Rechercher',
-    select: 'Choisis',
+    select: 'Choisir',
     synchronize: 'Synchroniser',
     clear_filters: 'Réinitialiser',
     clear_selection: 'Réinitialiser',
@@ -24,7 +24,7 @@ export default {
     updated_at: 'Dernière màj',
   },
   application: {
-    algorithm_translation_missing: 'Traduction d\'algorithme manquante',
+    algorithm_translation_missing: "Traduction d'algorithme manquante",
     no_results: 'Aucun résultat trouvé',
     search: 'Rechercher',
     theme: {
@@ -55,8 +55,8 @@ export default {
           'Un·e administrateur·trice va associer cette tablette avec votre centre de santé',
       },
       pin: {
-        unlock: 'Entrer le NIP pour déverrouiller l\'application',
-        delete: 'Supprimer',
+        unlock: "Entrer le NIP pour déverrouiller l'application",
+        delete: 'Effacer',
       },
     },
     additional_list: {
@@ -74,8 +74,8 @@ export default {
       no_questions: 'Aucune question à afficher',
       duration_title: 'durée en jours',
       navigation: {
-        back: 'Préc',
-        next: 'Suiv',
+        back: 'Préc.',
+        next: 'Suiv.',
       },
       list: {
         title: 'Consultations',
@@ -98,11 +98,11 @@ export default {
         medical_history: 'Anamnèse',
         physical_exams: 'Examen physique',
         assessments: 'Tests',
-        final_diagnoses: 'Diagnostigs',
-        healthcare_questions: 'Questions relatives à la prise en charge',
+        final_diagnoses: 'Diagnostics',
+        healthcare_questions: 'Questions prise en charge',
         medicines: 'Médicaments',
         formulations: 'Formulations',
-        summary: 'Résumé',
+        summary: 'Récapitulatif',
         referral: 'Orientation',
       },
       registration: {
@@ -149,8 +149,8 @@ export default {
       new_sticker_notification:
         'Vous devez donner une nouvelle étiquette à votre patient·e',
       new_sticker_wrong_facility:
-        'La nouvelle étiquette n\'appartient pas à votre centre de santé',
-      wrong_format: 'Le code QR n\'est pas au bon format',
+        "La nouvelle étiquette n'appartient pas à votre centre de santé",
+      wrong_format: "Le code QR n'est pas au bon format",
     },
     patient: {
       list: {
@@ -175,16 +175,17 @@ export default {
     },
     synchronization: {
       synchronize: 'Synchroniser',
-      not_synchronized: 'Consultations en attente de syncrhonisation',
-      warning: 'Vous n\'avez pas syncrhonisé les consultations avec le serveur medAL-data depuis plus de 7 jours',
+      not_synchronized: 'Consultations en attente de synchronisation',
+      warning:
+        "Vous n'avez pas syncrhonisé les consultations avec le serveur medAL-data depuis plus de 7 jours",
     },
     settings: {
       general: {
         title: 'Général',
         environment: 'Environnement',
-        app_languages: 'Langue de l\'application',
-        algorithm_languages: 'Langue de l\'algorithme',
-        app_version: 'Version de l\'application',
+        app_languages: "Langue de l'application",
+        algorithm_languages: "Langue de l'algorithme",
+        app_version: "Version de l'application",
         languages: {
           en: 'English',
           fr: 'Français',
@@ -204,7 +205,8 @@ export default {
   components: {
     consent: {
       title: 'Consentement',
-      question: 'Consentez-vous au traitement des données pour cette visite ? (Non si refus)',
+      question:
+        'Consentez-vous au traitement des données pour cette visite ? (Non si refus)',
     },
     medical_case_drawer: {
       current_medical_case: 'Consultation en cours',
@@ -214,23 +216,23 @@ export default {
         title: 'Consultation verrouillée',
         content: 'Consultation verrouillée par {{ name }}',
         unlock_button: 'FORCER DÉVERROUILLAGE',
-        summary_button: 'RÉSUMÉ',
+        summary_button: 'RÉCAPITULATIF',
       },
       emergency: {
-        title: 'Assistance d\'urgence',
+        title: "Assistance d'urgence",
         content:
-          'Le patient présente un symptôme ou un signe d\'urgence. Voir la page d\'urgence maintenant si nécessaire.',
-        emergencyButton: 'VOIR LA PAGE D\'URGENCES',
+          "Le patient présente un symptôme ou un signe d'urgence. Voir la page d'urgence maintenant si nécessaire.",
+        emergencyButton: "VOIR LA PAGE D'URGENCES",
       },
       exit_medical_case: {
         title: 'Quitter la consultation',
         content: 'Vous êtes sur le point de quitter la consultation',
-        exit_and_save: 'Quitter & enregistrer',
-        exit_without_save: 'Quitter sans enregistrer',
+        exit_and_save: 'Enregistrer',
+        exit_without_save: 'Ne pas enregistrer',
       },
       exit_app: {
-        title: 'Quitter l\'application',
-        content: 'Voulez-vraiment quitter l\'application ?',
+        title: "Quitter l'application",
+        content: "Voulez-vraiment quitter l'application ?",
         ok: 'OK',
         back: 'Annuler',
       },
@@ -244,18 +246,19 @@ export default {
     mac_address: 'Adresse MAC',
     model: 'Modèle',
     brand: 'Marque',
-    os: 'Système d\'exploitation (OS)',
-    os_version: 'Version d\'OS',
+    os: "Système d'exploitation (OS)",
+    os_version: "Version d'OS",
     name_not_available: 'Pas de nom disponible',
   },
   database: {
     success: {
-      message: 'Enregistrer',
+      message: 'Enr.',
       description: 'Consultation enregistrée avec succès',
     },
     error: {
       message: 'Erreur',
-      description: 'Une problème est survenu à la sauvegarde de la consultation',
+      description:
+        'Une problème est survenu à la sauvegarde de la consultation',
     },
     createMedicalCaseError: {
       message: 'Erreur',
@@ -284,7 +287,7 @@ export default {
       nurse: 'Infirmier·ère',
       midwife: 'Sage-femme',
       pharmacist: 'Pharmacien·ne',
-      registration_assistant: 'Chargé·e d\'enregistrement',
+      registration_assistant: "Chargé·e d'enregistrement",
     },
   },
   navigation: {
@@ -292,7 +295,7 @@ export default {
     consultations: 'Consultations',
     patient_list: 'Liste patient·e·s',
     personal_info: 'Infos personnelles',
-    summary: 'Résumé',
+    summary: 'Récapitulatif',
     final_diagnoses: 'Diagnostics',
     questions: 'Questions',
     consent_list: 'Consentements',
@@ -315,7 +318,8 @@ export default {
     comment: 'Commentaire',
   },
   permissions: {
-    message: 'Vous devez accorder les permissions nécessaires au bon fonctionnement de l\'application.',
+    message:
+      "Vous devez accorder les permissions nécessaires au bon fonctionnement de l'application.",
     instructions:
       'Veuillez vous rendre dans la section "Permissions" des réglages de votre tablette pour accorder toutes les permissions nécessaires',
   },
@@ -368,6 +372,7 @@ export default {
   },
   validation: {
     is_required: 'Le champ « {{ field }} » est obligatoire',
-    consent_file_blank: "La réponse au consentement du traitement des données est obligatoire",
+    consent_file_blank:
+      'La réponse au consentement du traitement des données est obligatoire',
   },
 }

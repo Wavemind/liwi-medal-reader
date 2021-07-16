@@ -92,7 +92,7 @@ const ConsultationListItem = ({ item }) => {
           ))}
         </View>
         <Text style={consultationListItem.date}>
-          {item.synchronizedAt > 0 && format(item.synchronizedAt, 'dd.MM.yyyy')}
+          {format(item.updatedAt, 'dd.MM.yyyy')}
         </Text>
         <Icon name="right-arrow" size={FontSize.large} />
       </View>
