@@ -29,15 +29,7 @@ const DrugBooleanButton = ({ diagnosis, drugId, diagnosisKey }) => {
 
   return (
     <View style={drugs.booleanButtonWrapper}>
-      <View
-        style={booleanButton.buttonWrapper(
-          'left',
-          isAgreed,
-          false,
-          true,
-          Colors.lightGrey,
-        )}
-      >
+      <View style={booleanButton.buttonWrapper('left', isAgreed, false)}>
         <TouchableOpacity
           style={Layout.center}
           onPress={() =>
@@ -49,15 +41,7 @@ const DrugBooleanButton = ({ diagnosis, drugId, diagnosisKey }) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={booleanButton.buttonWrapper(
-          'right',
-          isRefused,
-          false,
-          true,
-          Colors.lightGrey,
-        )}
-      >
+      <View style={booleanButton.buttonWrapper('right', isRefused, false)}>
         <TouchableOpacity
           style={Layout.center}
           onPress={() =>
