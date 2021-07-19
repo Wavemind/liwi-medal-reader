@@ -9,12 +9,12 @@ import { ScrollView, View } from 'react-native'
  */
 import { Diagnosis, Custom } from '@/Components'
 import { useTheme } from '@/Theme'
-import { extractExcludedManagements } from '@/Utils/MedicalCase'
+import { ExtractExcludedManagementsService } from '@/Services/MedicalCase'
 
 const SummaryMedicalCaseContainer = () => {
   const { Gutters } = useTheme()
 
-  const [excludedManagements] = useState(extractExcludedManagements())
+  const [excludedManagements] = useState(ExtractExcludedManagementsService())
 
   return (
     <ScrollView>
