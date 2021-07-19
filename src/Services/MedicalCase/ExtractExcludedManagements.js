@@ -1,4 +1,5 @@
 import { store } from '@/Store'
+import { uniq } from '@/Utils/MedicalCase'
 
 /**
  * Extracts the excluded managements from the agreed and additional diagnoses
@@ -23,5 +24,5 @@ export default () => {
       })
     }
   })
-  return excludedManagements
+  return uniq(excludedManagements)
 }
