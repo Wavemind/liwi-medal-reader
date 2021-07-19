@@ -115,6 +115,8 @@ const LoginAuthContainer = () => {
             value={email}
             autoCompleteType="email"
             placeholder={t('containers.auth.login.email')}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
           <TextInput
             style={authLogin.input}
