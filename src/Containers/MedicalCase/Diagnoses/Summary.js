@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { ScrollView, View } from 'react-native'
 
 /**
@@ -9,15 +9,24 @@ import { ScrollView, View } from 'react-native'
  */
 import { Diagnosis, Custom } from '@/Components'
 import { useTheme } from '@/Theme'
+import { extractExcludedManagements } from '@/Utils/MedicalCase'
 
 const SummaryMedicalCaseContainer = () => {
   const { Gutters } = useTheme()
 
+  const [excludedManagements] = useState(extractExcludedManagements())
+
   return (
     <ScrollView>
       <View style={Gutters.regularBMargin}>
-        <Diagnosis diagnosisKey="agreed" />
-        <Diagnosis diagnosisKey="additional" />
+        <Diagnosis
+          diagnosisKey="agreed"
+          excludedManagements={excludedManagements}
+        />
+        <Diagnosis
+          diagnosisKey="additional"
+          excludedManagements={excludedManagements}
+        />
         <Custom />
       </View>
     </ScrollView>

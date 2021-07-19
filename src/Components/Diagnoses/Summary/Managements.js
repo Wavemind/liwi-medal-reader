@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { QuestionInfoButton } from '@/Components'
 
-const Managements = ({ diagnosis }) => {
+const Managements = ({ diagnosis, excludedManagements }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
@@ -38,19 +38,23 @@ const Managements = ({ diagnosis }) => {
           {t('containers.medical_case.summary.no_managements')}
         </Text>
       ) : (
-        diagnosis.managements.map((managementId, i) => (
-          <View
-            key={`management-${managementId}`}
-            style={summary.managementWrapper(i === managementsCount - 1)}
-          >
-            <Text style={summary.drugTitle}>
-              {translate(nodes[managementId].label)}
-            </Text>
-            {translate(nodes[managementId].description) !== '' && (
-              <QuestionInfoButton nodeId={managementId} />
-            )}
-          </View>
-        ))
+        diagnosis.managements.map((managementId, i) => {
+          if (!excludedManagements.includes(managementId)) {
+            return (
+              <View
+                key={`management-${managementId}`}
+                style={summary.managementWrapper(i === managementsCount - 1)}
+              >
+                <Text style={summary.drugTitle}>
+                  {translate(nodes[managementId].label)}
+                </Text>
+                {translate(nodes[managementId].description) !== '' && (
+                  <QuestionInfoButton nodeId={managementId} />
+                )}
+              </View>
+            )
+          }
+        })
       )}
     </View>
   )

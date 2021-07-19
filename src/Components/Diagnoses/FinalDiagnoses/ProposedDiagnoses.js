@@ -24,7 +24,7 @@ const ProposedDiagnoses = () => {
 
   const { t } = useTranslation()
 
-  const algorithm = useSelector(state => state.algorithm.item)
+  const nodes = useSelector(state => state.algorithm.item.nodes)
   const proposed = useSelector(
     state => state.medicalCase.item.diagnosis.proposed,
   )
@@ -48,9 +48,9 @@ const ProposedDiagnoses = () => {
           style={finalDiagnoses.newItemWrapper(i === proposed.length - 1)}
         >
           <Text style={finalDiagnoses.diagnosisLabel}>
-            {translate(algorithm.nodes[diagnosisId].label)}
+            {translate(nodes[diagnosisId].label)}
           </Text>
-          {translate(algorithm.nodes[diagnosisId].description) !== '' && (
+          {translate(nodes[diagnosisId].description) !== '' && (
             <QuestionInfoButton nodeId={diagnosisId} />
           )}
           <View style={finalDiagnoses.booleanButtonWrapper}>

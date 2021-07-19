@@ -240,7 +240,7 @@ const DateInput = () => {
               selectedValue={estimatedDateType}
               mode="dropdown"
               onValueChange={handleEstimatedType}
-              dropdownIconColor={Colors.black}
+              dropdownIconColor={Colors.primary}
             >
               <Picker.Item
                 key="select-date-type-placeholder"
@@ -281,7 +281,7 @@ const DateInput = () => {
               selectedValue={yearValue}
               mode="dropdown"
               onValueChange={setYearValue}
-              dropdownIconColor={Colors.black}
+              dropdownIconColor={Colors.primary}
             >
               <Picker.Item
                 key="select-year-placeholder"
@@ -303,7 +303,7 @@ const DateInput = () => {
               selectedValue={monthValue}
               mode="dropdown"
               onValueChange={setMonthValue}
-              dropdownIconColor={Colors.black}
+              dropdownIconColor={Colors.primary}
             >
               <Picker.Item
                 key="select-month-placeholder"
@@ -329,7 +329,7 @@ const DateInput = () => {
               selectedValue={dayValue}
               mode="dropdown"
               onValueChange={setDayValue}
-              dropdownIconColor={Colors.black}
+              dropdownIconColor={Colors.primary}
             >
               <Picker.Item
                 key="select-day-placeholder"
