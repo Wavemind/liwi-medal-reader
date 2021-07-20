@@ -104,6 +104,7 @@ const CustomDrawerContent = ({ navigation }) => {
               routeParams={{ stageIndex, stepIndex }}
               iconName="summary"
               navigation={navigation}
+              disabled
             />
           )}
         </DrawerContentScrollView>
