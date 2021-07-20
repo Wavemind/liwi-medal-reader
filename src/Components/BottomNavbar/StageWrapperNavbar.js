@@ -359,6 +359,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             filled
             icon="right-arrow"
             iconAfter
+            disabled={loading}
             iconSize={FontSize.regular}
             onPress={() => stepVerification(1)}
           />
