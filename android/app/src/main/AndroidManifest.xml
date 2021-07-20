@@ -25,6 +25,7 @@
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
+        android:screenOrientation="userPortrait"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
         android:launchMode="singleTask"
         android:windowSoftInputMode="adjustResize">
