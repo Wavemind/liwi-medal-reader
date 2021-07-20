@@ -31,7 +31,6 @@ const IndexStudyContainer = ({
 
   // Theme and style elements deconstruction
   const {
-    Colors,
     Containers: { study },
   } = useTheme()
 
@@ -66,7 +65,7 @@ const IndexStudyContainer = ({
           <WebView
             source={{ html: htmlContent }}
             scalesPageToFit={false}
-            style={{ backgroundColor: 'transparent' }}
+            style={study.bgTransparent}
           />
         </View>
       </View>
