@@ -227,7 +227,7 @@ export default {
         title: 'Leave consultation',
         content: 'You are leaving the consultation',
         exit_and_save: 'Exit & save',
-        exit_without_save: 'Exit, don\'t save',
+        exit_without_save: "Exit, don't save",
       },
       exit_app: {
         title: 'Leave app',
@@ -349,7 +349,7 @@ export default {
     medication_form: {
       tablet: 'Tablet',
       dispersible_tablet: 'Dispersible tablet',
-      capsul: 'Capsule',
+      capsule: 'Capsule',
       syrup: 'Syrup',
       suspension: 'Suspension',
       suppository: 'Suppository',
@@ -370,5 +370,8 @@ export default {
   validation: {
     is_required: 'Field "{{ field }}" is mandatory',
     consent_file_blank: "The data processing consent can't be blank",
+    final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
+    medicines_required: 'Please agree or refuse all medicines',
+    formulation_required: 'Please choose a formulation for each medicine',
   },
 }
