@@ -6,7 +6,6 @@ import i18n from '@/Translations/index'
 
 export default async errors => {
   const state = store.getState()
-
   const proposed = state.medicalCase.item.diagnosis.proposed
   const agreed = state.medicalCase.item.diagnosis.agreed
   const refused = state.medicalCase.item.diagnosis.refused

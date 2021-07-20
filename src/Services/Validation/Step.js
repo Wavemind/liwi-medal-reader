@@ -7,6 +7,8 @@ import { QuestionStepValidation } from '@/Utils'
 import {
   RegistrationStepService,
   FinalDiagnosesStepService,
+  MedicinesStepService,
+  FormulationStepService,
 } from '@/Services/Validation'
 import {
   BasicMeasurementQuestionsService,
@@ -63,9 +65,9 @@ export default () => {
         errors,
       )
     case 'medicines':
-      return {}
+      return MedicinesStepService(errors)
     case 'formulations':
-      return {}
+      return FormulationStepService(errors)
     case 'summary':
       return {}
     case 'referral':

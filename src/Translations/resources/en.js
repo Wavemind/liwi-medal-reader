@@ -369,6 +369,8 @@ export default {
   validation: {
     is_required: 'Field "{{ field }}" is mandatory',
     consent_file_blank: "The data processing consent can't be blank",
-    final_diagnoses_required: 'Please agree / refuse all proposed diagnoses',
+    final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
+    medicines_required: 'Please agree or refuse all medicines',
+    formulation_required: 'Please choose a formulation for each medicine',
   },
 }
