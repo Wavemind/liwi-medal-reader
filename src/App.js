@@ -6,7 +6,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react'
 import FlashMessage from 'react-native-flash-message'
 import Appsignal from '@appsignal/javascript'
 import { ErrorBoundary } from '@appsignal/react'
-import { navigateAndReset } from '@/Navigators/Root'
+import { navigateNestedAndSimpleReset } from '@/Navigators/Root'
 
 const appsignal = new Appsignal({ key: '9c0f7538-551f-41a5-b331-864ba2e04705' })
 const FallbackComponent = error => (
@@ -42,7 +42,7 @@ const App = () => {
       appState.current.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      navigateAndReset([{ name: 'Auth', params: { screen: 'Pin' } }])
+      navigateNestedAndSimpleReset('Auth', 'Pin')
     }
 
     appState.current = nextAppState
