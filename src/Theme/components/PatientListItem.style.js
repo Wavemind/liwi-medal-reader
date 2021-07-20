@@ -50,6 +50,11 @@ export default function (props) {
       ...Gutters.tinyVPadding,
       ...Gutters.tinyHPadding,
     }),
+    noActiveConsultationsText: {
+      ...Fonts.textTiny,
+      ...Gutters.smallRMargin,
+      color: Colors.primary,
+    },
     picker: {
       width: hp(22),
       color: Colors.primary,

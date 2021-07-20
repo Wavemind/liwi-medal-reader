@@ -71,7 +71,7 @@ const ConsultationListItem = ({ item }) => {
     >
       <View style={consultationListItem.container}>
         {!item.synchronizedAt && (
-          <View style={[Layout.column, Gutters.regularRMargin]}>
+          <View style={[Layout.column, Gutters.tinyRMargin]}>
             <Icon name="alert" size={FontSize.large} color={Colors.red} />
           </View>
         )}

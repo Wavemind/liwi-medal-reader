@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, FlatList, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -46,16 +46,32 @@ const ConsultationPatientContainer = ({ navigation }) => {
   )
 
   // Local state definition
-  const [currentConsultation] = useState(
+  const [currentConsultation, setCurrentConsultation] = useState(
     patient.medicalCases.find(medicalCase => medicalCase.closedAt === 0),
   )
-  const [closedCases] = useState(
+  const [closedCases, setClosedCases] = useState(
     orderBy(
       patient.medicalCases.filter(medicalCase => medicalCase.closedAt > 0),
       medicalCase => medicalCase.createdAt,
       ['desc'],
     ),
   )
+
+  /**
+   * Updates the currentConsultation and closedCases if a new patient is loaded into the store
+   */
+  useEffect(() => {
+    setCurrentConsultation(
+      patient.medicalCases.find(medicalCase => medicalCase.closedAt === 0),
+    )
+    setClosedCases(
+      orderBy(
+        patient.medicalCases.filter(medicalCase => medicalCase.closedAt > 0),
+        medicalCase => medicalCase.createdAt,
+        ['desc'],
+      ),
+    )
+  }, [patient])
 
   /**
    * Fetch 15 latest medical cases

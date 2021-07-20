@@ -158,6 +158,7 @@ export default {
         name: 'Name',
         last_visit: 'Last visit',
         status: 'Status',
+        no_active_consultations: 'No active consultations',
       },
       consultations: {
         current_consultation: 'Current consultation',
