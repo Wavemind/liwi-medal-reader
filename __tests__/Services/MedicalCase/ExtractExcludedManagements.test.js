@@ -16,13 +16,10 @@ beforeAll(async () => {
   )
 })
 
-// 1769 => 76
-// 1808 => 60
-
 beforeEach(async () => {
   const algorithm = store.getState().algorithm.item
-  const diagnosis1Id = 76
-  const diagnosis2Id = 60
+  const diagnosis1Id = 76 // Severe croup
+  const diagnosis2Id = 60 // Severe pneumonia
   const currentNode1 = algorithm.nodes[diagnosis1Id]
   const currentNode2 = algorithm.nodes[diagnosis2Id]
 
@@ -65,6 +62,8 @@ beforeEach(async () => {
 
 describe('Extract excluded managements', () => {
   it('Should exclude managementId 1769 when managementId 1808 is present', () => {
+    // ManagementId = 1808 => Refer urgently for inpatient management
+    // ManagementId = 1769 => No inpatient referral needed: Reasons to return to clinic
     const excludedManagements = ExtractExcludedManagementsService()
     expect(excludedManagements).toContain(1769)
   })
