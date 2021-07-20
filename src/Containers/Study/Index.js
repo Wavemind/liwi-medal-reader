@@ -12,7 +12,10 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { navigateNestedAndSimpleReset } from '@/Navigators/Root'
+import {
+  navigateNestedAndSimpleReset,
+  navigateAndSimpleReset,
+} from '@/Navigators/Root'
 
 const IndexStudyContainer = ({
   navigation,
@@ -28,7 +31,6 @@ const IndexStudyContainer = ({
 
   // Theme and style elements deconstruction
   const {
-    Colors,
     Containers: { study },
   } = useTheme()
 
@@ -44,7 +46,11 @@ const IndexStudyContainer = ({
     if (source === 'auth') {
       navigateNestedAndSimpleReset('Auth', 'ClinicianSelection')
     } else {
-      navigation.goBack()
+      if (navigation.canGoBack()) {
+        navigation.goBack()
+      } else {
+        navigateAndSimpleReset('Home')
+      }
     }
   }
 
@@ -56,7 +62,11 @@ const IndexStudyContainer = ({
       </TouchableOpacity>
       <View style={study.contentWrapper}>
         <View style={study.innerWrapper}>
-          <WebView source={{ html: htmlContent }} scalesPageToFit={false} style={{ backgroundColor: 'transparent' }} />
+          <WebView
+            source={{ html: htmlContent }}
+            scalesPageToFit={false}
+            style={study.bgTransparent}
+          />
         </View>
       </View>
     </View>

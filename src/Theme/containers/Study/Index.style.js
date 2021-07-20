@@ -34,5 +34,8 @@ export default function (props) {
     innerWrapper: {
       ...Layout.fullHeight,
     },
+    bgTransparent: {
+      backgroundColor: 'transparent',
+    },
   })
 }
