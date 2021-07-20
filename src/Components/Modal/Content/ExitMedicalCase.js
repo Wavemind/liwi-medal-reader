@@ -14,6 +14,7 @@ import { useTheme } from '@/Theme'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { SaveMedicalCaseService } from '@/Services/MedicalCase'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
+import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 
 const ExitMedicalCase = () => {
   // Theme and style elements deconstruction
@@ -42,6 +43,9 @@ const ExitMedicalCase = () => {
    * Redirect user to home page and clear medical case store
    */
   const exitWithoutSave = async () => {
+    if (routeName === 'Auth') {
+      await dispatch(ChangeClinician.action({ clinician: {} }))
+    }
     await dispatch(ToggleVisibility.action({}))
     navigateAndSimpleReset(routeName, {
       ...routeParams,
@@ -58,6 +62,9 @@ const ExitMedicalCase = () => {
       stepIndex,
     })
     if (medicalCaseSaved) {
+      if (routeName === 'Auth') {
+        await dispatch(ChangeClinician.action({ clinician: {} }))
+      }
       await dispatch(ToggleVisibility.action({}))
       navigateAndSimpleReset(routeName, {
         ...routeParams,

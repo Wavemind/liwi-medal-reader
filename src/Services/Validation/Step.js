@@ -4,7 +4,12 @@
 import { store } from '@/Store'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import { QuestionStepValidation } from '@/Utils'
-import { RegistrationStepService } from '@/Services/Validation'
+import {
+  RegistrationStepService,
+  FinalDiagnosesStepService,
+  MedicinesStepService,
+  FormulationStepService,
+} from '@/Services/Validation'
 import {
   BasicMeasurementQuestionsService,
   UniqueTriageQuestionsService,
@@ -53,16 +58,16 @@ export default () => {
     case 'assessments':
       return QuestionStepValidation(AssessmentQuestionsService(), errors)
     case 'final_diagnoses':
-      return {}
+      return FinalDiagnosesStepService(errors)
     case 'healthcare_questions':
       return QuestionStepValidation(
         TreatmentConditionsQuestionsService(),
         errors,
       )
     case 'medicines':
-      return {}
+      return MedicinesStepService(errors)
     case 'formulations':
-      return {}
+      return FormulationStepService(errors)
     case 'summary':
       return {}
     case 'referral':

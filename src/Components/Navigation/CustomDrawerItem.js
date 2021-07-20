@@ -21,6 +21,7 @@ const CustomDrawerItem = ({
   routeParams = {},
   iconName,
   navigation,
+  disabled,
 }) => {
   // Theme and style elements deconstruction
   const {
@@ -37,16 +38,18 @@ const CustomDrawerItem = ({
   const closedAt = useSelector(state => state.medicalCase.item.closedAt)
 
   const handleNavigation = async () => {
-    if (medicalCaseId && closedAt === 0) {
-      await dispatch(
-        SetParams.action({
-          type: 'exitMedicalCase',
-          params: { routeName, routeParams },
-        }),
-      )
-      await dispatch(ToggleVisibility.action({}))
-    } else {
-      navigate(routeName, routeParams)
+    if (!disabled) {
+      if (medicalCaseId && closedAt === 0) {
+        await dispatch(
+          SetParams.action({
+            type: 'exitMedicalCase',
+            params: { routeName, routeParams },
+          }),
+        )
+        await dispatch(ToggleVisibility.action({}))
+      } else {
+        navigate(routeName, routeParams)
+      }
     }
   }
 

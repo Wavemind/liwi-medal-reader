@@ -106,8 +106,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
    */
   const revalidateStep = async () => {
     setLoading(true)
-    Keyboard.dismiss()
-    await new Promise(resolve => setTimeout(resolve, 50))
+    await Keyboard.dismiss()
+    await new Promise(resolve => setTimeout(resolve, 200))
     await dispatch(StepValidation.action())
     setLoading(false)
   }
@@ -119,8 +119,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
    */
   const stepVerification = async (direction, skipValidation = false) => {
     setLoading(true)
-    Keyboard.dismiss()
-    await new Promise(resolve => setTimeout(resolve, 50))
+    await Keyboard.dismiss()
+    await new Promise(resolve => setTimeout(resolve, 200))
     let validation = null
     if (!skipValidation) {
       validation = await dispatch(StepValidation.action())
@@ -359,6 +359,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             filled
             icon="right-arrow"
             iconAfter
+            disabled={loading}
             iconSize={FontSize.regular}
             onPress={() => stepVerification(1)}
           />

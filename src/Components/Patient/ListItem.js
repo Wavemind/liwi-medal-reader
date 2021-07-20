@@ -72,7 +72,7 @@ const ListItem = ({ item }) => {
             {format(item.updatedAt, 'dd.MM.yyyy')}
           </Text>
         </View>
-        {activeMedicalCase && (
+        {activeMedicalCase ? (
           <View style={patientListItem.statusWrapper}>
             <Text style={patientListItem.statusTitle}>
               {t(
@@ -94,6 +94,10 @@ const ListItem = ({ item }) => {
               ))}
             </View>
           </View>
+        ) : (
+          <Text style={patientListItem.noActiveConsultationsText}>
+            {t('containers.patient.list.no_active_consultations')}
+          </Text>
         )}
         <View style={[Gutters.regularLMargin, Layout.column]}>
           <Icon name="right-arrow" size={25} />

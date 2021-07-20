@@ -31,7 +31,7 @@ export default function (props) {
       ...Layout.grow,
       ...Gutters.smallVPadding,
       ...Gutters.smallHPadding,
-      color: Colors.whiteToSecondary,
+      color: Colors.primary,
       textAlignVertical: 'top',
     },
     searchIcon: {

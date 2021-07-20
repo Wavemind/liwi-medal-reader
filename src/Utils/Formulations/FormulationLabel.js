@@ -15,15 +15,26 @@ export const formulationLabel = drugDose => {
     case Config.MEDICATION_FORMS.spray:
     case Config.MEDICATION_FORMS.patch:
     case Config.MEDICATION_FORMS.inhaler: {
-      return `${translate(drugDose.description)}: ${roundSup(drugDose.unique_dose)} ${i18n.t(`formulations.medication_form.${drugDose.medication_form}`).toLowerCase()}`
+      return `${translate(drugDose.description)}: ${roundSup(
+        drugDose.unique_dose,
+      )} ${i18n
+        .t(`formulations.medication_form.${drugDose.medication_form}`)
+        .toLowerCase()}`
     }
     case Config.MEDICATION_FORMS.tablet:
     case Config.MEDICATION_FORMS.dispersible_tablet: {
       if (drugDose.by_age) {
-        return `${translate(drugDose.description)}: ${roundSup(drugDose.unique_dose)} ${i18n.t('formulations.drug.tablets')}`
+        return `${translate(drugDose.description)}: ${roundSup(
+          drugDose.unique_dose,
+        )} ${i18n.t('formulations.drug.tablets')}`
       }
-      return `${roundSup(drugDose.dose_form)}mg ${i18n.t(`formulations.medication_form.${drugDose.medication_form}`).toLowerCase()}: ${drugDose.doseResult !== null
-          ? `${breakableFraction(drugDose)} ${i18n.t('formulations.drug.tablets')}`
+      return `${roundSup(drugDose.dose_form)}mg ${i18n
+        .t(`formulations.medication_form.${drugDose.medication_form}`)
+        .toLowerCase()}: ${
+        drugDose.doseResult !== null
+          ? `${breakableFraction(drugDose)} ${i18n.t(
+              'formulations.drug.tablets',
+            )}`
           : i18n.t('formulations.drug.no_options')
       }`
     }
@@ -50,9 +61,13 @@ export const formulationLabel = drugDose => {
           drugDose.unique_dose,
         )}ml`
       }
-      return `${roundSup(drugDose.liquid_concentration)}mg/${roundSup(drugDose.dose_form)}ml ${i18n
+      return `${roundSup(drugDose.liquid_concentration)}mg/${roundSup(
+        drugDose.dose_form,
+      )}ml ${i18n
         .t(`formulations.medication_form.${drugDose.medication_form}`)
-        .toLowerCase()}: ${drugDose.doseResult}ml ${i18n.t('formulations.medication_form.per_administration')}`
+        .toLowerCase()}: ${drugDose.doseResult}ml ${i18n.t(
+        'formulations.medication_form.per_administration',
+      )}`
     }
     default: {
       return `(${drugDose.medication_form}) ${i18n.t(
