@@ -30,9 +30,13 @@ export default (questions, errors, validateInArmControl = false) => {
       (!mcNode.unavailableValue && mcNode.value !== unavailableAnswer?.id) ||
       (mcNode.unavailableValue && mcNode.answer === null)
     ) {
-      const result = mcNode.answer !== null || mcNode.value !== ''
+      const result =
+        mcNode.answer !== null || (mcNode.value !== '' && mcNode.value !== null)
 
       // Integer or float input out of range defined by min/max value error
+      if (node.id === 214) {
+        console.log(mcNode, node, result)
+      }
       if (
         node.value_format === Config.VALUE_FORMATS.int ||
         node.value_format === Config.VALUE_FORMATS.float
