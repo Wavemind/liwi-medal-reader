@@ -1,8 +1,10 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
+import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
@@ -13,8 +15,18 @@ import { ExtractExcludedManagementsService } from '@/Services/MedicalCase'
 
 const SummaryMedicalCaseContainer = () => {
   const { Gutters } = useTheme()
+  const isFocused = useIsFocused()
 
-  const [excludedManagements] = useState(ExtractExcludedManagementsService())
+  const [excludedManagements, setExcludedManagements] = useState(
+    ExtractExcludedManagementsService(),
+  )
+
+  useEffect(() => {
+    const managements = ExtractExcludedManagementsService()
+    if (!isEqual(excludedManagements, managements)) {
+      setExcludedManagements(ExtractExcludedManagementsService())
+    }
+  }, [isFocused])
 
   return (
     <ScrollView>
