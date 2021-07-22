@@ -49,7 +49,7 @@ describe('Handle validations message', () => {
   it('Should update date formulas on set Birthday', async () => {
     await setBirthDate(store, 129)
     const mcNodes = store.getState().medicalCase.item.nodes
-    expect(mcNodes[2].value).toEqual(129)
+    expect(mcNodes[2].value).toEqual(128)
   })
   it('Rounding above when below 0 - Should return 0 on weight for height', async () => {
     await setAnswer(214, 394) // I'm a male
