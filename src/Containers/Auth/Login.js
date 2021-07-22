@@ -125,6 +125,7 @@ const LoginAuthContainer = () => {
             secureTextEntry
             autoCompleteType="password"
             placeholder={t('containers.auth.login.password')}
+            autoCapitalize="none"
           />
           <SquareSelect
             label={t('containers.auth.login.environment')}
