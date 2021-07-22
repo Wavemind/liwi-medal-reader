@@ -50,6 +50,13 @@ export default () => {
     )
   })
 
+  // Remove agreed diagnosis if it is no longer proposed
+  Object.values(mcDiagnosis.agreed).forEach(diagnosis => {
+    if (!mcDiagnosis.proposed.includes(diagnosis.id)) {
+      delete mcDiagnosis.agreed[diagnosis.id]
+    }
+  })
+
   const excludedDiagnosis = validDiagnoses
     .map(diagnosis =>
       findExcludedFinalDiagnoses(diagnosis).filter(
