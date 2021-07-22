@@ -51,7 +51,7 @@ export default function (props) {
       }
 
       return {
-        ...Layout.grow,
+        ...Layout.fill,
         ...Fonts.textMedium,
         ...customStyle,
       }
