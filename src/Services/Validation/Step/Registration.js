@@ -1,7 +1,6 @@
 /**
  * The external imports
  */
-import differenceInYears from 'date-fns/differenceInYears'
 import differenceInDays from 'date-fns/differenceInDays'
 
 /**
@@ -11,6 +10,7 @@ import { store } from '@/Store'
 import i18n from '@/Translations/index'
 import { translate } from '@/Translations/algorithm'
 import { QuestionStepValidation } from '@/Utils'
+import { Config } from '@/Config'
 import { RegistrationQuestionsService } from '@/Services/Steps'
 
 export default async errors => {
@@ -56,9 +56,13 @@ export default async errors => {
     const formattedDate = new Date(patient.birth_date)
     const formattedMedicalCaseCreatedAt = new Date(medicalCaseCreatedAt)
 
+    const differenceInYears =
+      differenceInDays(formattedMedicalCaseCreatedAt, formattedDate) /
+      Config.DAYS_IN_MONTH /
+      12
+
     if (
-      differenceInYears(formattedMedicalCaseCreatedAt, formattedDate) >=
-        algorithm.config.age_limit ||
+      differenceInYears >= algorithm.config.age_limit ||
       differenceInDays(formattedMedicalCaseCreatedAt, formattedDate) <
         algorithm.config.minimum_age
     ) {

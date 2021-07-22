@@ -166,7 +166,7 @@ const DateInput = () => {
       let birthDate = ''
 
       if (estimatedDateType === 'day') {
-        birthDate = subDays(new Date(), estimatedValue)
+        birthDate = subDays(new Date(), Number(estimatedValue) + 1)
       } else if (estimatedDateType === 'month') {
         birthDate = subMonths(new Date(), estimatedValue)
       } else {
@@ -211,7 +211,7 @@ const DateInput = () => {
     // TODO Improve it
     setIsEstimated(value)
     setEstimatedValue('')
-    setEstimatedDateType(null)
+    setEstimatedDateType('month')
     setDayValue(null)
     setMonthValue(null)
     setYearValue(null)

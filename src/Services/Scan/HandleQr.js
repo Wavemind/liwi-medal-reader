@@ -68,7 +68,13 @@ export default async ({
   healthFacilityId,
   generateNewQR,
   otherQR,
+  reset = false,
 }) => {
+  // Clean the store
+  if (reset) {
+    return {}
+  }
+
   const QRData = await getQrData(QrRawData)
   // QR code valid ?
   if ('uid' in QRData && 'study_id' in QRData && 'group_id' in QRData) {

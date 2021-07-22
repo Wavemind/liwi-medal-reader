@@ -15,12 +15,13 @@ export default function (props) {
     }),
     diagnosisLabel: {
       ...Fonts.textSmall,
+      flexGrow: 1,
       color: Colors.primary,
       width: wp(40),
     },
     booleanButtonWrapper: {
       ...Layout.row,
-      ...Gutters.smallLMargin,
+      ...Gutters.tinyLPadding,
       width: wp(33.3),
     },
     addCustomWrapper: {
