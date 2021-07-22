@@ -12,15 +12,12 @@ import { Icon } from '@/Components'
 import { useTheme } from '@/Theme'
 
 const QuestionInfoButton = ({ nodeId, color }) => {
-  const { Colors, Layout } = useTheme()
+  const { Colors } = useTheme()
 
   const iconColor = color || Colors.info
 
   return (
-    <TouchableOpacity
-      style={Layout.fill}
-      onPress={() => navigate('QuestionInfo', { nodeId })}
-    >
+    <TouchableOpacity onPress={() => navigate('QuestionInfo', { nodeId })}>
       <Icon name="simple-info" color={iconColor} />
     </TouchableOpacity>
   )
