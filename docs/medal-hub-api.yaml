@@ -486,9 +486,6 @@ components:
     PatientValue:
       type: object
       properties:
-        patient_id:
-          type: string
-          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
         node_id:
           type: integer
           example: 3
@@ -554,6 +551,9 @@ components:
     MedicalCase:
       type: object
       properties:
+        id:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
         json:
           type: object
           properties:

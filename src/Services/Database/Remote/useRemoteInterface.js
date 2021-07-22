@@ -16,10 +16,15 @@ export default function () {
    * @returns { Collection } - A collection of all the data
    */
   const getAll = async (model, page, params) => {
-    const stringFilters = _generateFiltersUrl(params.filters)
-    const url = `/api/${_mapModelToRoute(model)}?page=${page}&query=${
-      params.query
-    }${stringFilters !== '' ? `&filter=${stringFilters}` : ''}`
+    let stringFilters = ''
+    let stringQuery = ''
+    if (params) {
+      stringFilters = _generateFiltersUrl(params.filters)
+      stringQuery = params.query
+    }
+    let url = `/api/${_mapModelToRoute(model)}?page=${page}`
+    url += stringQuery !== '' ? `&query=${stringQuery}` : ''
+    url += stringFilters !== '' ? `&filter=${stringFilters}` : ''
 
     const response = await api.get(url)
     return response.data.data
@@ -63,7 +68,7 @@ export default function () {
     )
     return response.data.data
   }
-  
+
   /**
    * Inserts a new medical case into the DB
    * @param patientId
@@ -85,7 +90,47 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertPatient = async (patientData, medicalCaseData) => {
+    console.log('IIC !')
+    console.log({
+      medical_case: medicalCaseData,
+      patient: patientData,
+    })
     const response = await api.post('/api/patients', {
+      medical_case: {
+        uuid: medicalCaseData.id,
+        json: JSON.stringify({
+          comment: medicalCaseData.comment,
+          consent: medicalCaseData.consent,
+          diagnosis: medicalCaseData.diagnosis,
+          nodes: medicalCaseData.nodes,
+        }),
+        json_version: medicalCaseData.json_version,
+        advancement: medicalCaseData.advancement,
+        synchronizedAt: medicalCaseData.synchronizedAt,
+        closedAt: medicalCaseData.closedAt,
+        fail_safe: false,
+        version_id: medicalCaseData.version_id,
+      },
+      patient: {
+        uuid: patientData.id,
+        first_name: patientData.first_name,
+        last_name: patientData.last_name,
+        birth_date: patientData.birth_date,
+        birth_date_estimated: patientData.birth_date_estimated,
+        uid: patientData.uid,
+        study_id: patientData.study_id,
+        group_id: patientData.group_id,
+        other_uid: patientData.other_uid,
+        other_study_id: patientData.other_study_id,
+        other_group_id: patientData.other_group_id,
+        reason: patientData.reason,
+        consent: patientData.consent,
+        consent_file: patientData.consent_file,
+        fail_safe: patientData.fail_safe,
+      },
+    })
+
+    console.log(response.data, {
       medical_case: medicalCaseData,
       patient: patientData,
     })
@@ -99,9 +144,24 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertPatientValues = async (patientValues, patientId) => {
+    console.log(patientValues, {
+      patient_values: patientValues.map(patientValue => ({
+        node_id: patientValue.id,
+        answer_id: patientValue.answer,
+        value: patientValue.value,
+        patient_id: patientId,
+      })),
+    })
     const response = await api.post(
       `/api/patients/${patientId}/patient_values`,
-      patientValues,
+      {
+        patient_values: patientValues.map(patientValue => ({
+          node_id: patientValue.id,
+          answer_id: patientValue.answer,
+          value: patientValue.value,
+          patient_id: patientId,
+        })),
+      },
     )
     return response.data.data
   }

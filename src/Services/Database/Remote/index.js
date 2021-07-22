@@ -6,7 +6,7 @@ import { store } from '@/Store'
 const instance = axios.create({
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
+    'Content-type': 'application/json',
   },
   timeout: 3000,
 })
@@ -30,6 +30,13 @@ instance.interceptors.request.use(
     config.baseURL = local_data_ip
     config.headers.common.mac_address = mac_address
     config.headers.common.clinician = clinician
+    config.headers.common.accept = 'application/json'
+    config.headers.common['Content-Type'] = 'application/json'
+    config.headers = {
+      'Content-type': 'application/json',
+      Accept: 'application/json',
+    }
+    console.log('Starting Request', config)
     return config
   },
   function (error) {
@@ -44,6 +51,7 @@ instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+    console.log('Response:', response)
     return response
   },
   async function (error) {

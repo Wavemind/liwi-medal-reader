@@ -9,12 +9,15 @@ import { View, Text } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 
-const ErrorNavbar = ({ message }) => {
+const ErrorNavbar = ({ errors }) => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
     Layout,
   } = useTheme()
+
+  const message =
+    typeof errors === 'object' ? Object.values(errors.message)[0] : errors
 
   return (
     <View style={bottomNavbar.errorContainer}>
