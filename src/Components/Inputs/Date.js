@@ -86,7 +86,7 @@ const DateInput = () => {
         } else {
           value = differenceInYears(new Date(medicalCaseCreatedAt), date)
         }
-        setEstimatedValue(value + 1)
+        setEstimatedValue(value)
       } else {
         setDayValue(date.getDate())
         setMonthValue(date.getMonth() + 1)
