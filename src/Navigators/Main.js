@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useFocusEffect } from '@react-navigation/native'
 import { BackHandler } from 'react-native'
 
+import format from 'date-fns/format'
 /**
  * The internal imports
  */
@@ -39,6 +40,7 @@ const MainNavigator = ({ route, navigation }) => {
   const dispatch = useDispatch()
 
   const clinician = useSelector(state => state.healthFacility.clinician)
+  const patient = useSelector(state => state.patient.item)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
 
   // Destroy medical case in store after closing a medical case
@@ -118,7 +120,10 @@ const MainNavigator = ({ route, navigation }) => {
           name="StageWrapper"
           component={StageWrapperMedicalCaseContainer}
           options={{
-            title: t('navigation.consultations'),
+            title: `${patient.first_name} ${patient.last_name} - ${format(
+              patient.birth_date,
+              'dd.MM.yyyy',
+            )}`,
           }}
         />
         <Drawer.Screen

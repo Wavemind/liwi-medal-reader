@@ -323,15 +323,16 @@ export const debugNode = (nodeId, mcNodes) => {
   const localMcNode =
     mcNodes === undefined ? store.getState().medicalCase.item.nodes : mcNodes
   const nodes = store.getState().algorithm.item.nodes
-  const result = nodes[nodeId].dd.map(diagnosisId => {
+  const dd = nodes[nodeId].dd.map(diagnosisId => {
     return {
       [diagnosisId]: debugNodeInDiagnosis(diagnosisId, nodeId, localMcNode),
     }
   })
+
   console.info(
     'debug',
     nodeId,
-    result,
+    dd,
     nodes[nodeId],
     'answer' + ' ' + localMcNode[nodeId].answer,
     'value' + ' ' + localMcNode[nodeId].value,
