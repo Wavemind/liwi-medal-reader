@@ -2,7 +2,7 @@
  * The internal imports
  */
 import { store } from '@/Store'
-import { getAvailableDrugs, isDrugExcluded } from '@/Utils/Drug'
+import { getAvailableHealthcare, isHealthcareExcluded } from '@/Utils/Drug'
 
 export default () => {
   // Retrieve state values
@@ -21,9 +21,12 @@ export default () => {
 
   // Find for all final diagnosis the proposed drug
   Object.values(agreedFinalDiagnoses).map(finalDiagnosis => {
-    const availableDrugs = getAvailableDrugs(nodes[finalDiagnosis.id])
+    const availableDrugs = getAvailableHealthcare(
+      nodes[finalDiagnosis.id],
+      'drugs',
+    )
     const newProposed = availableDrugs.filter(
-      drugId => !isDrugExcluded(drugId, agreedDrugs),
+      drugId => !isHealthcareExcluded(drugId, agreedDrugs),
     )
     const newAgreed = JSON.parse(JSON.stringify(finalDiagnosis.drugs.agreed))
     const drugToRemove = Object.keys(finalDiagnosis.drugs.agreed).filter(

@@ -236,7 +236,8 @@ export const excludedByCC = questionId => {
   const nodes = state.algorithm.item.nodes
   if (
     nodes[questionId].type === Config.NODE_TYPES.finalDiagnosis ||
-    nodes[questionId].category === Config.CATEGORIES.drug
+    nodes[questionId].category === Config.CATEGORIES.drug ||
+    nodes[questionId].category === Config.CATEGORIES.management
   ) {
     return false
   }

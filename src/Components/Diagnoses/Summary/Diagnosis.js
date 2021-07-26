@@ -25,7 +25,7 @@ const Diagnosis = ({ diagnosisKey, excludedManagements }) => {
     Containers: { summary },
   } = useTheme()
 
-  const { t } = useTranslation()
+  const { t } = useTranslation()  
   const isFocused = useIsFocused()
 
   const algorithm = useSelector(state => state.algorithm.item)
@@ -87,7 +87,7 @@ const Diagnosis = ({ diagnosisKey, excludedManagements }) => {
         <View style={[Gutters.regularHPadding, Gutters.regularVMargin]}>
           <Drugs diagnosis={diagnosis} />
           <Managements
-            diagnosis={diagnosis}
+            diagnosis={diagnosisNode}
             excludedManagements={excludedManagements}
           />
         </View>

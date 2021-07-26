@@ -4,7 +4,7 @@ import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnos
 import RemoveRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses'
 import { store } from '@/Store'
 import SetDiagnoses from '@/Store/MedicalCase/Diagnoses/SetDiagnoses'
-import { getAvailableDrugs } from '@/Utils/Drug'
+import { getAvailableHealthcare } from '@/Utils/Drug'
 
 /**
  * Updates the proposed diagnoses by sorting them into agreed or refused
@@ -22,7 +22,7 @@ export default async (diagnosisId, value) => {
   // From null to Agree
   if (value && !isInAgreed) {
     const currentNode = nodes[diagnosisId]
-    const availableDrugs = getAvailableDrugs(currentNode)
+    const availableDrugs = getAvailableHealthcare(currentNode, 'drugs')
 
     await store.dispatch(
       AddAgreedDiagnoses.action({

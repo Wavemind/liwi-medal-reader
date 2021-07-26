@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
+import { getAvailableHealthcare } from '@/Utils/Drug'
 import { QuestionInfoButton } from '@/Components'
 
 const Managements = ({ diagnosis, excludedManagements }) => {
@@ -21,10 +22,11 @@ const Managements = ({ diagnosis, excludedManagements }) => {
   } = useTheme()
 
   const { t } = useTranslation()
+  const managements = getAvailableHealthcare(diagnosis, 'managements')
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
 
-  const managementsCount = diagnosis.managements.length
+  const managementsCount = managements.length
 
   return (
     <View>
@@ -38,7 +40,7 @@ const Managements = ({ diagnosis, excludedManagements }) => {
           {t('containers.medical_case.summary.no_managements')}
         </Text>
       ) : (
-        diagnosis.managements.map((managementId, i) => {
+        managements.map((managementId, i) => {
           if (!excludedManagements.includes(managementId)) {
             return (
               <View
