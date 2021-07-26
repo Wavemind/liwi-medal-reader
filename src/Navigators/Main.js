@@ -7,8 +7,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useFocusEffect } from '@react-navigation/native'
 import { BackHandler } from 'react-native'
-
 import format from 'date-fns/format'
+
 /**
  * The internal imports
  */
