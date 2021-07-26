@@ -31,6 +31,7 @@ export default class MedicalCase extends Model {
   @field('step') step
   @field('json_version') json_version
   @field('patient_id') patient_id
+  @field('version_id') version_id
   @field('fail_safe') fail_safe
   @date('synchronized_at') synchronizedAt
   @date('closed_at') closedAt

@@ -7,7 +7,7 @@ import differenceInDays from 'date-fns/differenceInDays'
 /**
  * The internal imports
  */
-import { getYesAnswer } from '@/Utils/Answers'
+import { getNoAnswer, getYesAnswer } from '@/Utils/Answers'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
@@ -241,7 +241,7 @@ export const excludedByCC = questionId => {
     return false
   }
   return nodes[questionId].conditioned_by_cc.some(
-    ccId => mcNodes[ccId].answer === getYesAnswer(nodes[ccId]).id,
+    ccId => mcNodes[ccId].answer === getNoAnswer(nodes[ccId]).id,
   )
 }
 

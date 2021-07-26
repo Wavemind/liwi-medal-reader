@@ -46,6 +46,7 @@ export default async () => {
       const tempMedicalCaseJson = {
         ...JSON.parse(medicalCase.json),
         id: medicalCase.id,
+        version_id: medicalCase.version_id,
         patient: { ...patient, medicalCases: [] },
         activities: activities,
       }

@@ -20,7 +20,9 @@ export const findProposedFinalDiagnoses = diagnosis => {
   const topConditions = getTopConditions(diagnosis.instances)
   return uniq(
     topConditions
-      .map(instance => searchFinalDiagnoses(instance, diagnosis.instances))
+      .map(instance =>
+        searchFinalDiagnoses(instance, diagnosis.instances, diagnosis.id),
+      )
       .flat(),
   )
 }
