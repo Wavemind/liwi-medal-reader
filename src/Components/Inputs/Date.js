@@ -119,9 +119,9 @@ const DateInput = () => {
    * Triggers the related actions when the birth date is set
    * @param {Timestamp} birthDate
    */
-  const relatedActions = birthDate => {
+  const relatedActions = async birthDate => {
     // Trigger formulas related to birth date
-    dispatch(
+    await dispatch(
       HandleDateFormulas.action({
         birthDate: birthDate,
         algorithm,
