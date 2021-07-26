@@ -87,7 +87,7 @@ const Diagnosis = ({ diagnosisKey, excludedManagements }) => {
         <View style={[Gutters.regularHPadding, Gutters.regularVMargin]}>
           <Drugs diagnosis={diagnosis} />
           <Managements
-            diagnosis={diagnosis}
+            diagnosis={diagnosisNode}
             excludedManagements={excludedManagements}
           />
         </View>

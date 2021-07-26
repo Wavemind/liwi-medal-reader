@@ -2,7 +2,7 @@ import { store } from '@/Store'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
-import { getAvailableDrugs } from '@/Utils/Drug'
+import { getAvailableHealthcare } from '@/Utils/Drug'
 import { setAnswer } from '../../../Utils/Answer'
 
 beforeAll(async () => {
@@ -22,7 +22,7 @@ describe('Handle agreed diagnosis addition', () => {
     const nodeId = 60
     const node = algorithm.nodes[nodeId]
     await setAnswer(50, 40)
-    const availableDrugs = getAvailableDrugs(node)
+    const availableDrugs = getAvailableHealthcare(node, 'drugs')
     store.dispatch(
       AddAgreedDiagnoses.action({
         diagnosisId: nodeId,

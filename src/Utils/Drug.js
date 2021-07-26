@@ -7,17 +7,22 @@ import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
  * @param {finalDiagnosis} finalDiagnosis : the final diagnosis we want to get the drugs from
  * @returns {Array<Drug>} : Available drugs
  */
-export const getAvailableDrugs = finalDiagnosis => {
+export const getAvailableHealthcare = (finalDiagnosis, key) => {
   const state = store.getState()
   let instances =
     state.algorithm.item.diagnoses[finalDiagnosis.diagnosis_id].final_diagnoses[
       finalDiagnosis.id
     ].instances
-  instances = { ...instances, ...finalDiagnosis.drugs }
+
+  instances = { ...instances, ...finalDiagnosis[key] }
 
   const topConditions = getTopConditions(instances, true)
   const questionsToDisplay = []
-  handleDrugs(topConditions, questionsToDisplay, instances)
+  if (key === 'drugs') {
+    handleDrugs(topConditions, questionsToDisplay, instances)
+  } else {
+    handleManagements(topConditions, questionsToDisplay, instances)
+  }
 
   return uniq(questionsToDisplay)
 }
@@ -28,7 +33,7 @@ export const getAvailableDrugs = finalDiagnosis => {
  * @param {Array<Integer>} agreedDrugs : Array of drug id
  * @returns {Boolean} : Tells if a drug is excluded by another drug
  */
-export const isDrugExcluded = (drugId, agreedDrugs) => {
+export const isHealthcareExcluded = (drugId, agreedDrugs) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
 
@@ -37,6 +42,34 @@ export const isDrugExcluded = (drugId, agreedDrugs) => {
   )
 }
 
+export const handleManagements = (children, questionsToDisplay, instances) => {
+  const state = store.getState()
+  const nodes = state.algorithm.item.nodes
+  const agreedFinalDiagnoses = state.medicalCase.item.diagnosis.agreed
+
+  const managements = Object.values(agreedFinalDiagnoses)
+    .map(agreedFinalDiagnosis =>
+      Object.values(nodes[agreedFinalDiagnosis.id].managements).map(
+        management => management.id,
+      ),
+    )
+    .flat()
+
+  children.forEach(instance => {
+    if (instance.conditions.length === 0 || calculateCondition(instance)) {
+      if (nodes[instance.id].category === Config.CATEGORIES.management) {
+        if (!isHealthcareExcluded(instance.id, managements)) {
+          questionsToDisplay.push(instance.id)
+        }
+      } else if (instance.children && instance.children.length > 0) {
+        const childrenInstance = instance.children
+          .filter(childId => nodes[childId].category !== Config.CATEGORIES.drug)
+          .map(childId => instances[childId])
+        handleManagements(childrenInstance, questionsToDisplay, instances)
+      }
+    }
+  })
+}
 /**
  * Recursive function tha will find all available drugs for a final diagnosis
  * @param {Instance} children : The Treatment condition / drug that we are testing
@@ -57,7 +90,7 @@ export const handleDrugs = (children, questionsToDisplay, instances) => {
   children.forEach(instance => {
     if (instance.conditions.length === 0 || calculateCondition(instance)) {
       if (nodes[instance.id].category === Config.CATEGORIES.drug) {
-        if (!isDrugExcluded(instance.id, agreedDrugs)) {
+        if (!isHealthcareExcluded(instance.id, agreedDrugs)) {
           questionsToDisplay.push(instance.id)
         }
       } else if (instance.children && instance.children.length > 0) {
