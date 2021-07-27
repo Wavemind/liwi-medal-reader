@@ -80,8 +80,6 @@ const MainNavigator = ({ route, navigation }) => {
     }, []),
   )
 
-  console.log(patient)
-
   return (
     <>
       <Drawer.Navigator
