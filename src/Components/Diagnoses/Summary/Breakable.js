@@ -39,9 +39,9 @@ const Breakable = ({ drug, drugDose, diagnosisId }) => {
           'formulations.drug.tablets',
         )} ${t('formulations.medication_form.per_administration')} ${t(
           'formulations.drug.every',
-        )} ${drugDose.recurrence} ${t('formulations.drug.h')} ${t(
-          'formulations.drug.during',
-        )} ${drug.duration} ${t('formulations.drug.days')}`}</Text>
+        )} ${drugDose.recurrence} ${t('formulations.drug.h')} ${
+          drug.duration || drugInstance.duration
+        } ${t('formulations.drug.days')}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
       ) : (
