@@ -69,6 +69,11 @@ export const formulationLabel = drugDose => {
         'formulations.medication_form.per_administration',
       )}`
     }
+    case Config.MEDICATION_FORMS.suppository: {
+      return `${i18n.t('formulations.medication_form.suppository')} ${i18n.t(
+        'formulations.medication_form.per_administration',
+      )}: ${drugDose.doses_per_day}`
+    }
     default: {
       return `(${drugDose.medication_form}) ${i18n.t(
         'formulations.drug.medication_form_not_handled',
