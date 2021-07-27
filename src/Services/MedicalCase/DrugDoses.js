@@ -58,17 +58,13 @@ const drugDoses = (formulationIndex, drugId) => {
         )
 
         // Second calculate min and max dose (cap)
-        const minDoseMl = roundSup(
-          (minDoseMg * formulation.dose_form) /
-            formulation.liquid_concentration,
-        )
-        const maxDoseMl = roundSup(
-          (maxDoseMg * formulation.dose_form) /
-            formulation.liquid_concentration,
-        )
+        const minDoseMl =
+          (minDoseMg * formulation.dose_form) / formulation.liquid_concentration
+        const maxDoseMl =
+          (minDoseMg * formulation.dose_form) / formulation.liquid_concentration
 
         // Round
-        doseResult = roundSup((minDoseMl + maxDoseMl) / 2)
+        doseResult = (minDoseMl + maxDoseMl) / 2
 
         if (doseResult > maxDoseMl) {
           doseResult -= 1

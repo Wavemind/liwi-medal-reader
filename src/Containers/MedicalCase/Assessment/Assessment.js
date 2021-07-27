@@ -13,6 +13,7 @@ import isEqual from 'lodash/isEqual'
  */
 import { Question, EmptyList } from '@/Components'
 import { AssessmentQuestionsService } from '@/Services/Steps'
+import { debugNode } from '@/Utils/MedicalCase'
 
 const AssessmentMedicalCaseContainer = () => {
   const { t } = useTranslation()
@@ -21,6 +22,25 @@ const AssessmentMedicalCaseContainer = () => {
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)
 
   const [questions, setQuestions] = useState(AssessmentQuestionsService())
+
+  debugNode(6186)
+  // debugNode(6185)
+  // debugNode(6183)
+  // debugNode(6184)
+  // debugNode(6182)
+  // debugNode(6180)
+  // debugNode(6175)
+  // debugNode(6181)
+  // debugNode(6153)
+  // debugNode(6178)
+  // debugNode(6176)
+  // debugNode(6173)
+  // debugNode(6174)
+  // debugNode(6145)
+  // debugNode(7266)
+  debugNode(6148)
+  debugNode(6142)
+  debugNode(6476)
 
   // Update questions list only if question array change
   useEffect(() => {
