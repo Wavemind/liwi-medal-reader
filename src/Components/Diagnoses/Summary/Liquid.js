@@ -61,11 +61,14 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
           {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
             drugDose.administration_route_category,
           ) && (
-            <Text style={summary.drugText} key={`text_${drug.id}`}>
+            <Text
+              style={[Gutters.regularTMargin, summary.drugText]}
+              key={`text_${drug.id}`}
+            >
               {translate(drugDose.injection_instructions)}
             </Text>
           )}
-          <Text style={[Gutters.regularTMargin, summary.drugText]}>
+          <Text style={summary.drugText}>
             {translate(drugDose.dispensing_description)}
           </Text>
         </View>
