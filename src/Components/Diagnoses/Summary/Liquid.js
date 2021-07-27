@@ -36,11 +36,11 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
     <View>
       <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
       {drugDose.by_age ? (
-        <Text style={summary.drugText}>{`${roundSup(drugDose.unique_dose)}ml ${t(
-          'formulations.medication_form.per_administration',
-        )} ${t('formulations.drug.during')} ${duration} ${t(
-          'formulations.drug.days',
-        )}`}</Text>
+        <Text style={summary.drugText}>{`${roundSup(
+          drugDose.unique_dose,
+        )}ml ${t('formulations.medication_form.per_administration')} ${t(
+          'formulations.drug.during',
+        )} ${duration} ${t('formulations.drug.days')}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
       ) : (
@@ -58,17 +58,20 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
           } ${t('formulations.drug.h')} ${duration} ${t(
             'formulations.drug.days',
           )}`}</Text>
-          <Text style={[Gutters.regularTMargin, summary.drugText]}>
+          {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
+            drugDose.administration_route_category,
+          ) && (
+            <Text
+              style={[Gutters.regularTMargin, summary.drugText]}
+              key={`text_${drug.id}`}
+            >
+              {translate(drugDose.injection_instructions)}
+            </Text>
+          )}
+          <Text style={summary.drugText}>
             {translate(drugDose.dispensing_description)}
           </Text>
         </View>
-      )}
-      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
-        drugDose.administration_route_category,
-      ) && (
-        <Text style={summary.drugText} key={`text_${drug.id}`}>
-          {translate(drugDose.injection_instructions)}
-        </Text>
       )}
     </View>
   )
