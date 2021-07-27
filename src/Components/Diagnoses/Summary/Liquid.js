@@ -39,8 +39,10 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
         <Text style={summary.drugText}>{`${roundSup(
           drugDose.unique_dose,
         )}ml ${t('formulations.medication_form.per_administration')} ${t(
-          'formulations.drug.during',
-        )} ${duration} ${t('formulations.drug.days')}`}</Text>
+          'formulations.drug.every',
+        )} ${drugDose.recurrence} ${t('formulations.drug.h')} ${duration} ${t(
+          'formulations.drug.days',
+        )}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
       ) : (
