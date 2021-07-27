@@ -91,7 +91,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
     )
   }
 
-  return Object.values(sortedDiagnoses).map(diagnosis => (
+  return sortedDiagnoses.map(diagnosis => (
     <View key={`diagnosis-${diagnosis.id}`} style={drugs.wrapper}>
       <View style={drugs.diagnosisHeaderWrapper}>
         <Text style={drugs.diagnosisHeader}>
