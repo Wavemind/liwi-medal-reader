@@ -80,6 +80,8 @@ const MainNavigator = ({ route, navigation }) => {
     }, []),
   )
 
+  console.log(patient)
+
   return (
     <>
       <Drawer.Navigator
@@ -120,10 +122,11 @@ const MainNavigator = ({ route, navigation }) => {
           name="StageWrapper"
           component={StageWrapperMedicalCaseContainer}
           options={{
-            title: `${patient.first_name} ${patient.last_name} - ${format(
-              patient.birth_date,
-              'dd.MM.yyyy',
-            )}`,
+            title: `${patient.first_name} ${patient.last_name} - ${
+              Object.keys(patient).length > 0
+                ? format(patient.birth_date, 'dd.MM.yyyy')
+                : ''
+            }`,
           }}
         />
         <Drawer.Screen
