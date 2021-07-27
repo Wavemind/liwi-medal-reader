@@ -123,9 +123,7 @@ const MainNavigator = ({ route, navigation }) => {
           component={StageWrapperMedicalCaseContainer}
           options={{
             title: `${patient.first_name} ${patient.last_name} - ${
-              Object.keys(patient).length > 0
-                ? format(patient.birth_date, 'dd.MM.yyyy')
-                : ''
+              patient.birth_date ? format(patient.birth_date, 'dd.MM.yyyy') : ''
             }`,
           }}
         />
