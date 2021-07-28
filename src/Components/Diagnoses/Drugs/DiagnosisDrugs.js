@@ -51,7 +51,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
     sortDiagnosesByUrgency(),
   )
 
-  useEffect(async () => {
+  useEffect(() => {
     const newDiagnoses = sortDiagnosesByUrgency()
     if (!isEqual(newDiagnoses, sortedDiagnoses)) {
       setSortedDiagnoses(newDiagnoses)
