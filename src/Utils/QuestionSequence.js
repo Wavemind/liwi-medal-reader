@@ -6,7 +6,6 @@ import {
   calculateCondition,
   reduceConditions,
   respectsCutOff,
-  diagramConditionsValues,
 } from '@/Utils/MedicalCase'
 import { scoredCalculateCondition } from '@/Utils/QuestionSequenceScore'
 import { Config } from '@/Config'
@@ -27,9 +26,7 @@ export const getQsValue = (qsId, newMcNodes) => {
     return scoredCalculateCondition(qsId, newMcNodes)
   } else {
     //const topConditions = getTopConditions(nodes[qsId].instances)
-    if (qsId === 38) {
-      console.info(nodes[qsId])
-    }
+
     const conditionsValues = nodes[qsId].conditions.map(condition => {
       if (
         newMcNodes[condition.node_id].answer === condition.answer_id &&
@@ -64,14 +61,7 @@ const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
   if (instanceCondition && mcNode.answer === null) {
     return null
   }
-  if (qsId === 6496) {
-    console.info(
-      instance,
-      instanceCondition,
-      instances,
-      newMcNodes[instance.id],
-    )
-  }
+
   if (instanceCondition) {
     if (instance.conditions.length === 0) {
       return true
@@ -86,7 +76,7 @@ const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
       return false
     } else {
       const parentsCondition = parents.map(parent =>
-        qsInstanceValue(instance[parent.id], newMcNodes, instances, qsId),
+        qsInstanceValue(instances[parent.node_id], newMcNodes, instances, qsId),
       )
       return reduceConditions(parentsCondition)
     }

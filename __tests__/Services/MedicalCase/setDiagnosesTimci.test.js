@@ -9,10 +9,7 @@ import uuid from 'react-native-uuid'
 import CreatePatient from '@/Store/Patient/Create'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
-import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnoses'
-import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import { store } from '@/Store'
-import { SetDiagnosesService } from '@/Services/MedicalCase'
 import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
 
@@ -43,21 +40,17 @@ beforeEach(async () => {
   await setAnswer(5139, 3363) // I'm a male
 })
 
-describe('Final diagnosis are included / excluded correctly', () => {
-  it('Basic test - should include uncomplicated lymphadenopathy most', async () => {
+describe('Final diagnosis are included / excluded correctly in Timci Tanzania ', () => {
+  it('Testing question sequence behaviour', async () => {
     await setAnswer(5805, 4685) // CC Fever
-    await setAnswer(5533, 4056)
-    await setAnswer(6083, 4835)
-    await setAnswer(5185, 3447)
-    await setAnswer(6082, 4833)
-    await setAnswer(5564, 4126)
+    await setAnswer(5533, 4056) // Fever last 2 days => yes
+    await setAnswer(6083, 4835) // Convulsing now  => No
+    await setAnswer(5185, 3447) // Unconscious or Lethargic => No
+    await setAnswer(6082, 4833) // Convulsions in present illness => No
+    await setAnswer(5564, 4126) // "Malaria rapid diagnostic test ==> Negative
 
-    await setAnswer(5822, 8711)
     const state = store.getState()
 
-    expect(state.medicalCase.item.nodes[6148]).toEqual(4968)
-
-    // expect(result.diagnosis.excluded).toEqual(expect.arrayContaining([208])) // Uncomplicated infectious lymphadenopathy
-    // expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([209])) // Uncomplicated lymphadenopathy
+    expect(state.medicalCase.item.nodes[6148].answer).toEqual(4968)
   })
 })
