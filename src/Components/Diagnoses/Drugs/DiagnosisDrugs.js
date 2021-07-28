@@ -56,6 +56,9 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
     if (!isEqual(newDiagnoses, sortedDiagnoses)) {
       setSortedDiagnoses(newDiagnoses)
     }
+  }, [isFocused, diagnoses])
+
+  useEffect(async () => {
     await dispatch(SetDrugs.action())
   }, [isFocused])
 

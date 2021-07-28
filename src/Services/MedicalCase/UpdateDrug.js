@@ -13,6 +13,7 @@ import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
  * @param diagnosisId
  * @param drugId
  * @param value
+ * @param diagnosisKey
  */
 export default async (diagnosisId, drugId, value, diagnosisKey) => {
   const state = store.getState()
