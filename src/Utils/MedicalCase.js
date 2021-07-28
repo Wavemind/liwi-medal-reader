@@ -43,15 +43,21 @@ export const respectsCutOff = (cut_off_start, cut_off_end) => {
   const createdAt = state.medicalCase.item.createdAt
 
   const ageInDays = differenceInDays(new Date(createdAt), new Date(birthDate))
+
+  // If there is no cut off defined
   if (
     (cut_off_start === null && cut_off_end === null) ||
     (cut_off_start === undefined && cut_off_end === undefined)
   ) {
     return true
-  } 
+  }
+
+  // If there is only a end cut off
   if (cut_off_start === null || cut_off_start === undefined) {
     return cut_off_end > ageInDays
   }
+
+  // If there is only a start cut off
   if (cut_off_end === null || cut_off_end === undefined) {
     return cut_off_start <= ageInDays
   } else {
