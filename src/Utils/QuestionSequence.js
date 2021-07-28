@@ -5,7 +5,7 @@ import { store } from '@/Store'
 import {
   calculateCondition,
   reduceConditions,
-  getTopConditions,
+  respectsCutOff,
   diagramConditionsValues,
 } from '@/Utils/MedicalCase'
 import { scoredCalculateCondition } from '@/Utils/QuestionSequenceScore'
@@ -26,11 +26,25 @@ export const getQsValue = (qsId, newMcNodes) => {
   if (nodes[qsId].category === Config.CATEGORIES.scored) {
     return scoredCalculateCondition(qsId, newMcNodes)
   } else {
-    const topConditions = getTopConditions(nodes[qsId].instances)
-
-    const conditionsValues = topConditions.map(instance =>
-      qsInstanceValue(instance, newMcNodes, nodes[qsId].instances, qsId),
-    )
+    //const topConditions = getTopConditions(nodes[qsId].instances)
+    if (qsId === 38) {
+      console.info(nodes[qsId])
+    }
+    const conditionsValues = nodes[qsId].conditions.map(condition => {
+      if (
+        newMcNodes[condition.node_id].answer === condition.answer_id &&
+        respectsCutOff(condition.cut_off_start, condition.cut_off_end)
+      ) {
+        return qsInstanceValue(
+          nodes[qsId].instances[condition.node_id],
+          newMcNodes,
+          nodes[qsId].instances,
+          qsId,
+        )
+      } else {
+        return false
+      }
+    })
     return reduceConditions(conditionsValues)
   }
 }
@@ -50,22 +64,32 @@ const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
   if (instanceCondition && mcNode.answer === null) {
     return null
   }
-
-  if (instanceCondition) {
-    const children = instance.children
-      .filter(child => instances[child])
-      .map(child => instances[child])
-
-    const childrenConditions = children.map(child =>
-      qsInstanceValue(child, newMcNodes, instances, qsId),
-    )
-
-    const finalDiagnosesConditions = diagramConditionsValues(
-      qsId,
+  if (qsId === 6496) {
+    console.info(
       instance,
-      newMcNodes,
+      instanceCondition,
+      instances,
+      newMcNodes[instance.id],
     )
-    return reduceConditions(childrenConditions.concat(finalDiagnosesConditions))
+  }
+  if (instanceCondition) {
+    if (instance.conditions.length === 0) {
+      return true
+    }
+
+    const parents = instance.conditions.filter(
+      condition =>
+        newMcNodes[condition.node_id].answer === condition.answer_id &&
+        respectsCutOff(condition.cut_off_start, condition.cut_off_end),
+    )
+    if (parents.length === 0) {
+      return false
+    } else {
+      const parentsCondition = parents.map(parent =>
+        qsInstanceValue(instance[parent.id], newMcNodes, instances, qsId),
+      )
+      return reduceConditions(parentsCondition)
+    }
   } else {
     return false
   }
