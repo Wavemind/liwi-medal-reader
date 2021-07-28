@@ -104,7 +104,7 @@ export const handleChildren = (
   const nodes = state.algorithm.item.nodes
   children.forEach(instance => {
     if (
-      instance.conditions.length === 0 ||
+      (!excludedByCC(instance.id) && instance.conditions.length === 0) ||
       calculateCondition(instance, source)
     ) {
       if (nodes[instance.id].type === Config.NODE_TYPES.questionsSequence) {
