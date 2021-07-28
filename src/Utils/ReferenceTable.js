@@ -37,48 +37,52 @@ export const calculateReference = (nodeId, newNodes) => {
   }
 
   // Parse value in correct format
-  const x =
-    currentQuestionX.value_format === Config.VALUE_FORMATS.int
-      ? parseInt(mcQuestionX.value)
-      : currentQuestionX.round !== undefined
-      ? mcQuestionX.roundedValue
-      : parseFloat(mcQuestionX.value)
-  const y =
-    currentQuestionY.value_format === Config.VALUE_FORMATS.int
-      ? parseInt(mcQuestionY.value)
-      : currentQuestionY.round !== undefined
-      ? mcQuestionY.roundedValue
-      : parseFloat(mcQuestionY.value)
-  let z
+  if (mcQuestionX.value !== '' && mcQuestionY.value !== '') {
+    const x =
+      currentQuestionX.value_format === Config.VALUE_FORMATS.int
+        ? parseInt(mcQuestionX.value)
+        : currentQuestionX.round !== undefined
+        ? mcQuestionX.roundedValue
+        : parseFloat(mcQuestionX.value)
+    const y =
+      currentQuestionY.value_format === Config.VALUE_FORMATS.int
+        ? parseInt(mcQuestionY.value)
+        : currentQuestionY.round !== undefined
+        ? mcQuestionY.roundedValue
+        : parseFloat(mcQuestionY.value)
+    let z
 
-  if (mcQuestionZ !== null) {
-    z =
-      currentQuestionZ.value_format === Config.VALUE_FORMATS.int
-        ? parseInt(mcQuestionZ.value)
-        : currentQuestionZ.round !== undefined
-        ? mcQuestionZ.roundedValue
-        : parseFloat(mcQuestionZ.value)
+    if (mcQuestionZ !== null) {
+      z =
+        currentQuestionZ.value_format === Config.VALUE_FORMATS.int
+          ? parseInt(mcQuestionZ.value)
+          : currentQuestionZ.round !== undefined
+          ? mcQuestionZ.roundedValue
+          : parseFloat(mcQuestionZ.value)
+    }
+
+    const mcGenderQuestion = newNodes[genderQuestionId]
+    const genderQuestion = nodes[genderQuestionId]
+    const gender =
+      mcGenderQuestion.answer !== null
+        ? genderQuestion.answers[mcGenderQuestion.answer].value
+        : null
+
+    // Get reference table for male or female
+    if (gender === 'male') {
+      reference = Config.REFERENCES[currentNode.reference_table_male]
+    } else if (gender === 'female') {
+      reference = Config.REFERENCES[currentNode.reference_table_female]
+    }
+
+    // If X and Y means question is not answered + check if answer is in the scope of the reference table
+    if (reference !== null && z === undefined) {
+      value = processReferenceTable(reference, x, y)
+    } else if (reference !== null && z !== null) {
+      value = processReferenceTable3D(reference, x, y, z)
+    }
   }
 
-  const mcGenderQuestion = newNodes[genderQuestionId]
-  const genderQuestion = nodes[genderQuestionId]
-  const gender =
-    mcGenderQuestion.answer !== null
-      ? genderQuestion.answers[mcGenderQuestion.answer].value
-      : null
-
-  // Get reference table for male or female
-  if (gender === 'male') {
-    reference = Config.REFERENCES[currentNode.reference_table_male]
-  } else if (gender === 'female') {
-    reference = Config.REFERENCES[currentNode.reference_table_female]
-  }
-  // If X and Y means question is not answered + check if answer is in the scope of the reference table
-  if (reference !== null && x !== null && y !== null && z === undefined) {
-    value = processReferenceTable(reference, x, y)
-  } else if (reference !== null && x !== null && y !== null && z !== null) {
-    value = processReferenceTable3D(reference, x, y, z)
-  }
   return value
 }
 

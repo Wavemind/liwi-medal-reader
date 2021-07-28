@@ -1,21 +1,45 @@
 export default {
   actions: {
+    continue: 'Continuer',
+    login: 'Connexion',
+    new_patient: 'Nouveau patient',
+    search: 'Rechercher',
     select: 'Choisir',
-    continue: 'Continue',
-    login: 'Se connecter',
     synchronize: 'Synchroniser',
+    clear_filters: 'Réinitialiser',
+    clear_selection: 'Réinitialiser',
+    loading: 'Chargement…',
+    new_medical_case: 'Nouvelle consultation',
+    show_consent: 'Voir consentement',
+    scan_consent: 'Scanner consentement',
+    add: 'Ajouter',
+    apply: 'Appliquer',
+    reset: 'Réinitialiser',
+    save: 'Enr.',
   },
   algorithm: {
-    version_id: 'ID de la version',
-    version_name: 'Nom de la version',
-    json_version: 'Numéro de version',
-    updated_at: 'Date de dernière modification',
+    version_id: 'ID de version',
+    version_name: 'Nom de version',
+    json_version: 'N° de build de version',
+    updated_at: 'Dernière màj',
   },
   application: {
+    algorithm_translation_missing: "Traduction d'algorithme manquante",
+    no_results: 'Aucun résultat trouvé',
+    search: 'Rechercher',
     theme: {
-      dark_mode: 'Thème sombre',
-      light_mode: 'Thème clair',
+      dark_mode: 'Mode sombre',
+      light_mode: 'Mode clair',
     },
+  },
+  answers: {
+    yes: 'Oui',
+    no: 'Non',
+    year: 'Année',
+    month: 'Mois',
+    day: 'Jour',
+    measured: 'Mesuré',
+    estimated: 'Estimé',
   },
   containers: {
     auth: {
@@ -23,23 +47,149 @@ export default {
         title: 'Connexion à medAL-creator',
         email: 'E-mail',
         password: 'Mot de passe',
-        environment: 'Environment',
+        environment: 'Environnement',
       },
       synchronization: {
-        title: 'Synchronisation avec medAL-creator',
+        title: 'Synchonisation avec medAL-creator',
         description:
-          'Un administrateur va associer cet appareil à votre centre de santé',
+          'Un·e administrateur·trice va associer cette tablette avec votre centre de santé',
       },
       pin: {
-        unlock: 'Introduire le NIP pour déverrouiller la tablette',
+        unlock: "Entrer le NIP pour déverrouiller l'application",
+        delete: 'Effacer',
       },
+    },
+    additional_list: {
+      title: 'Veuillez choisir vos {{ items }}',
+    },
+    filters: {
+      title: 'Filtres',
+      patient_info: 'Infos patient·e',
+      others: 'Autres',
+    },
+    home: {
+      title: 'Dernières consultations',
+    },
+    medical_case: {
+      no_questions: 'Aucune question à afficher',
+      duration_title: 'durée en jours',
+      navigation: {
+        back: 'Préc.',
+        next: 'Suiv.',
+      },
+      list: {
+        title: 'Consultations',
+        name: 'Nom',
+        status: 'Statut',
+      },
+      stages: {
+        registration: 'Admission',
+        first_assessments: 'Evaluation initiale',
+        consultation: 'Consultation',
+        assessments: 'Tests',
+        diagnoses: 'Diagnostics',
+        closed: 'Terminé',
+      },
+      steps: {
+        registration: 'Admission',
+        unique_triage_questions: 'Urgences potentiellement mortelles',
+        complaint_categories: 'Motifs de consultation',
+        basic_measurements: 'Prise de mesures',
+        medical_history: 'Anamnèse',
+        physical_exams: 'Examen physique',
+        assessments: 'Tests',
+        final_diagnoses: 'Diagnostics',
+        healthcare_questions: 'Questions de prise en charge',
+        medicines: 'Médicaments',
+        formulations: 'Formulations',
+        summary: 'Récapitulatif',
+        referral: 'Orientation',
+      },
+      registration: {
+        questions: 'Questions',
+      },
+      common: {
+        agree: 'Accepter',
+        disagree: 'Rejeter',
+      },
+      diagnoses: {
+        diagnoses: 'Diagnostics',
+        proposed_title: 'Diagnostics proposés par {{ version_name }}',
+        additional_title: 'Diagnostics supplémentaires',
+        additional_placeholder: 'Choisir {{ item }} supplémentaires',
+        custom_title: 'Diagnostics manuels',
+        custom_placeholder: 'Ajouter des diagnostics manuellement',
+        no_proposed: 'Aucun diagnostic proposé',
+        no_additional: 'Aucun diagnostic supplémentaire sélectionné',
+        no_custom: 'Aucun diagnostic ajouté manuellement',
+      },
+      drugs: {
+        drugs: 'Médicaments',
+        proposed: 'Proposés',
+        additional: 'Supplémentaires',
+        custom: 'Ajoutés manuellement',
+        custom_placeholder: 'Ajouter des médicaments manuellement',
+        no_proposed: 'Aucun médicament proposé',
+        no_additional: 'Aucun médicament supplémentaire sélectionné',
+        no_custom: 'Aucun médicament ajouté manuellement',
+        no_medicines: 'Aucun médicament disponible',
+      },
+      formulations: {
+        title:
+          'Choisir une formulation disponible et appropriée pour votre patient·e',
+      },
+      summary: {
+        management_consulting: 'Prise en charge et conseils',
+        no_managements: 'Aucune prise en charge disponible',
+      },
+    },
+    scan: {
+      scan: 'Scanner le code QR',
+      new: 'Vous devez fournir une nouvelle étiquette',
+      new_sticker_notification:
+        'Vous devez donner une nouvelle étiquette à votre patient·e',
+      new_sticker_wrong_facility:
+        "La nouvelle étiquette n'appartient pas à votre centre de santé",
+      wrong_format: "Le code QR n'est pas au bon format",
+    },
+    patient: {
+      list: {
+        title: 'Liste de patient·e·s',
+        name: 'Nom',
+        last_visit: 'Dernière visite',
+        status: 'Statut',
+      },
+      consultations: {
+        current_consultation: 'Consultation actuelle',
+        last_consultations: 'Dernières consultations',
+      },
+      personal_info: {
+        patient_info: 'Patient·e',
+        consultations_info: 'Consultations',
+      },
+    },
+    consent: {
+      list: {
+        title: 'Dossiers de consentement',
+      },
+    },
+    synchronization: {
+      synchronize: 'Synchroniser',
+      not_synchronized: 'Consultations en attente de synchronisation',
+      warning:
+        "Vous n'avez pas syncrhonisé les consultations avec le serveur medAL-data depuis plus de 7 jours",
     },
     settings: {
       general: {
         title: 'Général',
-        environment: 'Environment',
-        app_languages: "Langue de l'application ",
-        algorithm_languages: "Langue de l'algorithm",
+        environment: 'Environnement',
+        app_languages: "Langue de l'application",
+        algorithm_languages: "Langue de l'algorithme",
+        app_version: "Version de l'application",
+        languages: {
+          en: 'English',
+          fr: 'Français',
+        },
       },
       algorithm: {
         title: 'Algorithme',
@@ -53,31 +203,84 @@ export default {
     },
   },
   components: {
-    modal: {
-      study: {
-        no_content:
-          "Aucun contenu n'est disponible. Veuillez remplir la description de l'étude dans medAL-creator",
+    consent: {
+      title: 'Consentement',
+      question:
+        'Consentez-vous au traitement des données pour cette visite ? (Non si refus)',
+    },
+    medical_case_drawer: {
+      current_medical_case: 'Consultation en cours',
+    },
+    modals: {
+      lock: {
+        title: 'Consultation verrouillée',
+        content: 'Consultation verrouillée par {{ name }}',
+        unlock_button: 'FORCER DÉVERROUILLAGE',
+        summary_button: 'RÉCAPITULATIF',
       },
+      emergency: {
+        title: "Assistance d'urgence",
+        content:
+          "Le patient présente un symptôme ou un signe d'urgence. Voir la page d'urgence maintenant si nécessaire.",
+        emergencyButton: "VOIR LA PAGE D'URGENCES",
+      },
+      exit_medical_case: {
+        title: 'Quitter la consultation',
+        content: 'Vous êtes sur le point de quitter la consultation',
+        exit_and_save: 'Enregistrer',
+        exit_without_save: 'Ne pas enregistrer',
+      },
+      exit_app: {
+        title: "Quitter l'application",
+        content: "Voulez-vraiment quitter l'application ?",
+        ok: 'OK',
+        back: 'Annuler',
+      },
+    },
+    media: {
+      file_not_supported: 'Format de fichier non pris en charge',
     },
   },
   device: {
     name: 'Nom',
     mac_address: 'Adresse MAC',
-    model: 'Model',
+    model: 'Modèle',
     brand: 'Marque',
-    os: 'OS',
-    os_version: "Version de l'OS Version",
-    name_not_available: 'nom undisponible',
+    os: "Système d'exploitation (OS)",
+    os_version: "Version d'OS",
+    name_not_available: 'Pas de nom disponible',
+  },
+  database: {
+    success: {
+      message: 'Enregistrer',
+      description: 'Consultation enregistrée avec succès',
+    },
+    error: {
+      message: 'Erreur',
+      description:
+        'Une problème est survenu à la sauvegarde de la consultation',
+    },
+    createMedicalCaseError: {
+      message: 'Erreur',
+      description: 'Un problème est survenu à la création de la consultation',
+    },
+    patientLoadError: {
+      message: 'Erreur',
+      description: 'Un problème est survenu pendant le chargement patient·e',
+    },
   },
   health_facility: {
     id: 'ID',
     name: 'Nom',
     architecture: 'Architecture',
     country: 'Pays',
-    area: 'Zone',
-    local_data_ip: 'MedAL-hub adresse',
-    main_data_ip: 'MedAL-data adresse',
+    area: 'Région/Zone',
+    local_data_ip: 'Adresse medAL-hub',
+    main_data_ip: 'Adresse medAL-data',
+    custom_clinician: 'Collabora·teur·trice manquant·e',
+    custom_clinician_subtitle: 'Ajouter collabora·teur ·trice',
     roles: {
+      title: 'Fonctions',
       medical_doctor: 'Médecin',
       assistant_medical_officer: 'Adjoint·e médical·e',
       clinical_officer: 'Praticien·ne clinique',
@@ -88,27 +291,88 @@ export default {
     },
   },
   navigation: {
+    scan_qr_code: 'Scanner code QR',
+    consultations: 'Consultations',
+    patient_list: 'Liste patient·e·s',
+    personal_info: 'Infos personnelles',
+    summary: 'Récapitulatif',
+    final_diagnoses: 'Diagnostics',
+    questions: 'Questions',
+    consent_list: 'Consentements',
+    current_consultation: 'Consultation en cours',
     home: 'Accueil',
-    settings: 'Paramètre',
+    synchronization: 'Synchronisation',
+    welcome: 'Bienvenue {{ clinician }}',
+    settings: 'Réglages',
+    about: 'À propos',
+    synchronize: 'Synchroniser',
+    logout: 'Se déconnecter',
+  },
+  patient: {
+    first_name: 'Prénom',
+    last_name: 'Nom',
+    birth_date: 'Date de naissance',
+    reason: 'Raison du changement de centre de santé',
+  },
+  medical_case: {
+    comment: 'Commentaire',
   },
   permissions: {
     message:
-      "Vous devez accorder les autorisations nécessaires pour que l'application fonctionne",
+      "Vous devez accorder les permissions nécessaires au bon fonctionnement de l'application.",
     instructions:
-      'Veuillez vous rendre dans la section "Permissions" des paramètres de la tablette et accorder toutes les autorisations requises.',
+      'Veuillez vous rendre dans la section "Permissions" des réglages de votre tablette pour accorder toutes les permissions nécessaires',
   },
-  modals: {
-    lock: {
-      title: 'Consultation non disponible',
-      content: 'Le cas est verouillé par {{ name }}',
-      unlockButton: 'DEVEROUILLER',
-      summaryButton: 'RESUME',
+  formulations: {
+    drug: {
+      give: 'Donner',
+      mg: 'mg',
+      caps: 'capsule(s) de',
+      every: 'chaque',
+      h: 'heure(s) pendant',
+      days: 'jour(s)',
+      mode: 'Mode',
+      tablet: 'comprimé(s) de',
+      d: 'durée',
+      during: 'pendant',
+      admin: 'Administration',
+      ml: 'ml',
+      of: 'de',
+      tablets: 'comprimé(s)',
+      capsules: 'capsule(s)',
+      inhaler: 'inhalation(s)',
+      patch: 'patch(es)',
+      spray: 'spray(s)',
+      pessary: 'pessaire(s)',
+      no_formulation: ' Aucune formulation sélectionnée',
+      missing_medicine_formulation: 'Veuillez sélectionner une formulation',
+      no_options: 'Aucune option compatible',
+      medication_form_not_handled: 'Forme galénique non prise en charge',
     },
-    emergency: {
-      title: "Assistance d'urgence",
-      content:
-        "Le patient présente des symptomes sévères. Cliquez sur le bouton ci-dessous si l'enfant a besoin d'aide urgente.",
-      emergencyButton: 'URGENCE',
+    medication_form: {
+      tablet: 'Comprimé',
+      dispersible_tablet: 'Comprimé non-dispersible',
+      capsul: 'Capsule',
+      syrup: 'Syrop',
+      suspension: 'Suspension',
+      suppository: 'Suppositoire',
+      drops: 'Gouttes',
+      solution: 'Solution',
+      powder_for_injection: 'Poudre pour injection',
+      patch: 'Patch',
+      cream: 'Crème',
+      pessary: 'Pessaire (éponge)',
+      ointment: 'Onguent',
+      gel: 'Gel',
+      spray: 'Spray',
+      inhaler: 'Inhalateur',
+      per: 'par',
+      per_administration: 'par administration',
     },
+  },
+  validation: {
+    is_required: 'Le champ « {{ field }} » est obligatoire',
+    consent_file_blank:
+      'La réponse au consentement du traitement des données est obligatoire',
   },
 }

@@ -29,7 +29,7 @@ export default function (props) {
     contentWrapper: {
       ...Gutters.smallHPadding,
       ...Gutters.smallTPadding,
-      height: hp(93),
+      height: hp(90.5),
     },
     innerWrapper: {
       ...Layout.fullHeight,

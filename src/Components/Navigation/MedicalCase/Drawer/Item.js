@@ -53,7 +53,13 @@ const Item = ({ stage, index, status }) => {
           {stage.steps.map((step, stepIndex) => (
             <View style={Layout.rowCenter} key={step.label}>
               <View style={medicalCaseDrawer.dotWrapper}>
-                <Dot thinLines status={status} stepIndex={stepIndex} />
+                <Dot
+                  thinLines
+                  status={status}
+                  step={step}
+                  stageIndex={index}
+                  stepIndex={stepIndex}
+                />
               </View>
               <View style={[Layout.fill, Gutters.regularTPadding]}>
                 <Text style={medicalCaseDrawer.stepText(status)}>

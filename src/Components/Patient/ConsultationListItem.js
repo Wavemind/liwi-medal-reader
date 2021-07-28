@@ -20,7 +20,6 @@ import { translate } from '@/Translations/algorithm'
 const ConsultationListItem = ({ item }) => {
   // Theme and style elements deconstruction
   const {
-    Fonts,
     FontSize,
     Layout,
     Gutters,
@@ -72,7 +71,7 @@ const ConsultationListItem = ({ item }) => {
     >
       <View style={consultationListItem.container}>
         {!item.synchronizedAt && (
-          <View style={[Layout.column, Gutters.regularRMargin]}>
+          <View style={[Layout.column, Gutters.tinyRMargin]}>
             <Icon name="alert" size={FontSize.large} color={Colors.red} />
           </View>
         )}
@@ -93,7 +92,7 @@ const ConsultationListItem = ({ item }) => {
           ))}
         </View>
         <Text style={consultationListItem.date}>
-          {item.synchronizedAt && format(item.synchronizedAt, 'dd.MM.yyyy')}
+          {format(item.updatedAt, 'dd.MM.yyyy')}
         </Text>
         <Icon name="right-arrow" size={FontSize.large} />
       </View>

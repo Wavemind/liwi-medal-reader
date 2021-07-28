@@ -5,6 +5,9 @@ import React, { useEffect } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useFocusEffect } from '@react-navigation/native'
+import { BackHandler } from 'react-native'
+import format from 'date-fns/format'
 
 /**
  * The internal imports
@@ -23,10 +26,13 @@ import {
 } from '@/Containers'
 import DestroyMedicalCase from '@/Store/MedicalCase/Destroy'
 import DestroyPatient from '@/Store/Patient/Destroy'
+import ResetValidation from '@/Store/Validation/Reset'
+import SetParams from '@/Store/Modal/SetParams'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import { useTheme } from '@/Theme'
 
 const Drawer = createDrawerNavigator()
-const MainNavigator = ({ route }) => {
+const MainNavigator = ({ route, navigation }) => {
   // Theme and style elements deconstruction
   const { Layout } = useTheme()
 
@@ -34,23 +40,52 @@ const MainNavigator = ({ route }) => {
   const dispatch = useDispatch()
 
   const clinician = useSelector(state => state.healthFacility.clinician)
+  const patient = useSelector(state => state.patient.item)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
-  const closedAt = useSelector(state => state.medicalCase.item.closedAt)
 
   // Destroy medical case in store after closing a medical case
   useEffect(() => {
-    dispatch(DestroyMedicalCase.action())
-    dispatch(DestroyPatient.action())
-  }, [route.state?.routes[0].params?.destroyCurrentConsultation])
+    if (route.state?.routes[0].params?.destroyCurrentConsultation) {
+      dispatch(DestroyMedicalCase.action())
+      dispatch(DestroyPatient.action())
+      dispatch(ResetValidation.action())
+      delete route.state?.routes[0].params?.destroyCurrentConsultation
+    }
+  }, [route.state?.routes[0].params?.destroyCurrentConsultation, medicalCaseId])
+
+  // Prompt the user before leaving the screen
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = async () => {
+        if (
+          navigation.dangerouslyGetState()?.routes[0]?.state?.index &&
+          !navigation.dangerouslyGetState()?.routes[0]?.state?.index !==
+            route.key
+        ) {
+          navigation.goBack()
+        } else {
+          await dispatch(
+            SetParams.action({
+              type: 'exitApp',
+            }),
+          )
+          await dispatch(ToggleVisibility.action({}))
+        }
+      }
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress)
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress)
+    }, []),
+  )
 
   return (
     <>
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
-        drawerStyle={
-          medicalCaseId && closedAt === 0 ? Layout.fullWidth : Layout.halfWidth
-        }
+        drawerStyle={Layout.fullWidth}
         screenOptions={{
           headerShown: true,
           header: ({ scene }) => {
@@ -85,7 +120,9 @@ const MainNavigator = ({ route }) => {
           name="StageWrapper"
           component={StageWrapperMedicalCaseContainer}
           options={{
-            title: t('navigation.consultations'),
+            title: `${patient.first_name} ${patient.last_name} - ${
+              patient.birth_date ? format(patient.birth_date, 'dd.MM.yyyy') : ''
+            }`,
           }}
         />
         <Drawer.Screen

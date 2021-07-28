@@ -115,6 +115,8 @@ const LoginAuthContainer = () => {
             value={email}
             autoCompleteType="email"
             placeholder={t('containers.auth.login.email')}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
           <TextInput
             style={authLogin.input}
@@ -123,6 +125,7 @@ const LoginAuthContainer = () => {
             secureTextEntry
             autoCompleteType="password"
             placeholder={t('containers.auth.login.password')}
+            autoCapitalize="none"
           />
           <SquareSelect
             label={t('containers.auth.login.environment')}

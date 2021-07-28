@@ -1,11 +1,13 @@
 /**
  * The external imports
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useIsFocused } from '@react-navigation/native'
+import orderBy from 'lodash/orderBy'
+import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
@@ -20,7 +22,6 @@ import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
 const DiagnosisDrugs = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
   const {
-    Fonts,
     Gutters,
     Containers: { finalDiagnoses, drugs },
   } = useTheme()
@@ -34,9 +35,33 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
     state => state.medicalCase.item.diagnosis[diagnosisKey],
   )
 
+  /**
+   * Sorts the diagnoses by level_of_urgency
+   * @returns {*}
+   */
+  const sortDiagnosesByUrgency = () => {
+    return orderBy(
+      Object.values(diagnoses),
+      finalDiagnosis => algorithm.nodes[finalDiagnosis.id].level_of_urgency,
+      ['desc', 'asc'],
+    )
+  }
+
+  const [sortedDiagnoses, setSortedDiagnoses] = useState(
+    sortDiagnosesByUrgency(),
+  )
+
   useEffect(() => {
-    dispatch(SetDrugs.action())
+    const newDiagnoses = sortDiagnosesByUrgency()
+    if (!isEqual(newDiagnoses, sortedDiagnoses)) {
+      setSortedDiagnoses(newDiagnoses)
+    }
+  }, [isFocused, diagnoses])
+
+  useEffect(async () => {
+    await dispatch(SetDrugs.action())
   }, [isFocused])
+
   /**
    * Removes a single element from the additional diagnosis list
    * @param diagnosisId
@@ -69,7 +94,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
     )
   }
 
-  return Object.values(diagnoses).map(diagnosis => (
+  return sortedDiagnoses.map(diagnosis => (
     <View key={`diagnosis-${diagnosis.id}`} style={drugs.wrapper}>
       <View style={drugs.diagnosisHeaderWrapper}>
         <Text style={drugs.diagnosisHeader}>

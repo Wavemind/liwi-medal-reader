@@ -15,8 +15,9 @@ export default async props => {
   return {
     first_name: __DEV__ ? faker.name.firstName() : '',
     last_name: __DEV__ ? faker.name.lastName() : '',
-    birth_date: '',
+    birth_date: null,
     birth_date_estimated: false,
+    birth_date_estimated_type: null,
     consent: true,
     consent_file: null,
     createdAt: new Date().getTime() / 1000, // Transform ms to s
@@ -27,7 +28,7 @@ export default async props => {
     other_group_id: otherFacility.group_id || null,
     other_study_id: otherFacility.study_id || null,
     other_uid: otherFacility.uid || null,
-    patient_values: [],
+    patientValues: [],
     reason: null,
     savedInDatabase: !newMedicalCase, // TODO check if we can set false directly
     study_id,

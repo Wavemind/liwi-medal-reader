@@ -14,13 +14,14 @@ import { useTheme } from '@/Theme'
 import { Icon, CustomDrawerItem, MedicalCaseDrawer } from '@/Components'
 import { navigateNestedAndSimpleReset } from '@/Navigators/Root'
 import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
+import SetParams from '@/Store/Modal/SetParams'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 
 const CustomDrawerContent = ({ navigation }) => {
   // Theme and style elements deconstruction
   const {
     Components: { customDrawerContent },
     Layout,
-    Colors,
   } = useTheme()
 
   const { t } = useTranslation()
@@ -38,8 +39,21 @@ const CustomDrawerContent = ({ navigation }) => {
    * Clear clinician and redirect user to clinician list
    */
   const handleLogout = async () => {
-    await dispatch(ChangeClinician.action({ clinician: {} }))
-    navigateNestedAndSimpleReset('Auth', 'ClinicianSelection')
+    if (medicalCaseId && closedAt === 0) {
+      await dispatch(
+        SetParams.action({
+          type: 'exitMedicalCase',
+          params: {
+            routeName: 'Auth',
+            routeParams: { screen: 'ClinicianSelection' },
+          },
+        }),
+      )
+      await dispatch(ToggleVisibility.action({}))
+    } else {
+      await dispatch(ChangeClinician.action({ clinician: {} }))
+      navigateNestedAndSimpleReset('Auth', 'ClinicianSelection')
+    }
   }
 
   return (
@@ -90,6 +104,7 @@ const CustomDrawerContent = ({ navigation }) => {
               routeParams={{ stageIndex, stepIndex }}
               iconName="summary"
               navigation={navigation}
+              disabled
             />
           )}
         </DrawerContentScrollView>

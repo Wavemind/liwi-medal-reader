@@ -11,9 +11,10 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
+import { getAvailableHealthcare } from '@/Utils/Drug'
 import { QuestionInfoButton } from '@/Components'
 
-const Managements = ({ diagnosis }) => {
+const Managements = ({ diagnosis, excludedManagements }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
@@ -21,10 +22,11 @@ const Managements = ({ diagnosis }) => {
   } = useTheme()
 
   const { t } = useTranslation()
+  const managements = getAvailableHealthcare(diagnosis, 'managements')
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
 
-  const managementsCount = diagnosis.managements.length
+  const managementsCount = managements.length
 
   return (
     <View>
@@ -38,19 +40,23 @@ const Managements = ({ diagnosis }) => {
           {t('containers.medical_case.summary.no_managements')}
         </Text>
       ) : (
-        diagnosis.managements.map((managementId, i) => (
-          <View
-            key={`management-${managementId}`}
-            style={summary.managementWrapper(i === managementsCount - 1)}
-          >
-            <Text style={summary.drugTitle}>
-              {translate(nodes[managementId].label)}
-            </Text>
-            {translate(nodes[managementId].description) !== '' && (
-              <QuestionInfoButton nodeId={managementId} />
-            )}
-          </View>
-        ))
+        managements.map((managementId, i) => {
+          if (!excludedManagements.includes(managementId)) {
+            return (
+              <View
+                key={`management-${managementId}`}
+                style={summary.managementWrapper(i === managementsCount - 1)}
+              >
+                <Text style={summary.drugTitle}>
+                  {translate(nodes[managementId].label)}
+                </Text>
+                {translate(nodes[managementId].description) !== '' && (
+                  <QuestionInfoButton nodeId={managementId} />
+                )}
+              </View>
+            )
+          }
+        })
       )}
     </View>
   )

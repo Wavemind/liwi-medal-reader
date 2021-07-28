@@ -280,6 +280,7 @@ export default function () {
         record.last_name = patientData.last_name
         record.birth_date = patientData.birth_date
         record.birth_date_estimated = patientData.birth_date_estimated
+        record.birth_date_estimated_type = patientData.birth_date_estimated_type
         record.uid = patientData.uid
         record.study_id = patientData.study_id
         record.group_id = patientData.group_id
@@ -410,6 +411,7 @@ export default function () {
       last_name: watermelonDBPatient.last_name,
       birth_date: watermelonDBPatient.birth_date.getTime(),
       birth_date_estimated: watermelonDBPatient.birth_date_estimated,
+      birth_date_estimated_type: watermelonDBPatient.birth_date_estimated_type,
       consent: watermelonDBPatient.consent,
       consent_file: watermelonDBPatient.consent_file,
       createdAt: watermelonDBPatient.createdAt.getTime(),

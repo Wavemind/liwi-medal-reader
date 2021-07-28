@@ -25,7 +25,7 @@ const IndexQuestionInfoContainer = ({
   const {
     Fonts,
     Colors,
-    Containers: { questionInfo },
+    Containers: { questionInfo, auth },
   } = useTheme()
 
   const node = useSelector(state => state.algorithm.item.nodes[nodeId])
@@ -48,7 +48,7 @@ const IndexQuestionInfoContainer = ({
             </Text>
           )}
           <SectionHeader label={translate(node.label)} />
-          <Text style={[Fonts.textSmall]}>{translate(node.description)}</Text>
+          <Text style={auth.itemLabel}>{translate(node.description)}</Text>
 
           {node.medias?.map(media => {
             return <Media key={media.url} media={media} />

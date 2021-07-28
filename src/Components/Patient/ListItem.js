@@ -24,7 +24,6 @@ const ListItem = ({ item }) => {
     Components: { patientListItem },
     Layout,
     Gutters,
-    Fonts,
     FontSize,
   } = useTheme()
 
@@ -49,7 +48,10 @@ const ListItem = ({ item }) => {
     )
     if (isFulfilled(loadPatient)) {
       navigation.navigate('PatientProfile', {
-        title: `${item.first_name} ${item.last_name}`,
+        title: `${item.first_name} ${item.last_name} - ${format(
+          item.birth_date,
+          'dd.MM.yyyy',
+        )}`,
       })
     }
   }
@@ -70,7 +72,7 @@ const ListItem = ({ item }) => {
             {format(item.updatedAt, 'dd.MM.yyyy')}
           </Text>
         </View>
-        {activeMedicalCase && (
+        {activeMedicalCase ? (
           <View style={patientListItem.statusWrapper}>
             <Text style={patientListItem.statusTitle}>
               {t(
@@ -92,6 +94,10 @@ const ListItem = ({ item }) => {
               ))}
             </View>
           </View>
+        ) : (
+          <Text style={patientListItem.noActiveConsultationsText}>
+            {t('containers.patient.list.no_active_consultations')}
+          </Text>
         )}
         <View style={[Gutters.regularLMargin, Layout.column]}>
           <Icon name="right-arrow" size={25} />

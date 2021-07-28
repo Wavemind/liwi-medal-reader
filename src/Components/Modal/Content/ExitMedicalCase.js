@@ -14,6 +14,7 @@ import { useTheme } from '@/Theme'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { SaveMedicalCaseService } from '@/Services/MedicalCase'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
+import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 
 const ExitMedicalCase = () => {
   // Theme and style elements deconstruction
@@ -42,6 +43,9 @@ const ExitMedicalCase = () => {
    * Redirect user to home page and clear medical case store
    */
   const exitWithoutSave = async () => {
+    if (routeName === 'Auth') {
+      await dispatch(ChangeClinician.action({ clinician: {} }))
+    }
     await dispatch(ToggleVisibility.action({}))
     navigateAndSimpleReset(routeName, {
       ...routeParams,
@@ -58,6 +62,9 @@ const ExitMedicalCase = () => {
       stepIndex,
     })
     if (medicalCaseSaved) {
+      if (routeName === 'Auth') {
+        await dispatch(ChangeClinician.action({ clinician: {} }))
+      }
       await dispatch(ToggleVisibility.action({}))
       navigateAndSimpleReset(routeName, {
         ...routeParams,
@@ -69,15 +76,15 @@ const ExitMedicalCase = () => {
   return (
     <View>
       <Text style={modal.header}>
-        {t('components.modals.exitMedicalCase.title')}
+        {t('components.modals.exit_medical_case.title')}
       </Text>
       <Text style={modal.body}>
-        {t('components.modals.exitMedicalCase.content')}
+        {t('components.modals.exit_medical_case.content')}
       </Text>
 
       <View style={modal.buttonWrapper}>
         <SquareButton
-          label={t('components.modals.exitMedicalCase.exitAndSave')}
+          label={t('components.modals.exit_medical_case.exit_and_save')}
           filled
           disabled={!patientSavedInDatabase}
           onPress={exitAndSave}
@@ -86,7 +93,7 @@ const ExitMedicalCase = () => {
           fullWidth={false}
         />
         <SquareButton
-          label={t('components.modals.exitMedicalCase.exitWithoutSave')}
+          label={t('components.modals.exit_medical_case.exit_without_save')}
           filled
           onPress={exitWithoutSave}
           bgColor={Colors.primary}

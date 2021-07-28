@@ -6,7 +6,7 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Gutters.hugeTMargin,
-      ...Layout.fill,
+      ...Gutters.largeBMargin,
       ...Layout.left,
     },
   })

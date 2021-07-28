@@ -7,7 +7,7 @@ import differenceInDays from 'date-fns/differenceInDays'
 /**
  * The internal imports
  */
-import { getYesAnswer } from '@/Utils/Answers'
+import { getNoAnswer, getYesAnswer } from '@/Utils/Answers'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
@@ -43,16 +43,25 @@ export const respectsCutOff = (cut_off_start, cut_off_end) => {
   const createdAt = state.medicalCase.item.createdAt
 
   const ageInDays = differenceInDays(new Date(createdAt), new Date(birthDate))
-  if (cut_off_start === null && cut_off_end === null) {
+
+  // If there is no cut off defined
+  if (
+    (cut_off_start === null && cut_off_end === null) ||
+    (cut_off_start === undefined && cut_off_end === undefined)
+  ) {
     return true
   }
-  if (cut_off_start === null) {
+
+  // If there is only a end cut off
+  if (cut_off_start === null || cut_off_start === undefined) {
     return cut_off_end > ageInDays
   }
-  if (cut_off_end === null) {
-    return cut_off_start < ageInDays
+
+  // If there is only a start cut off
+  if (cut_off_end === null || cut_off_end === undefined) {
+    return cut_off_start <= ageInDays
   } else {
-    return cut_off_start < ageInDays && cut_off_end > ageInDays
+    return cut_off_start <= ageInDays && cut_off_end > ageInDays
   }
 }
 
@@ -236,12 +245,13 @@ export const excludedByCC = questionId => {
   const nodes = state.algorithm.item.nodes
   if (
     nodes[questionId].type === Config.NODE_TYPES.finalDiagnosis ||
-    nodes[questionId].category === Config.CATEGORIES.drug
+    nodes[questionId].category === Config.CATEGORIES.drug ||
+    nodes[questionId].category === Config.CATEGORIES.management
   ) {
     return false
   }
   return nodes[questionId].conditioned_by_cc.some(
-    ccId => mcNodes[ccId].answer === getYesAnswer(nodes[ccId]).id,
+    ccId => mcNodes[ccId].answer === getNoAnswer(nodes[ccId]).id,
   )
 }
 
@@ -275,7 +285,9 @@ export const calculateCondition = (
       return condition.node_id === sourceId
     })
     .some(
-      condition => mcNodes[condition.node_id].answer === condition.answer_id,
+      condition =>
+        mcNodes[condition.node_id].answer === condition.answer_id &&
+        respectsCutOff(condition.cut_off_start, condition.cut_off_end),
     )
 }
 
@@ -328,6 +340,7 @@ export const debugNode = (nodeId, mcNodes) => {
       [diagnosisId]: debugNodeInDiagnosis(diagnosisId, nodeId, localMcNode),
     }
   })
+
   console.info(
     'debug',
     nodeId,

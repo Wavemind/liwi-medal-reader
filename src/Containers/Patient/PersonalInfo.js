@@ -24,6 +24,9 @@ const PersonalInfoPatientContainer = () => {
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const patient = useSelector(state => state.patient.item)
+  const birthDateValue = patient.birth_date // TODO Double check this ! Issue 177
+    ? format(patient.birth_date, 'dd.MM.yyyy')
+    : null
 
   // Array of basic patient information for iteration
   const patientInformation = [
@@ -31,7 +34,7 @@ const PersonalInfoPatientContainer = () => {
     { label: t('patient.last_name'), value: patient.last_name },
     {
       label: t('patient.birth_date'),
-      value: format(patient.birth_date, 'dd.MM.yyyy'),
+      value: birthDateValue,
     },
   ]
 

@@ -36,9 +36,11 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
     <View>
       <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
       {drugDose.by_age ? (
-        <Text style={summary.drugText}>{`${roundSup(drugDose.unique_dose)}ml ${t(
-          'formulations.medication_form.per_administration',
-        )} ${t('formulations.drug.during')} ${duration} ${t(
+        <Text style={summary.drugText}>{`${roundSup(
+          drugDose.unique_dose,
+        )}ml ${t('formulations.medication_form.per_administration')} ${t(
+          'formulations.drug.every',
+        )} ${drugDose.recurrence} ${t('formulations.drug.h')} ${duration} ${t(
           'formulations.drug.days',
         )}`}</Text>
       ) : drugDose.doseResult === null ? (
@@ -46,10 +48,11 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
       ) : (
         <View>
           <Text style={summary.drugText}>
-            {t('formulations.drug.give')} {ratio * drugDose.doseResult}
-            {t('formulations.drug.mg')}: {drugDose.doseResult}
+            {t('formulations.drug.give')}{' '}
+            {roundSup(ratio * drugDose.doseResult)}
+            {t('formulations.drug.mg')}: {roundSup(drugDose.doseResult)}
             {t('formulations.drug.ml')} {t('formulations.drug.of')}{' '}
-            {drugDose.liquid_concentration}
+            {roundSup(drugDose.liquid_concentration)}
             {t('formulations.drug.mg')}/{drugDose.dose_form}
             {t('formulations.drug.ml')}
           </Text>
@@ -58,17 +61,20 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
           } ${t('formulations.drug.h')} ${duration} ${t(
             'formulations.drug.days',
           )}`}</Text>
-          <Text style={[Gutters.regularTMargin, summary.drugText]}>
+          {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
+            drugDose.administration_route_category,
+          ) && (
+            <Text
+              style={[Gutters.regularTMargin, summary.drugText]}
+              key={`text_${drug.id}`}
+            >
+              {translate(drugDose.injection_instructions)}
+            </Text>
+          )}
+          <Text style={summary.drugText}>
             {translate(drugDose.dispensing_description)}
           </Text>
         </View>
-      )}
-      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
-        drugDose.administration_route_category,
-      ) && (
-        <Text style={summary.drugText} key={`text_${drug.id}`}>
-          {translate(drugDose.injection_instructions)}
-        </Text>
       )}
     </View>
   )

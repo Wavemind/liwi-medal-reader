@@ -6,6 +6,8 @@ import { Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useIsFocused } from '@react-navigation/native'
+import orderBy from 'lodash/orderBy'
+import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
@@ -13,10 +15,8 @@ import { useIsFocused } from '@react-navigation/native'
 import { Drugs, Managements, QuestionInfoButton } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import orderBy from 'lodash/orderBy'
-import isEqual from 'lodash/isEqual'
 
-const Diagnosis = ({ diagnosisKey }) => {
+const Diagnosis = ({ diagnosisKey, excludedManagements }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -86,7 +86,10 @@ const Diagnosis = ({ diagnosisKey }) => {
         </View>
         <View style={[Gutters.regularHPadding, Gutters.regularVMargin]}>
           <Drugs diagnosis={diagnosis} />
-          <Managements diagnosis={diagnosis} />
+          <Managements
+            diagnosis={diagnosisNode}
+            excludedManagements={excludedManagements}
+          />
         </View>
       </View>
     )

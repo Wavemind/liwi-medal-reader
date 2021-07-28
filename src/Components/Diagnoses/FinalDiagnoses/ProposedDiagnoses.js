@@ -1,10 +1,13 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import orderBy from 'lodash/orderBy'
+import isEqual from 'lodash/isEqual'
+import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -23,22 +26,49 @@ const ProposedDiagnoses = () => {
   } = useTheme()
 
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
 
-  const algorithm = useSelector(state => state.algorithm.item)
+  const nodes = useSelector(state => state.algorithm.item.nodes)
   const proposed = useSelector(
     state => state.medicalCase.item.diagnosis.proposed,
   )
   const agreed = useSelector(state => state.medicalCase.item.diagnosis.agreed)
   const refused = useSelector(state => state.medicalCase.item.diagnosis.refused)
 
-  return Object.keys(proposed).length === 0 ? (
+  /**
+   * Sorts the diagnoses by level_of_urgency
+   * @returns {*}
+   */
+  const sortDiagnosesByUrgency = () => {
+    return orderBy(
+      proposed,
+      diagnosisId => nodes[diagnosisId].level_of_urgency,
+      ['desc', 'asc'],
+    )
+  }
+
+  const [sortedDiagnoses, setSortedDiagnoses] = useState(
+    sortDiagnosesByUrgency(),
+  )
+
+  /**
+   * Transforms stored diagnoses/drugs into a usable local format
+   */
+  useEffect(() => {
+    const newDiagnoses = sortDiagnosesByUrgency()
+    if (!isEqual(newDiagnoses, sortedDiagnoses)) {
+      setSortedDiagnoses(newDiagnoses)
+    }
+  }, [isFocused, proposed])
+
+  return sortedDiagnoses.length === 0 ? (
     <View>
       <Text style={finalDiagnoses.noItemsText}>
         {t('containers.medical_case.diagnoses.no_proposed')}
       </Text>
     </View>
   ) : (
-    proposed.map((diagnosisId, i) => {
+    sortedDiagnoses.map((diagnosisId, i) => {
       const isAgreed = Object.keys(agreed).includes(diagnosisId.toString())
       const isRefused = refused.includes(diagnosisId)
 
@@ -48,9 +78,9 @@ const ProposedDiagnoses = () => {
           style={finalDiagnoses.newItemWrapper(i === proposed.length - 1)}
         >
           <Text style={finalDiagnoses.diagnosisLabel}>
-            {translate(algorithm.nodes[diagnosisId].label)}
+            {translate(nodes[diagnosisId].label)}
           </Text>
-          {translate(algorithm.nodes[diagnosisId].description) !== '' && (
+          {translate(nodes[diagnosisId].description) !== '' && (
             <QuestionInfoButton nodeId={diagnosisId} />
           )}
           <View style={finalDiagnoses.booleanButtonWrapper}>

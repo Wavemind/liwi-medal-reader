@@ -5,7 +5,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View, Animated, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useIsFocused } from '@react-navigation/native'
 import uuid from 'react-native-uuid'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 
 /**
  * The internal imports
@@ -29,6 +31,7 @@ const IndexHomeContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const isFocused = useIsFocused()
 
   const {
     Containers: { home, global },
@@ -68,6 +71,10 @@ const IndexHomeContainer = ({ navigation }) => {
     setFirstLoading(false)
   }, [])
 
+  useEffect(() => {
+    handleRefresh()
+  }, [isFocused])
+
   /**
    * Fetch 15 latest medical cases
    */
@@ -102,11 +109,12 @@ const IndexHomeContainer = ({ navigation }) => {
         otherFacility: {},
       }),
     )
+
     await dispatch(
       CreateMedicalCase.action({ algorithm, patientId: uuid.v4() }),
     )
 
-    navigation.navigate('StageWrapper')
+    navigateAndSimpleReset('StageWrapper')
   }
 
   return (

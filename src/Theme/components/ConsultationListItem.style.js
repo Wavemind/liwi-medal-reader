@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { hp } from '@/Theme/Responsive'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
@@ -19,18 +19,18 @@ export default function (props) {
     title: {
       ...Fonts.textRegular,
       ...Fonts.textBold,
-      ...Gutters.regularRMargin,
+      ...Gutters.tinyRMargin,
       color: Colors.primary,
     },
     count: {
       ...Fonts.textRegular,
       ...Fonts.textBold,
-      ...Gutters.largeRMargin,
+      ...Gutters.tinyRMargin,
       color: Colors.primary,
     },
     diagnosesWrapper: {
-      ...Layout.grow,
       ...Layout.column,
+      width: wp(33),
     },
     diagnosis: {
       ...Fonts.textTiny,

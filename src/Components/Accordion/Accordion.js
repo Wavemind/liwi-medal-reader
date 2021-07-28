@@ -34,7 +34,7 @@ const Accordion = ({ data, source }) => {
     setOpen(prev => !prev)
 
     if (!open) {
-      newHeight = data.items.length * hp(6.1)
+      newHeight = data.items.length * hp(6.3)
     }
 
     setHeight(newHeight)

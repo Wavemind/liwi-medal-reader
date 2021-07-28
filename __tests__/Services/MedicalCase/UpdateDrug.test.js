@@ -14,7 +14,7 @@ import { store } from '@/Store'
 import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
 import { agreeFinalDiagnosis } from '../../Utils/FinalDiagnosis'
-import { getAvailableDrugs } from '@/Utils/Drug'
+import { getAvailableHealthcare } from '@/Utils/Drug'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')
@@ -55,7 +55,7 @@ describe('Test Drugs Exclusion', () => {
     // Add Bacterial acute pharyngitis
     agreeFinalDiagnosis(pharyngitis)
 
-    expect(getAvailableDrugs(pharyngitis)).toEqual(
+    expect(getAvailableHealthcare(pharyngitis, 'drugs')).toEqual(
       expect.arrayContaining([1681]),
     )
 
@@ -68,21 +68,21 @@ describe('Test Drugs Exclusion', () => {
     const pyelonephritis = algorithm.nodes[pyelonephritisId]
     agreeFinalDiagnosis(pyelonephritis)
 
-    expect(getAvailableDrugs(pyelonephritis)).toEqual(
+    expect(getAvailableHealthcare(pyelonephritis, 'drugs')).toEqual(
       expect.arrayContaining([1682]),
     )
-    expect(getAvailableDrugs(pharyngitis)).toEqual(
+    expect(getAvailableHealthcare(pharyngitis, 'drugs')).toEqual(
       expect.arrayContaining([1681]),
     )
     await UpdateDrugService(257, 1682, true, 'agreed')
 
-    expect(getAvailableDrugs(pyelonephritis)).toEqual(
+    expect(getAvailableHealthcare(pyelonephritis, 'drugs')).toEqual(
       expect.arrayContaining([1682]),
     )
-    expect(getAvailableDrugs(pharyngitis)).not.toEqual(
+    expect(getAvailableHealthcare(pharyngitis, 'drugs')).not.toEqual(
       expect.arrayContaining([1681]),
     )
-    expect(getAvailableDrugs(pharyngitis)).toEqual(
+    expect(getAvailableHealthcare(pharyngitis, 'drugs')).toEqual(
       expect.arrayContaining([1660]),
     )
   })
@@ -103,14 +103,14 @@ describe('Test Drugs Exclusion', () => {
     await setAnswer(2253, 1171)
     await setAnswer(2251, 1166)
 
-    expect(getAvailableDrugs(pyelonephritis)).toEqual(
+    expect(getAvailableHealthcare(pyelonephritis, 'drugs')).toEqual(
       expect.arrayContaining([1682]),
     )
-    expect(getAvailableDrugs(pharyngitis)).toEqual(
+    expect(getAvailableHealthcare(pharyngitis, 'drugs')).toEqual(
       expect.arrayContaining([1681]),
     )
     await setAnswer(2251, 1167)
-    expect(getAvailableDrugs(pyelonephritis)).not.toEqual(
+    expect(getAvailableHealthcare(pyelonephritis, 'drugs')).not.toEqual(
       expect.arrayContaining([1682]),
     )
     await UpdateDrugService(257, 1682, true, 'agreed')

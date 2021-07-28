@@ -10,12 +10,12 @@ import {
 import { zip } from 'react-native-zip-archive'
 import differenceInDays from 'date-fns/differenceInDays'
 import startOfToday from 'date-fns/startOfToday'
+import api from '@/Services/Synchronization/Api'
 
 /**
  * The internal imports
  */
 import useDatabase from '../Database/useDatabase'
-import { store } from '@/Store'
 import { GetNonSynchronizedService } from '@/Services/MedicalCase'
 
 /**
@@ -30,11 +30,11 @@ const normalizeFilePath = path => {
 export default async () => {
   const { getActivities, findBy, update } = useDatabase()
 
-  const mainDataUrl = store.getState().healthFacility.item.main_data_ip
   const medicalCasesToSync = await GetNonSynchronizedService()
 
   const folder = `${DocumentDirectoryPath}/medical_cases`
   const targetPath = `${folder}.zip`
+  let medicalCaseJson = {}
   // Create directory
   await mkdir(folder)
   // Generate files
@@ -46,15 +46,15 @@ export default async () => {
       const tempMedicalCaseJson = {
         ...JSON.parse(medicalCase.json),
         id: medicalCase.id,
+        version_id: medicalCase.version_id,
         patient: { ...patient, medicalCases: [] },
         activities: activities,
       }
 
       delete tempMedicalCaseJson.patient.savedInDatabase
 
-      const medicalCaseJson = JSON.stringify(
-        tempMedicalCaseJson,
-        (key, value) => (typeof value === 'undefined' ? null : value),
+      medicalCaseJson = JSON.stringify(tempMedicalCaseJson, (key, value) =>
+        typeof value === 'undefined' ? null : value,
       )
 
       await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson)
@@ -71,17 +71,18 @@ export default async () => {
       await unlink(`${folder}/${medicalCase.id}.json`)
     }),
   )
+
   // TODO synchronize the mcs when we have client-server functionality and remove const result = null
-  // const result = await synchronizeMedicalCases(mainDataUrl, path)
-  const result = null
-  // if (result !== null && result.data_received) {
-  //   // Reset medicalCases to sync if request success
-  //   medicalCasesToSync.forEach(medicalCase => {
-  //     update('MedicalCase', medicalCase.id, {
-  //       synchronizedAt: new Date().getTime(),
-  //     })
-  //   })
-  // } else {
-  //   return null
-  // }
+  const result = api.post('/api/sync_medical_cases', medicalCaseJson)
+  // const result = null
+  if (result !== null && result.data_received) {
+    // Reset medicalCases to sync if request success
+    medicalCasesToSync.forEach(medicalCase => {
+      update('MedicalCase', medicalCase.id, {
+        synchronizedAt: new Date().getTime(),
+      })
+    })
+  } else {
+    return null
+  }
 }

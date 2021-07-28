@@ -1,5 +1,5 @@
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
-import { getAvailableDrugs } from '@/Utils/Drug'
+import { getAvailableHealthcare } from '@/Utils/Drug'
 
 import { store } from '@/Store'
 
@@ -17,7 +17,7 @@ export const agreeFinalDiagnosis = async node => {
           management => management.id,
         ),
         drugs: {
-          proposed: getAvailableDrugs(node),
+          proposed: getAvailableHealthcare(node, 'drugs'),
           agreed: {},
           refused: [],
           additional: {},

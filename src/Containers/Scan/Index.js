@@ -21,7 +21,7 @@ import HandleQr from '@/Store/Scan/HandleQr'
 import LoadPatient from '@/Store/Patient/Load'
 import { transformPatientValues } from '@/Utils/MedicalCase'
 import UpdateNodeFields from '@/Store/MedicalCase/UpdateNodeFields'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
+import { navigateAndSimpleReset, navigate } from '@/Navigators/Root'
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
@@ -49,6 +49,14 @@ const IndexScanContainer = () => {
   const [otherQR, setOtherQR] = useState({})
   const [lastScan, setLastScan] = useState({})
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () =>
+      dispatch(HandleQr.action({ reset: true })),
+    )
+
+    return unsubscribe
+  }, [navigation])
+
   /**
    * Will navigate to the medical case with the appropriate params
    */
@@ -66,7 +74,10 @@ const IndexScanContainer = () => {
             }),
           )
           if (isFulfilled(medicalCaseResult)) {
-            navigation.navigate('StageWrapper', scanData.navigationParams)
+            navigate('Home', {
+              screen: 'StageWrapper',
+              ...scanData.navigationParams,
+            })
           }
         }
       } else {

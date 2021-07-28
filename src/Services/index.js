@@ -81,7 +81,7 @@ instance.interceptors.response.use(
   async function (error) {
     if (error.response) {
       const originalRequest = error.config
-      console.log('originalRequest._retry=', originalRequest._retry)
+    
       // The request was made and the server responded with a 403 status code
       // which means access_token is expired, so we try to get a new access_token
       // from the refresh_token and retry request

@@ -63,7 +63,7 @@ const Select = ({ questionId, disabled = false }) => {
         selectedValue={value}
         prompt={translate(currentNode.label)}
         onValueChange={setLocalAnswer}
-        dropdownIconColor={Colors.black}
+        dropdownIconColor={Colors.primary}
         enabled={!disabled}
       >
         <Picker.Item

@@ -14,6 +14,9 @@ import enGB from 'date-fns/locale/en-GB'
 import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
 import subYears from 'date-fns/subYears'
+import differenceInDays from 'date-fns/differenceInDays'
+import differenceInMonths from 'date-fns/differenceInMonths'
+import differenceInYears from 'date-fns/differenceInYears'
 
 /**
  * The internal imports
@@ -36,15 +39,24 @@ const DateInput = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const birth_date_estimated = useSelector(
+  const birthDateEstimated = useSelector(
     state => state.patient.item.birth_date_estimated,
+  )
+  const medicalCaseCreatedAt = useSelector(
+    state => state.medicalCase.item.createdAt,
+  )
+
+  const birthDateEstimatedType = useSelector(
+    state => state.patient.item.birth_date_estimated_type,
   )
 
   // Local state definition
   const [dateLanguage, setDateLanguage] = useState(enGB)
-  const [isEstimated, setIsEstimated] = useState(birth_date_estimated)
+  const [isEstimated, setIsEstimated] = useState(birthDateEstimated)
 
-  const [estimatedDateType, setEstimatedDateType] = useState(null)
+  const [estimatedDateType, setEstimatedDateType] = useState(
+    birthDateEstimatedType,
+  )
   const [estimatedValue, setEstimatedValue] = useState('')
 
   const [dayValue, setDayValue] = useState(null)
@@ -62,32 +74,26 @@ const DateInput = () => {
   const systemLanguage = useSelector(state => state.system.language)
   const birth_date = useSelector(state => state.patient.item.birth_date)
 
-  /**
-   * Reset the value of the field when we check and store the value in the patient store
-   */
-  useEffect(() => {
-    setEstimatedValue('')
-    setEstimatedDateType(null)
-    setDayValue(null)
-    setMonthValue(null)
-    setYearValue(null)
-    dispatch(
-      UpdateField.action({
-        field: 'birth_date_estimated',
-        value: isEstimated,
-      }),
-    )
-  }, [isEstimated])
-
   useEffect(() => {
     if (birth_date !== null) {
       const date = new Date(birth_date)
-      setDayValue(date.getDate())
-      setMonthValue(date.getMonth() + 1)
-      setYearValue(date.getFullYear())
+      if (estimatedDateType) {
+        let value = ''
+        if (estimatedDateType === 'day') {
+          value = differenceInDays(new Date(medicalCaseCreatedAt), date)
+        } else if (estimatedDateType === 'month') {
+          value = differenceInMonths(new Date(medicalCaseCreatedAt), date)
+        } else {
+          value = differenceInYears(new Date(medicalCaseCreatedAt), date)
+        }
+        setEstimatedValue(value)
+      } else {
+        setDayValue(date.getDate())
+        setMonthValue(date.getMonth() + 1)
+        setYearValue(date.getFullYear())
+      }
     }
 
-    // TODO need to remove this, but it crashes without it
     if (__DEV__) {
       setDayValue(11)
       setMonthValue(4)
@@ -113,11 +119,11 @@ const DateInput = () => {
    * Triggers the related actions when the birth date is set
    * @param {Timestamp} birthDate
    */
-  const relatedActions = birthDate => {
+  const relatedActions = async birthDate => {
     // Trigger formulas related to birth date
-    dispatch(
+    await dispatch(
       HandleDateFormulas.action({
-        birthDate: birthDate.getTime(),
+        birthDate: birthDate,
         algorithm,
       }),
     )
@@ -125,7 +131,7 @@ const DateInput = () => {
     // Set default value for complain category
     dispatch(
       HandleComplaintCategories.action({
-        birthDate: birthDate.getTime(),
+        birthDate: birthDate,
         algorithm,
       }),
     )
@@ -141,13 +147,14 @@ const DateInput = () => {
         'dd-MM-yyyy',
         new Date(),
       )
+
       dispatch(
         UpdateField.action({
           field: 'birth_date',
           value: birthDate.getTime(),
         }),
       )
-      relatedActions(birthDate)
+      relatedActions(birthDate.getTime())
     }
   }, [dayValue, monthValue, yearValue])
 
@@ -159,7 +166,7 @@ const DateInput = () => {
       let birthDate = ''
 
       if (estimatedDateType === 'day') {
-        birthDate = subDays(new Date(), estimatedValue)
+        birthDate = subDays(new Date(), Number(estimatedValue) + 1)
       } else if (estimatedDateType === 'month') {
         birthDate = subMonths(new Date(), estimatedValue)
       } else {
@@ -171,7 +178,7 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
-      relatedActions(birthDate)
+      relatedActions(birthDate.getTime())
     }
   }, [estimatedValue, estimatedDateType])
 
@@ -179,9 +186,48 @@ const DateInput = () => {
    * Check if there is no unpermitted char
    * @param {Event} e
    */
-  const onChange = value => {
+  const handleEstimatedValue = value => {
     value = value.replace(/[^0-9]/g, '')
     setEstimatedValue(value)
+  }
+
+  /**
+   * Save in state + store estimated type
+   */
+  const handleEstimatedType = value => {
+    setEstimatedDateType(value)
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date_estimated_type',
+        value: value,
+      }),
+    )
+  }
+
+  /**
+   * Reset the value of the field when we check and store the value in the patient store
+   */
+  const handleIsEstimated = value => {
+    // TODO Improve it
+    setIsEstimated(value)
+    setEstimatedValue('')
+    setEstimatedDateType('month')
+    setDayValue(null)
+    setMonthValue(null)
+    setYearValue(null)
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date_estimated_type',
+        value: null,
+      }),
+    )
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date_estimated',
+        value: value,
+      }),
+    )
+    relatedActions(null)
   }
 
   return (
@@ -193,8 +239,8 @@ const DateInput = () => {
               style={select.picker}
               selectedValue={estimatedDateType}
               mode="dropdown"
-              onValueChange={setEstimatedDateType}
-              dropdownIconColor={Colors.black}
+              onValueChange={handleEstimatedType}
+              dropdownIconColor={Colors.primary}
             >
               <Picker.Item
                 key="select-date-type-placeholder"
@@ -222,7 +268,7 @@ const DateInput = () => {
             <TextInput
               style={[numeric.input(true), Gutters.smallTMargin]}
               keyboardType="decimal-pad"
-              onChangeText={onChange}
+              onChangeText={handleEstimatedValue}
               value={String(estimatedValue)}
             />
           </View>
@@ -235,7 +281,7 @@ const DateInput = () => {
               selectedValue={yearValue}
               mode="dropdown"
               onValueChange={setYearValue}
-              dropdownIconColor={Colors.black}
+              dropdownIconColor={Colors.primary}
             >
               <Picker.Item
                 key="select-year-placeholder"
@@ -257,7 +303,7 @@ const DateInput = () => {
               selectedValue={monthValue}
               mode="dropdown"
               onValueChange={setMonthValue}
-              dropdownIconColor={Colors.black}
+              dropdownIconColor={Colors.primary}
             >
               <Picker.Item
                 key="select-month-placeholder"
@@ -283,7 +329,7 @@ const DateInput = () => {
               selectedValue={dayValue}
               mode="dropdown"
               onValueChange={setDayValue}
-              dropdownIconColor={Colors.black}
+              dropdownIconColor={Colors.primary}
             >
               <Picker.Item
                 key="select-day-placeholder"
@@ -304,7 +350,7 @@ const DateInput = () => {
       <Checkbox
         label={t('answers.estimated')}
         defaultValue={isEstimated}
-        onPress={setIsEstimated}
+        onPress={handleIsEstimated}
       />
     </View>
   )

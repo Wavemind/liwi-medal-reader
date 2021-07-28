@@ -9,10 +9,9 @@ import find from 'lodash/find'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { translate } from '@/Translations/algorithm'
-import { RegistrationQuestionsService } from '@/Services/Steps'
 import i18n from '@/Translations/index'
 
-export default (questions, errors) => {
+export default (questions, errors, validateInArmControl = false) => {
   const state = store.getState()
 
   const algorithm = state.algorithm.item
@@ -31,7 +30,8 @@ export default (questions, errors) => {
       (!mcNode.unavailableValue && mcNode.value !== unavailableAnswer?.id) ||
       (mcNode.unavailableValue && mcNode.answer === null)
     ) {
-      const result = mcNode.answer !== null || mcNode.value !== ''
+      const result =
+        mcNode.answer !== null || (mcNode.value !== '' && mcNode.value !== null)
 
       // Integer or float input out of range defined by min/max value error
       if (
@@ -68,17 +68,17 @@ export default (questions, errors) => {
         }
       }
 
-      // Skip validation if algorithm is in arm control except in registration
+      // Skip validation if algorithm is in arm control except for registration and referral
       if (
         !algorithm.is_arm_control ||
-        (algorithm.is_arm_control &&
-          RegistrationQuestionsService().includes(questionId))
+        (algorithm.is_arm_control && validateInArmControl)
       ) {
         // Mandatory
         if (node.is_mandatory && !result) {
           const label = translate(node.label)
           errors[questionId] = i18n.t('validation.is_required', {
             field: label,
+            interpolation: { escapeValue: false },
           })
         }
       }
