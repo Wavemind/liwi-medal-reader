@@ -25,7 +25,7 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
   const { t } = useTranslation()
 
   const ratio = drugDose.liquid_concentration / drugDose.dose_form
-  
+
   const drugInstance = useSelector(
     state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
   )

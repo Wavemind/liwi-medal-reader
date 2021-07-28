@@ -25,8 +25,6 @@ export const getQsValue = (qsId, newMcNodes) => {
   if (nodes[qsId].category === Config.CATEGORIES.scored) {
     return scoredCalculateCondition(qsId, newMcNodes)
   } else {
-    //const topConditions = getTopConditions(nodes[qsId].instances)
-
     const conditionsValues = nodes[qsId].conditions.map(condition => {
       if (
         newMcNodes[condition.node_id].answer === condition.answer_id &&
