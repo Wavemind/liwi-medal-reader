@@ -48,10 +48,11 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
       ) : (
         <View>
           <Text style={summary.drugText}>
-            {t('formulations.drug.give')} {ratio * drugDose.doseResult}
-            {t('formulations.drug.mg')}: {drugDose.doseResult}
+            {t('formulations.drug.give')}{' '}
+            {roundSup(ratio * drugDose.doseResult)}
+            {t('formulations.drug.mg')}: {roundSup(drugDose.doseResult)}
             {t('formulations.drug.ml')} {t('formulations.drug.of')}{' '}
-            {drugDose.liquid_concentration}
+            {roundSup(drugDose.liquid_concentration)}
             {t('formulations.drug.mg')}/{drugDose.dose_form}
             {t('formulations.drug.ml')}
           </Text>

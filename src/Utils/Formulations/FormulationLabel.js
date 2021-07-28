@@ -65,7 +65,7 @@ export const formulationLabel = drugDose => {
         drugDose.dose_form,
       )}ml ${i18n
         .t(`formulations.medication_form.${drugDose.medication_form}`)
-        .toLowerCase()}: ${drugDose.doseResult}ml ${i18n.t(
+        .toLowerCase()}: ${roundSup(drugDose.doseResult)}ml ${i18n.t(
         'formulations.medication_form.per_administration',
       )}`
     }

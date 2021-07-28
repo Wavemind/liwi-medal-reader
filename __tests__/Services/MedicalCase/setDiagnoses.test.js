@@ -197,11 +197,15 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(40, 76) // Difficulty breathing => yes
     await setAnswer(25, 36) // Fever within the last 2 days => yes
     await setAnswer(42, 5) // Duration of fever => yes
+    let state = store.getState()
+    expect(state.medicalCase.item.nodes[38].answer).toEqual(72)
     await setAnswer(1685, 752) // Convulsing now => No
     await setAnswer(88, 150) // Convulsion in present illness => No
     await setAnswer(86, 146) // Unconscious or Lethargic (Unusually sleepy) => No
     await setAnswer(3184, 2342) // Vomiting everything  => No
     await setAnswer(278, 491) // Unable to drink or breastfeed => No
+    state = store.getState()
+    expect(state.medicalCase.item.nodes[6494].answer).toEqual(5180)
     await setAnswer(122, 229) // CRP => Unavailable
     await setAnswer(3545, 3155) // Respiratory rate => Unavailable
     await setAnswer(4530, 3182) // Visible respiratory rate => Visibly fast

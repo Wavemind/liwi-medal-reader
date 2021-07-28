@@ -5,8 +5,7 @@ import { store } from '@/Store'
 import {
   calculateCondition,
   reduceConditions,
-  getTopConditions,
-  diagramConditionsValues,
+  respectsCutOff,
 } from '@/Utils/MedicalCase'
 import { scoredCalculateCondition } from '@/Utils/QuestionSequenceScore'
 import { Config } from '@/Config'
@@ -26,11 +25,21 @@ export const getQsValue = (qsId, newMcNodes) => {
   if (nodes[qsId].category === Config.CATEGORIES.scored) {
     return scoredCalculateCondition(qsId, newMcNodes)
   } else {
-    const topConditions = getTopConditions(nodes[qsId].instances)
-
-    const conditionsValues = topConditions.map(instance =>
-      qsInstanceValue(instance, newMcNodes, nodes[qsId].instances, qsId),
-    )
+    const conditionsValues = nodes[qsId].conditions.map(condition => {
+      if (
+        newMcNodes[condition.node_id].answer === condition.answer_id &&
+        respectsCutOff(condition.cut_off_start, condition.cut_off_end)
+      ) {
+        return qsInstanceValue(
+          nodes[qsId].instances[condition.node_id],
+          newMcNodes,
+          nodes[qsId].instances,
+          qsId,
+        )
+      } else {
+        return false
+      }
+    })
     return reduceConditions(conditionsValues)
   }
 }
@@ -52,20 +61,23 @@ const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
   }
 
   if (instanceCondition) {
-    const children = instance.children
-      .filter(child => instances[child])
-      .map(child => instances[child])
+    if (instance.conditions.length === 0) {
+      return true
+    }
 
-    const childrenConditions = children.map(child =>
-      qsInstanceValue(child, newMcNodes, instances, qsId),
+    const parents = instance.conditions.filter(
+      condition =>
+        newMcNodes[condition.node_id].answer === condition.answer_id &&
+        respectsCutOff(condition.cut_off_start, condition.cut_off_end),
     )
-
-    const finalDiagnosesConditions = diagramConditionsValues(
-      qsId,
-      instance,
-      newMcNodes,
-    )
-    return reduceConditions(childrenConditions.concat(finalDiagnosesConditions))
+    if (parents.length === 0) {
+      return false
+    } else {
+      const parentsCondition = parents.map(parent =>
+        qsInstanceValue(instances[parent.node_id], newMcNodes, instances, qsId),
+      )
+      return reduceConditions(parentsCondition)
+    }
   } else {
     return false
   }
