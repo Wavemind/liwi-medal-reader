@@ -40,7 +40,11 @@ export default ({ nodeId, newNodes, mcNodes }) => {
     } else {
       const newQuestionValues = handleNumeric(mcNode, node, value)
       // Set the question value in the store
-      newNodes[questionId] = { ...mcNodes[questionId], ...newQuestionValues }
+      newNodes[questionId] = {
+        ...mcNodes[questionId],
+        ...newQuestionValues,
+        ...validation,
+      }
     }
     questionsToUpdate = questionsToUpdate.concat(node.referenced_in)
 

@@ -44,6 +44,7 @@ paths:
               example: # Sample object
                 medical_case:
                   {
+                    id: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94,
                     json:
                       {
                         comment: '',
@@ -554,6 +555,9 @@ components:
     MedicalCase:
       type: object
       properties:
+        id:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
         json:
           type: object
           properties:
@@ -616,6 +620,9 @@ components:
     MedicalCaseWithPatient:
       type: object
       properties:
+        id:
+          type: string
+          example: 7803f0c8-ddc2-4cfa-9a29-a0ee71777b94
         json:
           type: object
           properties:
