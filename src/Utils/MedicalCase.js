@@ -104,7 +104,7 @@ export const handleChildren = (
   const nodes = state.algorithm.item.nodes
   children.forEach(instance => {
     if (
-      instance.conditions.length === 0 ||
+      (!excludedByCC(instance.id) && instance.conditions.length === 0) ||
       calculateCondition(instance, source)
     ) {
       if (nodes[instance.id].type === Config.NODE_TYPES.questionsSequence) {
@@ -123,6 +123,15 @@ export const handleChildren = (
         )
       } else {
         if (system) {
+          if (instance.id === 9180) {
+            console.log(
+              instance,
+              instance.conditions.length === 0,
+              calculateCondition(instance, source),
+              diagramId,
+              diagramType,
+            )
+          }
           addQuestionToSystem(
             instance.id,
             questionsToDisplay,

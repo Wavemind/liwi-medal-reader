@@ -45,6 +45,8 @@ export default () => {
     )
   })
 
+  console.log(validDiagnoses, questionPerSystems)
+
   const updatedSystems = {}
   medicalHistoryStep.forEach(system => {
     const newQuestions = system.data.filter(questionId =>

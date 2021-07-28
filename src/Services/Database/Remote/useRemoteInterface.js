@@ -27,6 +27,8 @@ export default function () {
     url += stringFilters !== '' ? `&filter=${stringFilters}` : ''
 
     const response = await api.get(url)
+    console.log(response)
+    return []
     return response.data.data
   }
 

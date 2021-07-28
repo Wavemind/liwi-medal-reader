@@ -12,6 +12,7 @@ export default async ({ page, reset = false, params }) => {
 
   const isLastBatch = newMedicalCases.length < Config.ELEMENT_PER_PAGE
 
+  console.log(newMedicalCases)
   let medicalCases
 
   if (reset) {
@@ -21,7 +22,6 @@ export default async ({ page, reset = false, params }) => {
       .getState()
       .databaseMedicalCase.getAll.item.data.concat(newMedicalCases)
   }
-
   return {
     data: UniqObject(medicalCases),
     isLastBatch,
