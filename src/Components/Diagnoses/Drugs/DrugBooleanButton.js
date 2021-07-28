@@ -15,7 +15,6 @@ const DrugBooleanButton = ({ diagnosis, drugId, diagnosisKey }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
-    Colors,
     Containers: { drugs },
     Components: { booleanButton },
   } = useTheme()
