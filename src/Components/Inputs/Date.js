@@ -17,6 +17,7 @@ import subYears from 'date-fns/subYears'
 import differenceInDays from 'date-fns/differenceInDays'
 import differenceInMonths from 'date-fns/differenceInMonths'
 import differenceInYears from 'date-fns/differenceInYears'
+import addDays from 'date-fns/addDays'
 
 /**
  * The internal imports
@@ -82,9 +83,15 @@ const DateInput = () => {
         if (estimatedDateType === 'day') {
           value = differenceInDays(new Date(medicalCaseCreatedAt), date)
         } else if (estimatedDateType === 'month') {
-          value = differenceInMonths(new Date(medicalCaseCreatedAt), date)
+          value = differenceInMonths(
+            new Date(medicalCaseCreatedAt),
+            addDays(date, -1),
+          )
         } else {
-          value = differenceInYears(new Date(medicalCaseCreatedAt), date)
+          value = differenceInYears(
+            new Date(medicalCaseCreatedAt),
+            addDays(date, -1),
+          )
         }
         setEstimatedValue(value)
       } else {
