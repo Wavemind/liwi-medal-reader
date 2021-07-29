@@ -284,8 +284,8 @@ export default {
     area: 'Area',
     local_data_ip: 'medAL-hub address',
     main_data_ip: 'medAL-data address',
-    custom_clinician: 'New staff member',
-    custom_clinician_subtitle: 'Create staff member',
+    custom_clinician: 'Missing staff member',
+    custom_clinician_subtitle: 'Add temporary user',
     roles: {
       title: 'Roles',
       medical_doctor: 'Medical Doctor (MD)',

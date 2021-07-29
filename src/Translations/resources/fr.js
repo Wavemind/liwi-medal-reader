@@ -288,7 +288,7 @@ export default {
     local_data_ip: 'Adresse medAL-hub',
     main_data_ip: 'Adresse medAL-data',
     custom_clinician: 'Collabora·teur·trice manquant·e',
-    custom_clinician_subtitle: 'Ajouter collabora·teur ·trice',
+    custom_clinician_subtitle: 'Ajouter utilisa·teur ·trice temporaire',
     roles: {
       title: 'Fonctions',
       medical_doctor: 'Médecin',
