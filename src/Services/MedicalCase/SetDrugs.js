@@ -4,23 +4,23 @@
 import { store } from '@/Store'
 import { getAvailableHealthcare, isHealthcareExcluded } from '@/Utils/Drug'
 
-export default () => {
+export default ({ diagnosisKey }) => {
   // Retrieve state values
   const state = store.getState()
   const medicalCase = state.medicalCase.item
   const nodes = state.algorithm.item.nodes
-  const agreedFinalDiagnoses = state.medicalCase.item.diagnosis.agreed
+  const finalDiagnoses = state.medicalCase.item.diagnosis[diagnosisKey]
   const newFinalDiagnoses = {}
 
   // List of all agreed drugs
-  const agreedDrugs = Object.values(agreedFinalDiagnoses)
+  const agreedDrugs = Object.values(finalDiagnoses)
     .map(finalDiagnosis =>
       Object.values(finalDiagnosis.drugs.agreed).map(drug => drug.id),
     )
     .flat()
 
   // Find for all final diagnosis the proposed drug
-  Object.values(agreedFinalDiagnoses).map(finalDiagnosis => {
+  Object.values(finalDiagnoses).map(finalDiagnosis => {
     const availableDrugs = getAvailableHealthcare(
       nodes[finalDiagnosis.id],
       'drugs',
@@ -44,7 +44,7 @@ export default () => {
         formulation_id:
           drugFormulations.length === 1
             ? drugFormulations[0].id
-            : agreedFinalDiagnoses[finalDiagnosis.id].drugs.agreed[drug.id]
+            : finalDiagnoses[finalDiagnosis.id].drugs.agreed[drug.id]
                 ?.formulation_id,
       }
     })
@@ -57,7 +57,7 @@ export default () => {
         formulation_id:
           drugFormulations.length === 1
             ? drugFormulations[0].id
-            : agreedFinalDiagnoses[finalDiagnosis.id].drugs.additional[drug.id]
+            : finalDiagnoses[finalDiagnosis.id].drugs.additional[drug.id]
                 ?.formulation_id,
       }
     })
@@ -73,11 +73,13 @@ export default () => {
     }
   })
 
+  console.log(newFinalDiagnoses)
+
   return {
     ...medicalCase,
     diagnosis: {
       ...medicalCase.diagnosis,
-      agreed: newFinalDiagnoses,
+      [diagnosisKey]: newFinalDiagnoses,
     },
   }
 }

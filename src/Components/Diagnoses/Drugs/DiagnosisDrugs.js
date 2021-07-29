@@ -35,6 +35,8 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
     state => state.medicalCase.item.diagnosis[diagnosisKey],
   )
 
+  console.log(diagnoses)
+
   /**
    * Sorts the diagnoses by level_of_urgency
    * @returns {*}
@@ -59,7 +61,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
   }, [isFocused, diagnoses])
 
   useEffect(async () => {
-    await dispatch(SetDrugs.action())
+    await dispatch(SetDrugs.action({ diagnosisKey }))
   }, [isFocused])
 
   /**
