@@ -148,12 +148,12 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               value: !medicalCaseSavedInDatabase,
             }),
           )
-          const insertPatientValues = await dispatch(
-            InsertPatientValues.action(),
-          )
-          if (isFulfilled(insertPatientValues)) {
-            await handleNavigation(direction)
-          }
+          // const insertPatientValues = await dispatch(
+          //   InsertPatientValues.action(),
+          // )
+          // if (isFulfilled(insertPatientValues)) {
+          await handleNavigation(direction)
+          //}
         }
       } else if (advancement.stage === 0 && patientSavedInDatabase) {
         const patientUpdate = await dispatch(
