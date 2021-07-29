@@ -267,6 +267,12 @@ export default {
       description: 'An error occurred while loading the patient',
     },
   },
+  errors: {
+    offline: {
+      title: 'Communication error with medAL-data',
+      description: 'Server not accessible',
+    },
+  },
   health_facility: {
     id: 'ID',
     name: 'Name',
@@ -310,6 +316,7 @@ export default {
     first_name: 'First name',
     last_name: 'Last name',
     birth_date: 'Date of Birth',
+    estimated_age: 'Estimated age',
     reason: 'Reason for changing facility',
   },
   medical_case: {
@@ -368,7 +375,7 @@ export default {
     },
   },
   validation: {
-    is_required: 'Field "{{ field }}" is mandatory',
+    is_required: 'The "{{ field }}" question is mandatory',
     consent_file_blank: "The data processing consent can't be blank",
     final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
     medicines_required: 'Please agree or refuse all medicines',

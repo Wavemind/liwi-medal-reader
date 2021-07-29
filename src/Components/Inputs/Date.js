@@ -348,7 +348,7 @@ const DateInput = () => {
         </View>
       )}
       <Checkbox
-        label={t('answers.estimated')}
+        label={t('answers.estimated_age')}
         defaultValue={isEstimated}
         onPress={handleIsEstimated}
       />
