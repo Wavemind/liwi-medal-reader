@@ -16,7 +16,6 @@ import ChangeFormulations from '@/Store/MedicalCase/ChangeFormulations'
 const FormulationDrugs = ({ drug, isLast, updateFormulations }) => {
   // Theme and style elements deconstruction
   const {
-    Fonts,
     Layout,
     Containers: { formulations },
   } = useTheme()
