@@ -267,12 +267,6 @@ export default {
       description: 'An error occurred while loading the patient',
     },
   },
-  errors: {
-    offline: {
-      title: 'Communication error with medAL-data',
-      description: 'Server not accessible',
-    },
-  },
   health_facility: {
     id: 'ID',
     name: 'Name',
@@ -281,8 +275,8 @@ export default {
     area: 'Area',
     local_data_ip: 'medAL-hub address',
     main_data_ip: 'medAL-data address',
-    custom_clinician: 'New staff member',
-    custom_clinician_subtitle: 'Create staff member',
+    custom_clinician: 'Missing staff member',
+    custom_clinician_subtitle: 'Add temporary user',
     roles: {
       title: 'Roles',
       medical_doctor: 'Medical Doctor (MD)',
@@ -375,7 +369,7 @@ export default {
     },
   },
   validation: {
-    is_required: 'The "{{ field }}" question is mandatory',
+    is_required: 'Field "{{ field }}" is mandatory',
     consent_file_blank: "The data processing consent can't be blank",
     final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
     medicines_required: 'Please agree or refuse all medicines',
