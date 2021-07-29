@@ -71,6 +71,7 @@ const ProposedDiagnoses = () => {
     sortedDiagnoses.map((diagnosisId, i) => {
       const isAgreed = Object.keys(agreed).includes(diagnosisId.toString())
       const isRefused = refused.includes(diagnosisId)
+      const currentNode = nodes[diagnosisId]
 
       return (
         <View
@@ -78,9 +79,10 @@ const ProposedDiagnoses = () => {
           style={finalDiagnoses.newItemWrapper(i === proposed.length - 1)}
         >
           <Text style={finalDiagnoses.diagnosisLabel}>
-            {translate(nodes[diagnosisId].label)}
+            {translate(currentNode.label)}
           </Text>
-          {translate(nodes[diagnosisId].description) !== '' && (
+          {(translate(currentNode.description) !== '' ||
+            currentNode.medias.length > 0) && (
             <QuestionInfoButton nodeId={diagnosisId} />
           )}
           <View style={finalDiagnoses.booleanButtonWrapper}>
