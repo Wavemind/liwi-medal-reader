@@ -48,118 +48,6 @@ const database = new Database({
 
 export default function () {
   /**
-   * Create activities for a related medical case
-   * @param { integer } medicalCaseId
-   * @param { array } activities - List of activities to create
-   * @private
-   */
-  const insertActivities = async (medicalCaseId, activities) => {
-    await database.action(async () => {
-      activities.map(async activity => {
-        await database.batch(
-          database.get('activities').prepareCreate(record => {
-            record._raw.id = activity.id
-            record.step = activity.step
-            record.clinician = activity.clinician
-            record.nodes = JSON.stringify(activity.nodes)
-            record.mac_address = activity.mac_address
-            record.medical_case_id = medicalCaseId
-            record.fail_safe = activity.fail_safe
-          }),
-        )
-      })
-    }, 'insert activities')
-  }
-
-  /**
-   * Update or insert value in a existing row
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } fields - The field to update
-   * @returns { Collection } - Updated object
-   */
-  const update = async (model, id, fields) => {
-    const collection = database.get(_mapModelToTable(model))
-    // if (architecture === 'client_server') {
-    //   fields = { ...fields, fail_safe: true }
-    // }
-    await database.action(async () => {
-      const object = await collection.find(id)
-      await database.batch(
-        object.prepareUpdate(record => {
-          fields.map(field => {
-            record[field.name] = field.value
-          })
-        }),
-      )
-    })
-  }
-
-  /**
-   * Inserts the patient values to the DB.
-   * @param patientValues
-   * @param patientId
-   * @returns {Promise<void>}
-   */
-  const insertPatientValues = async (patientValues, patientId) => {
-    const patientValuesCollection = database.get('patient_values')
-    await database.action(async () => {
-      await database.batch(
-        patientValues.map(patientValue =>
-          patientValuesCollection.prepareCreate(record => {
-            record._raw.id = uuid.v4()
-            record.patient_id = patientId
-            record.node_id = parseInt(patientValue.id, 10)
-            record.answer_id = patientValue.answer
-            record.value = patientValue.value?.toString()
-          }),
-        ),
-      )
-    }, 'insert patient values')
-  }
-
-  /**
-   * Updates the patient values in the DB.
-   * @param patientValues
-   * @param patientId
-   * @returns {Promise<void>}
-   */
-  const updatePatientValues = async (patientValues, patientId) =>   {
-    const patientValuesCollection = database.get('patient_values')
-    await database.action(async () => {
-      const existingPatientValues = await patientValuesCollection
-        .query(Q.where('patient_id', patientId))
-        .fetch()
-      await database.batch(
-        existingPatientValues.map(patientValueRecord =>
-          patientValueRecord.prepareUpdate(record => {
-            const patientValue = patientValues.find(
-              pv => record.node_id === pv.id,
-            )
-            record.answer_id = patientValue.answer
-            record.value = patientValue.value?.toString()
-          }),
-        ),
-      )
-    }, 'update patient values')
-  }
-
-  /**
-   * Finds a object based on a field and a value
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } value - The id of the object we want
-   * @param { string } field - The field we wanna search for
-   * @returns { Collection } - The wanted object
-   */
-  const findBy = async (model, value, field = 'id') => {
-    const collection = database.get(_mapModelToTable(model))
-    const object = await collection.query(Q.where(field, value))
-    return object[0] === undefined ? null : _initClasses(object[0], model)
-  }
-
-  /**
-
-  /**
    * Gets the list of activities for a given medical case
    * @param medicalCaseId
    * @returns {Promise<*>}
@@ -178,16 +66,6 @@ export default function () {
       medical_case_id: activity.medical_case_id,
       fail_safe: activity.fail_safe,
     }))
-  }
-
-  /**
-   * Gets all medical cases in the database
-   * @returns {Promise<*[]|PatientModel|MedicalCaseModel>}
-   */
-  const getMedicalCases = async () => {
-    const collection = database.get(_mapModelToTable('MedicalCase'))
-    let result = await collection.query().fetch()
-    return _initClasses(result, 'MedicalCase')
   }
 
   /**
@@ -277,6 +155,81 @@ export default function () {
   }
 
   /**
+   * Fetch patient with consent file
+   * @param { integer } page
+   * @returns {Promise<*>}
+   */
+  const getConsentsFile = async (page = 1) => {
+    const collection = database.get('patients')
+    let result = await collection.query().fetch()
+
+    const queries = []
+
+    result = await collection.query(...queries)
+
+    // Order by updatedAt descending
+    result = result.sort(
+      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+    )
+
+    result = result.filter(patient => !!patient.consent_file)
+
+    // Pagination
+    result = result.slice(
+      (page - 1) * Config.ELEMENT_PER_PAGE,
+      Config.ELEMENT_PER_PAGE * page,
+    )
+    return _initClasses(result, 'Patient')
+  }
+
+  /**
+   * Gets all medical cases in the database
+   * @returns {Promise<*[]|PatientModel|MedicalCaseModel>}
+   */
+  const getMedicalCases = async () => {
+    const collection = database.get(_mapModelToTable('MedicalCase'))
+    let result = await collection.query().fetch()
+    return _initClasses(result, 'MedicalCase')
+  }
+
+  /**
+   * Finds a object based on a field and a value
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } value - The id of the object we want
+   * @param { string } field - The field we wanna search for
+   * @returns { Collection } - The wanted object
+   */
+  const findBy = async (model, value, field = 'id') => {
+    const collection = database.get(_mapModelToTable(model))
+    const object = await collection.query(Q.where(field, value))
+    return object[0] === undefined ? null : _initClasses(object[0], model)
+  }
+
+  /**
+   * Create activities for a related medical case
+   * @param { integer } medicalCaseId
+   * @param { array } activities - List of activities to create
+   * @private
+   */
+  const insertActivities = async (medicalCaseId, activities) => {
+    await database.action(async () => {
+      activities.map(async activity => {
+        await database.batch(
+          database.get('activities').prepareCreate(record => {
+            record._raw.id = activity.id
+            record.step = activity.step
+            record.clinician = activity.clinician
+            record.nodes = JSON.stringify(activity.nodes)
+            record.mac_address = activity.mac_address
+            record.medical_case_id = medicalCaseId
+            record.fail_safe = activity.fail_safe
+          }),
+        )
+      })
+    }, 'insert activities')
+  }
+
+  /**
    * Inserts a new medical case into the DB
    * @param patientId
    * @param medicalCaseData
@@ -307,34 +260,6 @@ export default function () {
         record.patient.set(patient)
       })
     }, 'create medical case')
-  }
-
-  /**
-   * Fetch patient with consent file
-   * @param { integer } page
-   * @returns {Promise<*>}
-   */
-  const getConsentsFile = async (page = 1) => {
-    const collection = database.get('patients')
-    let result = await collection.query().fetch()
-
-    const queries = []
-
-    result = await collection.query(...queries)
-
-    // Order by updatedAt descending
-    result = result.sort(
-      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
-    )
-
-    result = result.filter(patient => !!patient.consent_file)
-
-    // Pagination
-    result = result.slice(
-      (page - 1) * Config.ELEMENT_PER_PAGE,
-      Config.ELEMENT_PER_PAGE * page,
-    )
-    return _initClasses(result, 'Patient')
   }
 
   /**
@@ -386,6 +311,79 @@ export default function () {
         nestedRecord.patient.set(patient)
       })
     }, 'create patient')
+  }
+
+  /**
+   * Inserts the patient values to the DB.
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const insertPatientValues = async (patientValues, patientId) => {
+    const patientValuesCollection = database.get('patient_values')
+    await database.action(async () => {
+      await database.batch(
+        patientValues.map(patientValue =>
+          patientValuesCollection.prepareCreate(record => {
+            record._raw.id = uuid.v4()
+            record.patient_id = patientId
+            record.node_id = parseInt(patientValue.id, 10)
+            record.answer_id = patientValue.answer
+            record.value = patientValue.value?.toString()
+          }),
+        ),
+      )
+    }, 'insert patient values')
+  }
+
+  /**
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @returns { Collection } - Updated object
+   */
+  const update = async (model, id, fields) => {
+    const collection = database.get(_mapModelToTable(model))
+    // if (architecture === 'client_server') {
+    //   fields = { ...fields, fail_safe: true }
+    // }
+    await database.action(async () => {
+      const object = await collection.find(id)
+      await database.batch(
+        object.prepareUpdate(record => {
+          fields.map(field => {
+            record[field.name] = field.value
+          })
+        }),
+      )
+    })
+  }
+
+  /**
+   * Updates the patient values in the DB.
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const updatePatientValues = async (patientValues, patientId) => {
+    const patientValuesCollection = database.get('patient_values')
+    await database.action(async () => {
+      const existingPatientValues = await patientValuesCollection
+        .query(Q.where('patient_id', patientId))
+        .fetch()
+      await database.batch(
+        existingPatientValues.map(patientValueRecord =>
+          patientValueRecord.prepareUpdate(record => {
+            const patientValue = patientValues.find(
+              pv => record.node_id === pv.id,
+            )
+            record.answer_id = patientValue.answer
+            record.value = patientValue.value?.toString()
+          }),
+        ),
+      )
+    }, 'update patient values')
   }
 
   const _buildPatient = async watermelonDBPatient => {
