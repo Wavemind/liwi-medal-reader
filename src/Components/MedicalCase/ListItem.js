@@ -16,6 +16,9 @@ import { Icon } from '@/Components'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
 import LoadPatient from '@/Store/Patient/Load'
 import { getStages } from '@/Utils/Navigation/GetStages'
+import { isLocked } from '@/Utils/MedicalCase'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
+import SetParams from '@/Store/Modal/SetParams'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
@@ -32,6 +35,7 @@ const ListItem = ({ item }) => {
   const navigation = useNavigation()
 
   const [stages] = useState(getStages())
+  const [locked] = useState(isLocked(item))
 
   /**
    * Will load the Medical case in the store then navigate to the Medical Case
@@ -41,6 +45,9 @@ const ListItem = ({ item }) => {
     await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
       navigation.navigate('MedicalCaseSummary')
+    } else if (locked) {
+      await dispatch(SetParams.action({ type: 'lock' }))
+      await dispatch(ToggleVisibility.action({}))
     } else {
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {
@@ -56,9 +63,11 @@ const ListItem = ({ item }) => {
       onPress={() => handlePress()}
     >
       <View style={medicalCaseListItem.container}>
-        <View style={[Layout.column, Gutters.regularRMargin]}>
-          <Icon name="lock" size={FontSize.large} color={Colors.red} />
-        </View>
+        {locked && (
+          <View style={[Layout.column, Gutters.regularRMargin]}>
+            <Icon name="lock" size={FontSize.large} color={Colors.red} />
+          </View>
+        )}
         <View style={medicalCaseListItem.titleWrapper}>
           <Text style={medicalCaseListItem.title}>
             {`${item.patient.first_name} ${item.patient.last_name}`}

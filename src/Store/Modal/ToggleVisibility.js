@@ -7,6 +7,7 @@ export default {
     state.visible = !state.visible
     if (!state.visible) {
       state.type = null
+      state.params = null
     }
   },
 }
