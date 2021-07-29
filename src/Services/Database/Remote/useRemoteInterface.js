@@ -28,7 +28,6 @@ export default function () {
 
     const response = await api.get(url)
     console.log(response)
-    return []
     return response.data.data
   }
 
@@ -48,7 +47,7 @@ export default function () {
    * @param { string } field - database column
    * @returns { Collection } - The wanted object
    */
-  const findBy = async (model, value, field) => {
+  const findBy = async (model, value, field = id) => {
     const url = `/api/${_mapModelToRoute(
       model,
     )}/find_by?field=${field}&value=${value}`
@@ -99,7 +98,7 @@ export default function () {
     })
     const response = await api.post('/api/patients', {
       medical_case: {
-        uuid: medicalCaseData.id,
+        id: medicalCaseData.id,
         json: JSON.stringify({
           comment: medicalCaseData.comment,
           consent: medicalCaseData.consent,
@@ -114,7 +113,7 @@ export default function () {
         version_id: medicalCaseData.version_id,
       },
       patient: {
-        uuid: patientData.id,
+        id: patientData.id,
         first_name: patientData.first_name,
         last_name: patientData.last_name,
         birth_date: patientData.birth_date,
@@ -161,7 +160,6 @@ export default function () {
           node_id: patientValue.id,
           answer_id: patientValue.answer,
           value: patientValue.value,
-          patient_id: patientId,
         })),
       },
     )
@@ -196,10 +194,9 @@ export default function () {
    * @returns { Collection } - Updated object
    */
   const update = async (model, id, fields) => {
-    const response = await api.patch(
-      `/api/${_mapModelToRoute(model)}/${id}`,
+    const response = await api.patch(`/api/${_mapModelToRoute(model)}/${id}`, {
       fields,
-    )
+    })
     return response.data.data
   }
 
