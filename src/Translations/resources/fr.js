@@ -241,6 +241,9 @@ export default {
     media: {
       file_not_supported: 'Format de fichier non pris en charge',
     },
+    study: {
+      no_content: 'No content',
+    },
   },
   device: {
     name: 'Nom',

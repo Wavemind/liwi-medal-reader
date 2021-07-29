@@ -235,6 +235,9 @@ export default {
         ok: 'OK',
         back: 'Cancel',
       },
+      study: {
+        no_content: 'No content',
+      },
     },
     media: {
       file_not_supported: 'File not supported',

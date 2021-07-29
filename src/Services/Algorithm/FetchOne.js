@@ -30,14 +30,16 @@ export default async ({ json_version }) => {
     const oldAlgorithm = state.algorithm.item
     return { ...oldAlgorithm, updated: false }
   }
-
   // Store emergency content in file
   const emergencyContentTargetPath = `${DocumentDirectoryPath}/emergency_content.html`
-  const emergencyContentFileExist = await exists(emergencyContentTargetPath)
-  if (emergencyContentFileExist) {
-    await unlink(emergencyContentTargetPath)
+
+  if (response.data.emergency_content) {
+    const emergencyContentFileExist = await exists(emergencyContentTargetPath)
+    if (emergencyContentFileExist) {
+      await unlink(emergencyContentTargetPath)
+    }
+    await writeFile(emergencyContentTargetPath, response.data.emergency_content)
   }
-  await writeFile(emergencyContentTargetPath, response.data.emergency_content)
 
   // Regroup nodes, final diagnoses and health cares into nodes key
   const nodes = {
