@@ -18,17 +18,19 @@ export default function () {
   const getAll = async (model, page, params) => {
     let stringFilters = ''
     let stringQuery = ''
+
     if (params) {
       stringFilters = _generateFiltersUrl(params.filters)
-      stringQuery = params.query
+      stringQuery = params.terms
     }
-    let url = `/api/${_mapModelToRoute(model)}?page=${page}`
-    url += stringQuery !== '' ? `&query=${stringQuery}` : ''
-    url += stringFilters !== '' ? `&filter=${stringFilters}` : ''
+    let url = `/api/${_mapModelToRoute(model)}?page=${page}&params={`
+    url += stringQuery ? `terms: '${stringQuery}'` : ''
+    url += stringFilters ? `filters: '${stringFilters}'` : ''
+    url += '}'
 
     const response = await api.get(url)
-    console.log(response)
-    return response.data.data
+
+    return _initClasses(response.data.data, model)
   }
 
   /**
@@ -47,13 +49,13 @@ export default function () {
    * @param { string } field - database column
    * @returns { Collection } - The wanted object
    */
-  const findBy = async (model, value, field = id) => {
+  const findBy = async (model, value, field = 'id') => {
     const url = `/api/${_mapModelToRoute(
       model,
     )}/find_by?field=${field}&value=${value}`
 
     const response = await api.get(url)
-    return response.data.data
+    return _initClasses(response.data.data, model)
   }
 
   /**
@@ -63,11 +65,13 @@ export default function () {
    * @private
    */
   const insertActivities = async (medicalCaseId, activities) => {
-    const response = await api.post(
-      `/api/medical_cases/${medicalCaseId}/activities`,
-      activities,
-    )
-    return response.data.data
+    if (activities.length > 0) {
+      const response = await api.post(
+        `/api/medical_cases/${medicalCaseId}/activities`,
+        { activities },
+      )
+      return response.data.data
+    }
   }
 
   /**
@@ -91,11 +95,6 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertPatient = async (patientData, medicalCaseData) => {
-    console.log('IIC !')
-    console.log({
-      medical_case: medicalCaseData,
-      patient: patientData,
-    })
     const response = await api.post('/api/patients', {
       medical_case: {
         id: medicalCaseData.id,
@@ -231,6 +230,77 @@ export default function () {
     return route
   }
 
+  const _buildMedicalCase = (remoteMedicalCase, addPatient = true) => {
+    const parsedJson = JSON.parse(remoteMedicalCase.json)
+
+    const medicalCase = {
+      id: remoteMedicalCase.id,
+      activities: [],
+      comment: parsedJson.comment,
+      consent: parsedJson.consent,
+      diagnosis: parsedJson.diagnosis,
+      nodes: parsedJson.nodes,
+      json: remoteMedicalCase.json,
+      json_version: remoteMedicalCase.json_version,
+      clinician: remoteMedicalCase.clinician,
+      mac_address: remoteMedicalCase.mac_address,
+      advancement: {
+        stage: remoteMedicalCase.advancement.stage,
+        step: remoteMedicalCase.advancement.step,
+      },
+      fail_safe: remoteMedicalCase.fail_safe,
+      createdAt: remoteMedicalCase.created_at,
+      updatedAt: remoteMedicalCase.updated_at,
+      closedAt: remoteMedicalCase.closedAt,
+      version_id: remoteMedicalCase.version_id,
+    }
+
+    if (addPatient) {
+      // const patient = await watermelonDBMedicalCase.patient.fetch()
+      // medicalCase.patient = patient
+    }
+
+    return medicalCase
+  }
+  const _buildPatient = remotePatient => {
+    // Build medicalCases
+    const medicalCases = remotePatient.medical_cases.map(remoteMedicalCase =>
+      _buildMedicalCase(remoteMedicalCase, false),
+    )
+
+    // Build patient values
+    //const patientValues = remotePatient.patient_values.map(remoteMedicalCase => _buildPatientValue(remoteMedicalCase))
+
+    // Build patient
+    const patient = {
+      first_name: remotePatient.first_name,
+      last_name: remotePatient.last_name,
+      birth_date: remotePatient.birth_date,
+      birth_date_estimated: remotePatient.birth_date_estimated,
+      birth_date_estimated_type: remotePatient.birth_date_estimated_type,
+      consent: remotePatient.consent,
+      consent_file: remotePatient.consent_file,
+      createdAt: remotePatient.created_at,
+      fail_safe: remotePatient.fail_safe,
+      group_id: remotePatient.group_id,
+      id: remotePatient.id,
+      other_group_id: remotePatient.other_group_id,
+      other_study_id: remotePatient.other_study_id,
+      other_uid: remotePatient.other_uid,
+      reason: remotePatient.reason,
+      savedInDatabase: true,
+      study_id: remotePatient.study_id,
+      uid: remotePatient.uid,
+      updatedAt: remotePatient.updated_at,
+    }
+
+    return {
+      ...patient,
+      patientValues: remotePatient.patient_values,
+      medicalCases: medicalCases,
+    }
+  }
+
   /**
    * Generate an URL with filters object
    * @param {object} filters - Filter object with key and value
@@ -254,6 +324,53 @@ export default function () {
       })
     }
     return stringFilters
+  }
+
+  const _buildMedicalCaseLight = remoteMedicalCase => {
+    return {
+      id: remoteMedicalCase.id,
+      advancement: {
+        stage: Number(remoteMedicalCase.advancement.stage),
+        step: Number(remoteMedicalCase.advancement.step),
+      },
+      json: remoteMedicalCase.json,
+      fail_safe: remoteMedicalCase.fail_safe,
+      createdAt: remoteMedicalCase.created_at,
+      updatedAt: remoteMedicalCase.updated_at,
+      clinician: remoteMedicalCase.clinician,
+      mac_address: remoteMedicalCase.mac_address,
+      closedAt: remoteMedicalCase.closedAt,
+      version_id: remoteMedicalCase.version_id,
+      patient: {
+        id: remoteMedicalCase.patient.id,
+        first_name: remoteMedicalCase.patient.first_name,
+        last_name: remoteMedicalCase.patient.last_name,
+        birth_date: remoteMedicalCase.patient.birth_date,
+      },
+    }
+  }
+
+  /**
+   * Generate class
+   * @param { array|object } data - Data retrieved from server
+   * @param { string } model - Class name
+   * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
+   * @private
+   */
+  const _initClasses = (data, model) => {
+    let object = []
+    if (model === 'Patient') {
+      if (data instanceof Array) {
+        object = data.map(item => _buildPatient(item))
+      } else {
+        return _buildPatient(data)
+      }
+    } else if (data instanceof Array) {
+      object = data.map(item => _buildMedicalCaseLight(item))
+    } else {
+      return _buildMedicalCase(data)
+    }
+    return object
   }
 
   return {

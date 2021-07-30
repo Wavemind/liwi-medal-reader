@@ -19,7 +19,6 @@ import LoadMedicalCase from '@/Store/MedicalCase/Load'
 const CurrentConsultation = ({ navigation, consultation }) => {
   const {
     FontSize,
-    Fonts,
     Layout,
     Gutters,
     Colors,
@@ -49,6 +48,7 @@ const CurrentConsultation = ({ navigation, consultation }) => {
     }
   }
 
+  console.log(stages, consultation)
   return (
     <TouchableOpacity style={currentConsultation.wrapper} onPress={handlePress}>
       {locked && (
@@ -82,7 +82,8 @@ const CurrentConsultation = ({ navigation, consultation }) => {
         ))}
       </View>
       <Text style={currentConsultation.date}>
-        {format(consultation.createdAt, 'dd.MM.yyyy')}
+        {/* TODO THIS SHIT */}
+        {/* {format(consultation.createdAt, 'dd.MM.yyyy')} */}
       </Text>
       <Icon name="right-arrow" size={FontSize.large} />
     </TouchableOpacity>

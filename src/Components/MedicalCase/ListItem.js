@@ -49,6 +49,7 @@ const ListItem = ({ item }) => {
       await dispatch(SetParams.action({ type: 'lock' }))
       await dispatch(ToggleVisibility.action({}))
     } else {
+      
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {
         stageIndex: item.advancement.stage,

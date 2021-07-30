@@ -47,12 +47,12 @@ const ListItem = ({ item }) => {
       LoadPatient.action({ patientId: item.id }),
     )
     if (isFulfilled(loadPatient)) {
-      // navigation.navigate('PatientProfile', {
-      //   title: `${item.first_name} ${item.last_name} - ${format(
-      //     item.birth_date,
-      //     'dd.MM.yyyy',
-      //   )}`,
-      // })
+      navigation.navigate('PatientProfile', {
+        title: `${item.first_name} ${item.last_name} - ${format(
+          item.birth_date,
+          'dd.MM.yyyy',
+        )}`,
+      })
     }
   }
 

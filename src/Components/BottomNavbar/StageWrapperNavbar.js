@@ -211,6 +211,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     } else {
       const nextStage = stageIndex + direction
 
+      console.log(stageNavigation, nextStage)
       // Test if nextStage exist. If not, save and close medical case
       if (stageNavigation[nextStage] !== undefined) {
         // Not save if we go back

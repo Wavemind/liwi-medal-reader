@@ -26,7 +26,9 @@ const Lock = () => {
   const dispatch = useDispatch()
 
   const mac_address = useSelector(state => state.device.item.mac_address)
-  const { first_name, last_name } = useSelector(state => state.healthFacility.clinician)
+  const { first_name, last_name } = useSelector(
+    state => state.healthFacility.clinician,
+  )
   const medicalCase = useSelector(state => state.medicalCase.item)
 
   /**

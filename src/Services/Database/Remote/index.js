@@ -55,7 +55,7 @@ instance.interceptors.response.use(
     return response
   },
   async function (error) {
-    console.log('Response:', response)
+    console.log('Response:', error)
     if (error.response) {
       // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'
