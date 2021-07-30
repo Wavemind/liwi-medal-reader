@@ -41,6 +41,7 @@ const Managements = ({ diagnosis, excludedManagements }) => {
         </Text>
       ) : (
         managements.map((managementId, i) => {
+          const currentNode = nodes[managementId]
           if (!excludedManagements.includes(managementId)) {
             return (
               <View
@@ -48,9 +49,10 @@ const Managements = ({ diagnosis, excludedManagements }) => {
                 style={summary.managementWrapper(i === managementsCount - 1)}
               >
                 <Text style={summary.drugTitle}>
-                  {translate(nodes[managementId].label)}
+                  {translate(currentNode.label)}
                 </Text>
-                {translate(nodes[managementId].description) !== '' && (
+                {(translate(currentNode.description) !== '' ||
+                  currentNode.medias.length > 0) && (
                   <QuestionInfoButton nodeId={managementId} />
                 )}
               </View>

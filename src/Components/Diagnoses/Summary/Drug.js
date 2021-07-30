@@ -89,7 +89,8 @@ const Drug = ({ drug, isLast, diagnosisId }) => {
     <View style={summary.drugWrapper(isLast)}>
       <View style={summary.drugTitleWrapper}>
         <Text style={summary.drugTitle}>{translate(currentDrug.label)}</Text>
-        {translate(currentDrug.description) !== '' && (
+        {(translate(currentDrug.description) !== '' ||
+          currentDrug.medias.length > 0) && (
           <QuestionInfoButton nodeId={drug.id} />
         )}
       </View>
