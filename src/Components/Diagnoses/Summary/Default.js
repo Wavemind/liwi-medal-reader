@@ -54,7 +54,10 @@ const Default = ({ drug, drugDose, diagnosisId }) => {
       {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
         drugDose.administration_route_category,
       ) && (
-        <Text key={`text_${drug.id}`}>
+        <Text
+          style={[Gutters.regularTMargin, summary.drugText]}
+          key={`text_${drug.id}`}
+        >
           {translate(drugDose.injection_instructions)}
         </Text>
       )}
