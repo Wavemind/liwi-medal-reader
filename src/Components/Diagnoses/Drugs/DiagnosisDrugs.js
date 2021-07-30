@@ -17,7 +17,6 @@ import { useTheme } from '@/Theme'
 import { AdditionalSelect, DrugBooleanButton } from '@/Components'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
-import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
 
 const DiagnosisDrugs = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
@@ -57,10 +56,6 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
       setSortedDiagnoses(newDiagnoses)
     }
   }, [isFocused, diagnoses])
-
-  useEffect(async () => {
-    await dispatch(SetDrugs.action())
-  }, [isFocused])
 
   /**
    * Removes a single element from the additional diagnosis list
