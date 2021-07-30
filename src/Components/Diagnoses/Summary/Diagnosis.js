@@ -69,7 +69,8 @@ const Diagnosis = ({ diagnosisKey, excludedManagements }) => {
             <Text style={summary.diagnosisHeader}>
               {translate(diagnosisNode.label)}
             </Text>
-            {translate(diagnosisNode.description) !== '' && (
+            {(translate(diagnosisNode.description) !== '' ||
+              diagnosisNode.medias.length > 0) && (
               <QuestionInfoButton
                 nodeId={diagnosis.id}
                 color={Colors.secondary}

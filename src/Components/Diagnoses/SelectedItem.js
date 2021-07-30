@@ -29,7 +29,8 @@ const SelectedItem = ({
     Components: { additionalSelect },
   } = useTheme()
 
-  const algorithm = useSelector(state => state.algorithm.item)
+  const nodes = useSelector(state => state.algorithm.item.nodes)
+  const currentNode = nodes[listItem.id]
 
   return (
     <View style={finalDiagnoses.newItemWrapper(isLast)}>
@@ -37,8 +38,9 @@ const SelectedItem = ({
         <Text style={additionalSelect.itemLabel}>
           {labelMethod(listItem.id)}
         </Text>
-        {algorithm.nodes[listItem.id] &&
-          translate(algorithm.nodes[listItem.id].description) !== '' && (
+        {currentNode &&
+          (translate(currentNode.description) !== '' ||
+            currentNode.medias.length > 0) && (
             <QuestionInfoButton nodeId={listItem.id} />
           )}
       </View>

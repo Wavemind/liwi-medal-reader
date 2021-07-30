@@ -30,7 +30,8 @@ const SummaryQuestionItem = ({ question }) => {
         <Text style={patientPersonalInfo.label}>
           {translate(currentNode.label)}
         </Text>
-        {translate(nodes[question.id].description) !== '' && (
+        {(translate(currentNode.description) !== '' ||
+          currentNode.medias.length > 0) && (
           <QuestionInfoButton nodeId={question.id} />
         )}
       </View>

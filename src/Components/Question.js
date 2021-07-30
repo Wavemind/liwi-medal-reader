@@ -49,6 +49,7 @@ const Question = ({ questionId, disabled = false }) => {
   const [descriptionAvailable] = useState(
     translate(currentNode.description) !== '',
   )
+  const [mediaAvailable] = useState(currentNode.medias.length > 0)
 
   // Node can have an unavailable answer
   const [additionalUnavailableAnswer] = useState(
@@ -76,7 +77,7 @@ const Question = ({ questionId, disabled = false }) => {
             {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
           </Text>
 
-          {(descriptionAvailable || __DEV__) && (
+          {(descriptionAvailable || mediaAvailable || __DEV__) && (
             <QuestionInfoButton nodeId={questionId} />
           )}
 
