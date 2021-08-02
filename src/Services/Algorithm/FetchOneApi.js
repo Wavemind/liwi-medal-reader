@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { Config } from '@/Config'
 import * as Keychain from 'react-native-keychain'
 import { showMessage } from 'react-native-flash-message'
 import i18n from '@/Translations/index'
 import { store } from '@/Store'
+import { defineBaseUrl } from '@/Services'
 
 const instance = axios.create({
   headers: {
@@ -12,24 +12,6 @@ const instance = axios.create({
   },
   timeout: 3000,
 })
-
-/**
- * Defines the baseURL based on the selected environment
- * @param env
- * @returns {string}
- */
-const defineBaseUrl = env => {
-  switch (env) {
-    case 'test':
-      return Config.URL_TEST_API
-    case 'staging':
-      return Config.URL_STAGING_API
-    case 'production':
-      return Config.URL_PRODUCTION_API
-    default:
-      return Config.URL_TEST_API
-  }
-}
 
 instance.interceptors.request.use(
   async function (config) {
@@ -86,7 +68,6 @@ instance.interceptors.response.use(
         duration: 5000,
       })
     } else if (error.request) {
-      console.log(error.request, error)
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js

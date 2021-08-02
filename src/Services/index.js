@@ -19,7 +19,7 @@ const instance = axios.create({
  * @param env
  * @returns {string}
  */
-const defineBaseUrl = env => {
+export const defineBaseUrl = env => {
   switch (env) {
     case 'test':
       return Config.URL_TEST_API
@@ -40,9 +40,6 @@ const defineBaseUrl = env => {
  * @returns {Promise<unknown>}
  */
 export const handleError = ({ message, data, status }) => {
-  if (status) {
-    return { status }
-  }
   return Promise.reject({ message, data, status })
 }
 
@@ -160,7 +157,6 @@ instance.interceptors.response.use(
 
       return handleError({
         message: 'No response received (' + error.message + ')',
-        status: 400,
       })
     } else {
       // Something happened in setting up the request that triggered an Error
