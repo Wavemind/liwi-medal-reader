@@ -24,19 +24,20 @@ export const handleError = ({ message, data, status }) => {
 instance.interceptors.request.use(
   async function (config) {
     const state = store.getState()
-    const { clinician, local_data_ip } = state.healthFacility.item
+    const {
+      clinician,
+      item: { local_data_ip },
+    } = state.healthFacility
     const mac_address = state.device.item.mac_address
 
     config.baseURL = local_data_ip
-    config.headers.common.mac_address = mac_address
-    config.headers.common.clinician = clinician
-    config.headers.common.accept = 'application/json'
-    config.headers.common['Content-Type'] = 'application/json'
     config.headers = {
       'Content-type': 'application/json',
       Accept: 'application/json',
     }
-    console.log('Starting Request', config)
+    config.headers.mac_address = mac_address
+    config.headers.clinician = `${clinician.first_name} ${clinician.last_name}`
+
     return config
   },
   function (error) {

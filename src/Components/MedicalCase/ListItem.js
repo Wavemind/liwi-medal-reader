@@ -15,6 +15,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
 import LoadPatient from '@/Store/Patient/Load'
+import LockMedicalCase from '@/Store/DatabaseMedicalCase/Lock'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import { isLocked } from '@/Utils/MedicalCase'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
@@ -42,14 +43,15 @@ const ListItem = ({ item }) => {
    * @returns {Promise<void>}
    */
   const handlePress = async () => {
-    await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
+      await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
       navigation.navigate('MedicalCaseSummary')
     } else if (locked) {
       await dispatch(SetParams.action({ type: 'lock' }))
       await dispatch(ToggleVisibility.action({}))
     } else {
-      
+      await dispatch(LockMedicalCase.action({ medicalCaseId: item.id }))
+      await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {
         stageIndex: item.advancement.stage,
@@ -59,10 +61,7 @@ const ListItem = ({ item }) => {
   }
 
   return (
-    <TouchableOpacity
-      style={medicalCaseListItem.wrapper}
-      onPress={() => handlePress()}
-    >
+    <TouchableOpacity style={medicalCaseListItem.wrapper} onPress={handlePress}>
       <View style={medicalCaseListItem.container}>
         {locked && (
           <View style={[Layout.column, Gutters.regularRMargin]}>

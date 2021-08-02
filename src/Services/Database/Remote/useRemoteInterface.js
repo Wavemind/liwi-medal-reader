@@ -98,12 +98,12 @@ export default function () {
     const response = await api.post('/api/patients', {
       medical_case: {
         id: medicalCaseData.id,
-        json: JSON.stringify({
+        json: {
           comment: medicalCaseData.comment,
           consent: medicalCaseData.consent,
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
-        }),
+        },
         json_version: medicalCaseData.json_version,
         advancement: medicalCaseData.advancement,
         synchronizedAt: medicalCaseData.synchronizedAt,
@@ -144,14 +144,6 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertPatientValues = async (patientValues, patientId) => {
-    console.log(patientValues, {
-      patient_values: patientValues.map(patientValue => ({
-        node_id: patientValue.id,
-        answer_id: patientValue.answer,
-        value: patientValue.value,
-        patient_id: patientId,
-      })),
-    })
     const response = await api.post(
       `/api/patients/${patientId}/patient_values`,
       {
@@ -170,8 +162,9 @@ export default function () {
    * @param {integer} id - Medical case id
    * @returns {string}
    */
-  const lockMedicalCase = async id => {
+  const lock = async id => {
     const response = await api.post(`/api/medical_cases/${id}/lock`)
+    console.log('ICI', response)
     return response.data.data
   }
 
@@ -180,7 +173,7 @@ export default function () {
    * @param {integer} id - Medical case id
    * @returns {string}
    */
-  const unlockMedicalCase = async id => {
+  const unlock = async id => {
     const response = await api.post(`/api/medical_cases/${id}/unlock`)
     return response.data.data
   }
@@ -381,8 +374,8 @@ export default function () {
     getAll,
     update,
     insertMedicalCase,
-    lockMedicalCase,
-    unlockMedicalCase,
+    lock,
+    unlock,
     synchronizePatients,
     getConsentsFile,
   }

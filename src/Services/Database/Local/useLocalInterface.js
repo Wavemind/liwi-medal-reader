@@ -360,6 +360,9 @@ export default function () {
     })
   }
 
+  const lock = () => {}
+  const unlock = () => {}
+
   /**
    * Updates the patient values in the DB.
    * @param patientValues
@@ -557,8 +560,9 @@ export default function () {
   }
 
   return {
-    insertActivities,
     findBy,
+    insertActivities,
+    lock,
     getActivities,
     getMedicalCases,
     getAll,
@@ -566,6 +570,7 @@ export default function () {
     insertPatient,
     insertMedicalCase,
     insertPatientValues,
+    unlock,
     updatePatientValues,
     update,
   }
