@@ -71,13 +71,15 @@ const Select = ({ questionId, disabled = false }) => {
           label={t('actions.select')}
           value={null}
         />
-        {Object.values(currentNode.answers).map(answer => (
-          <Picker.Item
-            key={`select-${answer.id}`}
-            label={translate(answer.label)}
-            value={answer.id}
-          />
-        ))}
+        {Object.values(currentNode.answers)
+          .filter(answer => answer.value !== 'not_available')
+          .map(answer => (
+            <Picker.Item
+              key={`select-${answer.id}`}
+              label={translate(answer.label)}
+              value={answer.id}
+            />
+          ))}
       </Picker>
     </View>
   )

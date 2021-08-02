@@ -28,7 +28,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArrayOfPatients'
+                $ref: '#/components/schemas/ArrayOfPatientWithMedicalCases'
     post:
       summary: Inserts a new medical case into the DB
       requestBody:
@@ -414,7 +414,7 @@ components:
     ArrayOfPatientWithMedicalCases:
       type: array
       items:
-        $ref: '#/components/schemas/ArrayOfPatientWithMedicalCases'
+        $ref: '#/components/schemas/PatientWithMedicalCases'
     LockValues:
       type: object
       properties:

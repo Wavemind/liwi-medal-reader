@@ -330,7 +330,10 @@ export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
       if (mcNodes[condition.node_id].answer === null) {
         return null
       } else {
-        return mcNodes[condition.node_id].answer === condition.answer_id
+        return (
+          mcNodes[condition.node_id].answer === condition.answer_id &&
+          respectsCutOff(condition.cut_off_start, condition.cut_off_end)
+        )
       }
     })
 }

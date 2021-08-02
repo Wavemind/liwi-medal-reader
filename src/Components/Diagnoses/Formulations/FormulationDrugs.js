@@ -16,11 +16,9 @@ import ChangeFormulations from '@/Store/MedicalCase/ChangeFormulations'
 const FormulationDrugs = ({ drug, isLast, updateFormulations }) => {
   // Theme and style elements deconstruction
   const {
-    Fonts,
     Layout,
     Containers: { formulations },
   } = useTheme()
-
   const dispatch = useDispatch()
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
@@ -56,7 +54,10 @@ const FormulationDrugs = ({ drug, isLast, updateFormulations }) => {
             {translate(nodes[drug.id].label)}
           </Text>
           {drug.relatedDiagnoses.map(relatedDiagnosis => (
-            <Text key={`formulation_diagnosis_text-${relatedDiagnosis.diagnosisId}`} style={formulations.relatedDiagnoses}>
+            <Text
+              key={`formulation_diagnosis_text-${relatedDiagnosis.diagnosisId}`}
+              style={formulations.relatedDiagnoses}
+            >
               - {translate(nodes[relatedDiagnosis.diagnosisId].label)}
             </Text>
           ))}

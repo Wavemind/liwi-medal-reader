@@ -158,6 +158,7 @@ export default {
         name: 'Nom',
         last_visit: 'Dernière visite',
         status: 'Statut',
+        no_active_consultations: 'Aucune consultation chargée',
       },
       consultations: {
         current_consultation: 'Consultation actuelle',
@@ -240,6 +241,9 @@ export default {
     media: {
       file_not_supported: 'Format de fichier non pris en charge',
     },
+    study: {
+      no_content: 'No content',
+    },
   },
   device: {
     name: 'Nom',
@@ -269,6 +273,12 @@ export default {
       description: 'Un problème est survenu pendant le chargement patient·e',
     },
   },
+  errors: {
+    offline: {
+      title: 'Erreur de communication avec medAL-data',
+      description: 'Serveur introuvable',
+    },
+  },
   health_facility: {
     id: 'ID',
     name: 'Nom',
@@ -278,7 +288,7 @@ export default {
     local_data_ip: 'Adresse medAL-hub',
     main_data_ip: 'Adresse medAL-data',
     custom_clinician: 'Collabora·teur·trice manquant·e',
-    custom_clinician_subtitle: 'Ajouter collabora·teur ·trice',
+    custom_clinician_subtitle: 'Ajouter utilisa·teur ·trice temporaire',
     roles: {
       title: 'Fonctions',
       medical_doctor: 'Médecin',
@@ -312,6 +322,7 @@ export default {
     first_name: 'Prénom',
     last_name: 'Nom',
     birth_date: 'Date de naissance',
+    estimated_age: 'Âge estimé',
     reason: 'Raison du changement de centre de santé',
   },
   medical_case: {
@@ -371,8 +382,13 @@ export default {
     },
   },
   validation: {
-    is_required: 'Le champ « {{ field }} » est obligatoire',
+    is_required: 'La question « {{ field }} » est obligatoire',
     consent_file_blank:
       'La réponse au consentement du traitement des données est obligatoire',
+    final_diagnoses_required:
+      'Veuillez accepter ou refuser chacun des diagnostics proposés',
+    medicines_required:
+      'Veuillez accepter ou refuser chacun des médicaments proposés',
+    formulation_required: 'Please choose a formulation for each medicine',
   },
 }

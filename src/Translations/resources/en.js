@@ -235,6 +235,9 @@ export default {
         ok: 'OK',
         back: 'Cancel',
       },
+      study: {
+        no_content: 'No content',
+      },
     },
     media: {
       file_not_supported: 'File not supported',
@@ -275,8 +278,8 @@ export default {
     area: 'Area',
     local_data_ip: 'medAL-hub address',
     main_data_ip: 'medAL-data address',
-    custom_clinician: 'New staff member',
-    custom_clinician_subtitle: 'Create staff member',
+    custom_clinician: 'Missing staff member',
+    custom_clinician_subtitle: 'Add temporary user',
     roles: {
       title: 'Roles',
       medical_doctor: 'Medical Doctor (MD)',
@@ -310,6 +313,7 @@ export default {
     first_name: 'First name',
     last_name: 'Last name',
     birth_date: 'Date of Birth',
+    estimated_age: 'Estimated age',
     reason: 'Reason for changing facility',
   },
   medical_case: {

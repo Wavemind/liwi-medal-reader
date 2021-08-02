@@ -61,7 +61,7 @@ const drugDoses = (formulationIndex, drugId) => {
         const minDoseMl =
           (minDoseMg * formulation.dose_form) / formulation.liquid_concentration
         const maxDoseMl =
-          (minDoseMg * formulation.dose_form) / formulation.liquid_concentration
+          (maxDoseMg * formulation.dose_form) / formulation.liquid_concentration
 
         // Round
         doseResult = (minDoseMl + maxDoseMl) / 2
