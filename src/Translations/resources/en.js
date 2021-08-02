@@ -175,8 +175,8 @@ export default {
       },
     },
     synchronization: {
-      synchronize: 'Synchronize',
       not_synchronized: 'Medical cases not synchronized yet',
+      synchronize: 'Synchronize',
       warning: 'You have not synchronized for over 7 days',
     },
     settings: {
@@ -268,6 +268,12 @@ export default {
     patientLoadError: {
       message: 'Error',
       description: 'An error occurred while loading the patient',
+    },
+  },
+  errors: {
+    offline: {
+      title: 'Communication error with medAL-data',
+      description: 'Server not accessible',
     },
   },
   health_facility: {
