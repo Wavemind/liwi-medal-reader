@@ -9,6 +9,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
 import { store } from '@/Store'
 import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
 import InsertDatabaseActivity from '@/Store/DatabaseActivity/Insert'
+import UnlockMedicalCase from '@/Store/DatabaseMedicalCase/Unlock'
 
 export default async () => {
   const medicalCase = store.getState().medicalCase.item
@@ -46,6 +47,10 @@ export default async () => {
 
     // Remove medical case from store
     if (isFulfilled(addActivity)) {
+      await store.dispatch(
+        UnlockMedicalCase.action({ medicalCaseId: medicalCase.id }),
+      )
+
       return true
     }
   }

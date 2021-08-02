@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch } from 'react-redux'
 import format from 'date-fns/format'
@@ -36,13 +36,18 @@ const ListItem = ({ item }) => {
   const navigation = useNavigation()
 
   const [stages] = useState(getStages())
-  const [locked] = useState(isLocked(item))
+  const [locked, setLocked] = useState(isLocked(item))
+
+  useEffect(() => {
+    setLocked(isLocked(item))
+  }, [item.mac_address])
 
   /**
    * Will load the Medical case in the store then navigate to the Medical Case
    * @returns {Promise<void>}
    */
   const handlePress = async () => {
+    await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
       await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
       navigation.navigate('MedicalCaseSummary')
@@ -51,7 +56,6 @@ const ListItem = ({ item }) => {
       await dispatch(ToggleVisibility.action({}))
     } else {
       await dispatch(LockMedicalCase.action({ medicalCaseId: item.id }))
-      await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {
         stageIndex: item.advancement.stage,

@@ -148,12 +148,12 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               value: !medicalCaseSavedInDatabase,
             }),
           )
-          // const insertPatientValues = await dispatch(
-          //   InsertPatientValues.action(),
-          // )
-          // if (isFulfilled(insertPatientValues)) {
-          await handleNavigation(direction)
-          //}
+          const insertPatientValues = await dispatch(
+            InsertPatientValues.action(),
+          )
+          if (isFulfilled(insertPatientValues)) {
+            await handleNavigation(direction)
+          }
         }
       } else if (advancement.stage === 0 && patientSavedInDatabase) {
         const patientUpdate = await dispatch(
@@ -209,9 +209,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
       setLoading(false)
       navigation.navigate(steps[nextStep].label)
     } else {
-      const nextStage = stageIndex + direction
+      const nextStage = Number(stageIndex) + direction
 
-      console.log(stageNavigation, nextStage)
       // Test if nextStage exist. If not, save and close medical case
       if (stageNavigation[nextStage] !== undefined) {
         // Not save if we go back

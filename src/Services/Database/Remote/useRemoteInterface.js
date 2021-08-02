@@ -225,7 +225,6 @@ export default function () {
 
   const _buildMedicalCase = (remoteMedicalCase, addPatient = true) => {
     const parsedJson = JSON.parse(remoteMedicalCase.json)
-
     const medicalCase = {
       id: remoteMedicalCase.id,
       activities: [],
@@ -242,10 +241,11 @@ export default function () {
         step: remoteMedicalCase.advancement.step,
       },
       fail_safe: remoteMedicalCase.fail_safe,
-      createdAt: remoteMedicalCase.created_at,
-      updatedAt: remoteMedicalCase.updated_at,
-      closedAt: remoteMedicalCase.closedAt,
+      createdAt: remoteMedicalCase.created_at * 1000,
+      updatedAt: remoteMedicalCase.updated_at * 1000,
+      closedAt: remoteMedicalCase.closedAt * 1000,
       version_id: remoteMedicalCase.version_id,
+      patient_id: remoteMedicalCase.patient_id,
     }
 
     if (addPatient) {
@@ -268,7 +268,7 @@ export default function () {
     const patient = {
       first_name: remotePatient.first_name,
       last_name: remotePatient.last_name,
-      birth_date: remotePatient.birth_date,
+      birth_date: remotePatient.birth_date * 1000,
       birth_date_estimated: remotePatient.birth_date_estimated,
       birth_date_estimated_type: remotePatient.birth_date_estimated_type,
       consent: remotePatient.consent,
@@ -338,7 +338,7 @@ export default function () {
         id: remoteMedicalCase.patient.id,
         first_name: remoteMedicalCase.patient.first_name,
         last_name: remoteMedicalCase.patient.last_name,
-        birth_date: remoteMedicalCase.patient.birth_date,
+        birth_date: remoteMedicalCase.patient.birth_date * 1000,
       },
     }
   }
@@ -371,6 +371,7 @@ export default function () {
     insertActivities,
     insertPatient,
     insertPatientValues,
+    updatePatientValues: insertPatientValues,
     getAll,
     update,
     insertMedicalCase,

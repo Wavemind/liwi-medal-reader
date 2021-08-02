@@ -12,8 +12,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SquareButton } from '@/Components'
 import { useTheme } from '@/Theme'
 import { navigate } from '@/Navigators/Root'
+import LockMedicalCase from '@/Store/DatabaseMedicalCase/Lock'
+import LoadPatient from '@/Store/Patient/Load'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
-import UpdateField from '@/Store/MedicalCase/UpdateField'
 
 const Lock = () => {
   // Theme and style elements deconstruction
@@ -25,25 +26,15 @@ const Lock = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const mac_address = useSelector(state => state.device.item.mac_address)
-  const { first_name, last_name } = useSelector(
-    state => state.healthFacility.clinician,
-  )
   const medicalCase = useSelector(state => state.medicalCase.item)
 
   /**
    * Sets the mac_address and clinician to the current values and navigates to the medicalCase
    */
   const handleForceUnlock = async () => {
-    await dispatch(
-      UpdateField.action({ field: 'mac_address', value: mac_address }),
-    )
-    await dispatch(
-      UpdateField.action({
-        field: 'clinician',
-        value: `${first_name} ${last_name}`,
-      }),
-    )
+    await dispatch(LockMedicalCase.action({ medicalCaseId: medicalCase.id }))
+    await dispatch(LoadPatient.action({ patientId: medicalCase.patient_id }))
+
     await dispatch(ToggleVisibility.action({}))
     navigate('StageWrapper', {
       stageIndex: medicalCase.advancement.stage,

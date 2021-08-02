@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 /**
  * The internal imports
  */
+import UnlockMedicalCase from '@/Store/DatabaseMedicalCase/Unlock'
 import { SquareButton } from '@/Components'
 import { useTheme } from '@/Theme'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
@@ -38,6 +39,7 @@ const ExitMedicalCase = () => {
   const stepIndex = useSelector(
     state => state.medicalCase.item.advancement.step,
   )
+  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
 
   /**
    * Redirect user to home page and clear medical case store
@@ -46,6 +48,9 @@ const ExitMedicalCase = () => {
     if (routeName === 'Auth') {
       await dispatch(ChangeClinician.action({ clinician: {} }))
     }
+
+    await dispatch(UnlockMedicalCase.action({ medicalCaseId }))
+
     await dispatch(ToggleVisibility.action({}))
     navigateAndSimpleReset(routeName, {
       ...routeParams,
@@ -65,6 +70,8 @@ const ExitMedicalCase = () => {
       if (routeName === 'Auth') {
         await dispatch(ChangeClinician.action({ clinician: {} }))
       }
+      await dispatch(UnlockMedicalCase.action({ medicalCaseId }))
+
       await dispatch(ToggleVisibility.action({}))
       navigateAndSimpleReset(routeName, {
         ...routeParams,
