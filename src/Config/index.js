@@ -30,7 +30,7 @@ export const Config = {
   DAYS_IN_MONTH: 30.4166667,
   DATABASE_INTERFACE: {
     local: 'local',
-    remote: 'remote', 
+    remote: 'remote',
   },
   DISPLAY_FORMAT: {
     radioButton: 'RadioButton',
