@@ -40,6 +40,9 @@ const defineBaseUrl = env => {
  * @returns {Promise<unknown>}
  */
 export const handleError = ({ message, data, status }) => {
+  if (status) {
+    return { status }
+  }
   return Promise.reject({ message, data, status })
 }
 
@@ -81,7 +84,7 @@ instance.interceptors.response.use(
   async function (error) {
     if (error.response) {
       const originalRequest = error.config
-    
+
       // The request was made and the server responded with a 403 status code
       // which means access_token is expired, so we try to get a new access_token
       // from the refresh_token and retry request
@@ -154,6 +157,7 @@ instance.interceptors.response.use(
 
       return handleError({
         message: 'No response received (' + error.message + ')',
+        status: 400,
       })
     } else {
       // Something happened in setting up the request that triggered an Error

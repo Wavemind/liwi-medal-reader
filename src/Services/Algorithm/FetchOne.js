@@ -24,8 +24,8 @@ export default async ({ json_version }) => {
     mac_address: macAddress,
   })
 
-  // If algorithm doesn't change. Load current stored.
-  if (response.status === 204) {
+  // If algorithm doesn't change OR there was a bad request => Load current stored.
+  if (response.status === 204 || response.status === 400) {
     const state = store.getState()
     const oldAlgorithm = state.algorithm.item
     return { ...oldAlgorithm, updated: false }
