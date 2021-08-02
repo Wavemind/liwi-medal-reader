@@ -144,7 +144,6 @@ instance.interceptors.response.use(
         data: error.response.data,
       })
     } else if (error.request) {
-      console.log(error, error.request)
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
