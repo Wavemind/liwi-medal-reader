@@ -61,17 +61,17 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
           } ${t('formulations.drug.h')} ${duration} ${t(
             'formulations.drug.days',
           )}`}</Text>
-          {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
-            drugDose.administration_route_category,
-          ) && (
-            <Text
-              style={[Gutters.regularTMargin, summary.drugText]}
-              key={`text_${drug.id}`}
-            >
-              {translate(drugDose.injection_instructions)}
-            </Text>
-          )}
         </View>
+      )}
+      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
+        drugDose.administration_route_category,
+      ) && (
+        <Text
+          style={[Gutters.regularTMargin, summary.drugText]}
+          key={`text_${drug.id}`}
+        >
+          {translate(drugDose.injection_instructions)}
+        </Text>
       )}
       <Text style={[Gutters.regularTMargin, summary.drugText]}>
         {translate(drugDose.dispensing_description)}
