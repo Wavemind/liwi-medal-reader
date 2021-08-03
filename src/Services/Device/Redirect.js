@@ -26,7 +26,7 @@ export default () => {
     ]).then(res => {
       if (Object.values(res).every(result => result === 'granted')) {
         if (!isAuthenticated || !deviceRegistered) {
-          route = 'Auth'
+          route = 'Login'
         } else if (!healthFacilityAssociated) {
           route = 'Synchronization'
         } else if (!clinicianSelected) {

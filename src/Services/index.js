@@ -118,9 +118,9 @@ instance.interceptors.response.use(
       } else if (originalRequest.url === 'auth/refresh') {
         // error while trying to refresh access token, so disconnect!!
 
-        // TODO COMMENTED THIS BECAUSE IT DOES SHIT
-        // await Keychain.resetInternetCredentials('access_token')
-        // await Keychain.resetInternetCredentials('refresh_token')
+        await Keychain.resetInternetCredentials('access_token')
+        await Keychain.resetInternetCredentials('refresh_token')
+        // TODO change the screen to something that actually exists
         navigate('Auth', { screen: 'IndexAuth' })
       }
 
