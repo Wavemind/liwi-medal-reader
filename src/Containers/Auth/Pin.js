@@ -46,9 +46,9 @@ const PinAuthContainer = () => {
   useEffect(() => {
     fadeIn(fadeAnim)
 
-    // if (__DEV__) {
-    //   handlePin('1234')
-    // }
+    if (__DEV__) {
+      handlePin('1234')
+    }
   }, [fadeAnim])
 
   /**
