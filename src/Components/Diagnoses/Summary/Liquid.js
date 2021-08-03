@@ -71,11 +71,11 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
               {translate(drugDose.injection_instructions)}
             </Text>
           )}
-          <Text style={[Gutters.regularTMargin, summary.drugText]}>
-            {translate(drugDose.dispensing_description)}
-          </Text>
         </View>
       )}
+      <Text style={[Gutters.regularTMargin, summary.drugText]}>
+        {translate(drugDose.dispensing_description)}
+      </Text>
     </View>
   )
 }
