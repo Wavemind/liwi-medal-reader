@@ -483,9 +483,12 @@ export const transformPatientValues = () => {
  * @returns {boolean}
  */
 export const isLocked = medicalCase => {
-  const device = store.getState().device.item
+  const state = store.getState()
+  const device = state.device.item
+  const architecture = state.healthFacility.item.architecture
 
   return (
+    architecture === 'client_server' &&
     medicalCase.closedAt === 0 &&
     medicalCase.mac_address !== null &&
     medicalCase.mac_address !== device.mac_address

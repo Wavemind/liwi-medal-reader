@@ -252,9 +252,9 @@ export default function () {
         step: remoteMedicalCase.advancement.step,
       },
       fail_safe: remoteMedicalCase.fail_safe,
-      createdAt: remoteMedicalCase.created_at * 1000,
-      updatedAt: remoteMedicalCase.updated_at * 1000,
-      closedAt: remoteMedicalCase.closedAt * 1000,
+      createdAt: remoteMedicalCase.created_at,
+      updatedAt: remoteMedicalCase.updated_at,
+      closedAt: remoteMedicalCase.closedAt,
       version_id: remoteMedicalCase.version_id,
       patient_id: remoteMedicalCase.patient_id,
     }
@@ -279,7 +279,7 @@ export default function () {
     const patient = {
       first_name: remotePatient.first_name,
       last_name: remotePatient.last_name,
-      birth_date: remotePatient.birth_date * 1000,
+      birth_date: remotePatient.birth_date,
       birth_date_estimated: remotePatient.birth_date_estimated,
       birth_date_estimated_type: remotePatient.birth_date_estimated_type,
       consent: remotePatient.consent,
@@ -349,7 +349,7 @@ export default function () {
         id: remoteMedicalCase.patient.id,
         first_name: remoteMedicalCase.patient.first_name,
         last_name: remoteMedicalCase.patient.last_name,
-        birth_date: remoteMedicalCase.patient.birth_date * 1000,
+        birth_date: remoteMedicalCase.patient.birth_date,
       },
     }
   }
