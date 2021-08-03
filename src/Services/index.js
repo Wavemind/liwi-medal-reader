@@ -19,7 +19,7 @@ const instance = axios.create({
  * @param env
  * @returns {string}
  */
-const defineBaseUrl = env => {
+export const defineBaseUrl = env => {
   switch (env) {
     case 'test':
       return Config.URL_TEST_API
@@ -81,7 +81,7 @@ instance.interceptors.response.use(
   async function (error) {
     if (error.response) {
       const originalRequest = error.config
-    
+
       // The request was made and the server responded with a 403 status code
       // which means access_token is expired, so we try to get a new access_token
       // from the refresh_token and retry request
@@ -117,8 +117,10 @@ instance.interceptors.response.use(
         return instance(originalRequest)
       } else if (originalRequest.url === 'auth/refresh') {
         // error while trying to refresh access token, so disconnect!!
-        await Keychain.resetInternetCredentials('access_token')
-        await Keychain.resetInternetCredentials('refresh_token')
+
+        // TODO COMMENTED THIS BECAUSE IT DOES SHIT
+        // await Keychain.resetInternetCredentials('access_token')
+        // await Keychain.resetInternetCredentials('refresh_token')
         navigate('Auth', { screen: 'IndexAuth' })
       }
 

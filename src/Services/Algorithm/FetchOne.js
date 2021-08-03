@@ -12,7 +12,7 @@ import {
 /**
  * The internal imports
  */
-import api from '@/Services'
+import api from '@/Services/Algorithm/FetchOneApi'
 import { store } from '@/Store'
 
 export default async ({ json_version }) => {
@@ -25,7 +25,7 @@ export default async ({ json_version }) => {
   })
 
   // If algorithm doesn't change. Load current stored.
-  if (response.status === 204) {
+  if (response === undefined || response.status === 204) {
     const state = store.getState()
     const oldAlgorithm = state.algorithm.item
     return { ...oldAlgorithm, updated: false }
