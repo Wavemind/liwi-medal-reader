@@ -81,9 +81,20 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertMedicalCase = async (patientId, medicalCaseData) => {
+    console.log('ICI', medicalCaseData)
     const response = await api.post(
       `/api/patients/${patientId}/medical_cases`,
-      medicalCaseData,
+      {
+        medical_case: {
+          ...medicalCaseData,
+          json: {
+            comment: medicalCaseData.comment,
+            consent: medicalCaseData.consent,
+            diagnosis: medicalCaseData.diagnosis,
+            nodes: medicalCaseData.nodes,
+          },
+        },
+      },
     )
     return response.data.data
   }

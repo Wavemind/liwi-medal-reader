@@ -35,7 +35,7 @@ instance.interceptors.request.use(
       'Content-type': 'application/json',
       Accept: 'application/json',
     }
-    config.headers.mac_address = mac_address
+    config.headers['mac-address'] = mac_address
     config.headers.clinician = `${clinician.first_name} ${clinician.last_name}`
 
     return config
@@ -57,6 +57,7 @@ instance.interceptors.response.use(
   },
   async function (error) {
     if (error.response) {
+      console.log(error.response)
       // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'
 
@@ -77,6 +78,8 @@ instance.interceptors.response.use(
         data: error.response.data,
       })
     } else if (error.request) {
+      console.log(error.request)
+
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
