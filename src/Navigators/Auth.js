@@ -19,7 +19,7 @@ const Stack = createStackNavigator()
 const AuthNavigator = () => {
   return (
     <Stack.Navigator headerMode="none" mode="modal">
-      <Stack.Screen name="Auth" component={LoginAuthContainer} />
+      <Stack.Screen name="Login" component={LoginAuthContainer} />
       <Stack.Screen
         name="Synchronization"
         component={SynchronizationAuthContainer}
