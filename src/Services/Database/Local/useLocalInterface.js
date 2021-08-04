@@ -11,7 +11,7 @@ import uuid from 'react-native-uuid'
  */
 import schema from './Schema'
 import { Config } from '@/Config'
-
+import { store } from '@/Store'
 import {
   ActivityModel,
   PatientModel,
@@ -212,6 +212,14 @@ export default function () {
    * @private
    */
   const insertActivities = async (medicalCaseId, activities) => {
+    const architecture = store.getState().healthFacility.item.architecture
+
+    let failSafe = false
+
+    if (architecture === 'client_server') {
+      failSafe = true
+    }
+
     await database.action(async () => {
       activities.map(async activity => {
         await database.batch(
@@ -222,7 +230,7 @@ export default function () {
             record.nodes = JSON.stringify(activity.nodes)
             record.mac_address = activity.mac_address
             record.medical_case_id = medicalCaseId
-            record.fail_safe = activity.fail_safe
+            record.fail_safe = failSafe
           }),
         )
       })
@@ -238,9 +246,13 @@ export default function () {
   const insertMedicalCase = async (patientId, medicalCaseData) => {
     const patient = await findBy('Patient', patientId)
     const collection = database.get('medical_cases')
-    // if (architecture === 'client_server') {
-    //   object = { ...object, fail_safe: true }
-    // }
+    const architecture = store.getState().healthFacility.item.architecture
+
+    let failSafe = false
+    if (architecture === 'client_server') {
+      failSafe = true
+    }
+
     await database.action(async () => {
       await collection.create(record => {
         record._raw.id = medicalCaseData.id
@@ -255,7 +267,7 @@ export default function () {
         record.step = medicalCaseData.advancement.step
         record.synchronizedAt = medicalCaseData.synchronizedAt
         record.closedAt = medicalCaseData.closedAt
-        record.fail_safe = false
+        record.fail_safe = failSafe
         record.version_id = medicalCaseData.version_id
         record.patient.set(patient)
       })
@@ -269,10 +281,14 @@ export default function () {
    */
   const insertPatient = async (patientData, medicalCaseData) => {
     const collection = database.get('patients')
+    const architecture = store.getState().healthFacility.item.architecture
+
+    let failSafe = false
     let patient = null
-    // if (architecture === 'client_server') {
-    //   object = { ...object, fail_safe: true }
-    // }
+
+    if (architecture === 'client_server') {
+      failSafe = true
+    }
     await database.action(async () => {
       patient = await collection.create(record => {
         record._raw.id = patientData.id
@@ -290,7 +306,7 @@ export default function () {
         record.reason = patientData.reason
         record.consent = patientData.consent
         record.consent_file = patientData.consent_file
-        record.fail_safe = patientData.fail_safe
+        record.fail_safe = failSafe
       })
       const nestedCollection = database.get('medical_cases')
       await nestedCollection.create(nestedRecord => {
@@ -306,7 +322,7 @@ export default function () {
         nestedRecord.step = medicalCaseData.advancement.step
         nestedRecord.synchronizedAt = medicalCaseData.synchronizedAt
         nestedRecord.closedAt = medicalCaseData.closedAt
-        nestedRecord.fail_safe = false
+        nestedRecord.fail_safe = failSafe
         nestedRecord.version_id = medicalCaseData.version_id
         nestedRecord.patient.set(patient)
       })
@@ -345,9 +361,11 @@ export default function () {
    */
   const update = async (model, id, fields) => {
     const collection = database.get(_mapModelToTable(model))
-    // if (architecture === 'client_server') {
-    //   fields = { ...fields, fail_safe: true }
-    // }
+    const architecture = store.getState().healthFacility.item.architecture
+    if (architecture === 'client_server') {
+      fields = { ...fields, fail_safe: true }
+    }
+
     await database.action(async () => {
       const object = await collection.find(id)
       await database.batch(
@@ -499,6 +517,7 @@ export default function () {
       version_id: watermelonDBMedicalCase.version_id,
     }
 
+    // TODO CHECK IF USED
     if (addPatient) {
       const patient = await watermelonDBMedicalCase.patient.fetch()
       medicalCase.patient = patient

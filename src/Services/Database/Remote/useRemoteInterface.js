@@ -1,8 +1,4 @@
 /**
- * The external imports
- */
-
-/**
  * The internal imports
  */
 import api from '@/Services/Database/Remote'
@@ -23,6 +19,8 @@ export default function () {
       stringFilters = _generateFiltersUrl(params.filters)
       stringQuery = params.terms
     }
+
+    // TODO Terms
     let url = `/api/${_mapModelToRoute(model)}?page=${page}&params={`
     url += stringQuery ? `terms: '${stringQuery}'` : ''
     url += stringFilters ? `filters: '${stringFilters}'` : ''
@@ -38,6 +36,7 @@ export default function () {
    * @returns {Promise<string|Array>}
    */
   const getConsentsFile = async page => {
+    // TODO TEST IT
     const response = await api.post('/api/patients/consent_files', { page })
     return response.data.data
   }
@@ -81,7 +80,6 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertMedicalCase = async (patientId, medicalCaseData) => {
-    console.log('ICI', medicalCaseData)
     const response = await api.post(
       `/api/patients/${patientId}/medical_cases`,
       {
@@ -137,14 +135,10 @@ export default function () {
         reason: patientData.reason,
         consent: patientData.consent,
         consent_file: patientData.consent_file,
-        fail_safe: patientData.fail_safe,
+        fail_safe: false,
       },
     })
 
-    console.log(response.data, {
-      medical_case: medicalCaseData,
-      patient: patientData,
-    })
     return response.data.data
   }
 
@@ -175,7 +169,6 @@ export default function () {
    */
   const lock = async id => {
     const response = await api.post(`/api/medical_cases/${id}/lock`)
-    console.log('ICI', response)
     return response.data.data
   }
 
@@ -234,7 +227,7 @@ export default function () {
     return route
   }
 
-  const _buildMedicalCase = (remoteMedicalCase, addPatient = true) => {
+  const _buildMedicalCase = remoteMedicalCase => {
     const parsedJson = JSON.parse(remoteMedicalCase.json)
     const medicalCase = {
       id: remoteMedicalCase.id,
@@ -243,7 +236,8 @@ export default function () {
       consent: parsedJson.consent,
       diagnosis: parsedJson.diagnosis,
       nodes: parsedJson.nodes,
-      json: remoteMedicalCase.json,
+      json: null,
+      // TODO Check if JSON_version is stored
       json_version: remoteMedicalCase.json_version,
       clinician: remoteMedicalCase.clinician,
       mac_address: remoteMedicalCase.mac_address,
@@ -258,22 +252,14 @@ export default function () {
       version_id: remoteMedicalCase.version_id,
       patient_id: remoteMedicalCase.patient_id,
     }
-
-    if (addPatient) {
-      // const patient = await watermelonDBMedicalCase.patient.fetch()
-      // medicalCase.patient = patient
-    }
-
     return medicalCase
   }
+
   const _buildPatient = remotePatient => {
     // Build medicalCases
     const medicalCases = remotePatient.medical_cases.map(remoteMedicalCase =>
       _buildMedicalCase(remoteMedicalCase, false),
     )
-
-    // Build patient values
-    //const patientValues = remotePatient.patient_values.map(remoteMedicalCase => _buildPatientValue(remoteMedicalCase))
 
     // Build patient
     const patient = {
@@ -311,6 +297,7 @@ export default function () {
    * @returns {string}
    * @private
    */
+  // TODO make it work
   const _generateFiltersUrl = filters => {
     let stringFilters = ''
     if (filters.length !== 0) {
@@ -337,7 +324,7 @@ export default function () {
         stage: Number(remoteMedicalCase.advancement.stage),
         step: Number(remoteMedicalCase.advancement.step),
       },
-      json: remoteMedicalCase.json,
+      json: null,
       fail_safe: remoteMedicalCase.fail_safe,
       createdAt: remoteMedicalCase.created_at,
       updatedAt: remoteMedicalCase.updated_at,
