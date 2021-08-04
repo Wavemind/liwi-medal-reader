@@ -2,6 +2,7 @@
  * The internal imports
  */
 import api from '@/Services/Database/Remote'
+import LocalInterface from '@/Services/Database/Local/useLocalInterface'
 
 export default function () {
   /**
@@ -36,8 +37,7 @@ export default function () {
    * @returns {Promise<string|Array>}
    */
   const getConsentsFile = async page => {
-    // TODO TEST IT
-    const response = await api.get('/api/patients/consent_files', { page })
+    const response = await api.get(`/api/patients/consent_files?page=${page}`)
     return response.data.data
   }
 
@@ -202,8 +202,38 @@ export default function () {
    * @returns {Promise<string|Array>}
    */
   const synchronizePatients = async patients => {
-    const response = await api.post('/api/patients/synchronize', patients)
-    return response.data.data
+    patients.forEach(async patient => {
+      patient.medical_cases = patient.medicalCases.map(medicalCase => ({
+        id: medicalCase.id,
+        json: {
+          comment: medicalCase.comment,
+          consent: medicalCase.consent,
+          diagnosis: medicalCase.diagnosis,
+          nodes: medicalCase.nodes,
+        },
+        json_version: medicalCase.json_version,
+        advancement: medicalCase.advancement,
+        synchronizedAt: medicalCase.synchronizedAt,
+        closedAt: medicalCase.closedAt,
+        fail_safe: medicalCase.fail_safe,
+        version_id: medicalCase.version_id,
+      }))
+      delete patient.medicalCases
+      const data = {
+        patients: {
+          ...patient,
+          patient_values: patient.patientValues,
+        },
+      }
+      delete data.patientValues
+
+      //  const response = await api.post('/api/patients/synchronize', data)
+      //if (true) {
+      LocalInterface().destroyPatient(patient.id)
+      // }
+      console.log('response')
+    })
+    return 'response.data.data'
   }
 
   /**

@@ -248,6 +248,8 @@ export default function () {
     const collection = database.get('medical_cases')
     const architecture = store.getState().healthFacility.item.architecture
 
+    await _handleFailSafe()
+
     let failSafe = false
     if (architecture === 'client_server') {
       failSafe = true
@@ -337,6 +339,14 @@ export default function () {
    */
   const insertPatientValues = async (patientValues, patientId) => {
     const patientValuesCollection = database.get('patient_values')
+    const architecture = store.getState().healthFacility.item.architecture
+
+    let failSafe = false
+
+    if (architecture === 'client_server') {
+      failSafe = true
+    }
+
     await database.action(async () => {
       await database.batch(
         patientValues.map(patientValue =>
@@ -346,6 +356,7 @@ export default function () {
             record.node_id = parseInt(patientValue.id, 10)
             record.answer_id = patientValue.answer
             record.value = patientValue.value?.toString()
+            record.fail_safe = failSafe
           }),
         ),
       )
@@ -362,6 +373,7 @@ export default function () {
   const update = async (model, id, fields) => {
     const collection = database.get(_mapModelToTable(model))
     const architecture = store.getState().healthFacility.item.architecture
+    await _handleFailSafe()
 
     if (architecture === 'client_server') {
       fields = [...fields, { name: 'fail_safe', value: true }]
@@ -406,6 +418,55 @@ export default function () {
         ),
       )
     }, 'update patient values')
+  }
+
+  /*
+   * Will set the needed value in the database if we switch to fail Safe mode
+   */
+  const _handleFailSafe = async () => {
+    const state = store.getState()
+    const architecture = state.healthFacility.item.architecture
+    const isConnected = state.network.isConnected
+    const patient = state.patient.item
+    const medicalCase = state.medicalCase.item
+
+    if (architecture === 'client_server' && !isConnected) {
+      // Find patient in Local Interface
+      const patientExists = await findBy('Patient', patient.id)
+      if (patientExists === null) {
+        await insertPatient(patient, medicalCase)
+      }
+    }
+  }
+
+  const destroyPatient = async patientId => {
+    const localPatient = await database.get('patients').find(patientId)
+
+    const patientValues = await localPatient.patientValues.fetch()
+    destroy(patientValues)
+
+    const medicalCases = localPatient.medicalCases.fetch()
+
+    medicalCases.forEach(async medicalCase => {
+      const activities = await medicalCase.activities.fetch()
+      destroy(activities)
+    })
+    destroy(medicalCases)
+    destroy(localPatient)
+  }
+
+  /**
+   * Deletes a specific object from the DB
+   * @param { object } object - the object to delete
+   */
+  const destroy = async object => {
+    await database.action(async () => {
+      if (object instanceof Array) {
+        object.forEach(o => o.destroyPermanently())
+      } else {
+        object.destroyPermanently()
+      }
+    })
   }
 
   const _buildPatient = async watermelonDBPatient => {
@@ -475,7 +536,7 @@ export default function () {
         stage: watermelonDBMedicalCase.stage,
         step: watermelonDBMedicalCase.step,
       },
-      json: watermelonDBMedicalCase.json,
+      json: null,
       fail_safe: watermelonDBMedicalCase.fail_safe,
       createdAt: watermelonDBMedicalCase.createdAt.getTime(),
       updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
@@ -504,7 +565,7 @@ export default function () {
       consent: parsedJson.consent,
       diagnosis: parsedJson.diagnosis,
       nodes: parsedJson.nodes,
-      json: watermelonDBMedicalCase.json,
+      json: null,
       json_version: watermelonDBMedicalCase.json_version,
       advancement: {
         stage: watermelonDBMedicalCase.stage,
@@ -583,6 +644,7 @@ export default function () {
     findBy,
     insertActivities,
     lock,
+    destroyPatient,
     getActivities,
     getMedicalCases,
     getAll,
