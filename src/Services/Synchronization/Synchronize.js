@@ -6,6 +6,7 @@ import {
   mkdir,
   unlink,
   writeFile,
+  readDir,
 } from 'react-native-fs'
 import { zip } from 'react-native-zip-archive'
 import differenceInDays from 'date-fns/differenceInDays'
@@ -73,16 +74,33 @@ export default async () => {
   )
 
   // TODO synchronize the mcs when we have client-server functionality and remove const result = null
-  const result = api.post('/api/sync_medical_cases', medicalCaseJson)
-  // const result = null
-  if (result !== null && result.data_received) {
-    // Reset medicalCases to sync if request success
-    medicalCasesToSync.forEach(medicalCase => {
-      update('MedicalCase', medicalCase.id, {
-        synchronizedAt: new Date().getTime(),
-      })
+  const data = new FormData()
+  data.append('file', {
+    name: 'file',
+    filename: 'file.zip',
+    uri: path,
+  })
+
+  readDir(DocumentDirectoryPath)
+    .then(result => {
+      console.log('GOT RESULT', result)
     })
-  } else {
-    return null
-  }
+    .catch(err => {
+      console.log(err.message, err.code)
+    })
+
+  const result = await api.post('/api/sync_medical_cases', data)
+
+  console.log('result', result)
+
+  // if (result !== null && result.data_received) {
+  //   // Reset medicalCases to sync if request success
+  //   medicalCasesToSync.forEach(medicalCase => {
+  //     update('MedicalCase', medicalCase.id, {
+  //       synchronizedAt: new Date().getTime(),
+  //     })
+  //   })
+  // } else {
+  //   return null
+  // }
 }

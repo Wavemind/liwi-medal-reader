@@ -6,6 +6,7 @@ import { store } from '@/Store'
 const instance = axios.create({
   headers: {
     Accept: 'application/json',
+    'Content-Type': 'multipart/form-data',
   },
   timeout: 3000,
 })
@@ -26,7 +27,7 @@ instance.interceptors.request.use(
     const state = store.getState()
     const mainDataUrl = state.healthFacility.item.main_data_ip
     config.baseURL = mainDataUrl
-
+    console.log(config)
     return config
   },
   function (error) {
@@ -38,12 +39,15 @@ instance.interceptors.request.use(
 // Add a response interceptor
 instance.interceptors.response.use(
   function (response) {
+    console.log(response)
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response
   },
   async function (error) {
     if (error.response) {
+      console.log('response', error.response)
+      console.log('response', error.message)
       // The request was made and the server responded with a 403 status code
       // which means access_token is expired, so we try to get a new access_token
       // from the refresh_token and retry request
@@ -52,12 +56,8 @@ instance.interceptors.response.use(
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'
 
       // Response given by the application
-      if (error.response.data.errors) {
-        if (Array.isArray(error.response.data.errors)) {
-          errorMessage = error.response.data.errors[0]
-        } else {
-          errorMessage = error.response.data.errors
-        }
+      if (error.response.data) {
+        errorMessage = error.response.data
       }
 
       // The request was made and the server responded with a status code
@@ -68,6 +68,7 @@ instance.interceptors.response.use(
         data: error.response.data,
       })
     } else if (error.request) {
+      console.log('error')
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js

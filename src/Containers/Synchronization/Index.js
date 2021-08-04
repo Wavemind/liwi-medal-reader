@@ -24,8 +24,12 @@ const IndexSynchronizationContainer = () => {
 
   const { t } = useTranslation()
 
-  const syncError = useSelector(state => state.synchronization.error)
-  const syncLoading = useSelector(state => state.synchronization.loading)
+  const syncError = useSelector(
+    state => state.synchronization.synchronize.error,
+  )
+  const syncLoading = useSelector(
+    state => state.synchronization.synchronize.loading,
+  )
 
   // Local state definition
   const [unsynced, setUnsynced] = useState([])
