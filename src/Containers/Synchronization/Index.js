@@ -40,7 +40,7 @@ const IndexSynchronizationContainer = () => {
   useEffect(async () => {
     const result = await GetNonSynchronizedService()
     setUnsynced(result)
-  }, [])
+  }, [syncLoading])
 
   useEffect(() => {
     fadeIn(fadeAnim)
