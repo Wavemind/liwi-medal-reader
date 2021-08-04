@@ -15,6 +15,7 @@ import { Icon } from '@/Components'
 import { useTheme } from '@/Theme'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
+import { isLocked } from '@/Utils/MedicalCase'
 
 const CurrentConsultation = ({ navigation, consultation }) => {
   const {
@@ -32,8 +33,7 @@ const CurrentConsultation = ({ navigation, consultation }) => {
   const [stages] = useState(getStages())
   const [stageIndex] = useState(consultation.advancement.stage)
   const [stepIndex] = useState(consultation.advancement.step)
-  // TODO get locked info from client-server
-  const [locked, setLocked] = useState(false)
+  const [locked] = useState(isLocked(consultation))
 
   /**
    * Loads the current medical case in store and navigates to the stage wrapper
@@ -48,7 +48,6 @@ const CurrentConsultation = ({ navigation, consultation }) => {
     }
   }
 
-  console.log(stages, consultation)
   return (
     <TouchableOpacity style={currentConsultation.wrapper} onPress={handlePress}>
       {locked && (
@@ -82,8 +81,7 @@ const CurrentConsultation = ({ navigation, consultation }) => {
         ))}
       </View>
       <Text style={currentConsultation.date}>
-        {/* TODO THIS SHIT */}
-        {/* {format(consultation.createdAt, 'dd.MM.yyyy')} */}
+        {format(consultation.createdAt, 'dd.MM.yyyy')}
       </Text>
       <Icon name="right-arrow" size={FontSize.large} />
     </TouchableOpacity>

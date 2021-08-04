@@ -37,8 +37,7 @@ const MedicalCaseDrawer = () => {
    * @returns {string}
    */
   const age = () => {
-    // TODO METTRE CREATED AT a la place de 1627561727
-    return birth_date ? formatDistanceStrict(1627561727, birth_date) : ''
+    return birth_date ? formatDistanceStrict(createdAt, birth_date) : ''
   }
 
   return (

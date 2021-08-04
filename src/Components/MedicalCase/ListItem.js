@@ -55,6 +55,7 @@ const ListItem = ({ item }) => {
       await dispatch(SetParams.action({ type: 'lock' }))
       await dispatch(ToggleVisibility.action({}))
     } else {
+      // TEST IF CASE IS LOCKED
       await dispatch(LockMedicalCase.action({ medicalCaseId: item.id }))
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {

@@ -263,7 +263,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   }
 
   if (patientValuesInsertError) {
-    console.log(patientValuesInsertError)
     return <ErrorNavbar errors={patientValuesInsertError} />
   }
 

@@ -47,7 +47,8 @@ const Lock = () => {
    */
   const handleSummary = async () => {
     await dispatch(ToggleVisibility.action({}))
-    navigate('MedicalCaseSummary', {})
+    await dispatch(LoadPatient.action({ patientId: medicalCase.patient_id }))
+    navigate('MedicalCaseSummary')
   }
 
   return (

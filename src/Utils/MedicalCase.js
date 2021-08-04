@@ -123,15 +123,6 @@ export const handleChildren = (
         )
       } else {
         if (system) {
-          if (instance.id === 9180) {
-            console.log(
-              instance,
-              instance.conditions.length === 0,
-              calculateCondition(instance, source),
-              diagramId,
-              diagramType,
-            )
-          }
           addQuestionToSystem(
             instance.id,
             questionsToDisplay,
