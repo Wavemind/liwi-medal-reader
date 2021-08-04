@@ -129,7 +129,7 @@ paths:
               type: object
               properties:
                 patients:
-                  $ref: '#/components/schemas/PatientWithMedicalCases'
+                  $ref: '#/components/schemas/ArrayOfPatientWithMedicalCases'
       responses:
         '200':
           description: OK
