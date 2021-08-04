@@ -33,7 +33,7 @@ export default async () => {
   const mainDataUrl = state.healthFacility.item.main_data_ip
 
   const medicalCasesToSync = await GetNonSynchronizedService()
-
+  console.log(medicalCasesToSync)
   const folder = `${DocumentDirectoryPath}/medical_cases`
   const targetPath = `${folder}.zip`
   let medicalCaseJson = {}
@@ -100,11 +100,10 @@ export default async () => {
     })
 
   if (requestResult !== null && requestResult.data === 'Zip file received') {
+    await unlink(path)
+
     // Reset medicalCases to sync if request success
     medicalCasesToSync.forEach(async medicalCase => {
-      // update('MedicalCase', medicalCase.id, {
-      //   synchronizedAt: new Date().getTime(),
-      // })
       await store.dispatch(
         UpdateDatabaseMedicalCase.action({
           medicalCaseId: medicalCase.id,
