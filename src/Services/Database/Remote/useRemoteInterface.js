@@ -37,7 +37,7 @@ export default function () {
    */
   const getConsentsFile = async page => {
     // TODO TEST IT
-    const response = await api.post('/api/patients/consent_files', { page })
+    const response = await api.get('/api/patients/consent_files', { page })
     return response.data.data
   }
 

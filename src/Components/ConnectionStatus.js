@@ -17,7 +17,7 @@ const ConnectionStatus = () => {
   )
 
   useEffect(() => {
-    if (network.isConnected && architecture === 'client-server') {
+    if (network.isConnected && architecture === 'client_server') {
       // TODO: resend case did in fail safe mode
       console.log('TODO: fail safe action')
     }

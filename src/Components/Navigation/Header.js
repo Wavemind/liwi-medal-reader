@@ -37,7 +37,7 @@ const Header = ({
         <Text style={header.title}>{title}</Text>
       </View>
       <View style={header.connectionStatusWrapper}>
-        {architecture === 'client-server' && <ConnectionStatus />}
+        {architecture === 'client_server' && <ConnectionStatus />}
       </View>
     </View>
   )

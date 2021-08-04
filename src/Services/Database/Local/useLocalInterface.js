@@ -362,8 +362,9 @@ export default function () {
   const update = async (model, id, fields) => {
     const collection = database.get(_mapModelToTable(model))
     const architecture = store.getState().healthFacility.item.architecture
+
     if (architecture === 'client_server') {
-      fields = { ...fields, fail_safe: true }
+      fields = [...fields, { name: 'fail_safe', value: true }]
     }
 
     await database.action(async () => {

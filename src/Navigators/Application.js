@@ -67,7 +67,7 @@ const ApplicationNavigator = () => {
 
   return (
     <ReduxNetworkProvider
-      shouldPing={healthFacility?.architecture === 'client-server'}
+      shouldPing={healthFacility?.architecture === 'client_server'}
       pingServerUrl={healthFacility?.local_data_ip}
       pingInterval={Config.PING_INTERVAL}
     >
