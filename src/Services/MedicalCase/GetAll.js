@@ -21,6 +21,7 @@ export default async ({ page, reset = false, params }) => {
       .getState()
       .databaseMedicalCase.getAll.item.data.concat(newMedicalCases)
   }
+
   return {
     data: UniqObject(medicalCases),
     isLastBatch,

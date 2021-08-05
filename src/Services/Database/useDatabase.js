@@ -13,7 +13,7 @@ import { store } from '@/Store'
 export default function () {
   const state = store.getState()
   const architecture = state.healthFacility.item.architecture
-  const isConnected = state.network
+  const isConnected = state.network.isConnected
 
   if (architecture === 'standalone' || !isConnected) {
     return LocalInterface()

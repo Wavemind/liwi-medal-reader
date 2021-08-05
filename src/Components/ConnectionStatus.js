@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { Icon } from '@/Components'
+import LocalInterface from '@/Services/Database/Local/useLocalInterface'
+import RemoteInterface from '@/Services/Database/Remote/useRemoteInterface'
 
 const ConnectionStatus = () => {
   // Get values from the store
@@ -16,10 +18,11 @@ const ConnectionStatus = () => {
     state => state.healthFacility.item.architecture,
   )
 
-  useEffect(() => {
-    if (network.isConnected && architecture === 'client-server') {
-      // TODO: resend case did in fail safe mode
-      console.log('TODO: fail safe action')
+  useEffect(async () => {
+    if (network.isConnected && architecture === 'client_server') {
+      const patients = await LocalInterface().getAll('Patient')
+      const syncResult = await RemoteInterface().synchronizePatients(patients)
+      // TODO DO WE NEED TO DO SOMETHING ?
     }
   }, [network])
 

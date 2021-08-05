@@ -476,9 +476,11 @@ export const transformPatientValues = () => {
 export const isLocked = medicalCase => {
   const state = store.getState()
   const device = state.device.item
+  const isConnected = state.network.isConnected
   const architecture = state.healthFacility.item.architecture
 
   return (
+    isConnected &&
     architecture === 'client_server' &&
     medicalCase.closedAt === 0 &&
     medicalCase.mac_address !== null &&
