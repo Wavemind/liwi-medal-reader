@@ -30,9 +30,9 @@ export default () => {
             return node.conditioned_by_cc.some(
               ccId => mcNodes[ccId].answer === getYesAnswer(nodes[ccId]).id,
             )
-          } else {
-            return true
           }
+
+          return true
         }
       })
       .map(node => node.id),
