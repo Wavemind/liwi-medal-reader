@@ -61,6 +61,7 @@ const IndexHomeContainer = ({ navigation }) => {
   const medicalCasesError = useSelector(
     state => state.databaseMedicalCase.getAll.error,
   )
+  const isConnected = useSelector(state => state.network.isConnected)
 
   useEffect(() => {
     fadeIn(fadeAnim)
@@ -70,6 +71,11 @@ const IndexHomeContainer = ({ navigation }) => {
     dispatch(GetAllMedicalCaseDB.action({ page }))
     setFirstLoading(false)
   }, [])
+
+  // Reload page if network connection change (client-server to fail safe mode)
+  useEffect(() => {
+    dispatch(GetAllMedicalCaseDB.action({ page: 1, reset: true }))
+  }, [isConnected])
 
   useEffect(() => {
     handleRefresh()

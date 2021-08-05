@@ -13,23 +13,19 @@ import RemoteInterface from '@/Services/Database/Remote/useRemoteInterface'
 
 const ConnectionStatus = () => {
   // Get values from the store
-  const network = useSelector(state => state.network)
+  const isConnected = useSelector(state => state.network.isConnected)
   const architecture = useSelector(
     state => state.healthFacility.item.architecture,
   )
 
   useEffect(async () => {
-    if (network.isConnected && architecture === 'client_server') {
+    if (isConnected && architecture === 'client_server') {
       const patients = await LocalInterface().getAll('Patient')
       await RemoteInterface().synchronizePatients(patients)
     }
-  }, [network])
+  }, [isConnected])
 
-  return network.isConnected ? (
-    <Icon name="wifi-on" />
-  ) : (
-    <Icon name="wifi-off" />
-  )
+  return isConnected ? <Icon name="wifi-on" /> : <Icon name="wifi-off" />
 }
 
 export default ConnectionStatus

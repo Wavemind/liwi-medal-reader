@@ -23,12 +23,10 @@ const String = ({ questionId, editable = true }) => {
 
   // Local state definition
   const [value, setValue] = useState(
-    // TODO QUENTIN FIX IT !!!!!!!! <3
     question.value === null ? '' : question.value,
   )
 
   useEffect(() => {
-    // TODO QUENTIN FIX IT !!!!!!!! <3
     if (question.value === null) {
       setValue('')
     } else {

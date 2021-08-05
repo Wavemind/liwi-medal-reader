@@ -21,7 +21,6 @@ export default function () {
       stringQuery = params.terms
     }
 
-    // TODO Terms
     let url = `/api/${_mapModelToRoute(model)}?page=${page}&params={`
     url += stringQuery ? `terms: '${stringQuery}'` : ''
     url += stringFilters ? `filters: '${stringFilters}'` : ''
@@ -226,15 +225,12 @@ export default function () {
         },
       }
       delete data.patientValues
+      const response = await api.post('/api/patients/synchronize', data)
 
-       const response = await api.post('/api/patients/synchronize', data)
-       console.log(response)
-      //if (true) {
-      // LocalInterface().destroyPatient(patient.id)
-      // }
-      console.log('response')
+      if (response.date === 'Synchronize success') {
+        LocalInterface().destroyPatient(patient.id)
+      }
     })
-    return 'response.data.data'
   }
 
   /**
