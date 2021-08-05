@@ -25,11 +25,13 @@ const SynchronizationNavbar = () => {
   const dispatch = useDispatch()
 
   const syncLoading = useSelector(state => state.synchronization.loading)
-  const [unSynced, setUnSynced] = useState(0)
-  console.log(unSynced)
+  const [unSynced, setUnSynced] = useState([])
+
   useEffect(async () => {
-    const result = await GetNonSynchronizedService()
-    setUnSynced(result)
+    if (syncLoading) {
+      const result = await GetNonSynchronizedService()
+      setUnSynced(result)
+    }
   }, [syncLoading])
 
   /**
