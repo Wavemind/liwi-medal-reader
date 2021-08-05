@@ -11,6 +11,7 @@ assignees: ''
 
 Server : 
 Version ID : 
+Architecture: [standalone/client-server]
 
 ## Describe the bug
 A clear and concise description of what the bug is.
