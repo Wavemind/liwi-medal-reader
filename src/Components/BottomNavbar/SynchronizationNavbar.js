@@ -28,6 +28,14 @@ const SynchronizationNavbar = () => {
   const [unSynced, setUnSynced] = useState([])
 
   useEffect(async () => {
+    const result = await GetNonSynchronizedService()
+    setUnSynced(result)
+  }, [])
+
+  /**
+   * Needed to know if there is un sync case remaining
+   */
+  useEffect(async () => {
     if (syncLoading) {
       const result = await GetNonSynchronizedService()
       setUnSynced(result)

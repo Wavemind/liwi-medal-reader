@@ -77,7 +77,9 @@ const DateInput = () => {
 
   useEffect(() => {
     if (birth_date !== null) {
+      console.log('avant', birth_date)
       const date = new Date(birth_date)
+      console.log('après', date)
       if (estimatedDateType) {
         let value = ''
         if (estimatedDateType === 'day') {
