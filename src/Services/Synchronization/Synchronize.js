@@ -33,7 +33,6 @@ export default async () => {
   const mainDataUrl = state.healthFacility.item.main_data_ip
 
   const medicalCasesToSync = await GetNonSynchronizedService()
-  console.log(medicalCasesToSync)
   const folder = `${DocumentDirectoryPath}/medical_cases`
   const targetPath = `${folder}.zip`
   let medicalCaseJson = {}
