@@ -23,6 +23,7 @@ jest.mock('react-native-qrcode-scanner', () => {})
 jest.mock('react-native-sound-player', () => {})
 jest.mock('react-native-orientation-locker', () => {})
 jest.mock('react-native-vector-icons/Feather', () => {})
+jest.mock('react-native-blob-util', () => {})
 jest.mock('react-native-offline', () => {
   return {
     reducer: {},
