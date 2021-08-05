@@ -22,8 +22,9 @@ export default function () {
     }
 
     let url = `/api/${_mapModelToRoute(model)}?page=${page}&params={`
-    url += stringQuery ? `terms: '${stringQuery}'` : ''
-    url += stringFilters ? `filters: '${stringFilters}'` : ''
+    url += stringQuery ? `"terms": "${stringQuery}"` : ''
+    url += stringQuery && stringFilters ? ', ' : ''
+    url += stringFilters ? `"filters": "${stringFilters}"` : ''
     url += '}'
 
     const response = await api.get(url)
@@ -218,6 +219,7 @@ export default function () {
         version_id: medicalCase.version_id,
       }))
       delete patient.medicalCases
+
       const data = {
         patients: {
           ...patient,
@@ -225,9 +227,10 @@ export default function () {
         },
       }
       delete data.patientValues
+      
       const response = await api.post('/api/patients/synchronize', data)
 
-      if (response.date === 'Synchronize success') {
+      if (response.data === 'Synchronize success') {
         LocalInterface().destroyPatient(patient.id)
       }
     })

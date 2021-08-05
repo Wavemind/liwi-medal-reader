@@ -439,18 +439,23 @@ export default function () {
     }
   }
 
+  /**
+   * Destroy patient and related infos
+   * @params patientId
+   */
   const destroyPatient = async patientId => {
     const localPatient = await database.get('patients').find(patientId)
 
     const patientValues = await localPatient.patientValues.fetch()
     destroy(patientValues)
 
-    const medicalCases = localPatient.medicalCases.fetch()
+    const medicalCases = await localPatient.medicalCases.fetch()
 
     medicalCases.forEach(async medicalCase => {
       const activities = await medicalCase.activities.fetch()
       destroy(activities)
     })
+
     destroy(medicalCases)
     destroy(localPatient)
   }
@@ -460,10 +465,12 @@ export default function () {
    * @param { object } object - the object to delete
    */
   const destroy = async object => {
+    console.log('le destroy', object)
     await database.action(async () => {
       if (object instanceof Array) {
         object.forEach(o => o.destroyPermanently())
       } else {
+        console.log('je destroy', object)
         object.destroyPermanently()
       }
     })

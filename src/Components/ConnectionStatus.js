@@ -17,11 +17,13 @@ const ConnectionStatus = () => {
   const architecture = useSelector(
     state => state.healthFacility.item.architecture,
   )
-
+  
   useEffect(async () => {
     if (isConnected && architecture === 'client_server') {
       const patients = await LocalInterface().getAll('Patient')
-      await RemoteInterface().synchronizePatients(patients)
+      if (patients.length > 0) {
+        await RemoteInterface().synchronizePatients(patients)
+      }
     }
   }, [isConnected])
 
