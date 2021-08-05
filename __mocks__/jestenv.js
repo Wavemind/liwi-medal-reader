@@ -155,6 +155,7 @@ jest.mock('react-native-gesture-handler', () => {
 })
 
 NativeModules.RNCNetInfo = {
+  getCurrentState: jest.fn(() => Promise.resolve()),
   getCurrentConnectivity: jest.fn(),
   isConnectionMetered: jest.fn(),
   addListener: jest.fn(),
@@ -162,6 +163,9 @@ NativeModules.RNCNetInfo = {
 }
 jest.mock('react-native', () => ({
   NetInfo: {
+    isConnected: {
+      fetch: jest.fn(),
+    },
     addEventListener: jest.fn(),
     fetch: () => {
       return {
