@@ -227,9 +227,10 @@ export default function () {
       }
       delete data.patientValues
 
-      //  const response = await api.post('/api/patients/synchronize', data)
+       const response = await api.post('/api/patients/synchronize', data)
+       console.log(response)
       //if (true) {
-      LocalInterface().destroyPatient(patient.id)
+      // LocalInterface().destroyPatient(patient.id)
       // }
       console.log('response')
     })

@@ -21,8 +21,7 @@ const ConnectionStatus = () => {
   useEffect(async () => {
     if (network.isConnected && architecture === 'client_server') {
       const patients = await LocalInterface().getAll('Patient')
-      const syncResult = await RemoteInterface().synchronizePatients(patients)
-      // TODO DO WE NEED TO DO SOMETHING ?
+      await RemoteInterface().synchronizePatients(patients)
     }
   }, [network])
 
