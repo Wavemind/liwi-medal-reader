@@ -49,13 +49,13 @@ export const formulationLabel = drugDose => {
     case Config.MEDICATION_FORMS.cream:
     case Config.MEDICATION_FORMS.ointment:
     case Config.MEDICATION_FORMS.gel:
+    case Config.MEDICATION_FORMS.solution:
+    case Config.MEDICATION_FORMS.powder_for_injection:
     case Config.MEDICATION_FORMS.drops: {
       return `${translate(drugDose.description)}`
     }
     case Config.MEDICATION_FORMS.syrup:
-    case Config.MEDICATION_FORMS.suspension:
-    case Config.MEDICATION_FORMS.powder_for_injection:
-    case Config.MEDICATION_FORMS.solution: {
+    case Config.MEDICATION_FORMS.suspension: {
       if (drugDose.by_age) {
         return `${translate(drugDose.description)}: ${roundSup(
           drugDose.unique_dose,

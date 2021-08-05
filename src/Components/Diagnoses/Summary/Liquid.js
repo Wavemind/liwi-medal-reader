@@ -35,7 +35,10 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
   return (
     <View>
       <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
-      {drugDose.by_age ? (
+      {!drugDose.medication_form.includes([
+        Config.MEDICATION_FORMS.solution,
+        Config.MEDICATION_FORMS.powder_for_injection,
+      ]) && drugDose.by_age ? (
         <Text style={summary.drugText}>{`${roundSup(
           drugDose.unique_dose,
         )}ml ${t('formulations.medication_form.per_administration')} ${t(
@@ -63,6 +66,7 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
           )}`}</Text>
         </View>
       )}
+
       {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
         drugDose.administration_route_category,
       ) && (
