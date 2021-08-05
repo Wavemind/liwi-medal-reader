@@ -7,16 +7,16 @@ import {
   unlink,
   writeFile,
 } from 'react-native-fs'
+import ReactNativeBlobUtil from 'react-native-blob-util'
 import { zip } from 'react-native-zip-archive'
-import differenceInDays from 'date-fns/differenceInDays'
-import startOfToday from 'date-fns/startOfToday'
-import api from '@/Services/Synchronization/Api'
 
 /**
  * The internal imports
  */
 import useDatabase from '../Database/useDatabase'
 import { GetNonSynchronizedService } from '@/Services/MedicalCase'
+import { store } from '@/Store'
+import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
 
 /**
  * Transforms file path into usable path
@@ -28,15 +28,18 @@ const normalizeFilePath = path => {
 }
 
 export default async () => {
-  const { getActivities, findBy, update } = useDatabase()
+  const { getActivities, findBy } = useDatabase()
+  const state = store.getState()
+  const mainDataUrl = state.healthFacility.item.main_data_ip
 
   const medicalCasesToSync = await GetNonSynchronizedService()
-
   const folder = `${DocumentDirectoryPath}/medical_cases`
   const targetPath = `${folder}.zip`
   let medicalCaseJson = {}
+
   // Create directory
   await mkdir(folder)
+
   // Generate files
   await Promise.all(
     medicalCasesToSync.map(async medicalCase => {
@@ -60,6 +63,7 @@ export default async () => {
       await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson)
     }),
   )
+
   // Generate archive
   const path = await zip([normalizeFilePath(folder)], targetPath).catch(
     error => {
@@ -72,17 +76,41 @@ export default async () => {
     }),
   )
 
-  // TODO synchronize the mcs when we have client-server functionality and remove const result = null
-  const result = api.post('/api/sync_medical_cases', medicalCaseJson)
-  // const result = null
-  if (result !== null && result.data_received) {
+  // Upload process
+  const requestResult = await ReactNativeBlobUtil.fetch(
+    'POST',
+    `${mainDataUrl}/api/sync_medical_cases`,
+    {
+      'Content-Type': 'multipart/form-data',
+    },
+    [
+      {
+        name: 'file',
+        filename: 'file.zip',
+        data: ReactNativeBlobUtil.wrap(path),
+      },
+    ],
+  )
+    .uploadProgress((written, total) => {
+      console.log('uploaded', written / total)
+    })
+    .catch(err => {
+      return Promise.reject({ message: err })
+    })
+
+  if (requestResult !== null && requestResult.data === 'Zip file received') {
+    await unlink(path)
+
     // Reset medicalCases to sync if request success
-    medicalCasesToSync.forEach(medicalCase => {
-      update('MedicalCase', medicalCase.id, {
-        synchronizedAt: new Date().getTime(),
-      })
+    medicalCasesToSync.forEach(async medicalCase => {
+      await store.dispatch(
+        UpdateDatabaseMedicalCase.action({
+          medicalCaseId: medicalCase.id,
+          fields: [{ name: 'synchronizedAt', value: new Date().getTime() }],
+        }),
+      )
     })
   } else {
-    return null
+    return Promise.reject({ message: requestResult.data })
   }
 }
