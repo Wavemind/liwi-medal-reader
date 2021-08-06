@@ -12,6 +12,8 @@ import Modal from 'react-native-modal'
 import { useTheme } from '@/Theme'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import { Emergency, Lock, ExitMedicalCase, ExitApp, Icon } from '@/Components'
+import DestroyMedicalCase from '@/Store/MedicalCase/Destroy'
+import DestroyPatient from '@/Store/Patient/Destroy'
 
 const CustomModal = () => {
   // Theme and style elements deconstruction
@@ -27,6 +29,10 @@ const CustomModal = () => {
    * @returns {Promise<void>}
    */
   const closeModal = async () => {
+    if (type === 'lock') {
+      dispatch(DestroyMedicalCase.action())
+      dispatch(DestroyPatient.action())
+    }
     await dispatch(ToggleVisibility.action({}))
   }
 

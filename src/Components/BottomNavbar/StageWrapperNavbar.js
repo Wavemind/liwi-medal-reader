@@ -209,7 +209,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
       setLoading(false)
       navigation.navigate(steps[nextStep].label)
     } else {
-      const nextStage = stageIndex + direction
+      const nextStage = Number(stageIndex) + direction
 
       // Test if nextStage exist. If not, save and close medical case
       if (stageNavigation[nextStage] !== undefined) {
@@ -246,27 +246,27 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   }
 
   if (medicalCaseInsertError) {
-    return <ErrorNavbar message={medicalCaseInsertError} />
+    return <ErrorNavbar errors={medicalCaseInsertError} />
   }
 
   if (medicalCaseUpdateError) {
-    return <ErrorNavbar message={medicalCaseUpdateError} />
+    return <ErrorNavbar errors={medicalCaseUpdateError} />
   }
 
   if (patientInsertError) {
-    return <ErrorNavbar message={patientInsertError} />
+    return <ErrorNavbar errors={patientInsertError} />
   }
 
   if (patientUpdateError) {
-    return <ErrorNavbar message={patientUpdateError} />
+    return <ErrorNavbar errors={patientUpdateError} />
   }
 
   if (patientValuesInsertError) {
-    return <ErrorNavbar message={patientValuesInsertError} />
+    return <ErrorNavbar errors={patientValuesInsertError} />
   }
 
   if (patientValuesUpdateError) {
-    return <ErrorNavbar message={patientValuesUpdateError} />
+    return <ErrorNavbar errors={patientValuesUpdateError} />
   }
 
   if (Object.keys(errors).length > 0) {

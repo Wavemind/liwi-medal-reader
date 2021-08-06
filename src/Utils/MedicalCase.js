@@ -445,6 +445,10 @@ export const uniq = array => {
   return [...new Set(array)]
 }
 
+/**
+ * Transforms the patientValues into a usable format
+ * @returns {*}
+ */
 export const transformPatientValues = () => {
   const patientValues = store.getState().patient.item.patientValues
 
@@ -462,4 +466,24 @@ export const transformPatientValues = () => {
       value: patientValue.answer_id,
     }
   })
+}
+
+/**
+ * Checks whether the medicalCase is locked by another device
+ * @param medicalCase
+ * @returns {boolean}
+ */
+export const isLocked = medicalCase => {
+  const state = store.getState()
+  const device = state.device.item
+  const isConnected = state.network.isConnected
+  const architecture = state.healthFacility.item.architecture
+
+  return (
+    isConnected &&
+    architecture === 'client_server' &&
+    medicalCase.closedAt === 0 &&
+    medicalCase.mac_address !== null &&
+    medicalCase.mac_address !== device.mac_address
+  )
 }

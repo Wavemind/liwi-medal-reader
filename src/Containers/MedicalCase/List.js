@@ -65,6 +65,7 @@ const ListMedicalCaseContainer = ({ navigation }) => {
   const medicalCasesError = useSelector(
     state => state.databaseMedicalCase.getAll.error,
   )
+  const isConnected = useSelector(state => state.network.isConnected)
 
   // Callback that debounces the search by 500ms
   const debouncedSearch = useCallback(
@@ -84,10 +85,13 @@ const ListMedicalCaseContainer = ({ navigation }) => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
+  // Reload page if network connection change (client-server to fail safe mode)
   useEffect(() => {
     dispatch(GetAllMedicalCasesDB.action({ page, reset: true }))
-    setFirstLoading(false)
-  }, [])
+    if (firstLoading) {
+      setFirstLoading(false)
+    }
+  }, [isConnected])
 
   useEffect(() => {
     if (searchTerm === '') {
@@ -95,7 +99,7 @@ const ListMedicalCaseContainer = ({ navigation }) => {
         GetAllMedicalCasesDB.action({
           page,
           reset: true,
-          params: { filters: medicalCasesFilters },
+          params: { filters: medicalCasesFilters, terms: searchTerm },
         }),
       )
     } else if (searchTerm.length >= 2) {
@@ -111,7 +115,7 @@ const ListMedicalCaseContainer = ({ navigation }) => {
       GetAllMedicalCasesDB.action({
         page: 1,
         reset: true,
-        params: { filters: medicalCasesFilters },
+        params: { filters: medicalCasesFilters, terms: '' },
       }),
     )
     setPage(1)
@@ -126,7 +130,7 @@ const ListMedicalCaseContainer = ({ navigation }) => {
       dispatch(
         GetAllMedicalCasesDB.action({
           page: page + 1,
-          params: { filters: medicalCasesFilters },
+          params: { filters: medicalCasesFilters, terms: searchTerm },
         }),
       )
       setPage(page + 1)

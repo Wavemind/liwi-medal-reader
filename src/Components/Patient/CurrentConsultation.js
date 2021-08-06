@@ -15,11 +15,11 @@ import { Icon } from '@/Components'
 import { useTheme } from '@/Theme'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
+import { isLocked } from '@/Utils/MedicalCase'
 
-const CurrentConsultation = ({ navigation, consultation }) => {
+const CurrentConsultation = ({ navigation, medicalCase }) => {
   const {
     FontSize,
-    Fonts,
     Layout,
     Gutters,
     Colors,
@@ -31,10 +31,9 @@ const CurrentConsultation = ({ navigation, consultation }) => {
 
   // Local state definition
   const [stages] = useState(getStages())
-  const [stageIndex] = useState(consultation.advancement.stage)
-  const [stepIndex] = useState(consultation.advancement.step)
-  // TODO get locked info from client-server
-  const [locked, setLocked] = useState(false)
+  const [stageIndex] = useState(medicalCase.advancement.stage)
+  const [stepIndex] = useState(medicalCase.advancement.step)
+  const [locked] = useState(isLocked(medicalCase))
 
   /**
    * Loads the current medical case in store and navigates to the stage wrapper
@@ -42,7 +41,7 @@ const CurrentConsultation = ({ navigation, consultation }) => {
    */
   const handlePress = async () => {
     const loadMedicalCase = await dispatch(
-      LoadMedicalCase.action({ medicalCaseId: consultation.id }),
+      LoadMedicalCase.action({ medicalCaseId: medicalCase.id }),
     )
     if (isFulfilled(loadMedicalCase)) {
       navigation.navigate('StageWrapper', { stageIndex })
@@ -82,7 +81,7 @@ const CurrentConsultation = ({ navigation, consultation }) => {
         ))}
       </View>
       <Text style={currentConsultation.date}>
-        {format(consultation.createdAt, 'dd.MM.yyyy')}
+        {format(medicalCase.createdAt, 'dd.MM.yyyy')}
       </Text>
       <Icon name="right-arrow" size={FontSize.large} />
     </TouchableOpacity>

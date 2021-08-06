@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch } from 'react-redux'
 import format from 'date-fns/format'
@@ -15,7 +15,11 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
 import LoadPatient from '@/Store/Patient/Load'
+import LockMedicalCase from '@/Store/DatabaseMedicalCase/Lock'
 import { getStages } from '@/Utils/Navigation/GetStages'
+import { isLocked } from '@/Utils/MedicalCase'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
+import SetParams from '@/Store/Modal/SetParams'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
@@ -32,6 +36,11 @@ const ListItem = ({ item }) => {
   const navigation = useNavigation()
 
   const [stages] = useState(getStages())
+  const [locked, setLocked] = useState(isLocked(item))
+
+  useEffect(() => {
+    setLocked(isLocked(item))
+  }, [item.mac_address])
 
   /**
    * Will load the Medical case in the store then navigate to the Medical Case
@@ -40,8 +49,13 @@ const ListItem = ({ item }) => {
   const handlePress = async () => {
     await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
+      await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
       navigation.navigate('MedicalCaseSummary')
+    } else if (locked) {
+      await dispatch(SetParams.action({ type: 'lock' }))
+      await dispatch(ToggleVisibility.action({}))
     } else {
+      await dispatch(LockMedicalCase.action({ medicalCaseId: item.id }))
       await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('StageWrapper', {
         stageIndex: item.advancement.stage,
@@ -51,14 +65,13 @@ const ListItem = ({ item }) => {
   }
 
   return (
-    <TouchableOpacity
-      style={medicalCaseListItem.wrapper}
-      onPress={() => handlePress()}
-    >
+    <TouchableOpacity style={medicalCaseListItem.wrapper} onPress={handlePress}>
       <View style={medicalCaseListItem.container}>
-        <View style={[Layout.column, Gutters.regularRMargin]}>
-          <Icon name="lock" size={FontSize.large} color={Colors.red} />
-        </View>
+        {locked && (
+          <View style={[Layout.column, Gutters.regularRMargin]}>
+            <Icon name="lock" size={FontSize.large} color={Colors.red} />
+          </View>
+        )}
         <View style={medicalCaseListItem.titleWrapper}>
           <Text style={medicalCaseListItem.title}>
             {`${item.patient.first_name} ${item.patient.last_name}`}

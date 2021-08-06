@@ -8,26 +8,26 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { Icon } from '@/Components'
+import LocalInterface from '@/Services/Database/Local/useLocalInterface'
+import RemoteInterface from '@/Services/Database/Remote/useRemoteInterface'
 
 const ConnectionStatus = () => {
   // Get values from the store
-  const network = useSelector(state => state.network)
+  const isConnected = useSelector(state => state.network.isConnected)
   const architecture = useSelector(
     state => state.healthFacility.item.architecture,
   )
-
-  useEffect(() => {
-    if (network.isConnected && architecture === 'client-server') {
-      // TODO: resend case did in fail safe mode
-      console.log('TODO: fail safe action')
+  
+  useEffect(async () => {
+    if (isConnected && architecture === 'client_server') {
+      const patients = await LocalInterface().getAll('Patient')
+      if (patients.length > 0) {
+        await RemoteInterface().synchronizePatients(patients)
+      }
     }
-  }, [network])
+  }, [isConnected])
 
-  return network.isConnected ? (
-    <Icon name="wifi-on" />
-  ) : (
-    <Icon name="wifi-off" />
-  )
+  return isConnected ? <Icon name="wifi-on" /> : <Icon name="wifi-off" />
 }
 
 export default ConnectionStatus

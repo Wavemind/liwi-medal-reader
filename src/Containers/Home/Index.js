@@ -61,15 +61,19 @@ const IndexHomeContainer = ({ navigation }) => {
   const medicalCasesError = useSelector(
     state => state.databaseMedicalCase.getAll.error,
   )
+  const isConnected = useSelector(state => state.network.isConnected)
 
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
+  // Reload page if network connection change (client-server to fail safe mode)
   useEffect(() => {
-    dispatch(GetAllMedicalCaseDB.action({ page }))
-    setFirstLoading(false)
-  }, [])
+    dispatch(GetAllMedicalCaseDB.action({ page: 1, reset: true }))
+    if (firstLoading) {
+      setFirstLoading(false)
+    }
+  }, [isConnected])
 
   useEffect(() => {
     handleRefresh()
@@ -130,6 +134,7 @@ const IndexHomeContainer = ({ navigation }) => {
               filled
             />
           </View>
+          {/** TODO: ALAN ASK IT TO STAY FOR THE MOMENT */}
           {/* {__DEV__ && ( */}
           <View style={home.consultationsButton}>
             <SquareButton

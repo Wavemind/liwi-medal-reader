@@ -24,7 +24,8 @@ const ConsentListItem = ({ item }) => {
   const navigation = useNavigation()
 
   // medicalCases already sorted by updatedAt (service call)
-  const lastVisit = item.medicalCases[item.medicalCases.length - 1].updatedAt
+  const lastVisit =
+    item.medical_cases[item.medical_cases.length - 1]?.updated_at
 
   return (
     <TouchableOpacity
@@ -43,7 +44,7 @@ const ConsentListItem = ({ item }) => {
         </View>
         <View style={consentListItem.dateWrapper}>
           <Text style={[Fonts.textCenter, Fonts.textSmall]}>
-            {format(lastVisit, 'dd.MM.yyyy')}
+            {lastVisit && format(lastVisit, 'dd.MM.yyyy')}
           </Text>
         </View>
         <View style={[Gutters.regularLMargin, Layout.column]}>

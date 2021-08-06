@@ -35,6 +35,10 @@ const CustomDrawerContent = ({ navigation }) => {
   const stageIndex = useSelector(state => state.medicalCase.item.stage)
   const stepIndex = useSelector(state => state.medicalCase.item.step)
 
+  const architecture = useSelector(
+    state => state.healthFacility.item.architecture,
+  )
+
   /**
    * Clear clinician and redirect user to clinician list
    */
@@ -125,13 +129,17 @@ const CustomDrawerContent = ({ navigation }) => {
             navigation={navigation}
           />
           <View style={customDrawerContent.separator} />
-          <CustomDrawerItem
-            label={t('navigation.synchronize')}
-            routeName="Synchronization"
-            iconName="synchronize"
-            navigation={navigation}
-          />
-          <View style={customDrawerContent.separator} />
+          {architecture === 'standalone' && (
+            <>
+              <CustomDrawerItem
+                label={t('navigation.synchronize')}
+                routeName="Synchronization"
+                iconName="synchronize"
+                navigation={navigation}
+              />
+              <View style={customDrawerContent.separator} />
+            </>
+          )}
 
           <DrawerItem
             label={() => (

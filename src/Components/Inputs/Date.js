@@ -161,6 +161,7 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
+
       relatedActions(birthDate.getTime())
     }
   }, [dayValue, monthValue, yearValue])

@@ -2,6 +2,8 @@ import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
 import MedicalCaseGetAll from './GetAll'
 import MedicalCaseUpdate from './Update'
 import MedicalCaseInsert from './Insert'
+import MedicalCaseLock from './Lock'
+import MedicalCaseUnLock from './Unlock'
 
 const sliceInitialState = {
   medicalCase: { item: {} },
@@ -10,6 +12,12 @@ const sliceInitialState = {
 
 export default buildSlice(
   'databaseMedicalCase',
-  [MedicalCaseGetAll, MedicalCaseUpdate, MedicalCaseInsert],
+  [
+    MedicalCaseGetAll,
+    MedicalCaseUpdate,
+    MedicalCaseInsert,
+    MedicalCaseLock,
+    MedicalCaseUnLock,
+  ],
   sliceInitialState,
 ).reducer

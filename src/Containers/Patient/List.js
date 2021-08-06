@@ -61,6 +61,7 @@ const ListPatientContainer = ({ navigation }) => {
     state => state.databasePatient.getAll.loading,
   )
   const patientsError = useSelector(state => state.databasePatient.getAll.error)
+  const isConnected = useSelector(state => state.network.isConnected)
 
   // Callback that debounces the search by 500ms
   const debouncedSearch = useCallback(
@@ -80,10 +81,13 @@ const ListPatientContainer = ({ navigation }) => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
+  // Reload page if network connection change (client-server to fail safe mode)
   useEffect(() => {
-    dispatch(GetAllPatientDB.action({ page, reset: true }))
-    setFirstLoading(false)
-  }, [])
+    dispatch(GetAllPatientDB.action({ page: 1, reset: true }))
+    if (firstLoading) {
+      setFirstLoading(false)
+    }
+  }, [isConnected])
 
   useEffect(() => {
     if (searchTerm === '') {
@@ -91,7 +95,7 @@ const ListPatientContainer = ({ navigation }) => {
         GetAllPatientDB.action({
           page,
           reset: true,
-          params: { filters: patientsFilters },
+          params: { filters: patientsFilters, terms: searchTerm },
         }),
       )
     } else if (searchTerm.length >= 2) {
@@ -107,7 +111,7 @@ const ListPatientContainer = ({ navigation }) => {
       GetAllPatientDB.action({
         page: 1,
         reset: true,
-        params: { filters: patientsFilters },
+        params: { filters: patientsFilters, terms: '' },
       }),
     )
     setPage(1)
@@ -122,7 +126,7 @@ const ListPatientContainer = ({ navigation }) => {
       dispatch(
         GetAllPatientDB.action({
           page: page + 1,
-          params: { filters: patientsFilters },
+          params: { filters: patientsFilters, terms: searchTerm },
         }),
       )
       setPage(page + 1)

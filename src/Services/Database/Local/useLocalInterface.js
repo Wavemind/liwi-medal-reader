@@ -11,7 +11,7 @@ import uuid from 'react-native-uuid'
  */
 import schema from './Schema'
 import { Config } from '@/Config'
-
+import { store } from '@/Store'
 import {
   ActivityModel,
   PatientModel,
@@ -48,118 +48,6 @@ const database = new Database({
 
 export default function () {
   /**
-   * Create activities for a related medical case
-   * @param { integer } medicalCaseId
-   * @param { array } activities - List of activities to create
-   * @private
-   */
-  const insertActivities = async (medicalCaseId, activities) => {
-    await database.action(async () => {
-      activities.map(async activity => {
-        await database.batch(
-          database.get('activities').prepareCreate(record => {
-            record._raw.id = activity.id
-            record.step = activity.step
-            record.clinician = activity.clinician
-            record.nodes = JSON.stringify(activity.nodes)
-            record.mac_address = activity.mac_address
-            record.medical_case_id = medicalCaseId
-            record.fail_safe = activity.fail_safe
-          }),
-        )
-      })
-    }, 'insert activities')
-  }
-
-  /**
-   * Update or insert value in a existing row
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } fields - The field to update
-   * @returns { Collection } - Updated object
-   */
-  const update = async (model, id, fields) => {
-    const collection = database.get(_mapModelToTable(model))
-    // if (architecture === 'client_server') {
-    //   fields = { ...fields, fail_safe: true }
-    // }
-    await database.action(async () => {
-      const object = await collection.find(id)
-      await database.batch(
-        object.prepareUpdate(record => {
-          fields.map(field => {
-            record[field.name] = field.value
-          })
-        }),
-      )
-    })
-  }
-
-  /**
-   * Inserts the patient values to the DB.
-   * @param patientValues
-   * @param patientId
-   * @returns {Promise<void>}
-   */
-  const insertPatientValues = async (patientValues, patientId) => {
-    const patientValuesCollection = database.get('patient_values')
-    await database.action(async () => {
-      await database.batch(
-        patientValues.map(patientValue =>
-          patientValuesCollection.prepareCreate(record => {
-            record._raw.id = uuid.v4()
-            record.patient_id = patientId
-            record.node_id = parseInt(patientValue.id, 10)
-            record.answer_id = patientValue.answer
-            record.value = patientValue.value?.toString()
-          }),
-        ),
-      )
-    }, 'insert patient values')
-  }
-
-  /**
-   * Updates the patient values in the DB.
-   * @param patientValues
-   * @param patientId
-   * @returns {Promise<void>}
-   */
-  const updatePatientValues = async (patientValues, patientId) =>   {
-    const patientValuesCollection = database.get('patient_values')
-    await database.action(async () => {
-      const existingPatientValues = await patientValuesCollection
-        .query(Q.where('patient_id', patientId))
-        .fetch()
-      await database.batch(
-        existingPatientValues.map(patientValueRecord =>
-          patientValueRecord.prepareUpdate(record => {
-            const patientValue = patientValues.find(
-              pv => record.node_id === pv.id,
-            )
-            record.answer_id = patientValue.answer
-            record.value = patientValue.value?.toString()
-          }),
-        ),
-      )
-    }, 'update patient values')
-  }
-
-  /**
-   * Finds a object based on a field and a value
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } value - The id of the object we want
-   * @param { string } field - The field we wanna search for
-   * @returns { Collection } - The wanted object
-   */
-  const findBy = async (model, value, field = 'id') => {
-    const collection = database.get(_mapModelToTable(model))
-    const object = await collection.query(Q.where(field, value))
-    return object[0] === undefined ? null : _initClasses(object[0], model)
-  }
-
-  /**
-
-  /**
    * Gets the list of activities for a given medical case
    * @param medicalCaseId
    * @returns {Promise<*>}
@@ -178,16 +66,6 @@ export default function () {
       medical_case_id: activity.medical_case_id,
       fail_safe: activity.fail_safe,
     }))
-  }
-
-  /**
-   * Gets all medical cases in the database
-   * @returns {Promise<*[]|PatientModel|MedicalCaseModel>}
-   */
-  const getMedicalCases = async () => {
-    const collection = database.get(_mapModelToTable('MedicalCase'))
-    let result = await collection.query().fetch()
-    return _initClasses(result, 'MedicalCase')
   }
 
   /**
@@ -277,39 +155,6 @@ export default function () {
   }
 
   /**
-   * Inserts a new medical case into the DB
-   * @param patientId
-   * @param medicalCaseData
-   * @returns {Promise<void>}
-   */
-  const insertMedicalCase = async (patientId, medicalCaseData) => {
-    const patient = await findBy('Patient', patientId)
-    const collection = database.get('medical_cases')
-    // if (architecture === 'client_server') {
-    //   object = { ...object, fail_safe: true }
-    // }
-    await database.action(async () => {
-      await collection.create(record => {
-        record._raw.id = medicalCaseData.id
-        record.json = JSON.stringify({
-          comment: medicalCaseData.comment,
-          consent: medicalCaseData.consent,
-          diagnosis: medicalCaseData.diagnosis,
-          nodes: medicalCaseData.nodes,
-        })
-        record.json_version = medicalCaseData.json_version
-        record.stage = medicalCaseData.advancement.stage
-        record.step = medicalCaseData.advancement.step
-        record.synchronizedAt = medicalCaseData.synchronizedAt
-        record.closedAt = medicalCaseData.closedAt
-        record.fail_safe = false
-        record.version_id = medicalCaseData.version_id
-        record.patient.set(patient)
-      })
-    }, 'create medical case')
-  }
-
-  /**
    * Fetch patient with consent file
    * @param { integer } page
    * @returns {Promise<*>}
@@ -338,16 +183,114 @@ export default function () {
   }
 
   /**
+   * Gets all medical cases in the database
+   * @returns {Promise<*[]|PatientModel|MedicalCaseModel>}
+   */
+  const getMedicalCases = async () => {
+    const collection = database.get(_mapModelToTable('MedicalCase'))
+    let result = await collection.query().fetch()
+    return _initClasses(result, 'MedicalCase', false)
+  }
+
+  /**
+   * Finds a object based on a field and a value
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } value - The id of the object we want
+   * @param { string } field - The field we wanna search for
+   * @returns { Collection } - The wanted object
+   */
+  const findBy = async (model, value, field = 'id') => {
+    const collection = database.get(_mapModelToTable(model))
+    const object = await collection.query(Q.where(field, value))
+    return object[0] === undefined ? null : _initClasses(object[0], model)
+  }
+
+  /**
+   * Create activities for a related medical case
+   * @param { integer } medicalCaseId
+   * @param { array } activities - List of activities to create
+   * @private
+   */
+  const insertActivities = async (medicalCaseId, activities) => {
+    const architecture = store.getState().healthFacility.item.architecture
+
+    let failSafe = false
+
+    if (architecture === 'client_server') {
+      failSafe = true
+    }
+
+    await database.action(async () => {
+      activities.map(async activity => {
+        await database.batch(
+          database.get('activities').prepareCreate(record => {
+            record._raw.id = activity.id
+            record.step = activity.step
+            record.clinician = activity.clinician
+            record.nodes = JSON.stringify(activity.nodes)
+            record.mac_address = activity.mac_address
+            record.medical_case_id = medicalCaseId
+            record.fail_safe = failSafe
+          }),
+        )
+      })
+    }, 'insert activities')
+  }
+
+  /**
+   * Inserts a new medical case into the DB
+   * @param patientId
+   * @param medicalCaseData
+   * @returns {Promise<void>}
+   */
+  const insertMedicalCase = async (patientId, medicalCaseData) => {
+    const patient = await findBy('Patient', patientId)
+    const collection = database.get('medical_cases')
+    const architecture = store.getState().healthFacility.item.architecture
+
+    await _handleFailSafe()
+
+    let failSafe = false
+    if (architecture === 'client_server') {
+      failSafe = true
+    }
+
+    await database.action(async () => {
+      await collection.create(record => {
+        record._raw.id = medicalCaseData.id
+        record.json = JSON.stringify({
+          comment: medicalCaseData.comment,
+          consent: medicalCaseData.consent,
+          diagnosis: medicalCaseData.diagnosis,
+          nodes: medicalCaseData.nodes,
+        })
+        record.json_version = medicalCaseData.json_version
+        record.stage = medicalCaseData.advancement.stage
+        record.step = medicalCaseData.advancement.step
+        record.synchronizedAt = medicalCaseData.synchronizedAt
+        record.closedAt = medicalCaseData.closedAt
+        record.fail_safe = failSafe
+        record.version_id = medicalCaseData.version_id
+        record.patient.set(patient)
+      })
+    }, 'create medical case')
+  }
+
+  /**
    * Insert patient and add a medical case
    * @param {object} patientData - patient info to save
    * @params {objet} medicalCaseData - medical case info to save
    */
   const insertPatient = async (patientData, medicalCaseData) => {
     const collection = database.get('patients')
+    const architecture = store.getState().healthFacility.item.architecture
+
+    let failSafe = false
     let patient = null
-    // if (architecture === 'client_server') {
-    //   object = { ...object, fail_safe: true }
-    // }
+
+    if (architecture === 'client_server') {
+      failSafe = true
+    }
     await database.action(async () => {
       patient = await collection.create(record => {
         record._raw.id = patientData.id
@@ -365,7 +308,7 @@ export default function () {
         record.reason = patientData.reason
         record.consent = patientData.consent
         record.consent_file = patientData.consent_file
-        record.fail_safe = patientData.fail_safe
+        record.fail_safe = failSafe
       })
       const nestedCollection = database.get('medical_cases')
       await nestedCollection.create(nestedRecord => {
@@ -381,11 +324,154 @@ export default function () {
         nestedRecord.step = medicalCaseData.advancement.step
         nestedRecord.synchronizedAt = medicalCaseData.synchronizedAt
         nestedRecord.closedAt = medicalCaseData.closedAt
-        nestedRecord.fail_safe = false
+        nestedRecord.fail_safe = failSafe
         nestedRecord.version_id = medicalCaseData.version_id
         nestedRecord.patient.set(patient)
       })
     }, 'create patient')
+  }
+
+  /**
+   * Inserts the patient values to the DB.
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const insertPatientValues = async (patientValues, patientId) => {
+    const patientValuesCollection = database.get('patient_values')
+    const architecture = store.getState().healthFacility.item.architecture
+
+    let failSafe = false
+
+    if (architecture === 'client_server') {
+      failSafe = true
+    }
+
+    await database.action(async () => {
+      await database.batch(
+        patientValues.map(patientValue =>
+          patientValuesCollection.prepareCreate(record => {
+            record._raw.id = uuid.v4()
+            record.patient_id = patientId
+            record.node_id = parseInt(patientValue.id, 10)
+            record.answer_id = patientValue.answer
+            record.value = patientValue.value?.toString()
+            record.fail_safe = failSafe
+          }),
+        ),
+      )
+    }, 'insert patient values')
+  }
+
+  /**
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @returns { Collection } - Updated object
+   */
+  const update = async (model, id, fields) => {
+    const collection = database.get(_mapModelToTable(model))
+    const architecture = store.getState().healthFacility.item.architecture
+    await _handleFailSafe()
+
+    if (architecture === 'client_server') {
+      fields = [...fields, { name: 'fail_safe', value: true }]
+    }
+
+    await database.action(async () => {
+      const object = await collection.find(id)
+      await database.batch(
+        object.prepareUpdate(record => {
+          fields.map(field => {
+            record[field.name] = field.value
+          })
+        }),
+      )
+    })
+  }
+
+  const lock = () => {}
+  const unlock = () => {}
+
+  /**
+   * Updates the patient values in the DB.
+   * @param patientValues
+   * @param patientId
+   * @returns {Promise<void>}
+   */
+  const updatePatientValues = async (patientValues, patientId) => {
+    const patientValuesCollection = database.get('patient_values')
+    await database.action(async () => {
+      const existingPatientValues = await patientValuesCollection
+        .query(Q.where('patient_id', patientId))
+        .fetch()
+      await database.batch(
+        existingPatientValues.map(patientValueRecord =>
+          patientValueRecord.prepareUpdate(record => {
+            const patientValue = patientValues.find(
+              pv => record.node_id === pv.id,
+            )
+            record.answer_id = patientValue.answer
+            record.value = patientValue.value?.toString()
+          }),
+        ),
+      )
+    }, 'update patient values')
+  }
+
+  /*
+   * Will set the needed value in the database if we switch to fail Safe mode
+   */
+  const _handleFailSafe = async () => {
+    const state = store.getState()
+    const architecture = state.healthFacility.item.architecture
+    const isConnected = state.network.isConnected
+    const patient = state.patient.item
+    const medicalCase = state.medicalCase.item
+
+    if (architecture === 'client_server' && !isConnected) {
+      // Find patient in Local Interface
+      const patientExists = await findBy('Patient', patient.id)
+      if (patientExists === null) {
+        await insertPatient(patient, medicalCase)
+      }
+    }
+  }
+
+  /**
+   * Destroy patient and related infos
+   * @params patientId
+   */
+  const destroyPatient = async patientId => {
+    const localPatient = await database.get('patients').find(patientId)
+
+    const patientValues = await localPatient.patientValues.fetch()
+    destroy(patientValues)
+
+    const medicalCases = await localPatient.medicalCases.fetch()
+
+    medicalCases.forEach(async medicalCase => {
+      const activities = await medicalCase.activities.fetch()
+      destroy(activities)
+    })
+
+    destroy(medicalCases)
+    destroy(localPatient)
+  }
+
+  /**
+   * Deletes a specific object from the DB
+   * @param { object } object - the object to delete
+   */
+  const destroy = async object => {
+    await database.action(async () => {
+      if (object instanceof Array) {
+        object.forEach(o => o.destroyPermanently())
+      } else {
+        object.destroyPermanently()
+      }
+    })
   }
 
   const _buildPatient = async watermelonDBPatient => {
@@ -449,13 +535,14 @@ export default function () {
 
   const _buildMedicalCaseLight = async watermelonDBMedicalCase => {
     const patient = await watermelonDBMedicalCase.patient.fetch()
+
     return {
       id: watermelonDBMedicalCase.id,
       advancement: {
         stage: watermelonDBMedicalCase.stage,
         step: watermelonDBMedicalCase.step,
       },
-      json: watermelonDBMedicalCase.json,
+      json: null,
       fail_safe: watermelonDBMedicalCase.fail_safe,
       createdAt: watermelonDBMedicalCase.createdAt.getTime(),
       updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
@@ -476,7 +563,6 @@ export default function () {
     addPatient = true,
   ) => {
     const parsedJson = JSON.parse(watermelonDBMedicalCase.json)
-
     const medicalCase = {
       id: watermelonDBMedicalCase.id,
       activities: [],
@@ -484,7 +570,7 @@ export default function () {
       consent: parsedJson.consent,
       diagnosis: parsedJson.diagnosis,
       nodes: parsedJson.nodes,
-      json: watermelonDBMedicalCase.json,
+      json: null,
       json_version: watermelonDBMedicalCase.json_version,
       advancement: {
         stage: watermelonDBMedicalCase.stage,
@@ -510,10 +596,11 @@ export default function () {
    * Generate class
    * @param { array|object } data - Data retrieved from server
    * @param { string } model - Class name
+   * @param { boolean } light - build light versions
    * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
    * @private
    */
-  const _initClasses = async (data, model) => {
+  const _initClasses = async (data, model, light = true) => {
     let object = []
     if (model === 'Patient') {
       if (data instanceof Array) {
@@ -528,7 +615,10 @@ export default function () {
     } else if (data instanceof Array) {
       object = await Promise.all(
         data.map(async item => {
-          return _buildMedicalCaseLight(item)
+          if (light) {
+            return _buildMedicalCaseLight(item)
+          }
+          return _buildMedicalCase(item)
         }),
       )
     } else {
@@ -559,8 +649,10 @@ export default function () {
   }
 
   return {
-    insertActivities,
     findBy,
+    insertActivities,
+    lock,
+    destroyPatient,
     getActivities,
     getMedicalCases,
     getAll,
@@ -568,6 +660,7 @@ export default function () {
     insertPatient,
     insertMedicalCase,
     insertPatientValues,
+    unlock,
     updatePatientValues,
     update,
   }
