@@ -588,7 +588,7 @@ export default function () {
       const patient = await watermelonDBMedicalCase.patient.fetch()
       medicalCase.patient = patient
     }
-    console.log(medicalCase)
+
     return medicalCase
   }
 
