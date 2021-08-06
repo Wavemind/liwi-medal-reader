@@ -110,6 +110,7 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertPatient = async (patientData, medicalCaseData) => {
+    console.log('ENVOIE', patientData.birth_date)
     const response = await api.post('/api/patients', {
       medical_case: {
         id: medicalCaseData.id,
@@ -132,6 +133,7 @@ export default function () {
         last_name: patientData.last_name,
         birth_date: patientData.birth_date,
         birth_date_estimated: patientData.birth_date_estimated,
+        birth_date_estimated_type: patientData.birth_date_estimated_type,
         uid: patientData.uid,
         study_id: patientData.study_id,
         group_id: patientData.group_id,
@@ -196,6 +198,7 @@ export default function () {
    * @returns { Collection } - Updated object
    */
   const update = async (model, id, fields) => {
+    console.log('UPDATE', fields)
     const response = await api.patch(`/api/${_mapModelToRoute(model)}/${id}`, {
       fields,
     })

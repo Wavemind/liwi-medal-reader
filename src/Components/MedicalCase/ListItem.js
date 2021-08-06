@@ -80,8 +80,8 @@ const ListItem = ({ item }) => {
   // const nd = new Date(utc + 3600000 * 2)
 
   // console.log('tout simple', nd)
-  console.log(new Date(item.patient.birth_date))
-  console.log(format(item.patient.birth_date, 'dd.MM.yyyy'))
+  // console.log(new Date(item.patient.birth_date))
+  // console.log(format(item.patient.birth_date, 'dd.MM.yyyy'))
 
   // // return time as a string
   // console.log('The local time for city is ' + nd.toLocaleString())
