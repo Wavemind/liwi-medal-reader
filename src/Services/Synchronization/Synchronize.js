@@ -95,18 +95,17 @@ export default async medicalCasesToSync => {
     })
 
   if (requestResult !== null && requestResult.data === 'Zip file received') {
-    console.log("J'ai fini")
-    // await unlink(path)
+    await unlink(path)
 
-    // // Reset medicalCases to sync if request success
-    // medicalCasesToSync.forEach(async medicalCase => {
-    //   await store.dispatch(
-    //     UpdateDatabaseMedicalCase.action({
-    //       medicalCaseId: medicalCase.id,
-    //       fields: [{ name: 'synchronizedAt', value: new Date().getTime() }],
-    //     }),
-    //   )
-    // })
+    // Reset medicalCases to sync if request success
+    medicalCasesToSync.forEach(async medicalCase => {
+      await store.dispatch(
+        UpdateDatabaseMedicalCase.action({
+          medicalCaseId: medicalCase.id,
+          fields: [{ name: 'synchronizedAt', value: new Date().getTime() }],
+        }),
+      )
+    })
   } else {
     return Promise.reject({ message: requestResult.data })
   }

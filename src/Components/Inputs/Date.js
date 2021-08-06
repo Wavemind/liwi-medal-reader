@@ -101,11 +101,11 @@ const DateInput = () => {
       }
     }
 
-    // if (__DEV__) {
-    //   setDayValue(11)
-    //   setMonthValue(4)
-    //   setYearValue(2013)
-    // }
+    if (__DEV__) {
+      setDayValue(11)
+      setMonthValue(4)
+      setYearValue(2013)
+    }
 
     const today = new Date()
     const days = range(1, 32)

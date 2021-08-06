@@ -67,14 +67,12 @@ const IndexHomeContainer = ({ navigation }) => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
-  useEffect(() => {
-    dispatch(GetAllMedicalCaseDB.action({ page }))
-    setFirstLoading(false)
-  }, [])
-
   // Reload page if network connection change (client-server to fail safe mode)
   useEffect(() => {
     dispatch(GetAllMedicalCaseDB.action({ page: 1, reset: true }))
+    if (firstLoading) {
+      setFirstLoading(false)
+    }
   }, [isConnected])
 
   useEffect(() => {

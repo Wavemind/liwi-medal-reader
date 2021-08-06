@@ -85,14 +85,12 @@ const ListMedicalCaseContainer = ({ navigation }) => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
-  useEffect(() => {
-    dispatch(GetAllMedicalCasesDB.action({ page, reset: true }))
-    setFirstLoading(false)
-  }, [])
-
   // Reload page if network connection change (client-server to fail safe mode)
   useEffect(() => {
     dispatch(GetAllMedicalCasesDB.action({ page, reset: true }))
+    if (firstLoading) {
+      setFirstLoading(false)
+    }
   }, [isConnected])
 
   useEffect(() => {

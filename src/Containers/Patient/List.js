@@ -81,14 +81,12 @@ const ListPatientContainer = ({ navigation }) => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
-  useEffect(() => {
-    dispatch(GetAllPatientDB.action({ page, reset: true }))
-    setFirstLoading(false)
-  }, [])
-
   // Reload page if network connection change (client-server to fail safe mode)
   useEffect(() => {
     dispatch(GetAllPatientDB.action({ page: 1, reset: true }))
+    if (firstLoading) {
+      setFirstLoading(false)
+    }
   }, [isConnected])
 
   useEffect(() => {
