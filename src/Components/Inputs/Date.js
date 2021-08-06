@@ -164,7 +164,7 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
-      console.log(birthDate.getTime())
+      // console.log(birthDate.getTime())
       relatedActions(birthDate.getTime())
     }
   }, [dayValue, monthValue, yearValue])

@@ -14,7 +14,6 @@ import { zip } from 'react-native-zip-archive'
  * The internal imports
  */
 import useDatabase from '../Database/useDatabase'
-import { GetNonSynchronizedService } from '@/Services/MedicalCase'
 import { store } from '@/Store'
 import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
 
@@ -27,12 +26,11 @@ const normalizeFilePath = path => {
   return path.startsWith('file://') ? path.slice(7) : path
 }
 
-export default async () => {
+export default async medicalCasesToSync => {
   const { getActivities, findBy } = useDatabase()
   const state = store.getState()
   const mainDataUrl = state.healthFacility.item.main_data_ip
 
-  const medicalCasesToSync = await GetNonSynchronizedService()
   const folder = `${DocumentDirectoryPath}/medical_cases`
   const targetPath = `${folder}.zip`
   let medicalCaseJson = {}
