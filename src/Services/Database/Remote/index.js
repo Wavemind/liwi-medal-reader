@@ -70,6 +70,8 @@ instance.interceptors.response.use(
         }
       }
 
+      console.log('ici', error.response)
+      return null
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
       return handleError({

@@ -86,6 +86,7 @@ const IndexScanContainer = () => {
             patientId: scanData.navigationParams.patientId,
           }),
         )
+
         if (isFulfilled(loadPatientResult)) {
           const medicalCaseResult = await dispatch(
             CreateMedicalCase.action({
@@ -98,7 +99,10 @@ const IndexScanContainer = () => {
             await dispatch(
               UpdateNodeFields.action({ toUpdate: patientValueNodes }),
             )
-            navigateAndSimpleReset('StageWrapper')
+            navigate('Home', {
+              screen: 'StageWrapper',
+              ...scanData.navigationParams,
+            })
           }
         }
       }
@@ -131,7 +135,6 @@ const IndexScanContainer = () => {
       return
     }
     setLastScan(e.data)
-
     await dispatch(
       HandleQr.action({
         QrRawData: e.data,

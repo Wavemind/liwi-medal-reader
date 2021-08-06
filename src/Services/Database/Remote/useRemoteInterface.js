@@ -54,7 +54,13 @@ export default function () {
     )}/find_by?field=${field}&value=${value}`
 
     const response = await api.get(url)
-    return _initClasses(response.data.data, model)
+
+    // Only for scan QR code for a new patient
+    if (response === null) {
+      return null
+    }
+
+    return _initClasses(response.data?.data, model)
   }
 
   /**
@@ -227,7 +233,7 @@ export default function () {
         },
       }
       delete data.patientValues
-      
+
       const response = await api.post('/api/patients/synchronize', data)
 
       if (response.data === 'Synchronize success') {

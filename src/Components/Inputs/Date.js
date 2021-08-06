@@ -101,11 +101,11 @@ const DateInput = () => {
       }
     }
 
-    if (__DEV__) {
-      setDayValue(11)
-      setMonthValue(4)
-      setYearValue(2013)
-    }
+    // if (__DEV__) {
+    //   setDayValue(11)
+    //   setMonthValue(4)
+    //   setYearValue(2013)
+    // }
 
     const today = new Date()
     const days = range(1, 32)
@@ -161,23 +161,6 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
-
-      // convert to msec
-      // subtract local time zone offset
-      // get UTC time in msec
-      var utc = birthDate.getTime() + birthDate.getTimezoneOffset() * 60000
-
-      // create new Date object for different city
-      // using supplied offset
-      console.log('ici', (birthDate.getTimezoneOffset() / 60) * -1)
-      var nd = new Date(utc + 3600000 * 2)
-      var nd = new Date(utc + 3600000 * 2)
-
-      console.log('tout simple', nd)
-
-      // return time as a string
-      console.log('The local time for city is ' + nd.toLocaleString())
-      console.log('The local time for city is ' + nd.toUTCString())
 
       relatedActions(birthDate.getTime())
     }
