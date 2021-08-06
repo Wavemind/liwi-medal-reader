@@ -71,8 +71,11 @@ instance.interceptors.response.use(
         }
       }
 
-      console.log('ici', error.response)
-      return null
+      // Return null for QR code scanning
+      if (error.response.config.url.search("find_by?field='uid'")) {
+        return null
+      }
+
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
       return handleError({

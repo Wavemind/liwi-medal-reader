@@ -51,7 +51,7 @@ export default async medicalCasesToSync => {
         patient: { ...patient, medicalCases: [] },
         activities: activities,
       }
-
+      console.log('Ce qui est envoyé', tempMedicalCaseJson)
       delete tempMedicalCaseJson.patient.savedInDatabase
 
       medicalCaseJson = JSON.stringify(tempMedicalCaseJson, (key, value) =>

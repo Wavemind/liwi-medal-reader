@@ -64,29 +64,6 @@ const ListItem = ({ item }) => {
     }
   }
 
-  // // convert to msec
-  // // subtract local time zone offset
-  // // get UTC time in msec
-  // const utc =
-  //   new Date(item.patient.birth_date).getTime() +
-  //   new Date(item.patient.birth_date).getTimezoneOffset() * 60000
-
-  // // create new Date object for different city
-  // // using supplied offset
-  // console.log(
-  //   'ici',
-  //   (new Date(item.patient.birth_date).getTimezoneOffset() / 60) * -1,
-  // )
-  // const nd = new Date(utc + 3600000 * 2)
-
-  // console.log('tout simple', nd)
-  // console.log(new Date(item.patient.birth_date))
-  // console.log(format(item.patient.birth_date, 'dd.MM.yyyy'))
-
-  // // return time as a string
-  // console.log('The local time for city is ' + nd.toLocaleString())
-  // console.log('The local time for city is ' + nd.toUTCString())
-
   return (
     <TouchableOpacity style={medicalCaseListItem.wrapper} onPress={handlePress}>
       <View style={medicalCaseListItem.container}>

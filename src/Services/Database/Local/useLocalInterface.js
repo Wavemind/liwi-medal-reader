@@ -584,7 +584,6 @@ export default function () {
       version_id: watermelonDBMedicalCase.version_id,
     }
 
-    // TODO CHECK IF USED
     if (addPatient) {
       const patient = await watermelonDBMedicalCase.patient.fetch()
       medicalCase.patient = patient

@@ -110,7 +110,6 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertPatient = async (patientData, medicalCaseData) => {
-    console.log('ENVOIE', patientData.birth_date)
     const response = await api.post('/api/patients', {
       medical_case: {
         id: medicalCaseData.id,
@@ -198,7 +197,6 @@ export default function () {
    * @returns { Collection } - Updated object
    */
   const update = async (model, id, fields) => {
-    console.log('UPDATE', fields)
     const response = await api.patch(`/api/${_mapModelToRoute(model)}/${id}`, {
       fields,
     })
@@ -299,7 +297,6 @@ export default function () {
     const medicalCases = remotePatient.medical_cases.map(remoteMedicalCase =>
       _buildMedicalCase(remoteMedicalCase, false),
     )
-
     // Build patient
     const patient = {
       first_name: remotePatient.first_name,
@@ -336,7 +333,6 @@ export default function () {
    * @returns {string}
    * @private
    */
-  // TODO make it work
   const _generateFiltersUrl = filters => {
     let stringFilters = ''
     if (filters.length !== 0) {
@@ -375,7 +371,7 @@ export default function () {
         id: remoteMedicalCase.patient.id,
         first_name: remoteMedicalCase.patient.first_name,
         last_name: remoteMedicalCase.patient.last_name,
-        birth_date: remoteMedicalCase.patient.birth_date,
+        birth_date: parseInt(remoteMedicalCase.patient.birth_date),
       },
     }
   }

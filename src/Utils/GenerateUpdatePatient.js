@@ -1,5 +1,4 @@
 export default patient => {
-  console.log('UTILS', patient)
   return {
     patientId: patient.id,
     fields: [
