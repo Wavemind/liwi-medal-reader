@@ -189,7 +189,7 @@ export default function () {
   const getMedicalCases = async () => {
     const collection = database.get(_mapModelToTable('MedicalCase'))
     let result = await collection.query().fetch()
-    return _initClasses(result, 'MedicalCase')
+    return _initClasses(result, 'MedicalCase', false)
   }
 
   /**
@@ -597,10 +597,11 @@ export default function () {
    * Generate class
    * @param { array|object } data - Data retrieved from server
    * @param { string } model - Class name
+   * @param { boolean } light - build light versions
    * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
    * @private
    */
-  const _initClasses = async (data, model) => {
+  const _initClasses = async (data, model, light = true) => {
     let object = []
     if (model === 'Patient') {
       if (data instanceof Array) {
@@ -615,7 +616,10 @@ export default function () {
     } else if (data instanceof Array) {
       object = await Promise.all(
         data.map(async item => {
-          return _buildMedicalCaseLight(item)
+          if (light) {
+            return _buildMedicalCaseLight(item)
+          }
+          return _buildMedicalCase(item)
         }),
       )
     } else {

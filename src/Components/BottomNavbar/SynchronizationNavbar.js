@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react'
 import { View } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 /**
  * The internal imports
@@ -24,8 +24,8 @@ const SynchronizationNavbar = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const syncLoading = useSelector(state => state.synchronization.loading)
   const [unSynced, setUnSynced] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(async () => {
     const result = await GetNonSynchronizedService()
@@ -36,17 +36,32 @@ const SynchronizationNavbar = () => {
    * Needed to know if there is un sync case remaining
    */
   useEffect(async () => {
-    if (syncLoading) {
+    if (loading) {
       const result = await GetNonSynchronizedService()
       setUnSynced(result)
     }
-  }, [syncLoading])
+  }, [loading])
 
   /**
    * Handles the synchronization action
    */
-  const handleSynchronization = () => {
-    dispatch(Synchronize.action())
+  const handleSynchronization = async () => {
+    const groupedMedicalCases = []
+    let subMedicalCases = []
+    setLoading(true)
+    unSynced.forEach((medicalCase, index) => {
+      subMedicalCases.push(medicalCase)
+      if ((index !== 0 && index % 4 === 0) || index === unSynced.length - 1) {
+        groupedMedicalCases.push(subMedicalCases)
+        subMedicalCases = []
+      }
+    })
+    await groupedMedicalCases.forEach((medicalCases, index) => {
+      setTimeout(() => {
+        dispatch(Synchronize.action(medicalCases))
+      }, 2000 * index)
+    })
+    setLoading(false)
   }
 
   return (
@@ -56,7 +71,7 @@ const SynchronizationNavbar = () => {
           label={t('containers.synchronization.synchronize')}
           filled
           onPress={handleSynchronization}
-          disabled={syncLoading || unSynced.length === 0}
+          disabled={loading || unSynced.length === 0}
         />
       </View>
     </View>
