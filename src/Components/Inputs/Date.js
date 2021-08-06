@@ -77,10 +77,7 @@ const DateInput = () => {
 
   useEffect(() => {
     if (birth_date !== null) {
-      // console.log('avant', birth_date)
-      // const test =  hrs = -(new Date().getTimezoneOffset() / 60)
       const date = new Date(birth_date)
-      // console.log('après', date)
       if (estimatedDateType) {
         let value = ''
         if (estimatedDateType === 'day') {
@@ -164,7 +161,24 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
-      console.log(birthDate.getTime())
+
+      // convert to msec
+      // subtract local time zone offset
+      // get UTC time in msec
+      var utc = birthDate.getTime() + birthDate.getTimezoneOffset() * 60000
+
+      // create new Date object for different city
+      // using supplied offset
+      console.log('ici', (birthDate.getTimezoneOffset() / 60) * -1)
+      var nd = new Date(utc + 3600000 * 2)
+      var nd = new Date(utc + 3600000 * 2)
+
+      console.log('tout simple', nd)
+
+      // return time as a string
+      console.log('The local time for city is ' + nd.toLocaleString())
+      console.log('The local time for city is ' + nd.toUTCString())
+
       relatedActions(birthDate.getTime())
     }
   }, [dayValue, monthValue, yearValue])
