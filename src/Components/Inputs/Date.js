@@ -77,10 +77,7 @@ const DateInput = () => {
 
   useEffect(() => {
     if (birth_date !== null) {
-      // console.log('avant', birth_date)
-      // const test =  hrs = -(new Date().getTimezoneOffset() / 60)
       const date = new Date(birth_date)
-      // console.log('après', date)
       if (estimatedDateType) {
         let value = ''
         if (estimatedDateType === 'day') {
@@ -104,11 +101,11 @@ const DateInput = () => {
       }
     }
 
-    if (__DEV__) {
-      setDayValue(11)
-      setMonthValue(4)
-      setYearValue(2013)
-    }
+    // if (__DEV__) {
+    //   setDayValue(11)
+    //   setMonthValue(4)
+    //   setYearValue(2013)
+    // }
 
     const today = new Date()
     const days = range(1, 32)
@@ -164,7 +161,7 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
-      // console.log(birthDate.getTime())
+
       relatedActions(birthDate.getTime())
     }
   }, [dayValue, monthValue, yearValue])

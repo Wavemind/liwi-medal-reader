@@ -465,12 +465,10 @@ export default function () {
    * @param { object } object - the object to delete
    */
   const destroy = async object => {
-    console.log('le destroy', object)
     await database.action(async () => {
       if (object instanceof Array) {
         object.forEach(o => o.destroyPermanently())
       } else {
-        console.log('je destroy', object)
         object.destroyPermanently()
       }
     })
