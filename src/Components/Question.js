@@ -49,7 +49,7 @@ const Question = ({ questionId, disabled = false }) => {
   const [descriptionAvailable] = useState(
     translate(currentNode.description) !== '',
   )
-  const [mediaAvailable] = useState(currentNode.medias.length > 0)
+  const [mediaAvailable] = useState(currentNode.medias?.length > 0)
 
   // Node can have an unavailable answer
   const [additionalUnavailableAnswer] = useState(

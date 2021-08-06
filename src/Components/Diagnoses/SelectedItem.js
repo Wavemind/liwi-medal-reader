@@ -40,7 +40,7 @@ const SelectedItem = ({
         </Text>
         {currentNode &&
           (translate(currentNode.description) !== '' ||
-            currentNode.medias.length > 0) && (
+            currentNode.medias?.length > 0) && (
             <QuestionInfoButton nodeId={listItem.id} />
           )}
       </View>
