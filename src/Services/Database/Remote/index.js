@@ -30,8 +30,7 @@ instance.interceptors.request.use(
     } = state.healthFacility
     const mac_address = state.device.item.mac_address
 
-    // config.baseURL = local_data_ip
-    config.baseURL = 'http://192.168.0.5'
+    config.baseURL = local_data_ip
     config.headers = {
       'Content-type': 'application/json',
       Accept: 'application/json',

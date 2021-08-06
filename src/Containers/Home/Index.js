@@ -136,6 +136,7 @@ const IndexHomeContainer = ({ navigation }) => {
               filled
             />
           </View>
+          {/** TODO: ALAN ASK IT TO STAY FOR THE MOMENT */}
           {/* {__DEV__ && ( */}
           <View style={home.consultationsButton}>
             <SquareButton
