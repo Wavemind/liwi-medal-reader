@@ -24,7 +24,7 @@ const PersonalInfoPatientContainer = () => {
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const patient = useSelector(state => state.patient.item)
-  const birthDateValue = patient.birth_date // TODO Double check this ! Issue 177
+  const birthDateValue = patient.birth_date
     ? format(patient.birth_date, 'dd.MM.yyyy')
     : null
 

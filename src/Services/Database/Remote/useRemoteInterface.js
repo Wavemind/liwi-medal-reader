@@ -274,7 +274,6 @@ export default function () {
       diagnosis: parsedJson.diagnosis,
       nodes: parsedJson.nodes,
       json: null,
-      // TODO Check if JSON_version is stored
       json_version: remoteMedicalCase.json_version,
       clinician: remoteMedicalCase.clinician,
       mac_address: remoteMedicalCase.mac_address,

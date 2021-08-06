@@ -45,13 +45,11 @@ export default async medicalCasesToSync => {
       const activities = await getActivities(medicalCase.id)
 
       const tempMedicalCaseJson = {
-        ...JSON.parse(medicalCase.json),
-        id: medicalCase.id,
-        version_id: medicalCase.version_id,
+        ...medicalCase,
         patient: { ...patient, medicalCases: [] },
         activities: activities,
       }
-      console.log('Ce qui est envoyé', tempMedicalCaseJson)
+
       delete tempMedicalCaseJson.patient.savedInDatabase
 
       medicalCaseJson = JSON.stringify(tempMedicalCaseJson, (key, value) =>
@@ -97,17 +95,18 @@ export default async medicalCasesToSync => {
     })
 
   if (requestResult !== null && requestResult.data === 'Zip file received') {
-    await unlink(path)
+    console.log("J'ai fini")
+    // await unlink(path)
 
-    // Reset medicalCases to sync if request success
-    medicalCasesToSync.forEach(async medicalCase => {
-      await store.dispatch(
-        UpdateDatabaseMedicalCase.action({
-          medicalCaseId: medicalCase.id,
-          fields: [{ name: 'synchronizedAt', value: new Date().getTime() }],
-        }),
-      )
-    })
+    // // Reset medicalCases to sync if request success
+    // medicalCasesToSync.forEach(async medicalCase => {
+    //   await store.dispatch(
+    //     UpdateDatabaseMedicalCase.action({
+    //       medicalCaseId: medicalCase.id,
+    //       fields: [{ name: 'synchronizedAt', value: new Date().getTime() }],
+    //     }),
+    //   )
+    // })
   } else {
     return Promise.reject({ message: requestResult.data })
   }

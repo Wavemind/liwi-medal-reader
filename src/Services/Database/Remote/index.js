@@ -53,12 +53,10 @@ instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    console.log('Response:', response)
     return response
   },
   async function (error) {
     if (error.response) {
-      console.log(error.response)
       // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'
 
@@ -84,8 +82,6 @@ instance.interceptors.response.use(
         data: error.response.data,
       })
     } else if (error.request) {
-      console.log(error.request)
-
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js

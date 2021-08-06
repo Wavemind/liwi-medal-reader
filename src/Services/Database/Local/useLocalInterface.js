@@ -535,6 +535,7 @@ export default function () {
 
   const _buildMedicalCaseLight = async watermelonDBMedicalCase => {
     const patient = await watermelonDBMedicalCase.patient.fetch()
+
     return {
       id: watermelonDBMedicalCase.id,
       advancement: {
@@ -562,7 +563,6 @@ export default function () {
     addPatient = true,
   ) => {
     const parsedJson = JSON.parse(watermelonDBMedicalCase.json)
-
     const medicalCase = {
       id: watermelonDBMedicalCase.id,
       activities: [],
@@ -588,7 +588,7 @@ export default function () {
       const patient = await watermelonDBMedicalCase.patient.fetch()
       medicalCase.patient = patient
     }
-
+    console.log(medicalCase)
     return medicalCase
   }
 
