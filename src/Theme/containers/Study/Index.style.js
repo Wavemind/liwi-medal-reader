@@ -8,7 +8,7 @@ export default function (props) {
     wrapper: {
       ...Layout.fill,
       ...Layout.col,
-      backgroundColor: Colors.secondary,
+      backgroundColor: Colors.white,
     },
     closeButton: {
       ...Layout.fullWidth,
