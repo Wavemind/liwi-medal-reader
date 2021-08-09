@@ -51,7 +51,7 @@ const SynchronizationNavbar = () => {
     setLoading(true)
     unSynced.forEach((medicalCase, index) => {
       subMedicalCases.push(medicalCase)
-      if ((index !== 0 && index % 4 === 0) || index === unSynced.length - 1) {
+      if ((index + 1) % 5 || index === unSynced.length - 1) {
         groupedMedicalCases.push(subMedicalCases)
         subMedicalCases = []
       }
