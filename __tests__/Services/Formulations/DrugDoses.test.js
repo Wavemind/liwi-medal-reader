@@ -31,35 +31,35 @@ beforeAll(async () => {
 
 describe('Drug dose calculation', () => {
   it('should calculate doseResult of 3 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
-    const result = DrugDosesService(1, 1681)
+    const result = DrugDosesService(0, 1681)
     expect(result.doseResult).toEqual(10)
   })
   it('should calculate minDoseMl of 3 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
-    const result = DrugDosesService(1, 1681)
+    const result = DrugDosesService(0, 1681)
     expect(result.minDoseMl).toEqual(10)
   })
   it('should calculate doseResultMg of 75 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
-    const result = DrugDosesService(1, 1681)
+    const result = DrugDosesService(0, 1681)
     expect(result.doseResultMg).toEqual(250)
   })
   it('should calculate recurrence of 12 for drugId = 1681 (amoxicilin po), formulation is syrup and weight is 10kg', () => {
-    const result = DrugDosesService(1, 1681)
+    const result = DrugDosesService(0, 1681)
     expect(result.recurrence).toEqual(12)
   })
   it('should calculate recurrence of 12 for drugId = 1681 (amoxicilin po), formulation is capsule and weight is 10kg', () => {
-    const result = DrugDosesService(2, 1681)
+    const result = DrugDosesService(1, 1681)
     expect(result.recurrence).toEqual(12)
   })
   it('should calculate minDoseMg of 125 for drugId = 1681 (amoxicilin po), formulation is capsule and weight is 10kg', () => {
-    const result = DrugDosesService(2, 1681)
+    const result = DrugDosesService(1, 1681)
     expect(result.minDoseMg).toEqual(125)
   })
   it('should calculate doseResult of 1 for drugId = 1681 (amoxicilin po), formulation is capsule and weight is 10kg', () => {
-    const result = DrugDosesService(2, 1681)
+    const result = DrugDosesService(1, 1681)
     expect(result.doseResult).toEqual(1)
   })
   it('should calculate minDoseCap of 0.6 for drugId = 1681 (amoxicilin po), formulation is capsule and weight is 10kg', () => {
-    const result = DrugDosesService(2, 1681)
+    const result = DrugDosesService(1, 1681)
     expect(result.recurrence).toEqual(12)
   })
 })

@@ -41,6 +41,8 @@ beforeEach(async () => {
   )
   await setBirthDate(store, 7, 'year')
   await setAnswer(214, 394) // I'm a male
+  const weightId = algorithm.config.basic_questions.weight_question_id
+  await setAnswer(weightId, '10')
 })
 
 describe('Final diagnosis are included / excluded correctly', () => {
@@ -182,14 +184,14 @@ describe('Final diagnosis are included / excluded correctly', () => {
     await setAnswer(3184, 2341) // Vomiting everything => Yes
     await setAnswer(86, 146) // Unconscious or Lethargic (Unusually sleepy) => No
     await setAnswer(1685, 752) // Convulsing now => No
-    await setAnswer(7314, 5277) // Oral fluid test => Not able to drink / vomits after drinking
+    await setAnswer(11645, 10268) // Oral fluid test => Not able to drink / vomits after drinking
     const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([3806]))
   })
 
   it('No Final Diagnosis should be proposed if nothing is answered', async () => {
     const result = SetDiagnosesService()
-    expect(result.diagnosis.proposed).toEqual([8781]) // Only prevention and screening
+    expect(result.diagnosis.proposed).toEqual([1667, 8781]) // Only prevention and screening
   })
 
   it('Should propose MCI/IMAI pneumonia Bug on issue 95', async () => {
