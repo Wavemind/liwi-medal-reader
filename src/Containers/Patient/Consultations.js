@@ -104,7 +104,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
           />
           <CurrentConsultation
             navigation={navigation}
-            consultation={currentConsultation}
+            medicalCase={currentConsultation}
           />
         </View>
       ) : (

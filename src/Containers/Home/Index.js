@@ -48,6 +48,7 @@ const IndexHomeContainer = ({ navigation }) => {
   const [firstLoading, setFirstLoading] = useState(true)
 
   const algorithm = useSelector(state => state.algorithm.item)
+  const healthFacility = useSelector(state => state.healthFacility.item)
 
   const medicalCases = useSelector(
     state => state.databaseMedicalCase.getAll.item.data,
@@ -106,8 +107,8 @@ const IndexHomeContainer = ({ navigation }) => {
         patientId: null,
         newMedicalCase: true,
         facility: {
-          study_id: 'Dynamic Tanzania',
-          group_id: '7',
+          study_id: JSON.stringify(healthFacility.study_id),
+          group_id: JSON.stringify(healthFacility.id),
           uid: uuid.v4(),
         },
         otherFacility: {},
@@ -125,7 +126,7 @@ const IndexHomeContainer = ({ navigation }) => {
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
       <View style={home.buttonsWrapper}>
         <View style={home.buttonListWrapper}>
-          <View style={home.scanButton}>
+          <View style={home.patientListButton}>
             <SquareButton
               label={t('navigation.scan_qr_code')}
               icon="qr-scan"
@@ -134,8 +135,6 @@ const IndexHomeContainer = ({ navigation }) => {
               filled
             />
           </View>
-          {/** TODO: ALAN ASK IT TO STAY FOR THE MOMENT */}
-          {/* {__DEV__ && ( */}
           <View style={home.consultationsButton}>
             <SquareButton
               label={t('actions.new_patient')}
@@ -145,7 +144,6 @@ const IndexHomeContainer = ({ navigation }) => {
               filled
             />
           </View>
-          {/* )} */}
         </View>
         <View style={home.buttonListWrapper}>
           <View style={home.patientListButton}>
