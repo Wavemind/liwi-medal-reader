@@ -28,8 +28,7 @@ export default async errors => {
   // Consent management
   if (
     consentManagement &&
-    (!patient.consent ||
-      patient.consent === null ||
+    (patient.consent === null ||
       (patient.consent && patient.consent_file === null))
   ) {
     errors.consent = i18n.t('validation.consent_file_blank')
