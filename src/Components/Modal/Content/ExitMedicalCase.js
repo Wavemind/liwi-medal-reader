@@ -5,6 +5,7 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
  * The internal imports
@@ -16,6 +17,9 @@ import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { SaveMedicalCaseService } from '@/Services/MedicalCase'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
+import { GenerateUpdatePatient } from '@/Utils'
+import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
+import UpdatePatient from '@/Store/DatabasePatient/Update'
 
 const ExitMedicalCase = () => {
   // Theme and style elements deconstruction
@@ -39,6 +43,7 @@ const ExitMedicalCase = () => {
   const stepIndex = useSelector(
     state => state.medicalCase.item.advancement.step,
   )
+  const patient = useSelector(state => state.patient.item)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
 
   /**
@@ -62,21 +67,30 @@ const ExitMedicalCase = () => {
    * Save in database current medical case and redirect user to home page and clear medical case store
    */
   const exitAndSave = async () => {
-    const medicalCaseSaved = await SaveMedicalCaseService({
-      stageIndex,
-      stepIndex,
-    })
-    if (medicalCaseSaved) {
-      if (routeName === 'Auth') {
-        await dispatch(ChangeClinician.action({ clinician: {} }))
-      }
-      await dispatch(UnlockMedicalCase.action({ medicalCaseId }))
+    const patientUpdate = await dispatch(
+      UpdatePatient.action(GenerateUpdatePatient(patient)),
+    )
 
-      await dispatch(ToggleVisibility.action({}))
-      navigateAndSimpleReset(routeName, {
-        ...routeParams,
-        destroyCurrentConsultation: true,
-      })
+    if (isFulfilled(patientUpdate)) {
+      const updatePatientValues = await dispatch(UpdatePatientValues.action())
+      if (isFulfilled(updatePatientValues)) {
+        const medicalCaseSaved = await SaveMedicalCaseService({
+          stageIndex,
+          stepIndex,
+        })
+        if (medicalCaseSaved) {
+          if (routeName === 'Auth') {
+            await dispatch(ChangeClinician.action({ clinician: {} }))
+          }
+          await dispatch(UnlockMedicalCase.action({ medicalCaseId }))
+
+          await dispatch(ToggleVisibility.action({}))
+          navigateAndSimpleReset(routeName, {
+            ...routeParams,
+            destroyCurrentConsultation: true,
+          })
+        }
+      }
     }
   }
 
@@ -93,7 +107,9 @@ const ExitMedicalCase = () => {
         <SquareButton
           label={t('components.modals.exit_medical_case.exit_and_save')}
           filled
-          disabled={!patientSavedInDatabase}
+          disabled={
+            !patientSavedInDatabase || (stageIndex === 0 && stepIndex === 0)
+          }
           onPress={exitAndSave}
           bgColor={Colors.grey}
           color={Colors.white}
