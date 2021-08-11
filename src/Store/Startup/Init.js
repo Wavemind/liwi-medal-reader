@@ -1,3 +1,6 @@
+/**
+ * The external imports
+ */
 import {
   buildAsyncState,
   buildAsyncActions,
@@ -5,12 +8,16 @@ import {
 } from '@thecodingmachine/redux-toolkit-wrapper'
 import { DocumentDirectoryPath, exists, readFile } from 'react-native-fs'
 
+/**
+ * The internal imports
+ */
 import i18n from '@/Translations'
 import DefaultTheme from '@/Store/Theme/DefaultTheme'
 import ChangeEmergencyContent from '@/Store/Emergency/ChangeEmergencyContent'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 import { RedirectService } from '@/Services/Device'
+import FetchOneHealthFacility from '@/Store/HealthFacility/FetchOne'
 
 export default {
   initialState: buildAsyncState(),
@@ -48,6 +55,12 @@ export default {
         }),
       )
     }
+
+    // Get health facility update
+    if (state.healthFacility.item.id) {
+      await dispatch(FetchOneHealthFacility.action({}))
+    }
+
     RedirectService()
   }),
   reducers: buildAsyncReducers({ itemKey: null }), // We do not want to modify some item by default

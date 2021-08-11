@@ -1,7 +1,6 @@
 import differenceInDays from 'date-fns/differenceInDays'
 import startOfToday from 'date-fns/startOfToday'
 
-import { Config } from '@/Config'
 import { store } from '@/Store'
 
 /**
@@ -14,9 +13,8 @@ export default () => {
   const birthDate = store.getState().patient.item.birth_date
 
   const questions = { ...nodes }
-  const neonatCCs = algorithm.mobile_config.questions_orders[
-    Config.STEP_ORDERS.complaintCategories
-  ].filter(ccId => algorithm.nodes[ccId].is_neonat)
+  const neonatCCs = algorithm.config.full_order.complaint_categories_step.neonat
+
   const days = birthDate ? differenceInDays(startOfToday(), birthDate) : 0
 
   // Remove / Keep neonat question based on patient age
