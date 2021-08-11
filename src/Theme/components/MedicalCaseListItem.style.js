@@ -45,7 +45,7 @@ export default function (props) {
       color: Colors.primary,
     },
     icon: active => ({
-      backgroundColor: active && Colors.primary,
+      backgroundColor: active ? Colors.primary : Colors.transparent,
       color: active ? Colors.secondary : Colors.grey,
       ...Gutters.tinyVPadding,
       ...Gutters.tinyHPadding,
