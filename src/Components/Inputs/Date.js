@@ -226,7 +226,7 @@ const DateInput = () => {
     dispatch(
       UpdateField.action({
         field: 'birth_date_estimated_type',
-        value: null,
+        value: 'month',
       }),
     )
     dispatch(
