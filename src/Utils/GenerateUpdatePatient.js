@@ -15,6 +15,10 @@ export default patient => {
         value: patient.birth_date_estimated,
       },
       {
+        name: 'birth_date_estimated_type',
+        value: patient.birth_date_estimated_type,
+      },
+      {
         name: 'first_name',
         value: patient.first_name,
       },
