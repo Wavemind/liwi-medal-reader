@@ -9,8 +9,9 @@ assignees: ''
 
 ## Environment
 
-Server : 
-Version ID : 
+Server : [dev/staging/prod]
+Version ID or URL : 
+Health facility ID or URL : 
 Architecture: [standalone/client-server]
 
 ## Describe the bug
