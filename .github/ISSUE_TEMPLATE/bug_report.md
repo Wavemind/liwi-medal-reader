@@ -12,7 +12,8 @@ assignees: ''
 Server : [dev/staging/prod]
 Version ID or URL : 
 Health facility ID or URL : 
-Architecture: [standalone/client-server]
+Architecture : [standalone/client-server]
+App version : 
 
 ## Describe the bug
 A clear and concise description of what the bug is.
