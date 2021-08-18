@@ -127,9 +127,10 @@ const MainNavigator = ({ route, navigation }) => {
             title: t('navigation.medical_case', {
               first_name: patient.first_name,
               last_name: patient.last_name,
-              readable_date: patient.birth_date
-                ? ReadableDate(medicalCaseCreatedAt, patient.birth_date)
-                : '',
+              readable_date:
+                patient.birth_date && medicalCaseCreatedAt
+                  ? ReadableDate(medicalCaseCreatedAt, patient.birth_date)
+                  : '',
             }),
           }}
         />
