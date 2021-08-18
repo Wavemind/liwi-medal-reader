@@ -309,7 +309,7 @@ export default {
     current_consultation: 'Current consultation',
     home: 'Home',
     medical_case:
-      '{{first_name}} {{last_name}} - {{birth_date}} ({{ readable_date }} old)',
+      '{{first_name}} {{last_name}} - {{birth_date}} ({{ readable_date }})',
     synchronization: 'Synchronization',
     welcome: 'Welcome {{ clinician }}',
     settings: 'Settings',
@@ -323,6 +323,12 @@ export default {
     birth_date: 'Date of Birth',
     estimated_age: 'Estimated age',
     reason: 'Reason for changing facility',
+    readable_birth_date: {
+      days: '{{value}} days old',
+      weeks: '{{value}} weeks old',
+      months: '{{value}} months old',
+      years: '{{value}} years old',
+    },
   },
   medical_case: {
     comment: 'Comment',

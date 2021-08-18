@@ -326,6 +326,12 @@ export default {
     birth_date: 'Date de naissance',
     estimated_age: 'Âge estimé',
     reason: 'Raison du changement de centre de santé',
+    readable_birth_date: {
+      days: '{{value}} jours',
+      weeks: '{{value}} semaines',
+      months: '{{value}} mois',
+      years: '{{value}} ans',
+    },
   },
   medical_case: {
     comment: 'Commentaire',

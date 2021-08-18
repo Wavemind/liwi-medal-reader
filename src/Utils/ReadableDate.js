@@ -1,14 +1,12 @@
 /**
  * The external imports
  */
-import formatDistanceStrict from 'date-fns/formatDistanceStrict'
-import fr from 'date-fns/locale/fr'
-import enGB from 'date-fns/locale/en-GB'
+import differenceInDays from 'date-fns/differenceInDays'
 
 /**
  * The internal imports
  */
-import { store } from '@/Store'
+import i18n from '@/Translations/index'
 
 /**
  * Change display of patient date follow those rules
@@ -23,13 +21,36 @@ import { store } from '@/Store'
  * @returns [String] human readable date
  */
 export default (from, to) => {
-  const state = store.getState()
-  const systemLanguage = state.system.language
-  let locale = enGB
+  const ageInDays = differenceInDays(new Date(from), to)
 
-  if (systemLanguage === 'fr') {
-    locale = fr
+  console.log('age in days', ageInDays)
+  let readableDate = ''
+
+  if (ageInDays < 7) {
+    readableDate = i18n.t('patient.readable_birth_date.days', {
+      value: ageInDays,
+    })
   }
 
-  return formatDistanceStrict(from, to, { locale })
+  if (ageInDays >= 7 && ageInDays < 31) {
+    readableDate = i18n.t('patient.readable_birth_date.weeks', {
+      value: Math.floor(ageInDays / 7),
+    })
+  }
+
+  if (ageInDays >= 31 && ageInDays < 730) {
+    readableDate = i18n.t('patient.readable_birth_date.months', {
+      value: Math.floor(ageInDays / 30.4375),
+    })
+  }
+
+  if (ageInDays > 730) {
+    readableDate = i18n.t('patient.readable_birth_date.years', {
+      value: Math.floor(ageInDays / 365.25),
+    })
+  }
+
+  console.log('readableDate', readableDate)
+
+  return readableDate
 }
