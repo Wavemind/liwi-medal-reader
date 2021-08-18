@@ -131,7 +131,7 @@ const MainNavigator = ({ route, navigation }) => {
                 ? format(patient.birth_date, 'dd.MM.yyyy')
                 : '',
               readable_date:
-                patient.birth_date && patient.birth_date && medicalCaseCreatedAt
+                patient.birth_date && medicalCaseCreatedAt
                   ? ReadableDate(medicalCaseCreatedAt, patient.birth_date)
                   : '',
             }),
