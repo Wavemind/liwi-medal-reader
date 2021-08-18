@@ -30,6 +30,7 @@ import ResetValidation from '@/Store/Validation/Reset'
 import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import { useTheme } from '@/Theme'
+import { ReadableDate } from '@/Utils'
 
 const Drawer = createDrawerNavigator()
 const MainNavigator = ({ route, navigation }) => {
@@ -42,6 +43,9 @@ const MainNavigator = ({ route, navigation }) => {
   const clinician = useSelector(state => state.healthFacility.clinician)
   const patient = useSelector(state => state.patient.item)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const medicalCaseCreatedAt = useSelector(
+    state => state.medicalCase.item.createdAt,
+  )
 
   // Destroy medical case in store after closing a medical case
   useEffect(() => {
@@ -120,9 +124,17 @@ const MainNavigator = ({ route, navigation }) => {
           name="StageWrapper"
           component={StageWrapperMedicalCaseContainer}
           options={{
-            title: `${patient.first_name} ${patient.last_name} - ${
-              patient.birth_date ? format(patient.birth_date, 'dd.MM.yyyy') : ''
-            }`,
+            title: t('navigation.medical_case', {
+              first_name: patient.first_name,
+              last_name: patient.last_name,
+              birth_date: patient.birth_date
+                ? format(patient.birth_date, 'dd.MM.yyyy')
+                : '',
+              readable_date:
+                patient.birth_date && medicalCaseCreatedAt
+                  ? ReadableDate(medicalCaseCreatedAt, patient.birth_date)
+                  : '',
+            }),
           }}
         />
         <Drawer.Screen

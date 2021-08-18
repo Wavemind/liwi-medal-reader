@@ -170,6 +170,12 @@ const StageWrapperNavbar = ({ stageIndex }) => {
                 InsertMedicalCase.action(),
               )
               if (isFulfilled(medicalCaseInsert)) {
+                await dispatch(
+                  UpdateFieldMedicalCase.action({
+                    field: 'savedInDatabase',
+                    value: !medicalCaseSavedInDatabase,
+                  }),
+                )
                 await handleNavigation(direction)
               }
             } else {
