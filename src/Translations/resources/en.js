@@ -308,6 +308,7 @@ export default {
     consent_list: 'Consent files',
     current_consultation: 'Current consultation',
     home: 'Home',
+    medical_case: '{{first_name}} {{last_name}} - {{ readable_date }} old',
     synchronization: 'Synchronization',
     welcome: 'Welcome {{ clinician }}',
     settings: 'Settings',
