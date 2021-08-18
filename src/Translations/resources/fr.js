@@ -311,7 +311,8 @@ export default {
     consent_list: 'Consentements',
     current_consultation: 'Consultation en cours',
     home: 'Accueil',
-    medical_case: '{{first_name}} {{last_name}} - {{ readable_date }}',
+    medical_case:
+      '{{first_name}} {{last_name}} - {{birth_date }} ({{ readable_date }})',
     synchronization: 'Synchronisation',
     welcome: 'Bienvenue {{ clinician }}',
     settings: 'Réglages',
