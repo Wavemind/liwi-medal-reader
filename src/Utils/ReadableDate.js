@@ -23,7 +23,6 @@ import i18n from '@/Translations/index'
 export default (from, to) => {
   const ageInDays = differenceInDays(new Date(from), to)
 
-  console.log('age in days', ageInDays)
   let readableDate = ''
 
   if (ageInDays < 7) {
@@ -49,8 +48,6 @@ export default (from, to) => {
       value: Math.floor(ageInDays / 365.25),
     })
   }
-
-  console.log('readableDate', readableDate)
 
   return readableDate
 }
