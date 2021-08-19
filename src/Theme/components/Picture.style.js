@@ -6,5 +6,8 @@ export default function (props) {
     wrapper: {
       height: hp(40),
     },
+    modal: {
+      margin: 0,
+    },
   })
 }
