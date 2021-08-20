@@ -4,7 +4,6 @@
 import React from 'react'
 import { Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -14,11 +13,6 @@ import { Movie, Audio, Picture } from '@/Components'
 
 const Media = ({ media }) => {
   const { t } = useTranslation()
-  // const network = useSelector(state => state.network)
-
-  // if (!network.isConnected) {
-  //   return null
-  // }
 
   const url = media.url.match(/^.*[?]/)[0]
 
