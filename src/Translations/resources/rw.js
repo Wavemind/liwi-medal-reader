@@ -117,6 +117,8 @@ export default {
         proposed_title: 'Diagnoses proposed by {{ version_name }}',
         additional_title: 'Additional diagnoses selected',
         additional_placeholder: 'Select additional {{ item }}',
+        multiple_diagnostics: 'diagnostics',
+        multiple_drugs: 'drugs',
         custom_title: 'Manually added diagnoses',
         custom_placeholder: 'Add diagnoses manually',
         no_proposed: 'No diagnoses proposed',

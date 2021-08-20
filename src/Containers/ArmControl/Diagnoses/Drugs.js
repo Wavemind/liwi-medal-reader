@@ -139,7 +139,9 @@ const DrugsArmControlContainer = () => {
             <View style={Gutters.regularHPadding}>
               <AdditionalSelect
                 listObject={diagnosis.drugs.additional}
-                listItemType="drugs"
+                listItemLabel={t(
+                  'containers.medical_case.diagnoses.multiple_drugs',
+                )}
                 handleRemove={removeAdditionalDrug}
                 diagnosisId={diagnosis.id}
                 diagnosisKey={diagnosisKey}

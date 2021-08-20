@@ -2,8 +2,8 @@
  * The external imports
  */
 import React from 'react'
-import { View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -13,6 +13,7 @@ import RemoveAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAddit
 
 const AdditionalDiagnoses = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const additional = useSelector(
     state => state.medicalCase.item.diagnosis.additional,
@@ -31,15 +32,13 @@ const AdditionalDiagnoses = () => {
   }
 
   return (
-    <View>
-      <View>
-        <AdditionalSelect
-          listObject={additional}
-          listItemType="diagnoses"
-          handleRemove={removeAdditionalDiagnosis}
-        />
-      </View>
-    </View>
+    <AdditionalSelect
+      listObject={additional}
+      listItemLabel={t(
+        'containers.medical_case.diagnoses.multiple_diagnostics',
+      )}
+      handleRemove={removeAdditionalDiagnosis}
+    />
   )
 }
 

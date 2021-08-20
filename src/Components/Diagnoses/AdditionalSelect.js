@@ -16,7 +16,7 @@ import { translate } from '@/Translations/algorithm'
 
 const AdditionalSelect = ({
   listObject,
-  listItemType,
+  listItemLabel,
   handleRemove,
   diagnosisId = null,
   diagnosisKey = null,
@@ -54,7 +54,11 @@ const AdditionalSelect = ({
       {listValues.length === 0 && (
         <View>
           <Text style={finalDiagnoses.noItemsText}>
-            {t(`containers.medical_case.${diagnosisId ? 'drugs' : 'diagnoses'}.no_additional`)}
+            {t(
+              `containers.medical_case.${
+                diagnosisId ? 'drugs' : 'diagnoses'
+              }.no_additional`,
+            )}
           </Text>
         </View>
       )}
@@ -87,7 +91,7 @@ const AdditionalSelect = ({
       >
         <Text style={additionalSelect.addAdditionalButtonText}>
           {t('containers.medical_case.diagnoses.additional_placeholder', {
-            item: listItemType,
+            item: listItemLabel,
           })}
         </Text>
         <View style={additionalSelect.addAdditionalButtonCountWrapper}>
