@@ -127,6 +127,13 @@ const DateInput = () => {
    * @param {Timestamp} birthDate
    */
   const relatedActions = async birthDate => {
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date',
+        value: birthDate,
+      }),
+    )
+
     // Trigger formulas related to birth date
     await dispatch(
       HandleDateFormulas.action({
@@ -155,13 +162,6 @@ const DateInput = () => {
         new Date(),
       )
 
-      dispatch(
-        UpdateField.action({
-          field: 'birth_date',
-          value: birthDate.getTime(),
-        }),
-      )
-
       relatedActions(birthDate.getTime())
     }
   }, [dayValue, monthValue, yearValue])
@@ -180,12 +180,7 @@ const DateInput = () => {
       } else {
         birthDate = subYears(new Date(), estimatedValue)
       }
-      dispatch(
-        UpdateField.action({
-          field: 'birth_date',
-          value: birthDate.getTime(),
-        }),
-      )
+
       relatedActions(birthDate.getTime())
     }
   }, [estimatedValue, estimatedDateType])
@@ -219,14 +214,14 @@ const DateInput = () => {
     // TODO Improve it
     setIsEstimated(value)
     setEstimatedValue('')
-    setEstimatedDateType('month')
+    setEstimatedDateType(value ? 'month' : null)
     setDayValue(null)
     setMonthValue(null)
     setYearValue(null)
     dispatch(
       UpdateField.action({
         field: 'birth_date_estimated_type',
-        value: 'month',
+        value: value ? 'month' : null,
       }),
     )
     dispatch(
