@@ -35,9 +35,6 @@ export default {
   answers: {
     yes: 'Yes',
     no: 'No',
-    year: 'Year',
-    month: 'Month',
-    day: 'Day',
     measured: 'Measured',
     estimated: 'Estimated',
   },
@@ -177,8 +174,8 @@ export default {
       },
     },
     synchronization: {
-      synchronize: 'Synchronize',
       not_synchronized: 'Medical cases not synchronized yet',
+      synchronize: 'Synchronize',
       warning: 'You have not synchronized for over 7 days',
     },
     settings: {
@@ -208,6 +205,16 @@ export default {
     consent: {
       title: 'Consent',
       question: 'Consent to data processing for this visit (No if revoked)',
+    },
+    date: {
+      days: 'Day',
+      months: 'Month',
+      years: 'Year',
+      estimated: {
+        days: 'In days',
+        months: 'In months',
+        years: 'In years',
+      },
     },
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
@@ -388,7 +395,7 @@ export default {
     },
   },
   validation: {
-    is_required: 'The "{{ field }}" question is mandatory',
+    is_required: 'Field "{{ field }}" is mandatory',
     consent_file_blank: "The data processing consent can't be blank",
     final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
     medicines_required: 'Please agree or refuse all medicines',
