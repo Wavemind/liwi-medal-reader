@@ -52,9 +52,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
 
   useEffect(() => {
     const newDiagnoses = sortDiagnosesByUrgency()
-    if (!isEqual(newDiagnoses, sortedDiagnoses)) {
-      setSortedDiagnoses(newDiagnoses)
-    }
+    setSortedDiagnoses(newDiagnoses)
   }, [isFocused, diagnoses])
 
   /**

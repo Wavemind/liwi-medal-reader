@@ -7,7 +7,11 @@ import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
  * @param {finalDiagnosis} finalDiagnosis : the final diagnosis we want to get the drugs from
  * @returns {Array<Drug>} : Available drugs
  */
-export const getAvailableHealthcare = (finalDiagnosis, key) => {
+export const getAvailableHealthcare = (
+  finalDiagnosis,
+  key,
+  exclusion = true,
+) => {
   const state = store.getState()
   let instances =
     state.algorithm.item.diagnoses[finalDiagnosis.diagnosis_id].final_diagnoses[
@@ -19,7 +23,7 @@ export const getAvailableHealthcare = (finalDiagnosis, key) => {
   const topConditions = getTopConditions(instances, true)
   const questionsToDisplay = []
   if (key === 'drugs') {
-    handleDrugs(topConditions, questionsToDisplay, instances)
+    handleDrugs(topConditions, questionsToDisplay, instances, exclusion)
   } else {
     handleManagements(topConditions, questionsToDisplay, instances)
   }
@@ -76,21 +80,33 @@ export const handleManagements = (children, questionsToDisplay, instances) => {
  * @param {*} questionsToDisplay : list of available drug we are updating
  * @param {Array<Instance>} instances : All the nodes in the final Diagnosis diagram
  */
-export const handleDrugs = (children, questionsToDisplay, instances) => {
+export const handleDrugs = (
+  children,
+  questionsToDisplay,
+  instances,
+  exclusion,
+) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   const agreedFinalDiagnoses = state.medicalCase.item.diagnosis.agreed
 
-  const agreedDrugs = Object.values(agreedFinalDiagnoses)
-    .map(agreedFinalDiagnosis =>
-      Object.values(agreedFinalDiagnosis.drugs.agreed).map(drug => drug.id),
-    )
-    .flat()
+  let agreedDrugs = []
+  if (exclusion) {
+    agreedDrugs = Object.values(agreedFinalDiagnoses)
+      .map(agreedFinalDiagnosis =>
+        Object.values(agreedFinalDiagnosis.drugs.agreed).map(drug => drug.id),
+      )
+      .flat()
+  }
 
   children.forEach(instance => {
     if (instance.conditions.length === 0 || calculateCondition(instance)) {
       if (nodes[instance.id].category === Config.CATEGORIES.drug) {
-        if (!isHealthcareExcluded(instance.id, agreedDrugs)) {
+        if (exclusion) {
+          if (!isHealthcareExcluded(instance.id, agreedDrugs)) {
+            questionsToDisplay.push(instance.id)
+          }
+        } else {
           questionsToDisplay.push(instance.id)
         }
       } else if (instance.children && instance.children.length > 0) {
@@ -99,7 +115,7 @@ export const handleDrugs = (children, questionsToDisplay, instances) => {
             childId => nodes[childId].category !== Config.CATEGORIES.management,
           )
           .map(childId => instances[childId])
-        handleDrugs(childrenInstance, questionsToDisplay, instances)
+        handleDrugs(childrenInstance, questionsToDisplay, instances, exclusion)
       }
     }
   })
