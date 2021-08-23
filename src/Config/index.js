@@ -60,6 +60,7 @@ export const Config = {
   LANGUAGES: [
     { label: 'English', value: 'en' },
     { label: 'Swahili', value: 'sw' },
+    { label: 'Hindi', value: 'hi' },
     { label: 'Français', value: 'fr' },
   ],
   MEDICAL_CASE_STATUS: {

@@ -177,8 +177,8 @@ export default {
       },
     },
     synchronization: {
-      synchronize: 'Synchronize',
       not_synchronized: 'Medical cases not synchronized yet',
+      synchronize: 'Synchronize',
       warning: 'You have not synchronized for over 7 days',
     },
     settings: {
@@ -388,7 +388,7 @@ export default {
     },
   },
   validation: {
-    is_required: 'The "{{ field }}" question is mandatory',
+    is_required: 'Field "{{ field }}" is mandatory',
     consent_file_blank: "The data processing consent can't be blank",
     final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
     medicines_required: 'Please agree or refuse all medicines',
