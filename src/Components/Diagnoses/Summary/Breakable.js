@@ -35,13 +35,20 @@ const Breakable = ({ drug, drugDose, diagnosisId }) => {
     <View>
       <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
       {drugDose.by_age ? (
-        <Text style={summary.drugText}>{`${roundSup(drugDose.unique_dose)} ${t(
-          'formulations.drug.tablets',
-        )} ${t('formulations.medication_form.per_administration')} ${t(
-          'formulations.drug.every',
-        )} ${drugDose.recurrence} ${t('formulations.drug.h')} ${
-          drug.duration || drugInstance.duration
-        } ${t('formulations.drug.days')}`}</Text>
+        <>
+          <Text style={summary.drugText}>{`${roundSup(
+            drugDose.unique_dose,
+          )} ${t('formulations.drug.tablets')} ${t(
+            'formulations.medication_form.per_administration',
+          )} ${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+            'formulations.drug.h',
+          )} ${drug.duration || drugInstance.duration} ${t(
+            'formulations.drug.days',
+          )}`}</Text>
+          <Text style={[Gutters.regularTMargin, summary.drugText]}>
+            {translate(drugDose.dispensing_description)}
+          </Text>
+        </>
       ) : drugDose.doseResult === null ? (
         <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
       ) : (
