@@ -8,29 +8,32 @@ export default async errors => {
   const state = store.getState()
   const agreed = state.medicalCase.item.diagnosis.agreed
   const additional = state.medicalCase.item.diagnosis.additional
-  
-  let allProposedDrugs = []
-  let allAgreedDrugs = []
-  let allRefusedDrugs = []
+  const isArmControl = state.algorithm.item.is_arm_control
 
-  Object.values({ ...agreed, ...additional }).forEach(diagnosis => {
-    allProposedDrugs = allProposedDrugs.concat(diagnosis.drugs.proposed)
-    allAgreedDrugs = allAgreedDrugs.concat(
-      Object.values(diagnosis.drugs.agreed).map(agreedDrug => agreedDrug.id),
-    )
-    allRefusedDrugs = allRefusedDrugs.concat(diagnosis.drugs.refused)
-  })
+  if (!isArmControl) {
+    let allProposedDrugs = []
+    let allAgreedDrugs = []
+    let allRefusedDrugs = []
 
-  allProposedDrugs.forEach(proposedNode => {
-    if (
-      !(
-        allRefusedDrugs.includes(proposedNode) ||
-        allAgreedDrugs.includes(proposedNode)
+    Object.values({ ...agreed, ...additional }).forEach(diagnosis => {
+      allProposedDrugs = allProposedDrugs.concat(diagnosis.drugs.proposed)
+      allAgreedDrugs = allAgreedDrugs.concat(
+        Object.values(diagnosis.drugs.agreed).map(agreedDrug => agreedDrug.id),
       )
-    ) {
-      errors[proposedNode] = i18n.t('validation.medicines_required')
-    }
-  })
+      allRefusedDrugs = allRefusedDrugs.concat(diagnosis.drugs.refused)
+    })
+
+    allProposedDrugs.forEach(proposedNode => {
+      if (
+        !(
+          allRefusedDrugs.includes(proposedNode) ||
+          allAgreedDrugs.includes(proposedNode)
+        )
+      ) {
+        errors[proposedNode] = i18n.t('validation.medicines_required')
+      }
+    })
+  }
 
   return errors
 }
