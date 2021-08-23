@@ -79,22 +79,15 @@ const searchFinalDiagnoses = (
 export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
   const nodes = store.getState().algorithm.item.nodes
   const newFinalDiagnoses = {}
-  // List of all agreed drugs
-  const agreedDrugs = Object.values(finalDiagnoses)
-    .map(finalDiagnosis =>
-      Object.values(finalDiagnosis.drugs.agreed).map(drug => drug.id),
-    )
-    .flat()
 
   // Find for all final diagnosis the proposed drug
   Object.values(finalDiagnoses).map(finalDiagnosis => {
     const availableDrugs = getAvailableHealthcare(
       nodes[finalDiagnosis.id],
       'drugs',
+      false,
     )
-    const newProposed = availableDrugs.filter(
-      drugId => !isHealthcareExcluded(drugId, agreedDrugs),
-    )
+    let newProposed = availableDrugs
     const newAgreed = JSON.parse(JSON.stringify(finalDiagnosis.drugs.agreed))
     const newAdditional = JSON.parse(
       JSON.stringify(finalDiagnosis.drugs.additional),
@@ -107,6 +100,14 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
 
       drugToRemove.forEach(drugId => delete newAgreed[drugId])
     }
+
+    newProposed = newProposed.filter(
+      drugId =>
+        !isHealthcareExcluded(
+          drugId,
+          Object.values(newAgreed).map(drug => drug.id),
+        ),
+    )
 
     const agreedWithFormulations = {}
 
