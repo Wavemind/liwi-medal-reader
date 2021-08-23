@@ -35,7 +35,7 @@ const BirthDate = () => {
           <Text style={question.text(birthDateError ? 'error' : null)}>
             {birthDateEstimated
               ? t('patient.estimated_age')
-              : t('patient.birth_date')}{' '}
+              : t('patient.birth_date')}
             *
           </Text>
           <View style={question.inputWrapper}>
