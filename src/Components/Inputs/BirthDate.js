@@ -24,13 +24,19 @@ const BirthDate = () => {
   const { t } = useTranslation()
 
   const birthDateError = useSelector(state => state.validation.item.birth_date)
+  const birthDateEstimated = useSelector(
+    state => state.patient.item.birth_date_estimated,
+  )
 
   return (
     <View style={question.wrapper(false)}>
       <View style={question.container}>
         <View style={question.questionWrapper(false)}>
           <Text style={question.text(birthDateError ? 'error' : null)}>
-            {t('patient.birth_date')} *
+            {birthDateEstimated
+              ? t('patient.estimated_age')
+              : t('patient.birth_date')}
+            *
           </Text>
           <View style={question.inputWrapper}>
             <Date />

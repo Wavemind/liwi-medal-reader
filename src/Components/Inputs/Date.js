@@ -127,6 +127,13 @@ const DateInput = () => {
    * @param {Timestamp} birthDate
    */
   const relatedActions = async birthDate => {
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date',
+        value: birthDate,
+      }),
+    )
+
     // Trigger formulas related to birth date
     await dispatch(
       HandleDateFormulas.action({
@@ -155,13 +162,6 @@ const DateInput = () => {
         new Date(),
       )
 
-      dispatch(
-        UpdateField.action({
-          field: 'birth_date',
-          value: birthDate.getTime(),
-        }),
-      )
-
       relatedActions(birthDate.getTime())
     }
   }, [dayValue, monthValue, yearValue])
@@ -180,12 +180,7 @@ const DateInput = () => {
       } else {
         birthDate = subYears(new Date(), estimatedValue)
       }
-      dispatch(
-        UpdateField.action({
-          field: 'birth_date',
-          value: birthDate.getTime(),
-        }),
-      )
+
       relatedActions(birthDate.getTime())
     }
   }, [estimatedValue, estimatedDateType])
@@ -219,14 +214,14 @@ const DateInput = () => {
     // TODO Improve it
     setIsEstimated(value)
     setEstimatedValue('')
-    setEstimatedDateType('month')
+    setEstimatedDateType(value ? 'month' : null)
     setDayValue(null)
     setMonthValue(null)
     setYearValue(null)
     dispatch(
       UpdateField.action({
         field: 'birth_date_estimated_type',
-        value: 'month',
+        value: value ? 'month' : null,
       }),
     )
     dispatch(
@@ -257,17 +252,17 @@ const DateInput = () => {
               />
               <Picker.Item
                 key="select-year"
-                label={t('answers.year')}
+                label={t('components.date.estimated.years')}
                 value="year"
               />
               <Picker.Item
                 key="select-month"
-                label={t('answers.month')}
+                label={t('components.date.estimated.months')}
                 value="month"
               />
               <Picker.Item
                 key="select-day"
-                label={t('answers.day')}
+                label={t('components.date.estimated.days')}
                 value="day"
               />
             </Picker>
@@ -293,7 +288,7 @@ const DateInput = () => {
             >
               <Picker.Item
                 key="select-year-placeholder"
-                label={t('answers.year')}
+                label={t('components.date.years')}
                 value={null}
               />
               {yearsRange.map(year => (
@@ -315,7 +310,7 @@ const DateInput = () => {
             >
               <Picker.Item
                 key="select-month-placeholder"
-                label={t('answers.month')}
+                label={t('components.date.months')}
                 value={null}
               />
               {monthsRange.map(month => (
@@ -341,7 +336,7 @@ const DateInput = () => {
             >
               <Picker.Item
                 key="select-day-placeholder"
-                label={t('answers.day')}
+                label={t('components.date.days')}
                 value={null}
               />
               {daysRange.map(day => (

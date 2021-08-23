@@ -35,9 +35,6 @@ export default {
   answers: {
     yes: 'Oui',
     no: 'Non',
-    year: 'Année',
-    month: 'Mois',
-    day: 'Jour',
     measured: 'Mesuré',
     estimated: 'Estimé',
   },
@@ -210,6 +207,16 @@ export default {
       title: 'Consentement',
       question:
         'Consentez-vous au traitement des données pour cette visite ? (Non si refus)',
+    },
+    date: {
+      days: 'Jour',
+      months: 'Mois',
+      years: 'Année',
+      estimated: {
+        days: 'En années',
+        months: 'En mois',
+        years: 'En jours',
+      },
     },
     medical_case_drawer: {
       current_medical_case: 'Consultation en cours',

@@ -35,9 +35,6 @@ export default {
   answers: {
     yes: 'Yes',
     no: 'No',
-    year: 'Year',
-    month: 'Month',
-    day: 'Day',
     measured: 'Measured',
     estimated: 'Estimated',
   },
@@ -208,6 +205,16 @@ export default {
     consent: {
       title: 'Consent',
       question: 'Consent to data processing for this visit (No if revoked)',
+    },
+    date: {
+      days: 'Day',
+      months: 'Month',
+      years: 'Year',
+      estimated: {
+        days: 'In days',
+        months: 'In months',
+        years: 'In years',
+      },
     },
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
