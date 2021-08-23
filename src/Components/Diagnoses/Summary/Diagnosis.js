@@ -16,7 +16,7 @@ import { Drugs, Managements, QuestionInfoButton } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 
-const Diagnosis = ({ diagnosisKey, excludedManagements }) => {
+const Diagnosis = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -87,10 +87,7 @@ const Diagnosis = ({ diagnosisKey, excludedManagements }) => {
         </View>
         <View style={[Gutters.regularHPadding, Gutters.regularVMargin]}>
           <Drugs diagnosis={diagnosis} />
-          <Managements
-            diagnosis={diagnosisNode}
-            excludedManagements={excludedManagements}
-          />
+          <Managements diagnosis={diagnosisNode} />
         </View>
       </View>
     )

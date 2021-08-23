@@ -14,7 +14,7 @@ import { translate } from '@/Translations/algorithm'
 import { getAvailableHealthcare } from '@/Utils/Drug'
 import { QuestionInfoButton } from '@/Components'
 
-const Managements = ({ diagnosis, excludedManagements }) => {
+const Managements = ({ diagnosis }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
@@ -40,25 +40,20 @@ const Managements = ({ diagnosis, excludedManagements }) => {
           {t('containers.medical_case.summary.no_managements')}
         </Text>
       ) : (
-        managements.map((managementId, i) => {
-          const currentNode = nodes[managementId]
-          if (!excludedManagements.includes(managementId)) {
-            return (
-              <View
-                key={`management-${managementId}`}
-                style={summary.managementWrapper(i === managementsCount - 1)}
-              >
-                <Text style={summary.drugTitle}>
-                  {translate(currentNode.label)}
-                </Text>
-                {(translate(currentNode.description) !== '' ||
-                  currentNode.medias?.length > 0) && (
-                  <QuestionInfoButton nodeId={managementId} />
-                )}
-              </View>
-            )
-          }
-        })
+        managements.map((managementId, i) => (
+          <View
+            key={`management-${managementId}`}
+            style={summary.managementWrapper(i === managementsCount - 1)}
+          >
+            <Text style={summary.drugTitle}>
+              {translate(nodes[managementId].label)}
+            </Text>
+            {(translate(nodes[managementId].description) !== '' ||
+              nodes[managementId].medias?.length > 0) && (
+              <QuestionInfoButton nodeId={managementId} />
+            )}
+          </View>
+        ))
       )}
     </View>
   )

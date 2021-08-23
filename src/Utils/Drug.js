@@ -34,15 +34,15 @@ export const getAvailableHealthcare = (
 /**
  * Tells if a drug is excluded by another drug
  * @param {Integer} drugId : the Id of the drug we are testing
- * @param {Array<Integer>} agreedDrugs : Array of drug id
+ * @param {Array<Integer>} agreedHealthCares : Array of drug id or managements id
  * @returns {Boolean} : Tells if a drug is excluded by another drug
  */
-export const isHealthcareExcluded = (drugId, agreedDrugs) => {
+export const isHealthcareExcluded = (healthCareId, agreedHealthCares) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
 
-  return nodes[drugId].excluding_nodes_ids.some(excludingDrugId =>
-    agreedDrugs.includes(excludingDrugId),
+  return nodes[healthCareId].excluding_nodes_ids.some(excludingHealthCareId =>
+    agreedHealthCares.includes(excludingHealthCareId),
   )
 }
 
@@ -50,12 +50,18 @@ export const handleManagements = (children, questionsToDisplay, instances) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   const agreedFinalDiagnoses = state.medicalCase.item.diagnosis.agreed
-
   const managements = Object.values(agreedFinalDiagnoses)
     .map(agreedFinalDiagnosis =>
-      Object.values(nodes[agreedFinalDiagnosis.id].managements).map(
-        management => management.id,
-      ),
+      Object.values(nodes[agreedFinalDiagnosis.id].managements)
+        .filter(management => {
+          if (
+            management.conditions.length === 0 ||
+            calculateCondition(management)
+          ) {
+            return management
+          }
+        })
+        .map(management => management.id),
     )
     .flat()
 

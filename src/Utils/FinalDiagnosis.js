@@ -135,6 +135,12 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
       }
     })
 
+    // management calculations
+    const managements = getAvailableHealthcare(
+      nodes[finalDiagnosis.id],
+      'managements',
+    )
+
     newFinalDiagnoses[finalDiagnosis.id] = {
       ...finalDiagnosis,
       drugs: {
@@ -143,6 +149,7 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
         agreed: agreedWithFormulations,
         additional: additionalWithFormulations,
       },
+      ...managements,
     }
   })
   return newFinalDiagnoses

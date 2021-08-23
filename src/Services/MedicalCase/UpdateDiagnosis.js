@@ -23,15 +23,17 @@ export default async (diagnosisId, value) => {
   if (value && !isInAgreed) {
     const currentNode = nodes[diagnosisId]
     const availableDrugs = getAvailableHealthcare(currentNode, 'drugs')
+    const availableManagements = getAvailableHealthcare(
+      currentNode,
+      'managements',
+    )
 
     await store.dispatch(
       AddAgreedDiagnoses.action({
         diagnosisId,
         diagnosisContent: {
           id: diagnosisId,
-          managements: Object.values(currentNode.managements).map(
-            management => management.id,
-          ),
+          managements: availableManagements,
           drugs: {
             proposed: availableDrugs,
             agreed: {},
