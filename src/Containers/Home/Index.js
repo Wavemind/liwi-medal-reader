@@ -26,6 +26,7 @@ import { fadeIn } from '@/Theme/Animation'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import GetAllMedicalCaseDB from '@/Store/DatabaseMedicalCase/GetAll'
+import ForceCloseMedicalCaseDB from '@/Store/DatabaseMedicalCase/ForceClose'
 
 const IndexHomeContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
@@ -62,6 +63,7 @@ const IndexHomeContainer = ({ navigation }) => {
   const medicalCasesError = useSelector(
     state => state.databaseMedicalCase.getAll.error,
   )
+
   const isConnected = useSelector(state => state.network.isConnected)
 
   useEffect(() => {
@@ -78,7 +80,15 @@ const IndexHomeContainer = ({ navigation }) => {
 
   useEffect(() => {
     handleRefresh()
+    closeMedicalCase()
   }, [isFocused])
+
+  /**
+   * Force close medical case after 36 hours
+   */
+  const closeMedicalCase = () => {
+    dispatch(ForceCloseMedicalCaseDB.action())
+  }
 
   /**
    * Fetch 15 latest medical cases
@@ -98,7 +108,6 @@ const IndexHomeContainer = ({ navigation }) => {
   }
 
   /**
-   * DEV ONLY
    * Create patient without scanning QR code
    */
   const newPatient = async () => {
