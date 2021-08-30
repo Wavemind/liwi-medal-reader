@@ -20,5 +20,3 @@ export default async () => {
         differenceInDays(new Date(medicalCase.createdAt), startOfToday()) >= 7),
   )
 }
-
-// 26.08.2021 10:30 >
