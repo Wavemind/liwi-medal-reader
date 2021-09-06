@@ -138,6 +138,8 @@ export default {
           'Choisir une formulation disponible et appropriée pour votre patient·e',
       },
       summary: {
+        date_consultation: 'Date de la consultation',
+        age_date_consultation: 'Age lors de la consultation',
         management_consulting: 'Prise en charge et conseils',
         no_managements: 'Aucune prise en charge disponible',
       },
@@ -332,6 +334,7 @@ export default {
   patient: {
     first_name: 'Prénom',
     last_name: 'Nom',
+    gender: 'Sexe',
     birth_date: 'Date de naissance',
     estimated_age: 'Âge estimé',
     reason: 'Raison du changement de centre de santé',

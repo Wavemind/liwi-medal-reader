@@ -10,9 +10,12 @@ import { FlatList, View } from 'react-native'
 import { useTheme } from '@/Theme'
 import { SummaryQuestionItem } from '@/Components'
 import { RemoveQuestionService } from '@/Services/MedicalCase'
+import { BasicMeasurementQuestionsService } from '@/Services/Steps'
 
 const SummaryQuestions = () => {
   const { Gutters } = useTheme()
+
+  console.log(BasicMeasurementQuestionsService())
 
   const answeredQuestions = Object.values(RemoveQuestionService()).filter(
     question => {
@@ -21,13 +24,12 @@ const SummaryQuestions = () => {
   )
 
   return (
-    <View style={Gutters.regularHMargin}>
-      <FlatList
-        data={answeredQuestions}
-        renderItem={({ item }) => <SummaryQuestionItem question={item} />}
-        keyExtractor={item => item.id}
-      />
-    </View>
+    
+    <FlatList
+      data={BasicMeasurementQuestionsService()}
+      renderItem={({ item }) => <SummaryQuestionItem nodeId={item} />}
+      keyExtractor={item => item}
+    />
   )
 }
 

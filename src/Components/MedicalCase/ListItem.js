@@ -50,6 +50,7 @@ const ListItem = ({ item }) => {
     await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
       await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
+      await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('MedicalCaseSummary')
     } else if (locked) {
       await dispatch(SetParams.action({ type: 'lock' }))

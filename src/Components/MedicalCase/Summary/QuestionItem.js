@@ -12,17 +12,19 @@ import { translate } from '@/Translations/algorithm'
 import { QuestionInfoButton } from '@/Components'
 import { useTheme } from '@/Theme'
 
-const SummaryQuestionItem = ({ question }) => {
+const SummaryQuestionItem = ({ nodeId }) => {
   const {
     Containers: { patientPersonalInfo },
   } = useTheme()
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
+  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
 
-  const currentNode = nodes[question.id]
-  const answer = currentNode.answers[question.answer]
-    ? translate(currentNode.answers[question.answer].label)
-    : question.value
+  const currentNode = nodes[nodeId]
+  console.log(nodeId, currentNode)
+  const answer = currentNode.answers[mcNodes[nodeId].answer]
+    ? translate(currentNode.answers[mcNodes[nodeId].answer].label)
+    : mcNodes[nodeId].value
 
   return (
     <View style={patientPersonalInfo.textWrapper}>
@@ -32,7 +34,7 @@ const SummaryQuestionItem = ({ question }) => {
         </Text>
         {(translate(currentNode.description) !== '' ||
           currentNode.medias?.length > 0) && (
-          <QuestionInfoButton nodeId={question.id} />
+          <QuestionInfoButton nodeId={nodeId} />
         )}
       </View>
       <Text style={patientPersonalInfo.value}>{answer}</Text>

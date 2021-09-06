@@ -138,6 +138,8 @@ export default {
           'Which drug formulation is available and suited for your patient?',
       },
       summary: {
+        date_consultation: 'Date of consultation',
+        age_date_consultation: 'Age at time of consultation',
         management_consulting: 'Managements & Counselling',
         no_managements: 'No managements available',
       },
@@ -330,6 +332,7 @@ export default {
     first_name: 'First name',
     last_name: 'Last name',
     birth_date: 'Date of Birth',
+    gender: 'Gender',
     estimated_age: 'Estimated age',
     reason: 'Reason for changing facility',
     readable_birth_date: {
