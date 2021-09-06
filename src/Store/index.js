@@ -64,6 +64,7 @@ const persistConfig = {
   whitelist: [
     'device',
     'medicalCase',
+    'patient',
     'healthFacility',
     'system',
     'theme',

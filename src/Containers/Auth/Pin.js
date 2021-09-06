@@ -14,7 +14,10 @@ import { heightPercentageToDP } from 'react-native-responsive-screen'
  */
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 import ChangeVersion from '@/Store/System/ChangeVersion'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
+import {
+  navigateAndSimpleReset,
+  navigateToMedicalCase,
+} from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { ToggleSwitchDarkMode, Loader } from '@/Components'
@@ -34,6 +37,7 @@ const PinAuthContainer = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current
   const pinCode = useSelector(state => state.healthFacility.item.pin_code)
   const currentClinician = useSelector(state => state.healthFacility.clinician)
+  const currentCase = useSelector(state => state.medicalCase.item)
   const algorithm = useSelector(state => state.algorithm.item)
   const algorithmFetchOneLoading = useSelector(
     state => state.algorithm.fetchOne.loading,
@@ -67,7 +71,11 @@ const PinAuthContainer = () => {
             newVersionId: result.payload.version_id,
           }),
         )
-        navigateAndSimpleReset('Home')
+        if (currentCase.id && currentCase.close === 0) {
+          navigateToMedicalCase(currentCase)
+        } else {
+          navigateAndSimpleReset('Home')
+        }
       }
     } else {
       setStatus('failure')
