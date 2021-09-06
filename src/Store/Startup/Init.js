@@ -25,7 +25,7 @@ export default {
     const state = store.getState()
 
     // Set default language
-    const appLanguage = state.system.language
+    const appLanguage = state.system.appLanguage
     i18n.changeLanguage(appLanguage)
 
     // Set default theme

@@ -6,7 +6,8 @@ import ChangeVersion from './ChangeVersion'
 const sliceInitialState = {
   item: {},
   environment: __DEV__ ? 'staging' : 'production',
-  language: 'en',
+  appLanguage: 'en',
+  algorithmLanguage: 'en',
   versionId: null,
 }
 
