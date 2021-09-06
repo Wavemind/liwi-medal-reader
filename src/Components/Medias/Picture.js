@@ -45,10 +45,11 @@ const Picture = ({ url }) => {
             cropWidth={wp(100)}
             cropHeight={hp(100)}
             imageWidth={wp(100)}
-            imageHeight={hp(50)}
+            imageHeight={hp(100)}
           >
             <Image
-              style={picture.wrapper}
+              style={picture.image}
+              resizeMode="center"
               source={{
                 uri: url,
               }}

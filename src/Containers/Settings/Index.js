@@ -16,8 +16,7 @@ import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
-import ChangeAppLanguage from '@/Store/System/ChangeLanguage'
-import ChangeAlgoLanguage from '@/Store/Algorithm/ChangeLanguage'
+import ChangeLanguage from '@/Store/System/ChangeLanguage'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 import DestroyAlgorithm from '@/Store/Algorithm/Destroy'
 import DestroyDevice from '@/Store/Device/Destroy'
@@ -42,10 +41,10 @@ const IndexSettingsContainer = () => {
 
   // Local state definition
   const [algorithmLanguage, setAlgorithmLanguage] = useState(
-    useSelector(state => state.algorithm.language),
+    useSelector(state => state.system.algorithmLanguage),
   )
   const [appLanguage, setAppLanguage] = useState(
-    useSelector(state => state.system.language),
+    useSelector(state => state.system.appLanguage),
   )
   const [algorithmLanguages] = useState(
     algorithm.version_languages.map(language => ({
@@ -82,7 +81,12 @@ const IndexSettingsContainer = () => {
   const changeAppLanguage = async newAppLanguage => {
     i18n.changeLanguage(newAppLanguage)
     setAppLanguage(newAppLanguage)
-    await dispatch(ChangeAppLanguage.action({ newLanguage: newAppLanguage }))
+    await dispatch(
+      ChangeLanguage.action({
+        key: 'appLanguage',
+        newLanguage: newAppLanguage,
+      }),
+    )
   }
 
   /**
@@ -91,7 +95,10 @@ const IndexSettingsContainer = () => {
    */
   const changeAlgorithmLanguage = async newAlgorithmLanguage => {
     await dispatch(
-      ChangeAlgoLanguage.action({ newLanguage: newAlgorithmLanguage }),
+      ChangeLanguage.action({
+        key: 'algorithmLanguage',
+        newLanguage: newAlgorithmLanguage,
+      }),
     )
     setAlgorithmLanguage(newAlgorithmLanguage)
   }

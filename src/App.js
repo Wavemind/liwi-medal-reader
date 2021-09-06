@@ -27,8 +27,8 @@ import './Translations'
 
 const App = () => {
   const appState = useRef(AppState.currentState)
-  const [appStateVisible, setAppStateVisible] = useState(appState.current)
 
+  // Display pin screen after app goes in background
   useEffect(() => {
     AppState.addEventListener('change', handleAppStateChange)
 
@@ -46,7 +46,6 @@ const App = () => {
     }
 
     appState.current = nextAppState
-    setAppStateVisible(appState.current)
   }
 
   return (

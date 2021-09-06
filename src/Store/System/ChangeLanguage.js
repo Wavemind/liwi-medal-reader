@@ -4,6 +4,6 @@ export default {
   initialState: {},
   action: createAction('system/changeLanguage'),
   reducers(state, { payload }) {
-    state.language = payload.newLanguage
+    state[payload.key] = payload.newLanguage
   },
 }

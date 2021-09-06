@@ -81,6 +81,12 @@ const ListItem = ({ item }) => {
           </Text>
         </View>
 
+        <View style={medicalCaseListItem.dateWrapper}>
+          <Text style={medicalCaseListItem.date}>
+            {format(item.updatedAt, 'dd.MM.yyyy')}
+          </Text>
+        </View>
+
         <View style={medicalCaseListItem.statusWrapper}>
           <Text style={medicalCaseListItem.statusTitle}>
             {item.closedAt > 0

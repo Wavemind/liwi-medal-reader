@@ -182,6 +182,9 @@ const ListMedicalCaseContainer = ({ navigation }) => {
         <Text style={medicalCaseList.headerText}>
           {t('containers.medical_case.list.name')}
         </Text>
+        <Text style={medicalCaseList.headerText}>
+          {t('containers.patient.list.last_visit')}
+        </Text>
         <Text style={[medicalCaseList.headerText, Fonts.textCenter]}>
           {t('containers.medical_case.list.status')}
         </Text>

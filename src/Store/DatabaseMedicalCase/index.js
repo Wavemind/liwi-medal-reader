@@ -4,6 +4,7 @@ import MedicalCaseUpdate from './Update'
 import MedicalCaseInsert from './Insert'
 import MedicalCaseLock from './Lock'
 import MedicalCaseUnLock from './Unlock'
+import MedicalCaseForceClose from './ForceClose'
 
 const sliceInitialState = {
   medicalCase: { item: {} },
@@ -18,6 +19,7 @@ export default buildSlice(
     MedicalCaseInsert,
     MedicalCaseLock,
     MedicalCaseUnLock,
+    MedicalCaseForceClose,
   ],
   sliceInitialState,
 ).reducer
