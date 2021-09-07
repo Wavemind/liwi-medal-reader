@@ -26,7 +26,7 @@ import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
 const SummaryQuestions = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { Layout, Gutters, Fonts } = useTheme()
+  const { Fonts } = useTheme()
 
   const [loading, setLoading] = useState(true)
 
@@ -56,8 +56,6 @@ const SummaryQuestions = () => {
     nodeId =>
       !(mcNodes[nodeId].answer === null && mcNodes[nodeId].value === ''),
   )
-
-  console.log(assessmentsResult)
 
   if (loading) {
     return <Loader />

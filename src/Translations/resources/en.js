@@ -140,6 +140,7 @@ export default {
       summary: {
         date_consultation: 'Date of consultation',
         age_date_consultation: 'Age at time of consultation',
+        type_of_consultation: 'Type of consultation',
         management_consulting: 'Managements & Counselling',
         no_managements: 'No managements available',
       },
