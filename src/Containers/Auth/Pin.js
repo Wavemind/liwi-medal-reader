@@ -37,7 +37,7 @@ const PinAuthContainer = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current
   const pinCode = useSelector(state => state.healthFacility.item.pin_code)
   const currentClinician = useSelector(state => state.healthFacility.clinician)
-  const currentCase = useSelector(state => state.medicalCase.item)
+  const medicalCase = useSelector(state => state.medicalCase.item)
   const algorithm = useSelector(state => state.algorithm.item)
   const algorithmFetchOneLoading = useSelector(
     state => state.algorithm.fetchOne.loading,
@@ -71,8 +71,8 @@ const PinAuthContainer = () => {
             newVersionId: result.payload.version_id,
           }),
         )
-        if (currentCase.id && currentCase.close === 0) {
-          navigateToMedicalCase(currentCase)
+        if (medicalCase.id && medicalCase.close === 0) {
+          navigateToMedicalCase(medicalCase)
         } else {
           navigateAndSimpleReset('Home')
         }
