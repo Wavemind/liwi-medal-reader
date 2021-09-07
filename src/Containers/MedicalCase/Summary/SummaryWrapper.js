@@ -2,7 +2,7 @@
  * The external imports
  */
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -112,7 +112,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
         <Tab.Screen
           name="Questions"
           component={() => (
-            <View style={[Gutters.smallHMargin, Gutters.smallVMargin]}>
+            <ScrollView style={[Gutters.smallHMargin, Gutters.smallVMargin]}>
               <View style={[Layout.row]}>
                 <View style={[Layout.fill, Layout.column]}>
                   <Text style={[Fonts.textSmall]}>
@@ -142,7 +142,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
                 </View>
               </View>
               <SummaryQuestions />
-            </View>
+            </ScrollView>
           )}
           options={{
             title: t('navigation.questions'),

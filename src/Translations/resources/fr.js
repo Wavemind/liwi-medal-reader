@@ -220,6 +220,9 @@ export default {
         years: 'En jours',
       },
     },
+    summary: {
+      no_questions: "Aucune question n'a été posée à cette étape",
+    },
     medical_case_drawer: {
       current_medical_case: 'Consultation en cours',
     },

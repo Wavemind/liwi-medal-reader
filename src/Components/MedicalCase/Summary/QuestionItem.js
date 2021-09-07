@@ -17,14 +17,16 @@ const SummaryQuestionItem = ({ nodeId }) => {
     Containers: { patientPersonalInfo },
   } = useTheme()
 
-  const nodes = useSelector(state => state.algorithm.item.nodes)
-  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
+  const currentNode = useSelector(state => state.algorithm.item.nodes[nodeId])
+  const mcNode = useSelector(state => state.medicalCase.item.nodes[nodeId])
 
-  const currentNode = nodes[nodeId]
-  console.log(nodeId, currentNode)
-  const answer = currentNode.answers[mcNodes[nodeId].answer]
-    ? translate(currentNode.answers[mcNodes[nodeId].answer].label)
-    : mcNodes[nodeId].value
+  if (mcNode.answer === null && mcNode.value === '') {
+    return null
+  }
+
+  const answer = currentNode.answers[mcNode.answer]
+    ? translate(currentNode.answers[mcNode.answer].label)
+    : mcNode.value
 
   return (
     <View style={patientPersonalInfo.textWrapper}>

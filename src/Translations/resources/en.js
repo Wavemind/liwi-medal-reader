@@ -221,6 +221,9 @@ export default {
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
     },
+    summary: {
+      no_questions: 'No questions asked at this step',
+    },
     modals: {
       lock: {
         title: 'Consultation not available',

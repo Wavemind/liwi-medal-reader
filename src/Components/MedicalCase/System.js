@@ -9,10 +9,15 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { SectionHeader, Question } from '@/Components'
+import {
+  SectionHeader,
+  SectionSubHeader,
+  Question,
+  SummaryQuestionItem,
+} from '@/Components'
 import { translate } from '@/Translations/algorithm'
 
-const System = ({ systemName, step }) => {
+const System = ({ systemName, step, disabled = false }) => {
   const { Gutters } = useTheme()
   const systemsTranslations = useSelector(
     state => state.algorithm.item.config.systems_translations,
@@ -25,12 +30,22 @@ const System = ({ systemName, step }) => {
   return (
     systemData?.length > 0 && (
       <View key={systemName}>
-        <View style={Gutters.regularHMargin}>
-          <SectionHeader label={translate(systemsTranslations[systemName])} />
+        <View style={disabled ? '' : Gutters.regularHMargin}>
+          {disabled ? (
+            <SectionSubHeader
+              label={translate(systemsTranslations[systemName])}
+            />
+          ) : (
+            <SectionHeader label={translate(systemsTranslations[systemName])} />
+          )}
         </View>
-        {systemData.map(item => (
-          <Question key={item} questionId={item} />
-        ))}
+        {systemData.map(item =>
+          disabled ? (
+            <SummaryQuestionItem key={item} nodeId={item} />
+          ) : (
+            <Question key={item} questionId={item} />
+          ),
+        )}
       </View>
     )
   )
