@@ -6,7 +6,6 @@ import { View, ScrollView } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import format from 'date-fns/format'
 
 /**
  * The internal imports
@@ -20,11 +19,16 @@ import {
 } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import { ReadableDate } from '@/Utils'
+import { formatDate } from '@/Utils/Date'
 
 const SummaryWrapperMedicalCaseContainer = () => {
   const { t } = useTranslation()
   const Tab = createMaterialTopTabNavigator()
-  const { Layout, Gutters } = useTheme()
+  const {
+    Layout,
+    Gutters,
+    Containers: { summaryWrapper },
+  } = useTheme()
 
   const patient = useSelector(state => state.patient.item)
   const medicalCase = useSelector(state => state.medicalCase.item)
@@ -56,8 +60,8 @@ const SummaryWrapperMedicalCaseContainer = () => {
 
   return (
     <View style={Layout.fill}>
-      <View style={[Layout.row, Gutters.smallHMargin, Gutters.smallVMargin]}>
-        <View style={[Layout.fill, Layout.column, Gutters.tinyRMargin]}>
+      <View style={summaryWrapper.patientValues}>
+        <View style={summaryWrapper.leftColumn}>
           <SummaryMetadata
             label={t('patient.first_name')}
             value={patient.first_name}
@@ -72,10 +76,10 @@ const SummaryWrapperMedicalCaseContainer = () => {
           />
           <SummaryMetadata
             label={t('patient.birth_date')}
-            value={format(patient.birth_date, 'dd.MM.yyyy')}
+            value={formatDate(patient.birth_date)}
           />
         </View>
-        <View style={[Layout.fill, Layout.column, Gutters.tinyLMargin]}>
+        <View style={summaryWrapper.rightColumn}>
           <SummaryMetadata label="key" value="value" />
         </View>
       </View>
@@ -97,7 +101,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
             <ScrollView style={[Gutters.smallHMargin, Gutters.smallVMargin]}>
               <SummaryMetadata
                 label={t('containers.medical_case.summary.date_consultation')}
-                value={format(medicalCase.createdAt, 'dd.MM.yyyy')}
+                value={formatDate(medicalCase.createdAt)}
               />
               <SummaryMetadata
                 label={t(

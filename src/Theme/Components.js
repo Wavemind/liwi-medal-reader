@@ -48,6 +48,7 @@ import additionalSelectStyles from './components/AdditionalSelect.style'
 import errorStyles from './components/Error.style'
 import medicalCaseListItemStyles from './components/MedicalCaseListItem.style'
 import sectionSubHeaderStyles from './components/SectionSubHeader.style'
+import metadataStyles from './components/Metadata.style'
 
 /**
  *
@@ -101,5 +102,6 @@ export default function (props) {
     additionalSelect: additionalSelectStyles(props),
     error: errorStyles(props),
     medicalCaseListItem: medicalCaseListItemStyles(props),
+    metadata: metadataStyles(props),
   }
 }

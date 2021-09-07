@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useFocusEffect } from '@react-navigation/native'
 import { BackHandler } from 'react-native'
-import format from 'date-fns/format'
 
 /**
  * The internal imports
@@ -31,6 +30,7 @@ import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import { useTheme } from '@/Theme'
 import { ReadableDate } from '@/Utils'
+import { formatDate } from '@/Utils/Date'
 
 const Drawer = createDrawerNavigator()
 const MainNavigator = ({ route, navigation }) => {
@@ -126,7 +126,7 @@ const MainNavigator = ({ route, navigation }) => {
               first_name: patient.first_name,
               last_name: patient.last_name,
               birth_date: patient.birth_date
-                ? format(patient.birth_date, 'dd.MM.yyyy')
+                ? formatDate(patient.birth_date)
                 : '',
               readable_date:
                 patient.birth_date && medicalCaseCreatedAt
@@ -155,7 +155,7 @@ const MainNavigator = ({ route, navigation }) => {
               first_name: patient.first_name,
               last_name: patient.last_name,
               birth_date: patient.birth_date
-                ? format(patient.birth_date, 'dd.MM.yyyy')
+                ? formatDate(patient.birth_date)
                 : '',
               readable_date:
                 patient.birth_date && medicalCaseCreatedAt

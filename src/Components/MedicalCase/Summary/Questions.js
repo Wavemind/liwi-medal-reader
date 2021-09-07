@@ -83,7 +83,7 @@ const SummaryQuestions = () => {
           key={`medical-history-${system.title}`}
           systemName={system.title}
           step="medicalHistory"
-          disabled={true}
+          disabled
         />
       ))}
       <SectionHeader
@@ -94,7 +94,7 @@ const SummaryQuestions = () => {
           key={`physical-exam-${system.title}`}
           systemName={system.title}
           step="physicalExam"
-          disabled={true}
+          disabled
         />
       ))}
       <SectionHeader label={t('containers.medical_case.steps.assessments')} />

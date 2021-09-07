@@ -10,17 +10,19 @@ import { Text, View } from 'react-native'
 import { useTheme } from '@/Theme'
 
 const Metadata = ({ label, value }) => {
-  const { Layout, Fonts } = useTheme()
+  const {
+    Layout,
+    Fonts,
+    Components: { metadata },
+  } = useTheme()
 
   return (
     <View style={Layout.row}>
-      <View style={[Layout.fill, Layout.column]}>
+      <View style={metadata.column}>
         <Text style={Fonts.textSmall}>{label}</Text>
       </View>
-      <View style={[Layout.fill, Layout.column]}>
-        <Text style={[Fonts.textSmall, Fonts.textBold, Fonts.textRight]}>
-          {value}
-        </Text>
+      <View style={metadata.column}>
+        <Text style={metadata.value}>{value}</Text>
       </View>
     </View>
   )
