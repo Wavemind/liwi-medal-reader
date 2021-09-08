@@ -23,7 +23,7 @@ import {
 import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
 import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
 
-const SummaryQuestions = () => {
+const SummaryQuestions = ({ zScoreReferenceTableQuestions }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { Fonts } = useTheme()
@@ -54,7 +54,8 @@ const SummaryQuestions = () => {
 
   const basicMeasurementResult = basicMeasurements.filter(
     nodeId =>
-      !(mcNodes[nodeId].answer === null && mcNodes[nodeId].value === ''),
+      !(mcNodes[nodeId].answer === null && mcNodes[nodeId].value === '') &&
+      !zScoreReferenceTableQuestions.includes(nodeId),
   )
 
   if (loading) {

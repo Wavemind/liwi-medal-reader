@@ -20,6 +20,7 @@ import {
 import { translate } from '@/Translations/algorithm'
 import { ReadableDate } from '@/Utils'
 import { formatDate } from '@/Utils/Date'
+import { BasicMeasurementQuestionsService } from '@/Services/Steps'
 
 const SummaryWrapperMedicalCaseContainer = () => {
   const { t } = useTranslation()
@@ -33,6 +34,15 @@ const SummaryWrapperMedicalCaseContainer = () => {
   const patient = useSelector(state => state.patient.item)
   const medicalCase = useSelector(state => state.medicalCase.item)
   const nodes = useSelector(state => state.algorithm.item.nodes)
+
+  // Get z-score questions
+  const basicMeasurements = BasicMeasurementQuestionsService()
+  const zScoreReferenceTableQuestions = basicMeasurements.filter(
+    nodeId => nodes[nodeId].reference_table_x_id,
+  )
+  ///////////////////////////////////////////////////////
+
+  // Get kind of consultation
   const kindOfConsultationId = useSelector(
     state =>
       state.algorithm.item.config.optional_basic_questions
@@ -48,6 +58,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
     kindOfConsultation =
       nodes[kindOfConsultationId].answers[kindOfConsultationAnswerId]
   }
+  ///////////////////////////////////////////////////////
 
   // Get gender
   const genderNodeId = useSelector(
@@ -57,6 +68,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
     patientValue => patientValue.node_id === genderNodeId,
   ).answer_id
   const gender = nodes[genderNodeId].answers[genderAnswerId]
+  ///////////////////////////////////////////////////////
 
   return (
     <View style={Layout.fill}>
@@ -80,7 +92,12 @@ const SummaryWrapperMedicalCaseContainer = () => {
           />
         </View>
         <View style={summaryWrapper.rightColumn}>
-          <SummaryMetadata label="key" value="value" />
+          {zScoreReferenceTableQuestions.map(nodeId => (
+            <SummaryMetadata
+              label={translate(nodes[nodeId].label)}
+              value={medicalCase.nodes[nodeId].value}
+            />
+          ))}
         </View>
       </View>
 
@@ -118,7 +135,9 @@ const SummaryWrapperMedicalCaseContainer = () => {
                 />
               )}
 
-              <SummaryQuestions />
+              <SummaryQuestions
+                zScoreReferenceTableQuestions={zScoreReferenceTableQuestions}
+              />
             </ScrollView>
           )}
           options={{
