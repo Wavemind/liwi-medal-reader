@@ -215,9 +215,9 @@ export default {
       months: 'Mois',
       years: 'Année',
       estimated: {
-        days: 'En années',
+        days: 'En jours',
         months: 'En mois',
-        years: 'En jours',
+        years: 'En années',
       },
     },
     summary: {
