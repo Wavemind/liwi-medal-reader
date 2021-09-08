@@ -30,6 +30,24 @@ export function navigateAndSimpleReset(name, params = {}, index = 0) {
     }),
   )
 }
+/**
+ * Use for redirection after PIN
+ */
+export function navigateToMedicalCase(medicalCase) {
+  navigationRef.current?.dispatch(
+    CommonActions.reset({
+      actions: [
+        navigationRef.current?.navigate('Home', {
+          screen: 'StageWrapper',
+          params: {
+            stageIndex: medicalCase.advancement.stage,
+            stepIndex: medicalCase.advancement.step,
+          },
+        }),
+      ],
+    }),
+  )
+}
 
 export function navigateToStage(stageIndex, stepIndex = 0) {
   navigationRef.current?.dispatch(
