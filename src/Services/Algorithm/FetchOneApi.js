@@ -32,6 +32,7 @@ instance.interceptors.request.use(
     config.headers.common.client = client.password
     config.headers.common.expiry = expiry.password
     config.headers.common.uid = uid.password
+
     return config
   },
   function (error) {
@@ -44,11 +45,13 @@ instance.interceptors.request.use(
 // Add a response interceptor
 instance.interceptors.response.use(
   function (response) {
+    console.log(response)
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response
   },
   async function (error) {
+    console.log('error', error.response)
     if (error.response) {
       // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'

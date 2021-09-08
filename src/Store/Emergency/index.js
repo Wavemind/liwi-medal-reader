@@ -1,12 +1,15 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
 import ChangeEmergencyContent from './ChangeEmergencyContent'
+import FetchOne from './FetchOne'
 
 const sliceInitialState = {
   content: '',
+  json_version: -1,
+  item: {},
 }
 
 export default buildSlice(
-  'algorithm',
-  [ChangeEmergencyContent],
+  'emergency',
+  [ChangeEmergencyContent, FetchOne],
   sliceInitialState,
 ).reducer

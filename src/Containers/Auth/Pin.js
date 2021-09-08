@@ -13,6 +13,7 @@ import { heightPercentageToDP } from 'react-native-responsive-screen'
  * The internal imports
  */
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
+import FetchOneEmergency from '@/Store/Emergency/FetchOne'
 import ChangeVersion from '@/Store/System/ChangeVersion'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
@@ -33,6 +34,8 @@ const PinAuthContainer = () => {
   // Get values from the store
   const fadeAnim = useRef(new Animated.Value(0)).current
   const pinCode = useSelector(state => state.healthFacility.item.pin_code)
+  const bitch = useSelector(state => state)
+  console.log('ici', bitch)
   const currentClinician = useSelector(state => state.healthFacility.clinician)
   const algorithm = useSelector(state => state.algorithm.item)
   const algorithmFetchOneLoading = useSelector(
@@ -42,7 +45,7 @@ const PinAuthContainer = () => {
     state => state.algorithm.fetchOne.error,
   )
   const dispatch = useDispatch()
-
+  
   useEffect(() => {
     fadeIn(fadeAnim)
 
@@ -62,6 +65,12 @@ const PinAuthContainer = () => {
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
       if (isFulfilled(result)) {
+        await dispatch(
+          FetchOneEmergency.action({
+            emergencyContentVersion: -1,
+            algorithmId: result.payload.algorithm_id,
+          }),
+        )
         await dispatch(
           ChangeVersion.action({
             newVersionId: result.payload.version_id,
