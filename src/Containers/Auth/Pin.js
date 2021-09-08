@@ -30,22 +30,21 @@ const PinAuthContainer = () => {
 
   // Local state definition
   const [status, setStatus] = useState('initial')
+  const [loading, setLoading] = useState(false)
 
   // Get values from the store
   const fadeAnim = useRef(new Animated.Value(0)).current
   const pinCode = useSelector(state => state.healthFacility.item.pin_code)
-  const bitch = useSelector(state => state)
-  console.log('ici', bitch)
   const currentClinician = useSelector(state => state.healthFacility.clinician)
-  const algorithm = useSelector(state => state.algorithm.item)
-  const algorithmFetchOneLoading = useSelector(
-    state => state.algorithm.fetchOne.loading,
+  const emergencyContentVersion = useSelector(
+    state => state.emergency.item.emergency_content_version,
   )
+  const algorithm = useSelector(state => state.algorithm.item)
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
     fadeIn(fadeAnim)
 
@@ -61,13 +60,14 @@ const PinAuthContainer = () => {
    */
   const handlePin = async value => {
     if (value === pinCode) {
+      setLoading(true)
       const result = await dispatch(
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
       if (isFulfilled(result)) {
         await dispatch(
           FetchOneEmergency.action({
-            emergencyContentVersion: -1,
+            emergencyContentVersion: emergencyContentVersion,
             algorithmId: result.payload.algorithm_id,
           }),
         )
@@ -77,8 +77,11 @@ const PinAuthContainer = () => {
           }),
         )
         navigateAndSimpleReset('Home')
+      } else {
+        setLoading(false)
       }
     } else {
+      setLoading(false)
       setStatus('failure')
     }
   }
@@ -106,7 +109,7 @@ const PinAuthContainer = () => {
             status="enter"
             pinStatus={status}
             titleComponent={() =>
-              algorithmFetchOneLoading ? (
+              loading ? (
                 <Loader height={Math.round(heightPercentageToDP(11))} />
               ) : (
                 <Text style={authPin.title}>

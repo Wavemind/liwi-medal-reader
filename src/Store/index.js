@@ -68,6 +68,7 @@ const persistConfig = {
     'system',
     'theme',
     'user',
+    'emergency',
   ],
 }
 

@@ -61,17 +61,20 @@ const SynchronizationAuthContainer = () => {
       // Register device in medAl-creator
       const fetchOneAlgorithm = await dispatch(FetchOneAlgorithm.action({}))
       if (isFulfilled(fetchOneAlgorithm)) {
-        console.log('ALLO')
-        await dispatch(
+        // Get emergency content
+        const fetchOneEmergency = await dispatch(
           FetchOneEmergency.action({
             emergencyContentVersion: -1,
             algorithmId: fetchOneAlgorithm.payload.algorithm_id,
           }),
         )
-        console.log('LA TERRE')
-        // Navigate and reset to Pin container
-        setLoading(false)
-        navigateAndSimpleReset('Study', { source: 'auth' })
+        if (isFulfilled(fetchOneEmergency)) {
+          // Navigate and reset to Pin container
+          setLoading(false)
+          navigateAndSimpleReset('Study', { source: 'auth' })
+        } else {
+          setLoading(false)
+        }
       } else {
         setLoading(false)
       }
