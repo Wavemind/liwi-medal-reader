@@ -1,17 +1,17 @@
 import i18n from '@/Translations/index'
 import useDatabase from '@/Services/Database/useDatabase'
-
 /**
  * Parse TIMCI QR code data because they didn't want to use the existing format just to piss us off
  * @param QRData : String value coming from QRCODE
  * @returns {{uid: number, group_id: number, study_id}} : Formatted data
  */
 const parseHeleneQR = QRData => {
+  const matchAll = require('string.prototype.matchall')
   const regexStudy = /^[IKMST]/
   const regexGroup = /\d{4}/g
-
   const study_id = QRData.match(regexStudy)[0]
-  const digits = [...QRData.matchAll(regexGroup)].flat()
+
+  const digits = [...matchAll(QRData, regexGroup)].flat()
 
   return {
     study_id,
@@ -32,7 +32,7 @@ const qrCodeNotValid = () => {
 
 /**
  * Reads data from the QRScanner and returns an object with the needed information
- * TODO UNIT TEST waiting for alan's testing data with Helene's bullshit
+ * TODO UNIT TEST waiting for alan's testing data with Helene's Version
  * @param {*} e
  */
 const getQrData = async data => {
