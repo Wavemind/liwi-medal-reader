@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useIsFocused } from '@react-navigation/native'
 import orderBy from 'lodash/orderBy'
-import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
@@ -110,7 +109,11 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
             {t('containers.medical_case.drugs.no_proposed')}
           </Text>
         ) : (
-          diagnosis.drugs.proposed.map((drugId, i) => (
+          orderBy(
+            diagnosis.drugs.proposed,
+            drugId => algorithm.nodes[drugId].level_of_urgency,
+            ['desc', 'asc'],
+          ).map((drugId, i) => (
             <View
               key={`diagnosis_drugs-${drugId}`}
               style={drugs.drugWrapper(

@@ -5,6 +5,7 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -40,7 +41,11 @@ const Managements = ({ diagnosis }) => {
           {t('containers.medical_case.summary.no_managements')}
         </Text>
       ) : (
-        managements.map((managementId, i) => (
+        orderBy(
+          managements,
+          managementId => nodes[managementId].level_of_urgency,
+          ['desc', 'asc'],
+        ).map((managementId, i) => (
           <View
             key={`management-${managementId}`}
             style={summary.managementWrapper(i === managementsCount - 1)}
