@@ -25,8 +25,7 @@ export default async ({ emergencyContentVersion, algorithmId }) => {
   // If emergency content doesn't change. Load current stored.
   if (response === undefined || response.status === 204) {
     const state = store.getState()
-    const oldEmergency = state.emergency.item
-    return oldEmergency
+    return state.emergency.item
   }
 
   // Store emergency content in file

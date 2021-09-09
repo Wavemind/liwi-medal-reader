@@ -88,7 +88,6 @@ const PinAuthContainer = () => {
         }
       }
     } else {
-      setLoading(false)
       setStatus('failure')
     }
   }

@@ -31,17 +31,6 @@ export default async ({ json_version }) => {
     return { ...oldAlgorithm, updated: false }
   }
 
-  // // Store emergency content in file
-  // const emergencyContentTargetPath = `${DocumentDirectoryPath}/emergency_content.html`
-
-  // if (response.data.emergency_content) {
-  //   const emergencyContentFileExist = await exists(emergencyContentTargetPath)
-  //   if (emergencyContentFileExist) {
-  //     await unlink(emergencyContentTargetPath)
-  //   }
-  //   await writeFile(emergencyContentTargetPath, response.data.emergency_content)
-  // }
-
   // Regroup nodes, final diagnoses and health cares into nodes key
   const nodes = {
     ...response.data.nodes,
@@ -50,7 +39,6 @@ export default async ({ json_version }) => {
   }
 
   // Remove useless key
-  // delete response.data.emergency_content
   delete response.data.nodes
   delete response.data.final_diagnoses
   delete response.data.health_cares
