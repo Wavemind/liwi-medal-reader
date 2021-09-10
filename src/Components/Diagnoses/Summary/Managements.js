@@ -43,7 +43,10 @@ const Managements = ({ diagnosis }) => {
         managements.map((managementId, i) => (
           <View
             key={`management-${managementId}`}
-            style={summary.managementWrapper(i === managementsCount - 1)}
+            style={summary.managementWrapper(
+              i === managementsCount - 1,
+              nodes[managementId].is_referral,
+            )}
           >
             <Text style={summary.drugTitle}>
               {translate(nodes[managementId].label)}
