@@ -111,7 +111,7 @@ export default {
       },
       diagnoses: {
         diagnoses: 'Diagnostics',
-        proposed_title: 'Diagnostics proposés par {{ version_name }}',
+        proposed_title: 'Diagnostics proposés',
         additional_title: 'Diagnostics supplémentaires',
         additional_placeholder: 'Choisir {{ item }} supplémentaires',
         multiple_diagnostics: 'des diagnostics',
@@ -122,6 +122,7 @@ export default {
         no_additional: 'Aucun diagnostic supplémentaire sélectionné',
         no_custom: 'Aucun diagnostic ajouté manuellement',
       },
+      /* al 20210912 removed from diagnoses: proposed_title: 'Diagnostics proposés par {{ version_name }}', */
       drugs: {
         drugs: 'Médicaments',
         proposed: 'Proposés',
