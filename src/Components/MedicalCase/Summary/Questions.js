@@ -84,7 +84,7 @@ const SummaryQuestions = ({ zScoreReferenceTableQuestions }) => {
           key={`medical-history-${system.title}`}
           systemName={system.title}
           step="medicalHistory"
-          disabled
+          readOnly
         />
       ))}
       <SectionHeader
@@ -95,7 +95,7 @@ const SummaryQuestions = ({ zScoreReferenceTableQuestions }) => {
           key={`physical-exam-${system.title}`}
           systemName={system.title}
           step="physicalExam"
-          disabled
+          readOnly
         />
       ))}
       <SectionHeader label={t('containers.medical_case.steps.assessments')} />

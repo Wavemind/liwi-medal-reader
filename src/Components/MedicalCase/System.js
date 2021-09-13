@@ -17,7 +17,7 @@ import {
 } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 
-const System = ({ systemName, step, disabled = false }) => {
+const System = ({ systemName, step, readOnly = false }) => {
   const { Gutters } = useTheme()
   const systemsTranslations = useSelector(
     state => state.algorithm.item.config.systems_translations,
@@ -30,8 +30,8 @@ const System = ({ systemName, step, disabled = false }) => {
   return (
     systemData?.length > 0 && (
       <View key={systemName}>
-        <View style={disabled ? '' : Gutters.regularHMargin}>
-          {disabled ? (
+        <View style={readOnly ? '' : Gutters.regularHMargin}>
+          {readOnly ? (
             <SectionSubHeader
               label={translate(systemsTranslations[systemName])}
             />
@@ -40,7 +40,7 @@ const System = ({ systemName, step, disabled = false }) => {
           )}
         </View>
         {systemData.map(item =>
-          disabled ? (
+          readOnly ? (
             <SummaryQuestionItem key={item} nodeId={item} />
           ) : (
             <Question key={item} questionId={item} />
