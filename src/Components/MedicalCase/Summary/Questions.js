@@ -32,7 +32,7 @@ const SummaryQuestions = ({ zScoreReferenceTableQuestions }) => {
 
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)
   const comment = useSelector(state => state.medicalCase.item.comment)
-  console.log(comment)
+
   useEffect(async () => {
     await dispatch(PhysicalExam.action())
     await dispatch(MedicalHistory.action())
