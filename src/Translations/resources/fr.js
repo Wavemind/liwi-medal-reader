@@ -223,6 +223,7 @@ export default {
     },
     summary: {
       no_questions: "Aucune question n'a été posée à cette étape",
+      no_comments: 'Aucun commentaire',
     },
     medical_case_drawer: {
       current_medical_case: 'Consultation en cours',

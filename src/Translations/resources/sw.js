@@ -225,6 +225,7 @@ export default {
     },
     summary: {
       no_questions: 'No questions asked at this step',
+      no_comments: 'No comments ',
     },
     modals: {
       lock: {

@@ -31,7 +31,8 @@ const SummaryQuestions = ({ zScoreReferenceTableQuestions }) => {
   const [loading, setLoading] = useState(true)
 
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)
-
+  const comment = useSelector(state => state.medicalCase.item.comment)
+  console.log(comment)
   useEffect(async () => {
     await dispatch(PhysicalExam.action())
     await dispatch(MedicalHistory.action())
@@ -106,6 +107,14 @@ const SummaryQuestions = ({ zScoreReferenceTableQuestions }) => {
       ) : (
         <Text style={[Fonts.textCenter, Fonts.textSmall]}>
           {t('components.summary.no_questions')}
+        </Text>
+      )}
+      <SectionHeader label={t('medical_case.comment')} />
+      {comment ? (
+        <Text style={[Fonts.textSmall]}>{comment}</Text>
+      ) : (
+        <Text style={[Fonts.textCenter, Fonts.textSmall]}>
+          {t('components.summary.no_comments')}
         </Text>
       )}
     </View>
