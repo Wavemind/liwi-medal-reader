@@ -56,7 +56,8 @@ export default function (props) {
       ...Fonts.textSmall,
       color: Colors.primary,
     },
-    managementWrapper: isLast => ({
+    managementWrapper: (isLast, isReferral) => ({
+      backgroundColor: isReferral ? Colors.emergency : '',
       ...Gutters.regularVPadding,
       ...Layout.rowHCenter,
       ...Layout.justifyContentBetween,
