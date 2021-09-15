@@ -19,10 +19,6 @@ const ErrorNavbar = ({ errors, loading, onPress }) => {
     FontSize,
   } = useTheme()
 
-  console.log(errors)
-  console.log(typeof errors)
-  console.log(typeof errors.message)
-
   const message =
     typeof errors === 'object'
       ? typeof errors.message === 'string'
