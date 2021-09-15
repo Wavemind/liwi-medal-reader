@@ -69,7 +69,7 @@ instance.interceptors.response.use(
       }
 
       // Return null for QR code scanning
-      if (error.response.config.url.search("find_by?field='uid'")) {
+      if (error.response.config.url.search("find_by?field='uid'") !== -1) {
         return null
       }
 
