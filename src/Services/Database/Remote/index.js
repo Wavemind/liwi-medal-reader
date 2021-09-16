@@ -68,8 +68,11 @@ instance.interceptors.response.use(
         }
       }
 
-      // Return null for QR code scanning
-      if (error.response.config.url.search("find_by?field='uid'") !== -1) {
+      // Return null for QR code scanning we don't wanna show a 404 error
+      if (
+        error.response.config.url.search('field=other_uid') !== -1 ||
+        error.response.config.url.search('field=uid') !== -1
+      ) {
         return null
       }
 
