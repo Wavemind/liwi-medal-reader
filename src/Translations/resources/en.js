@@ -46,6 +46,11 @@ export default {
         password: 'Password',
         environment: 'Environment',
       },
+      data_login: {
+        title: 'Connect to medAL-data',
+        server_address: 'Server address',
+        client_id: 'Client ID',
+      },
       synchronization: {
         title: 'Synchronize with medAL-creator',
         description:

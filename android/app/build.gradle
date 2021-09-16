@@ -138,6 +138,9 @@ android {
         versionCode 93
         versionName "1.0"
         missingDimensionStrategy 'react-native-camera', 'general'
+        manifestPlaceholders = [
+            appAuthRedirectScheme: 'aaa'
+        ]
     }
     splits {
         abi {
