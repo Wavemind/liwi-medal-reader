@@ -59,19 +59,10 @@ instance.interceptors.response.use(
       // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'
 
-      // Response given by the application
-      if (error.response.data.errors) {
-        if (Array.isArray(error.response.data.errors)) {
-          errorMessage = error.response.data.errors[0]
-        } else {
-          errorMessage = error.response.data.errors
-        }
-      }
-
       // Return null for QR code scanning we don't wanna show a 404 error
       if (
-        error.response.config.url.search('field=other_uid') !== -1 ||
-        error.response.config.url.search('field=uid') !== -1
+        error.response.config.url.includes('field=other_uid') ||
+        error.response.config.url.includes('field=uid')
       ) {
         return null
       }
