@@ -252,27 +252,63 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   }
 
   if (medicalCaseInsertError) {
-    return <ErrorNavbar errors={medicalCaseInsertError} />
+    return (
+      <ErrorNavbar
+        loading={loading}
+        onPress={revalidateStep}
+        errors={medicalCaseInsertError}
+      />
+    )
   }
 
   if (medicalCaseUpdateError) {
-    return <ErrorNavbar errors={medicalCaseUpdateError} />
+    return (
+      <ErrorNavbar
+        loading={loading}
+        onPress={revalidateStep}
+        errors={medicalCaseUpdateError}
+      />
+    )
   }
 
   if (patientInsertError) {
-    return <ErrorNavbar errors={patientInsertError} />
+    return (
+      <ErrorNavbar
+        loading={loading}
+        onPress={revalidateStep}
+        errors={patientInsertError}
+      />
+    )
   }
 
   if (patientUpdateError) {
-    return <ErrorNavbar errors={patientUpdateError} />
+    return (
+      <ErrorNavbar
+        loading={loading}
+        onPress={revalidateStep}
+        errors={patientUpdateError}
+      />
+    )
   }
 
   if (patientValuesInsertError) {
-    return <ErrorNavbar errors={patientValuesInsertError} />
+    return (
+      <ErrorNavbar
+        loading={loading}
+        onPress={revalidateStep}
+        errors={patientValuesInsertError}
+      />
+    )
   }
 
   if (patientValuesUpdateError) {
-    return <ErrorNavbar errors={patientValuesUpdateError} />
+    return (
+      <ErrorNavbar
+        loading={loading}
+        onPress={revalidateStep}
+        errors={patientValuesUpdateError}
+      />
+    )
   }
 
   if (Object.keys(errors).length > 0) {

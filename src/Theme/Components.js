@@ -47,6 +47,8 @@ import autocompleteStyles from './components/Autocomplete.style'
 import additionalSelectStyles from './components/AdditionalSelect.style'
 import errorStyles from './components/Error.style'
 import medicalCaseListItemStyles from './components/MedicalCaseListItem.style'
+import sectionSubHeaderStyles from './components/SectionSubHeader.style'
+import metadataStyles from './components/Metadata.style'
 
 /**
  *
@@ -61,6 +63,7 @@ export default function (props) {
     checkbox: checkboxStyles(props),
     select: selectStyles(props),
     sectionHeader: sectionHeaderStyles(props),
+    sectionSubHeader: sectionSubHeaderStyles(props),
     info: infoStyles(props),
     squareSelect: squareSelectStyles(props),
     toggleSwitch: toggleSwitchStyles(props),
@@ -99,5 +102,6 @@ export default function (props) {
     additionalSelect: additionalSelectStyles(props),
     error: errorStyles(props),
     medicalCaseListItem: medicalCaseListItemStyles(props),
+    metadata: metadataStyles(props),
   }
 }

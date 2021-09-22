@@ -5,7 +5,6 @@ import React from 'react'
 import { ScrollView, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import format from 'date-fns/format'
 
 /**
  * The internal imports
@@ -13,6 +12,7 @@ import format from 'date-fns/format'
 import { useTheme } from '@/Theme'
 import { SectionHeader, PatientPersonalInfoItem } from '@/Components'
 import { translate } from '@/Translations/algorithm'
+import { formatDate } from '@/Utils/Date'
 
 const PersonalInfoPatientContainer = () => {
   const {
@@ -25,7 +25,7 @@ const PersonalInfoPatientContainer = () => {
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const patient = useSelector(state => state.patient.item)
   const birthDateValue = patient.birth_date
-    ? format(patient.birth_date, 'dd.MM.yyyy')
+    ? formatDate(patient.birth_date)
     : null
 
   // Array of basic patient information for iteration

@@ -28,19 +28,33 @@ const Default = ({ drug, drugDose, diagnosisId }) => {
   )
   let every = ''
 
-  const duration = drugInstance ? drugInstance.duration : drug.duration
+  const duration = drugInstance
+    ? translate(drugInstance.duration)
+    : drug.duration
 
   if (drug.formulationSelected !== null) {
-    every = `${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t(
-      'formulations.drug.h',
-    )} ${duration} ${t('formulations.drug.days')}`
+    every = drugInstance.is_pre_referral
+      ? `
+    ${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t(
+          'formulations.drug.h',
+        )} ${t('formulations.drug.during')} ${t(
+          'formulations.drug.pre_referral',
+        )}`
+      : `${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t(
+          'formulations.drug.h',
+        )} ${duration} ${t('formulations.drug.days')}`
   }
 
   return (
     <View>
       <Text>{formulationLabel(drugDose)}</Text>
       <Text style={summary.drugText}>
-        {t('formulations.drug.d')}: {duration}
+        {t('formulations.drug.d')}:{' '}
+        {drugInstance.is_pre_referral
+          ? `${t('formulations.drug.during')} ${t(
+              'formulations.drug.pre_referral',
+            )}`
+          : duration}
       </Text>
       {drug.formulationSelected !== null && (
         <Text style={summary.drugText}>

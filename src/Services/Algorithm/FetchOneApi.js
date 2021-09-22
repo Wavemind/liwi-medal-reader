@@ -32,6 +32,7 @@ instance.interceptors.request.use(
     config.headers.common.client = client.password
     config.headers.common.expiry = expiry.password
     config.headers.common.uid = uid.password
+
     return config
   },
   function (error) {

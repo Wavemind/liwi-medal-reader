@@ -16,6 +16,7 @@ import { SquareButton, Loader, ToggleSwitchDarkMode } from '@/Components'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import FetchOneHealthFacility from '@/Store/HealthFacility/FetchOne'
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
+import FetchOneEmergency from '@/Store/Emergency/FetchOne'
 
 const SynchronizationAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -60,9 +61,20 @@ const SynchronizationAuthContainer = () => {
       // Register device in medAl-creator
       const fetchOneAlgorithm = await dispatch(FetchOneAlgorithm.action({}))
       if (isFulfilled(fetchOneAlgorithm)) {
-        // Navigate and reset to Pin container
-        setLoading(false)
-        navigateAndSimpleReset('Study', { source: 'auth' })
+        // Get emergency content
+        const fetchOneEmergency = await dispatch(
+          FetchOneEmergency.action({
+            emergencyContentVersion: -1,
+            algorithmId: fetchOneAlgorithm.payload.algorithm_id,
+          }),
+        )
+        if (isFulfilled(fetchOneEmergency)) {
+          // Navigate and reset to Pin container
+          setLoading(false)
+          navigateAndSimpleReset('Study', { source: 'auth' })
+        } else {
+          setLoading(false)
+        }
       } else {
         setLoading(false)
       }

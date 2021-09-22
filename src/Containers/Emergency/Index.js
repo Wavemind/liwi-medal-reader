@@ -11,11 +11,14 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { translate } from '@/Translations/algorithm'
 
 const IndexEmergencyContainer = ({ navigation }) => {
   const { t } = useTranslation()
 
-  const emergencyContent = useSelector(state => state.emergency.content)
+  const emergencyContent = useSelector(
+    state => state.emergency.item.emergency_content_translations,
+  )
 
   // Theme and style elements deconstruction
   const {
@@ -33,7 +36,7 @@ const IndexEmergencyContainer = ({ navigation }) => {
       <View style={emergency.contentWrapper}>
         <View style={emergency.innerWrapper}>
           <WebView
-            source={{ html: emergencyContent }}
+            source={{ html: translate(emergencyContent) }}
             scalesPageToFit={false}
           />
         </View>

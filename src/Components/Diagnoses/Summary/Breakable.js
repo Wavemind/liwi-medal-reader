@@ -31,6 +31,20 @@ const Breakable = ({ drug, drugDose, diagnosisId }) => {
     state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
   )
 
+  const duration = drugInstance
+    ? translate(drugInstance.duration)
+    : drug.duration
+
+  const durationDisplay = drugInstance.is_pre_referral
+    ? `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+        'formulations.drug.h',
+      )} ${t('formulations.drug.during')} ${t(
+        'formulations.drug.pre_referral',
+      )}`
+    : `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+        'formulations.drug.h',
+      )} ${duration} ${t('formulations.drug.days')}`
+
   return (
     <View>
       <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
@@ -40,11 +54,7 @@ const Breakable = ({ drug, drugDose, diagnosisId }) => {
             drugDose.unique_dose,
           )} ${t('formulations.drug.tablets')} ${t(
             'formulations.medication_form.per_administration',
-          )} ${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
-            'formulations.drug.h',
-          )} ${drug.duration || drugInstance.duration} ${t(
-            'formulations.drug.days',
-          )}`}</Text>
+          )} ${durationDisplay}`}</Text>
           <Text style={[Gutters.regularTMargin, summary.drugText]}>
             {translate(drugDose.dispensing_description)}
           </Text>
@@ -61,11 +71,7 @@ const Breakable = ({ drug, drugDose, diagnosisId }) => {
             )} ${drugDose.dose_form}`}
             {t('formulations.drug.mg')} {drugDose.administration_route_name}
           </Text>
-          <Text style={summary.drugText}>{`${t('formulations.drug.every')} ${
-            drugDose.recurrence
-          } ${t('formulations.drug.h')} ${
-            drugInstance ? drugInstance.duration : drug.duration
-          } ${t('formulations.drug.days')}`}</Text>
+          <Text style={summary.drugText}>{durationDisplay}</Text>
           <Text style={[Gutters.regularTMargin, summary.drugText]}>
             {translate(drugDose.dispensing_description)}
           </Text>

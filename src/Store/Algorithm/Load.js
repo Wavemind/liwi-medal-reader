@@ -9,7 +9,7 @@ export default {
       ...payload.newAlgorithm.health_cares,
     }
     // Remove useless key
-    delete payload.newAlgorithm.emergency_content
+    delete payload.newAlgorithm.emergency_content // TODO TO REMOVE IN NEXT RELEASE
     delete payload.newAlgorithm.nodes
     delete payload.newAlgorithm.final_diagnoses
     delete payload.newAlgorithm.health_cares

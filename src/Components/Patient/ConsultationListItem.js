@@ -4,7 +4,6 @@
 import React, { useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import format from 'date-fns/format'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
 import { isFulfilled } from '@reduxjs/toolkit'
@@ -16,6 +15,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
 import { translate } from '@/Translations/algorithm'
+import { formatDate } from '@/Utils/Date'
 
 const ConsultationListItem = ({ item }) => {
   // Theme and style elements deconstruction
@@ -92,7 +92,7 @@ const ConsultationListItem = ({ item }) => {
           ))}
         </View>
         <Text style={consultationListItem.date}>
-          {format(item.updatedAt, 'dd.MM.yyyy')}
+          {formatDate(item.updatedAt)}
         </Text>
         <Icon name="right-arrow" size={FontSize.large} />
       </View>
