@@ -30,13 +30,11 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
     state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
   )
 
-  const currentDrug = useSelector(state => state.algorithm.item.nodes[drug.id])
-
   const duration = drugInstance.duration
     ? translate(drugInstance.duration)
     : drug.duration
 
-  const durationDisplay = drugInstance.is_pre_referral
+  const durationDisplay = drugInstance?.is_pre_referral
     ? `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
         'formulations.drug.h',
       )} ${t('formulations.drug.during')} ${t(

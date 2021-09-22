@@ -32,13 +32,13 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
     ? translate(drugInstance.duration)
     : drug.duration
 
-  const durationByAgeDisplay = drugInstance.is_pre_referral
+  const durationByAgeDisplay = drugInstance?.is_pre_referral
     ? `${t('formulations.drug.during')} ${t('formulations.drug.pre_referral')}`
     : `${t('formulations.drug.during')} ${duration} ${t(
         'formulations.drug.days',
       )}`
 
-  const durationDisplay = drugInstance.is_pre_referral
+  const durationDisplay = drugInstance?.is_pre_referral
     ? `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
         'formulations.drug.h',
       )} ${t('formulations.drug.during')} ${t(
