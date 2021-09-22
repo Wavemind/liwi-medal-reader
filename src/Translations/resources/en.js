@@ -122,7 +122,7 @@ export default {
         no_additional: 'No additional diagnoses selected',
         no_custom: 'No diagnoses added manually',
       },
-      /* al 20210912 removed from diagnoses: proposed_title: 'Diagnoses proposed by {{ version_name }}', */
+	    /* al 20210912 removed from diagnoses: proposed_title: 'Diagnoses proposed by {{ version_name }}', */
       drugs: {
         drugs: 'Drugs',
         proposed: 'Proposed',
@@ -363,11 +363,13 @@ export default {
       caps: 'capsule(s) of',
       every: 'every',
       h: 'hour(s) for',
+      hour: 'hour(s)',
       days: 'day(s)',
       mode: 'Mode',
       tablet: 'tablet of',
       d: 'duration',
       during: 'during',
+      pre_referral: 'pre-referral',
       admin: 'Administration',
       ml: 'ml',
       of: 'of',
