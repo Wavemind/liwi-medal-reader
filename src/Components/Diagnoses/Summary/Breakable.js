@@ -34,7 +34,7 @@ const Breakable = ({ drug, drugDose, diagnosisId }) => {
   const duration = drugInstance
     ? translate(drugInstance.duration)
     : drug.duration
-  console.log(drugInstance)
+
   const durationDisplay = drugInstance?.is_pre_referral
     ? `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
         'formulations.drug.h',
