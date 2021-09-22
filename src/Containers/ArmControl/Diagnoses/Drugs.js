@@ -10,7 +10,7 @@ import uuid from 'react-native-uuid'
 /**
  * The internal imports
  */
-import { AdditionalSelect, CustomElement } from '@/Components'
+import { AdditionalSelect, CustomElement, CustomDrugs } from '@/Components'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
@@ -30,11 +30,9 @@ const DrugsArmControlContainer = () => {
   const { t } = useTranslation()
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const diagnoses = useSelector(
+  const additionalDiagnoses = useSelector(
     state => state.medicalCase.item.diagnosis.additional,
   )
-
-  const [diagnosisKey] = useState('additional')
 
   /**
    * Removes a single element from the additional diagnosis list
@@ -44,7 +42,7 @@ const DrugsArmControlContainer = () => {
   const removeAdditionalDrug = (diagnosisId, drugId) => {
     dispatch(
       RemoveAdditionalDrugs.action({
-        diagnosisKey,
+        diagnosisKey: 'additional',
         diagnosisId,
         drugId,
       }),
@@ -60,7 +58,7 @@ const DrugsArmControlContainer = () => {
   const updateAdditionalDrugDuration = (diagnosisId, drugId, duration) => {
     dispatch(
       ChangeAdditionalDrugDuration.action({
-        diagnosisKey,
+        diagnosisKey: 'additional',
         diagnosisId,
         drugId,
         duration,
@@ -121,7 +119,7 @@ const DrugsArmControlContainer = () => {
   return (
     <ScrollView>
       <View style={Gutters.regularBMargin}>
-        {Object.values(diagnoses).map(diagnosis => (
+        {Object.values(additionalDiagnoses).map(diagnosis => (
           <View key={`diagnosis-${diagnosis.id}`} style={drugs.wrapper}>
             <View style={drugs.diagnosisHeaderWrapper}>
               <Text style={drugs.diagnosisHeader}>
@@ -144,7 +142,7 @@ const DrugsArmControlContainer = () => {
                 )}
                 handleRemove={removeAdditionalDrug}
                 diagnosisId={diagnosis.id}
-                diagnosisKey={diagnosisKey}
+                diagnosisKey="additional"
                 withDuration
                 onUpdateDuration={updateAdditionalDrugDuration}
               />
@@ -162,6 +160,8 @@ const DrugsArmControlContainer = () => {
           </View>
         ))}
       </View>
+
+      <CustomDrugs />
     </ScrollView>
   )
 }

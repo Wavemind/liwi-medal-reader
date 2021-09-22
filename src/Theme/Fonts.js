@@ -48,6 +48,11 @@ export default function ({ FontSize, Colors }) {
       fontFamily: 'ZeitungPro-Bold',
       textTransform: 'uppercase',
     },
+    textSectionSubHeader: {
+      fontSize: FontSize.medium,
+      fontFamily: 'ZeitungPro-Bold',
+      textTransform: 'uppercase',
+    },
     textLarge: {
       fontSize: FontSize.large,
       fontFamily: 'ZeitungPro',

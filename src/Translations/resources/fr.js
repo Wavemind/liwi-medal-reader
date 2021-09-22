@@ -111,7 +111,7 @@ export default {
       },
       diagnoses: {
         diagnoses: 'Diagnostics',
-        proposed_title: 'Diagnostics proposés par {{ version_name }}',
+        proposed_title: 'Diagnostics proposés',
         additional_title: 'Diagnostics supplémentaires',
         additional_placeholder: 'Choisir {{ item }} supplémentaires',
         multiple_diagnostics: 'des diagnostics',
@@ -122,6 +122,7 @@ export default {
         no_additional: 'Aucun diagnostic supplémentaire sélectionné',
         no_custom: 'Aucun diagnostic ajouté manuellement',
       },
+      /* al 20210912 removed from diagnoses: proposed_title: 'Diagnostics proposés par {{ version_name }}', */
       drugs: {
         drugs: 'Médicaments',
         proposed: 'Proposés',
@@ -138,6 +139,8 @@ export default {
           'Choisir une formulation disponible et appropriée pour votre patient·e',
       },
       summary: {
+        date_consultation: 'Date de la consultation',
+        age_date_consultation: 'Age lors de la consultation',
         management_consulting: 'Prise en charge et conseils',
         no_managements: 'Aucune prise en charge disponible',
       },
@@ -217,6 +220,10 @@ export default {
         months: 'En mois',
         years: 'En années',
       },
+    },
+    summary: {
+      no_questions: "Aucune question n'a été posée à cette étape",
+      no_comments: 'Aucun commentaire',
     },
     medical_case_drawer: {
       current_medical_case: 'Consultation en cours',
@@ -332,6 +339,7 @@ export default {
   patient: {
     first_name: 'Prénom',
     last_name: 'Nom',
+    gender: 'Sexe',
     birth_date: 'Date de naissance',
     estimated_age: 'Âge estimé',
     reason: 'Raison du changement de centre de santé',

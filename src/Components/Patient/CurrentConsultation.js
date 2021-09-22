@@ -4,7 +4,6 @@
 import React, { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import format from 'date-fns/format'
 import { useDispatch } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 
@@ -16,6 +15,7 @@ import { useTheme } from '@/Theme'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
 import { isLocked } from '@/Utils/MedicalCase'
+import { formatDate } from '@/Utils/Date'
 
 const CurrentConsultation = ({ navigation, medicalCase }) => {
   const {
@@ -81,7 +81,7 @@ const CurrentConsultation = ({ navigation, medicalCase }) => {
         ))}
       </View>
       <Text style={currentConsultation.date}>
-        {format(medicalCase.createdAt, 'dd.MM.yyyy')}
+        {formatDate(medicalCase.createdAt)}
       </Text>
       <Icon name="right-arrow" size={FontSize.large} />
     </TouchableOpacity>

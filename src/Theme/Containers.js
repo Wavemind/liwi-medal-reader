@@ -24,6 +24,7 @@ import drugsStyles from './containers/MedicalCase/Diagnoses/Drugs.style'
 import formulationsStyles from './containers/MedicalCase/Diagnoses/Formulations.style'
 import searchAdditionalStyles from './containers/MedicalCase/Diagnoses/SearchAdditional.style'
 import summaryStyles from './containers/MedicalCase/Diagnoses/Summary.style'
+import summaryWrapperStyles from './containers/MedicalCase/SummaryWrapper.style'
 
 import patientListStyles from './containers/Patient/List.style'
 import patientPersonalInfoStyles from './containers/Patient/PersonalInfo.style'
@@ -78,5 +79,6 @@ export default function (props) {
     drugs: drugsStyles(props),
     formulations: formulationsStyles(props),
     summary: summaryStyles(props),
+    summaryWrapper: summaryWrapperStyles(props),
   }
 }

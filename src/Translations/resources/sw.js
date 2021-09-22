@@ -111,7 +111,7 @@ export default {
       },
       diagnoses: {
         diagnoses: 'Diagnoses',
-        proposed_title: 'Diagnoses proposed by {{ version_name }}',
+        proposed_title: 'Diagnoses proposed',
         additional_title: 'Additional diagnoses selected',
         additional_placeholder: 'Select additional {{ item }}',
         multiple_diagnostics: 'diagnostics',
@@ -122,6 +122,7 @@ export default {
         no_additional: 'No additional diagnoses selected',
         no_custom: 'No diagnoses added manually',
       },
+      /* al 20210912 removed from diagnoses: proposed_title: 'Diagnoses proposed by {{ version_name }}', */
       drugs: {
         drugs: 'Drugs',
         proposed: 'Proposed',
@@ -138,6 +139,9 @@ export default {
           'Which drug formulation is available and suited for your patient?',
       },
       summary: {
+        date_consultation: 'Date of consultation',
+        age_date_consultation: 'Age at time of consultation',
+        type_of_consultation: 'Type of consultation',
         management_consulting: 'Managements & Counselling',
         no_managements: 'No managements available',
       },
@@ -218,6 +222,10 @@ export default {
     },
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
+    },
+    summary: {
+      no_questions: 'No questions asked at this step',
+      no_comments: 'No comments ',
     },
     modals: {
       lock: {
@@ -330,6 +338,7 @@ export default {
     first_name: 'First name',
     last_name: 'Last name',
     birth_date: 'Date of Birth',
+    gender: 'Gender',
     estimated_age: 'Estimated age',
     reason: 'Reason for changing facility',
     readable_birth_date: {
