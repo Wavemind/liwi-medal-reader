@@ -74,7 +74,8 @@ const Question = ({ questionId, disabled = false }) => {
                 : question.text(fieldError ? 'error' : validationType)
             }
           >
-            {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
+            {translate(currentNode.label)}&nbsp;
+            {currentNode.is_mandatory && '*'}
           </Text>
 
           {(descriptionAvailable || mediaAvailable || __DEV__) && (
