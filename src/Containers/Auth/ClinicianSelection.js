@@ -5,7 +5,6 @@ import React, { useEffect, useRef } from 'react'
 import { View, Text, Animated, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { DocumentDirectoryPath, readFile, exists } from 'react-native-fs'
 
 /**
  * The internal imports
@@ -14,7 +13,6 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { Clinician, CustomClinician, ToggleSwitchDarkMode } from '@/Components'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
-import ChangeEmergencyContent from '@/Store/Emergency/ChangeEmergencyContent'
 import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 
 const ClinicianSelectionAuthContainer = () => {
@@ -30,35 +28,10 @@ const ClinicianSelectionAuthContainer = () => {
   // Local state definition
   const fadeAnim = useRef(new Animated.Value(0)).current
   const healthFacility = useSelector(state => state.healthFacility.item)
-  const algorithmUpdated = useSelector(state => state.algorithm.item.updated)
-
-  /**
-   * Store new emergency content
-   */
-  const newEmergencyContent = async () => {
-    const targetPath = `${DocumentDirectoryPath}/emergency_content.html`
-    const fileExist = await exists(targetPath)
-
-    if (fileExist) {
-      const emergencyContent = await readFile(targetPath)
-      dispatch(
-        ChangeEmergencyContent.action({
-          newContent: emergencyContent,
-        }),
-      )
-    }
-  }
 
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
-
-  // Load to store new emergency content
-  useEffect(() => {
-    if (algorithmUpdated) {
-      newEmergencyContent()
-    }
-  }, [algorithmUpdated])
 
   /**
    * Set clinician and redirect user to Pin container
