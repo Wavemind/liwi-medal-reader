@@ -4,13 +4,13 @@
 import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import format from 'date-fns/format'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import { formatDate } from '@/Utils/Date'
 
 const ConsentListItem = ({ item }) => {
   // Theme and style elements deconstruction
@@ -44,7 +44,7 @@ const ConsentListItem = ({ item }) => {
         </View>
         <View style={consentListItem.dateWrapper}>
           <Text style={[Fonts.textCenter, Fonts.textSmall]}>
-            {lastVisit && format(lastVisit, 'dd.MM.yyyy')}
+            {lastVisit && formatDate(lastVisit)}
           </Text>
         </View>
         <View style={[Gutters.regularLMargin, Layout.column]}>
