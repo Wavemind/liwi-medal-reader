@@ -294,6 +294,7 @@ export default {
       title: 'Erreur de communication avec medAL-data',
       description: 'Serveur introuvable',
     },
+    timeout: 'Connexion au serveur interrompue',
   },
   health_facility: {
     id: 'ID',

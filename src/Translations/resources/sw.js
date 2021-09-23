@@ -292,6 +292,7 @@ export default {
       title: 'Communication error with medAL-data',
       description: 'Server not accessible',
     },
+    timeout: 'Server connection aborted',
   },
   health_facility: {
     id: 'ID',

@@ -65,15 +65,12 @@ const PinAuthContainer = () => {
   const handlePin = async value => {
     if (value === pinCode) {
       setLoading(true)
-      console.log('result')
-      console.log('Avant Fetch algo')
 
       const result = await dispatch(
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
-      console.log(result)
+
       if (isFulfilled(result)) {
-        console.log('Avant FetchOneEmergency')
 
         await dispatch(
           FetchOneEmergency.action({
@@ -81,7 +78,6 @@ const PinAuthContainer = () => {
             algorithmId: result.payload.algorithm_id,
           }),
         )
-        console.log('Avant ChangeVersion')
 
         await dispatch(
           ChangeVersion.action({
@@ -97,7 +93,6 @@ const PinAuthContainer = () => {
       }
     } else {
       setLoading(false)
-      console.log('JE suis ici')
       setStatus('failure')
     }
   }

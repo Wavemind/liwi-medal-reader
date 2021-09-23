@@ -15,19 +15,20 @@ import axios from 'axios'
  */
 import api from '@/Services/Algorithm/FetchOneApi'
 import { store } from '@/Store'
+import { Config } from '@/Config'
+import i18n from '@/Translations/index'
 
 export default async ({ json_version }) => {
   const macAddress = await getMacAddress()
-  console.log('macAddress', macAddress)
-  console.log(api)
   const abort = axios.CancelToken.source()
   const timeout = setTimeout(() => {
     abort.cancel()
-    // Timeout Logic
-  }, 2000)
+    return Promise.reject({ message: i18n.t('errors.timeout') })
+  }, Config.TIMEOUT)
 
-  // TODO: Add geoloc !
-  const response = await api
+  let response
+
+  await api
     .post('versions/retrieve_algorithm_version', {
       json_version,
       mac_address: macAddress,
@@ -36,11 +37,8 @@ export default async ({ json_version }) => {
     .then(result => {
       // Clear The Timeout
       clearTimeout(timeout)
-      console.log('MON CUL ', result)
-      // Handle your response
+      response = result
     })
-
-  console.log(response)
 
   // If algorithm doesn't change. Load current stored.
   if (response === undefined || response.status === 204) {

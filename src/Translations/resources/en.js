@@ -122,7 +122,7 @@ export default {
         no_additional: 'No additional diagnoses selected',
         no_custom: 'No diagnoses added manually',
       },
-	    /* al 20210912 removed from diagnoses: proposed_title: 'Diagnoses proposed by {{ version_name }}', */
+      /* al 20210912 removed from diagnoses: proposed_title: 'Diagnoses proposed by {{ version_name }}', */
       drugs: {
         drugs: 'Drugs',
         proposed: 'Proposed',
@@ -292,6 +292,7 @@ export default {
       title: 'Communication error with medAL-data',
       description: 'Server not accessible',
     },
+    timeout: 'Server connection aborted',
   },
   health_facility: {
     id: 'ID',

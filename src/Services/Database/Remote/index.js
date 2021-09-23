@@ -1,15 +1,24 @@
+/**
+ * The external imports
+ */
 import axios from 'axios'
 import { showMessage } from 'react-native-flash-message'
+
+/**
+ * The internal imports
+ */
 import i18n from '@/Translations/index'
 import { store } from '@/Store'
+import { Config } from '@/Config'
 
 const instance = axios.create({
   headers: {
     Accept: 'application/json',
     'Content-type': 'application/json',
   },
-  timeout: 3000,
+  timeout: Config.TIMEOUT_AXIOS,
 })
+
 /**
  * Handles the error returned from the api
  * @param message
