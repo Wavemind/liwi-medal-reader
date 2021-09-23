@@ -36,7 +36,7 @@ const Default = ({ drug, drugDose, diagnosisId }) => {
     every = drugInstance?.is_pre_referral
       ? `
     ${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t(
-          'formulations.drug.h',
+          'formulations.drug.hour',
         )} ${t('formulations.drug.during')} ${t(
           'formulations.drug.pre_referral',
         )}`
