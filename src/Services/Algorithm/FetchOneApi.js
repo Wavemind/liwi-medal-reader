@@ -10,7 +10,7 @@ const instance = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
-  timeout: 3000,
+  timeout: 2000,
 })
 
 instance.interceptors.request.use(
@@ -32,6 +32,7 @@ instance.interceptors.request.use(
     config.headers.common.client = client.password
     config.headers.common.expiry = expiry.password
     config.headers.common.uid = uid.password
+    console.log('request', config)
 
     return config
   },
@@ -47,9 +48,12 @@ instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+    console.log('response')
     return response
   },
   async function (error) {
+    console.log('response', error)
+
     if (error.response) {
       // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'

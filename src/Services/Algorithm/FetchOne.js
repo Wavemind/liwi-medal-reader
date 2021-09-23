@@ -8,6 +8,7 @@ import {
   unlink,
   exists,
 } from 'react-native-fs'
+import axios from 'axios'
 
 /**
  * The internal imports
@@ -17,12 +18,29 @@ import { store } from '@/Store'
 
 export default async ({ json_version }) => {
   const macAddress = await getMacAddress()
+  console.log('macAddress', macAddress)
+  console.log(api)
+  const abort = axios.CancelToken.source()
+  const timeout = setTimeout(() => {
+    abort.cancel()
+    // Timeout Logic
+  }, 2000)
 
   // TODO: Add geoloc !
-  const response = await api.post('versions/retrieve_algorithm_version', {
-    json_version,
-    mac_address: macAddress,
-  })
+  const response = await api
+    .post('versions/retrieve_algorithm_version', {
+      json_version,
+      mac_address: macAddress,
+      cancelToken: abort.token,
+    })
+    .then(result => {
+      // Clear The Timeout
+      clearTimeout(timeout)
+      console.log('MON CUL ', result)
+      // Handle your response
+    })
+
+  console.log(response)
 
   // If algorithm doesn't change. Load current stored.
   if (response === undefined || response.status === 204) {
