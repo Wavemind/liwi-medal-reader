@@ -73,7 +73,6 @@ instance.interceptors.request.use(
     return config
   },
   function (error) {
-    console.log('error request', error)
     // Do something with request error
     return Promise.reject(error)
   },
