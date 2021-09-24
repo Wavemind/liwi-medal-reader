@@ -1,16 +1,24 @@
+/**
+ * The external imports
+ */
 import axios from 'axios'
 import * as Keychain from 'react-native-keychain'
 import { showMessage } from 'react-native-flash-message'
+
+/**
+ * The internal imports
+ */
 import i18n from '@/Translations/index'
 import { store } from '@/Store'
 import { defineBaseUrl } from '@/Services'
+import { Config } from '@/Config'
 
 const instance = axios.create({
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
-  timeout: 3000,
+  timeout: Config.TIMEOUT_AXIOS,
 })
 
 instance.interceptors.request.use(
@@ -36,7 +44,6 @@ instance.interceptors.request.use(
     return config
   },
   function (error) {
-    console.log('error request', error)
     // Do something with request error
     return Promise.reject(error)
   },

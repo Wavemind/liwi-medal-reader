@@ -1,8 +1,15 @@
+/**
+ * The external imports
+ */
 import axios from 'axios'
-import { Config } from '@/Config'
 import * as Keychain from 'react-native-keychain'
-import { navigate } from '@/Navigators/Root'
 import { showMessage } from 'react-native-flash-message'
+
+/**
+ * The internal imports
+ */
+import { Config } from '@/Config'
+import { navigate } from '@/Navigators/Root'
 import i18n from '@/Translations/index'
 import { store } from '@/Store'
 
@@ -11,7 +18,7 @@ const instance = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
-  timeout: 3000,
+  timeout: Config.TIMEOUT_AXIOS,
 })
 
 /**
@@ -66,7 +73,6 @@ instance.interceptors.request.use(
     return config
   },
   function (error) {
-    console.log('error request', error)
     // Do something with request error
     return Promise.reject(error)
   },

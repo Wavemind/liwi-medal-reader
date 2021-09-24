@@ -8,21 +8,37 @@ import {
   unlink,
   exists,
 } from 'react-native-fs'
+import axios from 'axios'
 
 /**
  * The internal imports
  */
 import api from '@/Services/Algorithm/FetchOneApi'
 import { store } from '@/Store'
+import { Config } from '@/Config'
+import i18n from '@/Translations/index'
 
 export default async ({ json_version }) => {
   const macAddress = await getMacAddress()
+  const abort = axios.CancelToken.source()
+  const timeout = setTimeout(() => {
+    abort.cancel()
+    return Promise.reject({ message: i18n.t('errors.timeout') })
+  }, Config.TIMEOUT)
 
-  // TODO: Add geoloc !
-  const response = await api.post('versions/retrieve_algorithm_version', {
-    json_version,
-    mac_address: macAddress,
-  })
+  let response
+
+  await api
+    .post('versions/retrieve_algorithm_version', {
+      json_version,
+      mac_address: macAddress,
+      cancelToken: abort.token,
+    })
+    .then(result => {
+      // Clear The Timeout
+      clearTimeout(timeout)
+      response = result
+    })
 
   // If algorithm doesn't change. Load current stored.
   if (response === undefined || response.status === 204) {
