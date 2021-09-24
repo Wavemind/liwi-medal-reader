@@ -71,7 +71,6 @@ const PinAuthContainer = () => {
       )
 
       if (isFulfilled(result)) {
-
         await dispatch(
           FetchOneEmergency.action({
             emergencyContentVersion: emergencyContentVersion,
