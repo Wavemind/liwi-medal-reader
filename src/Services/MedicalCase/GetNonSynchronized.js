@@ -16,6 +16,7 @@ export default async () => {
   return medicalCases.filter(
     medicalCase =>
       medicalCase.synchronizedAt === 0 &&
+      medicalCase.consent &&
       (medicalCase.closedAt !== 0 ||
         differenceInDays(new Date(medicalCase.createdAt), startOfToday()) >= 7),
   )
