@@ -10,15 +10,15 @@ import axios from 'axios'
  */
 import api from '@/Services'
 import { Config } from '@/Config'
-import i18n from '@/Translations/index'
+import { store } from '@/Store'
 
 export default async ({}) => {
   const macAddress = await getMacAddress()
-
   const abort = axios.CancelToken.source()
+
   const timeout = setTimeout(() => {
     abort.cancel()
-    return Promise.reject({ message: i18n.t('errors.timeout') })
+    return store.getState().healthFacility.item
   }, Config.TIMEOUT)
 
   let response

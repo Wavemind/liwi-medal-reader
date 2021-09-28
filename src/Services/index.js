@@ -155,7 +155,9 @@ instance.interceptors.response.use(
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
       showMessage({
-        message: i18n.t('errors.offline.title'),
+        message: i18n.t('errors.offline.title', {
+          serverName: 'MedAL-Creator',
+        }),
         description: i18n.t('errors.offline.description'),
         type: 'danger',
         duration: 5000,

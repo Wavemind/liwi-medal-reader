@@ -84,7 +84,7 @@ const PinAuthContainer = () => {
           }),
         )
         setLoading(false)
-        if (medicalCase.id && medicalCase.close === 0) {
+        if (medicalCase.id && medicalCase.closedAt === 0) {
           navigateToMedicalCase(medicalCase)
         } else {
           navigateAndSimpleReset('Home')
