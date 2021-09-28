@@ -235,7 +235,6 @@ export default function () {
       }
       delete data.patientValues
       const response = await api.post('/api/patients/synchronize', data)
-
       if (response.data === 'Synchronize success') {
         LocalInterface().destroyPatient(patient.id)
       }

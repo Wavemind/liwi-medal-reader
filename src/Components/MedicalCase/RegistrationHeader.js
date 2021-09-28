@@ -15,11 +15,9 @@ import { useTheme } from '@/Theme'
 const RegistrationHeader = () => {
   const { Gutters } = useTheme()
   const { t } = useTranslation()
-
   const consentManagement = useSelector(
     state => state.algorithm.item.config.consent_management,
   )
-
   const other_uid = useSelector(state => state.patient.item.other_uid)
   return (
     <>

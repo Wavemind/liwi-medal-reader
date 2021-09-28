@@ -17,7 +17,6 @@ import axios from 'axios'
  */
 import api from '@/Services'
 import { Config } from '@/Config'
-import i18n from '@/Translations/index'
 
 export default async ({}) => {
   // Get device info
@@ -32,7 +31,7 @@ export default async ({}) => {
   const abort = axios.CancelToken.source()
   const timeout = setTimeout(() => {
     abort.cancel()
-    return Promise.reject({ message: i18n.t('errors.timeout') })
+    return null
   }, Config.TIMEOUT)
 
   let response

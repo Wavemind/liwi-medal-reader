@@ -289,7 +289,7 @@ export default {
   },
   errors: {
     offline: {
-      title: 'Communication error with medAL-data',
+      title: 'Communication error with {{ serverName }}',
       description: 'Server not accessible',
     },
     timeout: 'Server connection aborted',

@@ -17,7 +17,7 @@ const ConnectionStatus = () => {
   const architecture = useSelector(
     state => state.healthFacility.item.architecture,
   )
-  
+
   useEffect(async () => {
     if (isConnected && architecture === 'client_server') {
       const patients = await LocalInterface().getAll('Patient')

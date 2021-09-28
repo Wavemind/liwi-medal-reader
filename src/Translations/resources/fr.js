@@ -291,7 +291,7 @@ export default {
   },
   errors: {
     offline: {
-      title: 'Erreur de communication avec medAL-data',
+      title: 'Erreur de communication avec {{ serverName }}',
       description: 'Serveur introuvable',
     },
     timeout: 'Connexion au serveur interrompue',

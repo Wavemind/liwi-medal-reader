@@ -16,14 +16,15 @@ import axios from 'axios'
 import api from '@/Services/Algorithm/FetchOneApi'
 import { store } from '@/Store'
 import { Config } from '@/Config'
-import i18n from '@/Translations/index'
 
 export default async ({ json_version }) => {
   const macAddress = await getMacAddress()
   const abort = axios.CancelToken.source()
   const timeout = setTimeout(() => {
+    const state = store.getState()
+    const oldAlgorithm = state.algorithm.item
     abort.cancel()
-    return Promise.reject({ message: i18n.t('errors.timeout') })
+    return { ...oldAlgorithm, updated: false }
   }, Config.TIMEOUT)
 
   let response
