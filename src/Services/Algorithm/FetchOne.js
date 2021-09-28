@@ -20,9 +20,9 @@ import { Config } from '@/Config'
 export default async ({ json_version }) => {
   const macAddress = await getMacAddress()
   const abort = axios.CancelToken.source()
+
   const timeout = setTimeout(() => {
-    const state = store.getState()
-    const oldAlgorithm = state.algorithm.item
+    const oldAlgorithm = store.getState().algorithm.item
     abort.cancel()
     return { ...oldAlgorithm, updated: false }
   }, Config.TIMEOUT)

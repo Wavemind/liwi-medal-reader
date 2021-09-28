@@ -14,12 +14,11 @@ import { store } from '@/Store'
 
 export default async ({}) => {
   const macAddress = await getMacAddress()
-
   const abort = axios.CancelToken.source()
+
   const timeout = setTimeout(() => {
-    const state = store.getState()
     abort.cancel()
-    return state.healthFacility.item
+    return store.getState().healthFacility.item
   }, Config.TIMEOUT)
 
   let response
