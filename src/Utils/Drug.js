@@ -1,6 +1,7 @@
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
+import { translate } from '@/Translations/algorithm'
 
 /**
  * Returns all available drugs for a specific final diagnosis
@@ -125,4 +126,25 @@ export const handleDrugs = (
       }
     }
   })
+}
+
+/**
+ * Display instance description of drug if present. Otherwise, drug
+ * @params {Integer} drugId
+ * @params {Integer} finalDiagnosticId
+ */
+export const displayDrugDescription = (drugId, finalDiagnosticId) => {
+  const nodes = store.getState().algorithm.item.nodes
+
+  const drugInstanceDescription = translate(
+    nodes[finalDiagnosticId].drugs[drugId].description,
+    false,
+  )
+  const drugDescription = translate(nodes[drugId].description)
+
+  if (drugInstanceDescription !== '') {
+    return drugInstanceDescription
+  }
+
+  return drugDescription
 }
