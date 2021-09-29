@@ -96,7 +96,9 @@ const Numeric = ({ questionId, editable = true }) => {
         onChangeText={onChange}
         value={String(value)}
         editable={editable}
-        placeholder={translate(currentNode.placeholder)}
+        placeholder={
+          currentNode.placeholder && translate(currentNode.placeholder)
+        }
       />
       {currentNode.estimable && (
         <View style={[Layout.row, Gutters.smallTMargin]}>
