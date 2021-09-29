@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import setAnswer from '@/Utils/SetAnswer'
-
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
+import { translate } from '@/Translations/algorithm'
 
 const Numeric = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
@@ -51,7 +51,7 @@ const Numeric = ({ questionId, editable = true }) => {
 
   /**
    * Check if there is no not permitted char
-   * @param {Event} e
+   * @param {Event} newValue
    */
   const onChange = newValue => {
     const regWithComma = /^[0-9,]+$/
@@ -74,7 +74,7 @@ const Numeric = ({ questionId, editable = true }) => {
 
   /**
    * Set state and update medicalCase store
-   * @param {'measured' | 'estimated'} value
+   * @param {'measured' | 'estimated'} newEstimableValue
    */
   const handleEstimable = newEstimableValue => {
     setEstimableValue(newEstimableValue)
@@ -96,6 +96,7 @@ const Numeric = ({ questionId, editable = true }) => {
         onChangeText={onChange}
         value={String(value)}
         editable={editable}
+        placeholder={translate(currentNode.placeholder)}
       />
       {currentNode.estimable && (
         <View style={[Layout.row, Gutters.smallTMargin]}>
