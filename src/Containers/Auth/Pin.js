@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 import { useTranslation } from 'react-i18next'
 import { heightPercentageToDP } from 'react-native-responsive-screen'
-
+import { HF_TOKEN } from 'env'
 /**
  * The internal imports
  */
@@ -53,7 +53,7 @@ const PinAuthContainer = () => {
     fadeIn(fadeAnim)
 
     if (__DEV__) {
-      handlePin('1234')
+      handlePin(HF_TOKEN)
     }
   }, [fadeAnim])
 

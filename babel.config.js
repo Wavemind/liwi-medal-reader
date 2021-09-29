@@ -13,6 +13,21 @@ plugins.push([
   },
 ])
 
+plugins.push([
+  'module:react-native-dotenv',
+  {
+    moduleName: 'env',
+    path: '.env',
+    blocklist: null,
+    allowlist: null,
+    blacklist: null,
+    whitelist: null,
+    safe: false,
+    allowUndefined: true,
+    verbose: false,
+  },
+])
+
 module.exports = {
   presets,
   plugins,
