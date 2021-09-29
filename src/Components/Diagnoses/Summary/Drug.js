@@ -91,7 +91,10 @@ const Drug = ({ drug, isLast, diagnosisId }) => {
         <Text style={summary.drugTitle}>{translate(currentDrug.label)}</Text>
         {(translate(currentDrug.description) !== '' ||
           currentDrug.medias?.length > 0) && (
-          <QuestionInfoButton nodeId={drug.id} />
+          <QuestionInfoButton
+            nodeId={drug.id}
+            finalDiagnosticId={diagnosisId}
+          />
         )}
       </View>
       <View>{renderSwitchFormulation()}</View>

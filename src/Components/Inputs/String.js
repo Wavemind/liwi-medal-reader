@@ -57,7 +57,9 @@ const String = ({ questionId, editable = true }) => {
       value={value.toString()}
       keyboardType="default"
       editable={editable}
-      placeholder={translate(currentNode.placeholder)}
+      placeholder={
+        currentNode.placeholder && translate(currentNode.placeholder)
+      }
     />
   )
 }

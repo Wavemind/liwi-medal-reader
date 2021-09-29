@@ -2,6 +2,7 @@
  * The external imports
  */
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -9,27 +10,24 @@ import React from 'react'
 import { SynchronizationNavbar, StageWrapperNavbar } from '@/Components'
 
 const ActionsNavbar = ({ navigationState }) => {
-  const homeNavigation = navigationState.routes[navigationState.index].state
+  const advancement = useSelector(state => state.medicalCase.item.advancement)
 
-  const route = homeNavigation?.routes[homeNavigation.index]
-  // Early return if navigation is not loaded
-  if (route === undefined) {
-    return null
-  }
+  if (advancement !== undefined) {
+    return (
+      <StageWrapperNavbar
+        stageIndex={advancement.stage}
+        stepIndex={advancement.step}
+      />
+    )
+  } else {
+    const homeNavigation = navigationState.routes[navigationState.index].state
+    const route = homeNavigation?.routes[homeNavigation.index]
 
-  const { name, params } = route
-
-  const stageIndex = params?.stageIndex || 0
-  const stepIndex = params?.stepIndex || 0
-  switch (name) {
-    case 'StageWrapper':
-      return (
-        <StageWrapperNavbar stageIndex={stageIndex} stepIndex={stepIndex} />
-      )
-    case 'Synchronization':
+    if (route?.params?.name === 'Synchronization') {
       return <SynchronizationNavbar />
-    default:
-      return null
+    }
+
+    return null
   }
 }
 

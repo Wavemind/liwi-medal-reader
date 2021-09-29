@@ -16,6 +16,7 @@ import { useTheme } from '@/Theme'
 import { AdditionalSelect, DrugBooleanButton } from '@/Components'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
+import { displayDrugDescription } from '@/Utils/Drug'
 
 const DiagnosisDrugs = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
@@ -131,7 +132,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
                 />
               </View>
               <Text style={drugs.drugDescription}>
-                {translate(algorithm.nodes[drugId].description)}
+                {displayDrugDescription(drugId, diagnosis.id)}
               </Text>
             </View>
           ))
