@@ -17,7 +17,7 @@ import FetchOneEmergency from '@/Store/Emergency/FetchOne'
 import ChangeVersion from '@/Store/System/ChangeVersion'
 import {
   navigateAndSimpleReset,
-  navigateToMedicalCase,
+  navigateNestedAndSimpleReset,
 } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
@@ -85,7 +85,10 @@ const PinAuthContainer = () => {
         )
         setLoading(false)
         if (medicalCase.id && medicalCase.closedAt === 0) {
-          navigateToMedicalCase(medicalCase)
+          navigateNestedAndSimpleReset('Home', 'StageWrapper', {
+            stageIndex: medicalCase.advancement.stage,
+            stepIndex: medicalCase.advancement.step,
+          })
         } else {
           navigateAndSimpleReset('Home')
         }
