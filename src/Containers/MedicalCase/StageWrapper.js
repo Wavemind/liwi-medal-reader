@@ -26,7 +26,7 @@ const StageWrapperMedicalCaseContainer = ({ route }) => {
   const stages = getStages()
   const stage = stages[stageIndex]
   const currentStep = stage.steps[stepIndex]
-  
+
   return (
     <View style={medicalCase.wrapper}>
       <SideBar stageIndex={stageIndex} />
