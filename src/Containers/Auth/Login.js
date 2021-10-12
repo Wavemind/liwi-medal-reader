@@ -31,6 +31,7 @@ import { navigateAndSimpleReset } from '@/Navigators/Root'
 import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
 import NewSessionUser from '@/Store/User/NewSession'
 import DeviceRegister from '@/Store/Device/Register'
+import { DEV_EMAIL } from 'env'
 
 const LoginAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -40,10 +41,8 @@ const LoginAuthContainer = () => {
   } = useTheme()
 
   // Local state definition
-  const [email, setEmail] = useState(
-    __DEV__ ? 'quentin.girard@wavemind.ch' : '',
-  )
-  const [password, setPassword] = useState(__DEV__ ? '123456' : '')
+  const [email, setEmail] = useState(__DEV__ ? DEV_EMAIL : '')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
   // Get values from the store
