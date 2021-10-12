@@ -12,7 +12,8 @@ import { useNavigation } from '@react-navigation/native'
  */
 import { useTheme } from '@/Theme'
 import { SectionHeader, SquareButton, Icon } from '@/Components'
-import UpdateField from '@/Store/Patient/UpdateField'
+import UpdatePatientField from '@/Store/Patient/UpdateField'
+import UpdateMedicalCaseField from '@/Store/MedicalCase/UpdateField'
 
 const Consent = () => {
   // Theme and style elements deconstruction
@@ -39,7 +40,8 @@ const Consent = () => {
    * @param {bool} value : values to set in the store
    */
   const setPatientConsent = async value => {
-    await dispatch(UpdateField.action({ field: 'consent', value }))
+    await dispatch(UpdatePatientField.action({ field: 'consent', value }))
+    await dispatch(UpdateMedicalCaseField.action({ field: 'consent', value }))
   }
 
   return (
