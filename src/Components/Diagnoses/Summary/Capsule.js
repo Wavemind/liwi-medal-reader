@@ -28,7 +28,7 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
     state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
   )
 
-  const duration = drugInstance.duration
+  const duration = drugInstance
     ? translate(drugInstance.duration)
     : drug.duration
 
