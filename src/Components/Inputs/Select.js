@@ -55,7 +55,7 @@ const Select = ({ questionId, disabled = false }) => {
       setAnswer(question.id, value)
     }
   }, [value])
-  console.log(currentNode.answers)
+
   return (
     <View style={select.pickerContainer(disabled)}>
       <Picker
