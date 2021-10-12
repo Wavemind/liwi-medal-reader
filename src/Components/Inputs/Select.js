@@ -73,6 +73,7 @@ const Select = ({ questionId, disabled = false }) => {
         />
         {Object.values(currentNode.answers)
           .filter(answer => answer.value !== 'not_available')
+          .sort((a, b) => a.reference - b.reference)
           .map(answer => (
             <Picker.Item
               key={`select-${answer.id}`}
