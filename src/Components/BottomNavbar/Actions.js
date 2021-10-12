@@ -23,7 +23,7 @@ const ActionsNavbar = ({ navigationState }) => {
     const homeNavigation = navigationState.routes[navigationState.index].state
     const route = homeNavigation?.routes[homeNavigation.index]
 
-    if (route?.params?.name === 'Synchronization') {
+    if (route?.name === 'Synchronization') {
       return <SynchronizationNavbar />
     }
 
