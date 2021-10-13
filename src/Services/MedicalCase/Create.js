@@ -14,6 +14,7 @@ export default async ({ algorithm, patientId }) => {
     comment: '',
     consent: true,
     createdAt: new Date().getTime(),
+    forceClosed: false,
     closedAt: 0,
     diagnosis: {
       proposed: [],
