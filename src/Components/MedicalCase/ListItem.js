@@ -84,7 +84,7 @@ const ListItem = ({ item }) => {
 
         <View style={medicalCaseListItem.dateWrapper}>
           <Text style={medicalCaseListItem.date}>
-            {formatDate(item.updatedAt)}
+            {formatDate(item.createdAt)}
           </Text>
         </View>
 

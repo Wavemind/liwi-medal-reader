@@ -31,10 +31,20 @@ const ListItem = ({ item }) => {
   const dispatch = useDispatch()
 
   const [activeMedicalCase, setActiveMedicalCase] = useState(null)
+  const [lastCreatedMedicalCase, setLastCreatedMedicalCase] = useState(0)
   const [stages] = useState(getStages())
 
   useEffect(() => {
     const medicalCase = item.medicalCases.find(mc => mc.closedAt === 0)
+
+    let latestMedicalCase = 0
+    item.medicalCases.forEach(mc => {
+      if (mc.createdAt > latestMedicalCase) {
+        latestMedicalCase = mc.createdAt
+      }
+    })
+
+    setLastCreatedMedicalCase(latestMedicalCase)
     setActiveMedicalCase(medicalCase)
   }, [])
 
@@ -67,7 +77,9 @@ const ListItem = ({ item }) => {
           </Text>
         </View>
         <View style={patientListItem.dateWrapper}>
-          <Text style={patientListItem.date}>{formatDate(item.updatedAt)}</Text>
+          <Text style={patientListItem.date}>
+            {formatDate(lastCreatedMedicalCase)}
+          </Text>
         </View>
         {activeMedicalCase ? (
           <View style={patientListItem.statusWrapper}>
