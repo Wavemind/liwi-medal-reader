@@ -24,6 +24,7 @@ export default async () => {
   medicalCaseToClose.forEach(async medicalCase =>
     LocalInterface().update('MedicalCase', medicalCase.id, [
       { name: 'closedAt', value: new Date().getTime() },
+      { name: 'forceClosed', value: true },
     ]),
   )
 }
