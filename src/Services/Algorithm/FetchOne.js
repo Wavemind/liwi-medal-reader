@@ -91,7 +91,7 @@ export default async ({ json_version }, { dispatch }) => {
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  // TODO REMOVE IN NEXT RELEASE
+  // TODO REMOVE IN NEXT RELEASE IF STATEMENT
   if (algorithm.study.default_language) {
     // Set app language
     i18n.changeLanguage(algorithm.study.default_language)
