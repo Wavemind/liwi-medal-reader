@@ -14,10 +14,12 @@ import axios from 'axios'
  * The internal imports
  */
 import api from '@/Services/Algorithm/FetchOneApi'
+import ChangeLanguage from '@/Store/System/ChangeLanguage'
 import { store } from '@/Store'
 import { Config } from '@/Config'
+import i18n from '@/Translations/index'
 
-export default async ({ json_version }) => {
+export default async ({ json_version }, { dispatch }) => {
   const macAddress = await getMacAddress()
   const abort = axios.CancelToken.source()
 
@@ -40,6 +42,10 @@ export default async ({ json_version }) => {
       clearTimeout(timeout)
       response = result
     })
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
 
   // If algorithm doesn't change. Load current stored.
   if (response === undefined || response.status === 204) {
@@ -67,12 +73,47 @@ export default async ({ json_version }) => {
     nodes: { ...nodes },
   }
 
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
   // Write the algorithm in a file
   const algorithmTargetPath = `${DocumentDirectoryPath}/version_${algorithm.version_id}.json`
   const algorithmFileExist = await exists(algorithmTargetPath)
+
   if (algorithmFileExist) {
     await unlink(algorithmTargetPath)
   }
+
   await writeFile(algorithmTargetPath, JSON.stringify(algorithm))
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  // TODO REMOVE IN NEXT RELEASE
+  if (algorithm.study.default_language) {
+    // Set app language
+    i18n.changeLanguage(algorithm.study.default_language)
+    await dispatch(
+      ChangeLanguage.action({
+        key: 'appLanguage',
+        newLanguage: algorithm.study.default_language,
+      }),
+    )
+
+    // Set algorithm language. If default language doesn't exist, fall back in english (default store value)
+    if (
+      algorithm.version_languages.includes(algorithm.study.default_language)
+    ) {
+      await dispatch(
+        ChangeLanguage.action({
+          key: 'algorithmLanguage',
+          newLanguage: algorithm.study.default_language,
+        }),
+      )
+    }
+  }
+
   return algorithm
 }
