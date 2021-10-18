@@ -84,7 +84,12 @@ const PinAuthContainer = () => {
           }),
         )
         setLoading(false)
-        if (medicalCase.id && medicalCase.closedAt === 0) {
+
+        if (
+          medicalCase.id &&
+          medicalCase.closedAt === 0 &&
+          medicalCase.version_id === algorithm.version_id
+        ) {
           navigateNestedAndSimpleReset('Home', 'StageWrapper', {
             stageIndex: medicalCase.advancement.stage,
             stepIndex: medicalCase.advancement.step,
