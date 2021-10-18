@@ -52,7 +52,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
 
   if (kindOfConsultationId) {
     const kindOfConsultationAnswerId = patient.patientValues.find(
-      patientValue => patientValue.node_id === kindOfConsultationId,
+      patientValue => parseInt(patientValue.node_id) === kindOfConsultationId,
     ).answer_id
 
     kindOfConsultation =
@@ -64,9 +64,11 @@ const SummaryWrapperMedicalCaseContainer = () => {
   const genderNodeId = useSelector(
     state => state.algorithm.item.config.basic_questions.gender_question_id,
   )
+
   const genderAnswerId = patient.patientValues.find(
-    patientValue => patientValue.node_id === genderNodeId,
+    patientValue => parseInt(patientValue.node_id) === genderNodeId,
   ).answer_id
+
   const gender = nodes[genderNodeId].answers[genderAnswerId]
   ///////////////////////////////////////////////////////
 
