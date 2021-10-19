@@ -65,11 +65,6 @@ const ToggleComplaintCategory = ({ questionId }) => {
             <Icon name="validate" />
           </View>
         }
-        rightComponent={
-          <Text style={toggleComplaintCategory.rightText}>
-            {!toggleValue && t('answers.no')}
-          </Text>
-        }
         trackBarStyle={toggleComplaintCategory.trackBarStyle}
         trackBar={{
           activeBackgroundColor: Colors.primary,
