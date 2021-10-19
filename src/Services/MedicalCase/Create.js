@@ -12,8 +12,9 @@ export default async ({ algorithm, patientId }) => {
   return {
     activities: [],
     comment: '',
-    consent: !!algorithm.config.consent_management,
+    consent: true,
     createdAt: new Date().getTime(),
+    forceClosed: false,
     closedAt: 0,
     diagnosis: {
       proposed: [],

@@ -13,7 +13,6 @@ import { DocumentDirectoryPath, exists, readFile } from 'react-native-fs'
  */
 import i18n from '@/Translations'
 import DefaultTheme from '@/Store/Theme/DefaultTheme'
-import ChangeEmergencyContent from '@/Store/Emergency/ChangeEmergencyContent'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 import { RedirectService } from '@/Services/Device'
@@ -30,18 +29,6 @@ export default {
 
     // Set default theme
     await dispatch(DefaultTheme.action({ theme: 'default', darkMode: null }))
-
-    // Set emergency content
-    const targetPath = `${DocumentDirectoryPath}/emergency_content.html`
-    const fileExist = await exists(targetPath)
-    if (fileExist) {
-      const emergencyContent = await readFile(targetPath)
-      await dispatch(
-        ChangeEmergencyContent.action({
-          newContent: emergencyContent,
-        }),
-      )
-    }
 
     // Set algorithm
     const algorithmTargetPath = `${DocumentDirectoryPath}/version_${state.system.versionId}.json`

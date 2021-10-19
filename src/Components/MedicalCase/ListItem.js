@@ -4,7 +4,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch } from 'react-redux'
-import format from 'date-fns/format'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
 
@@ -20,6 +19,7 @@ import { getStages } from '@/Utils/Navigation/GetStages'
 import { isLocked } from '@/Utils/MedicalCase'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import SetParams from '@/Store/Modal/SetParams'
+import { formatDate } from '@/Utils/Date'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
@@ -50,6 +50,7 @@ const ListItem = ({ item }) => {
     await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
       await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
+      await dispatch(LoadPatient.action({ patientId: item.patient.id }))
       navigation.navigate('MedicalCaseSummary')
     } else if (locked) {
       await dispatch(SetParams.action({ type: 'lock' }))
@@ -77,13 +78,13 @@ const ListItem = ({ item }) => {
             {`${item.patient.first_name} ${item.patient.last_name}`}
           </Text>
           <Text style={medicalCaseListItem.birthDate}>
-            {format(item.patient.birth_date, 'dd.MM.yyyy')}
+            {formatDate(item.patient.birth_date)}
           </Text>
         </View>
 
         <View style={medicalCaseListItem.dateWrapper}>
           <Text style={medicalCaseListItem.date}>
-            {format(item.updatedAt, 'dd.MM.yyyy')}
+            {formatDate(item.createdAt)}
           </Text>
         </View>
 

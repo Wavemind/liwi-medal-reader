@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import setAnswer from '@/Utils/SetAnswer'
+import { translate } from '@/Translations/algorithm'
 
 const String = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
@@ -19,6 +20,9 @@ const String = ({ questionId, editable = true }) => {
 
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
+  )
+  const currentNode = useSelector(
+    state => state.algorithm.item.nodes[questionId],
   )
 
   // Local state definition
@@ -53,6 +57,9 @@ const String = ({ questionId, editable = true }) => {
       value={value.toString()}
       keyboardType="default"
       editable={editable}
+      placeholder={
+        currentNode.placeholder && translate(currentNode.placeholder)
+      }
     />
   )
 }

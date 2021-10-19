@@ -3,9 +3,10 @@ import { store } from '@/Store'
 /**
  * Translate algorithm value
  * @param translation
+ * @param fallback - Possibility to not fallback for drug instance (used in displayDrugDescription)
  * @returns {*}
  */
-export const translate = translation => {
+export const translate = (translation, fallback = true) => {
   const algorithmTranslation = store.getState().system.algorithmLanguage
   const type = typeof translation
 
@@ -21,7 +22,7 @@ export const translate = translation => {
   }
 
   // Fallback in english
-  if (translation.hasOwnProperty('en')) {
+  if (fallback && translation.hasOwnProperty('en')) {
     return translation.en
   }
 

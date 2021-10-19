@@ -8,8 +8,8 @@ export default {
       ...payload.newAlgorithm.final_diagnoses,
       ...payload.newAlgorithm.health_cares,
     }
+
     // Remove useless key
-    delete payload.newAlgorithm.emergency_content
     delete payload.newAlgorithm.nodes
     delete payload.newAlgorithm.final_diagnoses
     delete payload.newAlgorithm.health_cares

@@ -38,6 +38,7 @@ const SynchronizationNavbar = () => {
   useEffect(async () => {
     if (loading) {
       const result = await GetNonSynchronizedService()
+
       setUnSynced(result)
     }
   }, [loading])

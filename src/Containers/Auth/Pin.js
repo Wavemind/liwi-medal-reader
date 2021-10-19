@@ -8,15 +8,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 import { useTranslation } from 'react-i18next'
 import { heightPercentageToDP } from 'react-native-responsive-screen'
-
+import { HF_TOKEN } from 'env'
 /**
  * The internal imports
  */
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
+import FetchOneEmergency from '@/Store/Emergency/FetchOne'
 import ChangeVersion from '@/Store/System/ChangeVersion'
 import {
   navigateAndSimpleReset,
-  navigateToMedicalCase,
+  navigateNestedAndSimpleReset,
 } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
@@ -32,16 +33,17 @@ const PinAuthContainer = () => {
 
   // Local state definition
   const [status, setStatus] = useState('initial')
+  const [loading, setLoading] = useState(false)
 
   // Get values from the store
   const fadeAnim = useRef(new Animated.Value(0)).current
   const pinCode = useSelector(state => state.healthFacility.item.pin_code)
   const currentClinician = useSelector(state => state.healthFacility.clinician)
   const medicalCase = useSelector(state => state.medicalCase.item)
-  const algorithm = useSelector(state => state.algorithm.item)
-  const algorithmFetchOneLoading = useSelector(
-    state => state.algorithm.fetchOne.loading,
+  const emergencyContentVersion = useSelector(
+    state => state.emergency.item.emergency_content_version,
   )
+  const algorithm = useSelector(state => state.algorithm.item)
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
@@ -51,7 +53,7 @@ const PinAuthContainer = () => {
     fadeIn(fadeAnim)
 
     if (__DEV__) {
-      handlePin('1234')
+      handlePin(HF_TOKEN)
     }
   }, [fadeAnim])
 
@@ -62,22 +64,42 @@ const PinAuthContainer = () => {
    */
   const handlePin = async value => {
     if (value === pinCode) {
+      setLoading(true)
+
       const result = await dispatch(
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
+
       if (isFulfilled(result)) {
+        await dispatch(
+          FetchOneEmergency.action({
+            emergencyContentVersion: emergencyContentVersion,
+            algorithmId: result.payload.algorithm_id,
+          }),
+        )
+
         await dispatch(
           ChangeVersion.action({
             newVersionId: result.payload.version_id,
           }),
         )
-        if (medicalCase.id && medicalCase.close === 0) {
-          navigateToMedicalCase(medicalCase)
+        setLoading(false)
+
+        if (
+          medicalCase.id &&
+          medicalCase.closedAt === 0 &&
+          medicalCase.version_id === algorithm.version_id
+        ) {
+          navigateNestedAndSimpleReset('Home', 'StageWrapper', {
+            stageIndex: medicalCase.advancement.stage,
+            stepIndex: medicalCase.advancement.step,
+          })
         } else {
           navigateAndSimpleReset('Home')
         }
       }
     } else {
+      setLoading(false)
       setStatus('failure')
     }
   }
@@ -105,7 +127,7 @@ const PinAuthContainer = () => {
             status="enter"
             pinStatus={status}
             titleComponent={() =>
-              algorithmFetchOneLoading ? (
+              loading ? (
                 <Loader height={Math.round(heightPercentageToDP(11))} />
               ) : (
                 <Text style={authPin.title}>

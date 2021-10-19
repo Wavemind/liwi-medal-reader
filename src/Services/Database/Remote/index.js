@@ -1,15 +1,24 @@
+/**
+ * The external imports
+ */
 import axios from 'axios'
 import { showMessage } from 'react-native-flash-message'
+
+/**
+ * The internal imports
+ */
 import i18n from '@/Translations/index'
 import { store } from '@/Store'
+import { Config } from '@/Config'
 
 const instance = axios.create({
   headers: {
     Accept: 'application/json',
     'Content-type': 'application/json',
   },
-  timeout: 3000,
+  timeout: Config.TIMEOUT_AXIOS,
 })
+
 /**
  * Handles the error returned from the api
  * @param message
@@ -41,7 +50,6 @@ instance.interceptors.request.use(
     return config
   },
   function (error) {
-    console.log('error request', error)
     // Do something with request error
     return Promise.reject(error)
   },
@@ -59,17 +67,11 @@ instance.interceptors.response.use(
       // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'
 
-      // Response given by the application
-      if (error.response.data.errors) {
-        if (Array.isArray(error.response.data.errors)) {
-          errorMessage = error.response.data.errors[0]
-        } else {
-          errorMessage = error.response.data.errors
-        }
-      }
-
-      // Return null for QR code scanning
-      if (error.response.config.url.search("find_by?field='uid'") !== -1) {
+      // Return null for QR code scanning we don't wanna show a 404 error
+      if (
+        error.response.config.url.includes('field=other_uid') ||
+        error.response.config.url.includes('field=uid')
+      ) {
         return null
       }
 
@@ -85,7 +87,9 @@ instance.interceptors.response.use(
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
       showMessage({
-        message: i18n.t('errors.offline.title'),
+        message: i18n.t('errors.offline.title', {
+          serverName: 'MedAL-Hub',
+        }),
         description: i18n.t('errors.offline.description'),
         type: 'danger',
         duration: 5000,

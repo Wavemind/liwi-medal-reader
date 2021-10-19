@@ -1,8 +1,15 @@
+/**
+ * The external imports
+ */
 import axios from 'axios'
-import { Config } from '@/Config'
 import * as Keychain from 'react-native-keychain'
-import { navigate } from '@/Navigators/Root'
 import { showMessage } from 'react-native-flash-message'
+
+/**
+ * The internal imports
+ */
+import { Config } from '@/Config'
+import { navigate } from '@/Navigators/Root'
 import i18n from '@/Translations/index'
 import { store } from '@/Store'
 
@@ -11,7 +18,7 @@ const instance = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
-  timeout: 3000,
+  timeout: Config.TIMEOUT_AXIOS,
 })
 
 /**
@@ -62,10 +69,10 @@ instance.interceptors.request.use(
     config.headers.common.client = client.password
     config.headers.common.expiry = expiry.password
     config.headers.common.uid = uid.password
+
     return config
   },
   function (error) {
-    console.log('error request', error)
     // Do something with request error
     return Promise.reject(error)
   },
@@ -148,7 +155,9 @@ instance.interceptors.response.use(
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
       showMessage({
-        message: i18n.t('errors.offline.title'),
+        message: i18n.t('errors.offline.title', {
+          serverName: 'MedAL-Creator',
+        }),
         description: i18n.t('errors.offline.description'),
         type: 'danger',
         duration: 5000,

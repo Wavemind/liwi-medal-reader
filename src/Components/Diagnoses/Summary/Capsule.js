@@ -28,7 +28,25 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
     state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
   )
 
-  const duration = drugInstance ? drugInstance.duration : drug.duration
+  const duration = drugInstance
+    ? translate(drugInstance.duration)
+    : drug.duration
+
+  const durationByAgeDisplay = drugInstance?.is_pre_referral
+    ? `${t('formulations.drug.during')} ${t('formulations.drug.pre_referral')}`
+    : `${t('formulations.drug.during')} ${duration} ${t(
+        'formulations.drug.days',
+      )}`
+
+  const durationDisplay = drugInstance?.is_pre_referral
+    ? `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+        'formulations.drug.h',
+      )} ${t('formulations.drug.during')} ${t(
+        'formulations.drug.pre_referral',
+      )}`
+    : `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+        'formulations.drug.h',
+      )} ${duration} ${t('formulations.drug.days')}`
 
   return (
     <View>
@@ -41,9 +59,7 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
             'formulations.medication_form.per_administration',
           )} ${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
             'formulations.drug.h',
-          )} ${t('formulations.drug.during')} ${duration} ${t(
-            'formulations.drug.days',
-          )}`}</Text>
+          )} ${durationByAgeDisplay} `}</Text>
           <Text style={[Gutters.regularTMargin, summary.drugText]}>
             {translate(drugDose.dispensing_description)}
           </Text>
@@ -59,11 +75,7 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
             {t('formulations.drug.caps')} {drugDose.dose_form}
             {t('formulations.drug.mg')} {drugDose.administration_route_name}
           </Text>
-          <Text style={summary.drugText}>{`${t('formulations.drug.every')} ${
-            drugDose.recurrence
-          } ${t('formulations.drug.h')} ${duration} ${t(
-            'formulations.drug.days',
-          )}`}</Text>
+          <Text style={summary.drugText}>{durationDisplay}</Text>
           <Text style={[Gutters.regularTMargin, summary.drugText]}>
             {translate(drugDose.dispensing_description)}
           </Text>

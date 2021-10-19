@@ -30,7 +30,19 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
     state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
   )
 
-  const duration = drugInstance ? drugInstance.duration : drug.duration
+  const duration = drugInstance
+    ? translate(drugInstance.duration)
+    : drug.duration
+
+  const durationDisplay = drugInstance?.is_pre_referral
+    ? `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+        'formulations.drug.hour',
+      )} ${t('formulations.drug.during')} ${t(
+        'formulations.drug.pre_referral',
+      )}`
+    : `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+        'formulations.drug.h',
+      )} ${duration} ${t('formulations.drug.days')}`
 
   return (
     <View>
@@ -41,11 +53,9 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
       ]) && drugDose.by_age ? (
         <Text style={summary.drugText}>{`${roundSup(
           drugDose.unique_dose,
-        )}ml ${t('formulations.medication_form.per_administration')} ${t(
-          'formulations.drug.every',
-        )} ${drugDose.recurrence} ${t('formulations.drug.h')} ${duration} ${t(
-          'formulations.drug.days',
-        )}`}</Text>
+        )}ml ${t(
+          'formulations.medication_form.per_administration',
+        )} ${durationDisplay}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
       ) : (
@@ -59,11 +69,7 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
             {t('formulations.drug.mg')}/{drugDose.dose_form}
             {t('formulations.drug.ml')}
           </Text>
-          <Text style={summary.drugText}>{`${t('formulations.drug.every')} ${
-            drugDose.recurrence
-          } ${t('formulations.drug.h')} ${duration} ${t(
-            'formulations.drug.days',
-          )}`}</Text>
+          <Text style={summary.drugText}>{durationDisplay}</Text>
         </View>
       )}
 

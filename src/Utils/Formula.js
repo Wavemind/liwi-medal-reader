@@ -26,6 +26,7 @@ export const calculateFormula = (nodeId, newNodes) => {
 
     // Get value of node
     const mcNodeInBracket = newNodes[id]
+
     if (
       mcNodeInBracket.value === null ||
       (mcNodeInBracket.value === 0 && mcNodeInBracket.answer === null)
@@ -36,14 +37,19 @@ export const calculateFormula = (nodeId, newNodes) => {
 
     return mcNodeInBracket.value
   }
+
   // Replace every bracket in the formula with it's value
   const formula = currentNode.formula.replace(
     findBracketId,
     replaceBracketToValue,
   )
-  if (ready) {
-    return eval(formula)
-  }
 
+  if (ready) {
+    try {
+      return eval(formula)
+    } catch (error) {
+      return null
+    }
+  }
   return null
 }

@@ -81,9 +81,9 @@ export default {
       },
       stages: {
         registration: 'Registration',
-        first_assessments: '1st assessments',
+        first_assessments: 'Initial assessment',
         consultation: 'Consultation',
-        assessments: 'Assessments',
+        assessments: 'Tests',
         diagnoses: 'Diagnoses',
         closed: 'Closed',
       },
@@ -94,9 +94,9 @@ export default {
         basic_measurements: 'Basic measurements',
         medical_history: 'Medical history',
         physical_exams: 'Physical exams',
-        assessments: 'Assessments',
+        assessments: 'Tests',
         final_diagnoses: 'Final diagnoses',
-        healthcare_questions: 'Healthcare questions',
+        healthcare_questions: 'Treatment questions',
         medicines: 'Medicines',
         formulations: 'Formulations',
         summary: 'Summary',
@@ -111,7 +111,7 @@ export default {
       },
       diagnoses: {
         diagnoses: 'Diagnoses',
-        proposed_title: 'Diagnoses proposed by {{ version_name }}',
+        proposed_title: 'Diagnoses proposed',
         additional_title: 'Additional diagnoses selected',
         additional_placeholder: 'Select additional {{ item }}',
         multiple_diagnostics: 'diagnostics',
@@ -122,6 +122,7 @@ export default {
         no_additional: 'No additional diagnoses selected',
         no_custom: 'No diagnoses added manually',
       },
+      /* al 20210912 removed from diagnoses: proposed_title: 'Diagnoses proposed by {{ version_name }}', */
       drugs: {
         drugs: 'Drugs',
         proposed: 'Proposed',
@@ -138,6 +139,9 @@ export default {
           'Which drug formulation is available and suited for your patient?',
       },
       summary: {
+        date_consultation: 'Date of consultation',
+        age_date_consultation: 'Age at time of consultation',
+        type_of_consultation: 'Type of consultation',
         management_consulting: 'Managements & Counselling',
         no_managements: 'No managements available',
       },
@@ -219,6 +223,10 @@ export default {
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
     },
+    summary: {
+      no_questions: 'No questions asked at this step',
+      no_comments: 'No comments ',
+    },
     modals: {
       lock: {
         title: 'Consultation not available',
@@ -281,9 +289,10 @@ export default {
   },
   errors: {
     offline: {
-      title: 'Communication error with medAL-data',
+      title: 'Communication error with {{ serverName }}',
       description: 'Server not accessible',
     },
+    timeout: 'Server connection aborted',
   },
   health_facility: {
     id: 'ID',
@@ -330,6 +339,7 @@ export default {
     first_name: 'First name',
     last_name: 'Last name',
     birth_date: 'Date of Birth',
+    gender: 'Gender',
     estimated_age: 'Estimated age',
     reason: 'Reason for changing facility',
     readable_birth_date: {
@@ -354,11 +364,13 @@ export default {
       caps: 'capsule(s) of',
       every: 'every',
       h: 'hour(s) for',
+      hour: 'hour(s)',
       days: 'day(s)',
       mode: 'Mode',
       tablet: 'tablet of',
       d: 'duration',
       during: 'during',
+      pre_referral: 'pre-referral',
       admin: 'Administration',
       ml: 'ml',
       of: 'of',

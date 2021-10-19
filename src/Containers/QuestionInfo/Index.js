@@ -12,11 +12,13 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { SectionHeader, Media } from '@/Components'
+import { Config } from '@/Config'
+import { displayDrugDescription } from '@/Utils/Drug'
 
 const IndexQuestionInfoContainer = ({
   navigation,
   route: {
-    params: { nodeId },
+    params: { nodeId, finalDiagnosticId },
   },
 }) => {
   const { t } = useTranslation()
@@ -48,11 +50,15 @@ const IndexQuestionInfoContainer = ({
             </Text>
           )}
           <SectionHeader label={translate(node.label)} />
-          <Text style={auth.itemLabel}>{translate(node.description)}</Text>
+          <Text style={auth.itemLabel}>
+            {node.category === Config.CATEGORIES.drug && finalDiagnosticId
+              ? displayDrugDescription(nodeId, finalDiagnosticId)
+              : translate(node.description)}
+          </Text>
 
-          {node.medias?.map(media => {
-            return <Media key={media.url} media={media} />
-          })}
+          {node.medias?.map(media => (
+            <Media key={media.url} media={media} />
+          ))}
         </ScrollView>
       </View>
     </View>

@@ -36,7 +36,7 @@ const Factory = ({ questionId }) => {
     case Config.DISPLAY_FORMAT.string:
       return <String questionId={questionId} />
     case Config.DISPLAY_FORMAT.autocomplete:
-      return <Autocomplete questionId={questionId} /> 
+      return <Autocomplete questionId={questionId} />
     case Config.DISPLAY_FORMAT.dropDownList:
       return <Select questionId={questionId} />
     case Config.DISPLAY_FORMAT.reference:

@@ -44,7 +44,7 @@ const Boolean = ({ questionId, disabled = false }) => {
   const setLocalAnswer = async answerId => {
     if (
       currentNode.emergency_status === 'emergency' &&
-      yesAnswer.id === answerId
+      currentNode.emergency_answer_id === answerId
     ) {
       await dispatch(SetParams.action({ type: 'emergency' }))
       await dispatch(ToggleVisibility.action({}))

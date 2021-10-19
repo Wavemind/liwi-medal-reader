@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useIsFocused } from '@react-navigation/native'
 import orderBy from 'lodash/orderBy'
-import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
@@ -17,6 +16,7 @@ import { useTheme } from '@/Theme'
 import { AdditionalSelect, DrugBooleanButton } from '@/Components'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
+import { displayDrugDescription } from '@/Utils/Drug'
 
 const DiagnosisDrugs = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
@@ -110,7 +110,11 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
             {t('containers.medical_case.drugs.no_proposed')}
           </Text>
         ) : (
-          diagnosis.drugs.proposed.map((drugId, i) => (
+          orderBy(
+            diagnosis.drugs.proposed,
+            drugId => algorithm.nodes[drugId].level_of_urgency,
+            ['desc', 'asc'],
+          ).map((drugId, i) => (
             <View
               key={`diagnosis_drugs-${drugId}`}
               style={drugs.drugWrapper(
@@ -128,7 +132,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
                 />
               </View>
               <Text style={drugs.drugDescription}>
-                {translate(algorithm.nodes[drugId].description)}
+                {displayDrugDescription(drugId, diagnosis.id)}
               </Text>
             </View>
           ))

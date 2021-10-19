@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
-import format from 'date-fns/format'
 import { useDispatch } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 
@@ -16,6 +15,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import { getStages } from '@/Utils/Navigation/GetStages'
 import LoadPatient from '@/Store/Patient/Load'
+import { formatDate } from '@/Utils/Date'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
@@ -31,10 +31,20 @@ const ListItem = ({ item }) => {
   const dispatch = useDispatch()
 
   const [activeMedicalCase, setActiveMedicalCase] = useState(null)
+  const [lastCreatedMedicalCase, setLastCreatedMedicalCase] = useState(0)
   const [stages] = useState(getStages())
 
   useEffect(() => {
     const medicalCase = item.medicalCases.find(mc => mc.closedAt === 0)
+
+    let latestMedicalCase = 0
+    item.medicalCases.forEach(mc => {
+      if (mc.createdAt > latestMedicalCase) {
+        latestMedicalCase = mc.createdAt
+      }
+    })
+
+    setLastCreatedMedicalCase(latestMedicalCase)
     setActiveMedicalCase(medicalCase)
   }, [])
 
@@ -48,9 +58,8 @@ const ListItem = ({ item }) => {
     )
     if (isFulfilled(loadPatient)) {
       navigation.navigate('PatientProfile', {
-        title: `${item.first_name} ${item.last_name} - ${format(
+        title: `${item.first_name} ${item.last_name} - ${formatDate(
           item.birth_date,
-          'dd.MM.yyyy',
         )}`,
       })
     }
@@ -64,12 +73,12 @@ const ListItem = ({ item }) => {
             {`${item.first_name} ${item.last_name}`}
           </Text>
           <Text style={patientListItem.date}>
-            {format(item.birth_date, 'dd.MM.yyyy')}
+            {formatDate(item.birth_date)}
           </Text>
         </View>
         <View style={patientListItem.dateWrapper}>
           <Text style={patientListItem.date}>
-            {format(item.updatedAt, 'dd.MM.yyyy')}
+            {formatDate(lastCreatedMedicalCase)}
           </Text>
         </View>
         {activeMedicalCase ? (
