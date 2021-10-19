@@ -29,12 +29,12 @@ const DataLoginAuthContainer = () => {
 
   const authEndpoint = '/oauth/authorize'
   const tokenEndpoint = '/oauth/token'
-  const apiEndPoint = '/api/user'
+  const apiEndPoint = '/api/v1/upload-medical-case'
 
   const [token, setTokenVal] = useState('')
   const [refreshToken, setRefreshTokenVal] = useState('')
-  const [serverAddress, setServerAddress] = useState('http://10.0.2.2:8000')
-  const [clientID, setClientID] = useState('16')
+  const [serverAddress, setServerAddress] = useState('http://195.15.219.241')
+  const [clientID, setClientID] = useState('6')
   const callBackURL = 'aaa://callback'
 
   // Define references
