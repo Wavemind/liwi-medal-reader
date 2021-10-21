@@ -140,9 +140,9 @@ export default function () {
 
     result = await collection.query(...queries)
 
-    // Order by updatedAt descending
+    // Order by createdAt descending
     result = result.sort(
-      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     )
 
     // Pagination
@@ -167,9 +167,9 @@ export default function () {
 
     result = await collection.query(...queries)
 
-    // Order by updatedAt descending
+    // Order by createdAt descending
     result = result.sort(
-      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     )
 
     result = result.filter(patient => !!patient.consent_file)
