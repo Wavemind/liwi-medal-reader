@@ -6,9 +6,9 @@ export { default as AssessmentArmControlContainer } from './ArmControl/Assessmen
 
 // Auth
 export { default as EnrolmentSelectionAuthContainer } from './Auth/EnrolmentSelection'
-export { default as DataLoginAuthContainer } from './Auth/MedAL-Data'
+export { default as DataLoginAuthContainer } from './Auth/MedALData'
 export { default as ClinicianSelectionAuthContainer } from './Auth/ClinicianSelection'
-export { default as LoginAuthContainer } from './Auth/MedAL-C'
+export { default as LoginAuthContainer } from './Auth/MedALC'
 export { default as PinAuthContainer } from './Auth/Pin'
 export { default as SynchronizationAuthContainer } from './Auth/Synchronization'
 

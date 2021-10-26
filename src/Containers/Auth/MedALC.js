@@ -76,7 +76,7 @@ const LoginAuthContainer = () => {
       const deviceRegister = await dispatch(DeviceRegister.action({}))
 
       if (isFulfilled(deviceRegister)) {
-        // Navigate and reset to Synchronization container
+        // Navigate and reset to Synchronization screen
         setLoading(false)
         navigateAndSimpleReset('Synchronization')
       } else {
@@ -137,7 +137,7 @@ const LoginAuthContainer = () => {
             <SquareButton
               label={t('actions.login')}
               filled
-              onPress={() => handleLogin()}
+              onPress={handleLogin}
               disabled={loading}
             />
           </View>

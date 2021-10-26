@@ -14,6 +14,7 @@ import {
 } from 'redux-persist'
 
 import algorithm from './Algorithm'
+import auth from './Auth'
 import databaseActivity from './DatabaseActivity'
 import databaseMedicalCase from './DatabaseMedicalCase'
 import databasePatient from './DatabasePatient'
@@ -36,6 +37,7 @@ import synchronization from './Synchronization'
 
 const reducers = combineReducers({
   algorithm,
+  auth,
   databaseActivity,
   databaseMedicalCase,
   databasePatient,
@@ -62,6 +64,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: [
+    'auth',
     'device',
     'medicalCase',
     'patient',
