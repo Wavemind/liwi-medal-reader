@@ -7,7 +7,7 @@ import { ScrollView, View } from 'react-native'
 /**
  * The internal imports
  */
-import { Diagnosis, Custom } from '@/Components'
+import { Diagnosis, Custom, Comment } from '@/Components'
 import { useTheme } from '@/Theme'
 
 const SummaryMedicalCaseContainer = () => {
@@ -20,6 +20,7 @@ const SummaryMedicalCaseContainer = () => {
         <Diagnosis diagnosisKey="additional" />
         <Custom />
       </View>
+      <Comment />
     </ScrollView>
   )
 }

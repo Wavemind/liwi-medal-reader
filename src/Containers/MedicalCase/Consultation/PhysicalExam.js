@@ -9,7 +9,7 @@ import { useIsFocused } from '@react-navigation/native'
 /**
  * The internal imports
  */
-import { System, Comment, Loader } from '@/Components'
+import { System, Loader } from '@/Components'
 import PhysicalExam from '@/Store/QuestionsPerSystem/PhysicalExam'
 
 const PhysicalExamMedicalCaseContainer = () => {
@@ -45,7 +45,6 @@ const PhysicalExamMedicalCaseContainer = () => {
           step="physicalExam"
         />
       ))}
-      <Comment />
     </ScrollView>
   )
 }
