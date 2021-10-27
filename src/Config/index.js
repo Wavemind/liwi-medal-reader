@@ -123,6 +123,7 @@ export const Config = {
     solution: 'solution',
     powder_for_injection: 'powder_for_injection',
     patch: 'patch',
+    lotion: 'lotion',
     cream: 'cream',
     pessary: 'pessary',
     ointment: 'ointment',

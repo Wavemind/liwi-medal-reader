@@ -397,6 +397,7 @@ export default {
       powder_for_injection: 'Powder for injection',
       patch: 'Patch',
       cream: 'Cream',
+      lotion: 'Lotion',
       pessary: 'Pessary',
       ointment: 'Ointment',
       gel: 'Gel',
