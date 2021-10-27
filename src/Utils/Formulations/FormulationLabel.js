@@ -47,6 +47,7 @@ export const formulationLabel = drugDose => {
       return `${drugDose.doseResult} ${i18n.t('formulations.drug.capsules')}`
     }
     case Config.MEDICATION_FORMS.cream:
+    case Config.MEDICATION_FORMS.lotion:
     case Config.MEDICATION_FORMS.ointment:
     case Config.MEDICATION_FORMS.gel:
     case Config.MEDICATION_FORMS.solution:
