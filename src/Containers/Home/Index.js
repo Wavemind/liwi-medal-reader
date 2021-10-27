@@ -123,11 +123,9 @@ const IndexHomeContainer = ({ navigation }) => {
         otherFacility: {},
       }),
     )
-
     await dispatch(
       CreateMedicalCase.action({ algorithm, patientId: uuid.v4() }),
     )
-
     navigateAndSimpleReset('StageWrapper')
   }
 
