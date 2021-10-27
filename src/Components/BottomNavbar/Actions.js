@@ -11,7 +11,7 @@ import { SynchronizationNavbar, StageWrapperNavbar } from '@/Components'
 
 const ActionsNavbar = ({ navigationState }) => {
   const medicalCase = useSelector(state => state.medicalCase.item)
-  console.log(medicalCase)
+
   if (medicalCase !== undefined && medicalCase.closedAt === 0) {
     return (
       <StageWrapperNavbar
