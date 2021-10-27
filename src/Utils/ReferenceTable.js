@@ -4,6 +4,74 @@
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
+export const displayResult = (value, nodeId) => {
+  if (value === 0) {
+    return 0
+  }
+
+  const state = store.getState()
+  const nodes = state.algorithm.item.nodes
+  const mcNodes = state.medicalCase.item.nodes
+  const currentNode = nodes[nodeId]
+
+  // Get reference table for male or female
+  const reference = getReferenceTable(currentNode, mcNodes)
+
+  if (currentNode.reference_table_z_id === null) {
+    switch (value) {
+      case 5:
+        return '5 or above'
+      case 4:
+        if (5 in Object.values(reference)[0]) {
+          return 'Between 3 and 4'
+        } else {
+          return '4 or above'
+        }
+      case 3:
+        if (4 in Object.values(reference)[0]) {
+          return 'Between 2 and 3'
+        } else {
+          return '3 or above'
+        }
+      case 2:
+        return 'Between 1 and 2'
+      case 1:
+        return 'Between 0 and 1'
+      case -5:
+        return '-5 or lower'
+      case -4:
+        if (-5 in Object.values(reference)[0]) {
+          return 'Between -4 and -3'
+        } else {
+          return '-4 or lower'
+        }
+      case -3:
+        if (-4 in Object.values(reference)[0]) {
+          return 'Between -3 and -2'
+        } else {
+          return '-3 or lower'
+        }
+      case -2:
+        return 'Between -2 and -1'
+      case -1:
+        return 'Between 0 and -1'
+    }
+  }
+  // if (currentNode.reference_table_z_id === null) {
+  //   console.log(Object.values(reference)[0])
+  //   if (-5 in Object.values(reference)[0]) {
+  //   } else if (-4 in Object.values(reference)[0]) {
+  //   } else if (4 in Object.values(reference)[0]) {
+  //   } else if (5 in Object.values(reference)[0]) {
+  //   } else {
+  //     result = 'COUCOU'
+  //   }
+  // } else {
+  // }
+
+  // console.log('displayResult', value, nodeId, reference)
+}
+
 /**
  * Calculate reference score.
  * @param algorithm
@@ -14,10 +82,7 @@ import { Config } from '@/Config'
 export const calculateReference = (nodeId, newNodes) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
-  const genderQuestionId =
-    state.algorithm.item.config.basic_questions.gender_question_id
 
-  let reference = null
   let value = null
   const currentNode = nodes[nodeId]
 
@@ -61,19 +126,7 @@ export const calculateReference = (nodeId, newNodes) => {
           : parseFloat(mcQuestionZ.value)
     }
 
-    const mcGenderQuestion = newNodes[genderQuestionId]
-    const genderQuestion = nodes[genderQuestionId]
-    const gender =
-      mcGenderQuestion.answer !== null
-        ? genderQuestion.answers[mcGenderQuestion.answer].value
-        : null
-
-    // Get reference table for male or female
-    if (gender === 'male') {
-      reference = Config.REFERENCES[currentNode.reference_table_male]
-    } else if (gender === 'female') {
-      reference = Config.REFERENCES[currentNode.reference_table_female]
-    }
+    const reference = getReferenceTable(currentNode, newNodes)
 
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
     if (reference !== null && z === undefined) {
@@ -194,4 +247,31 @@ const findValueInReferenceTable = (referenceTable, reference) => {
     previousKey = key
   })
   return value
+}
+
+/**
+ * Return a reference table based on patient gender
+ * @param {*} currentNode
+ * @param {*} mcNodes
+ * @returns hash
+ */
+const getReferenceTable = (currentNode, mcNodes) => {
+  const state = store.getState()
+  const nodes = state.algorithm.item.nodes
+  const genderQuestionId =
+    state.algorithm.item.config.basic_questions.gender_question_id
+
+  const mcGenderQuestion = mcNodes[genderQuestionId]
+  const genderQuestion = nodes[genderQuestionId]
+  const gender =
+    mcGenderQuestion.answer !== null
+      ? genderQuestion.answers[mcGenderQuestion.answer].value
+      : null
+
+  // Get reference table for male or female
+  if (gender === 'male') {
+    return Config.REFERENCES[currentNode.reference_table_male]
+  } else if (gender === 'female') {
+    return Config.REFERENCES[currentNode.reference_table_female]
+  }
 }

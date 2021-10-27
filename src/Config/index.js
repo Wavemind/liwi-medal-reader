@@ -37,7 +37,7 @@ export const Config = {
     input: 'Input',
     dropDownList: 'DropDownList',
     formula: 'Formula',
-    reference: 'Reference', // table reference
+    reference: 'Reference', // reference table
     string: 'String',
     autocomplete: 'Autocomplete',
     date: 'Date',
