@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import setAnswer from '@/Utils/SetAnswer'
 import { translate } from '@/Translations/algorithm'
+import { displayResult } from '@/Utils/ReferenceTable'
+import { Config } from '@/Config'
 
 const String = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
@@ -33,6 +35,8 @@ const String = ({ questionId, editable = true }) => {
   useEffect(() => {
     if (question.value === null) {
       setValue('')
+    } else if (currentNode.display_format === Config.DISPLAY_FORMAT.reference) {
+      setValue(displayResult(question.value, questionId))
     } else {
       setValue(question.value.toString())
     }

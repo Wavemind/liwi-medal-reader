@@ -407,6 +407,11 @@ export default {
       per_administration: 'per administration',
     },
   },
+  reference_table: {
+    above: '{{number}} or above',
+    lower: '{{number}} or lower',
+    between: 'Between {{number_1}} and {{number_2}}',
+  },
   validation: {
     is_required: 'Field "{{ field }}" is mandatory',
     consent_file_blank: "The data processing consent can't be blank",
