@@ -5,6 +5,13 @@ import { store } from '@/Store'
 import { Config } from '@/Config'
 import i18n from '@/Translations/index'
 
+/**
+ * Parse value returned by reference table and make it readable
+ * @param value
+ * @param nodeId
+ * @param mcNode
+ * @return string readable value
+ */
 export const displayResult = (value, nodeId) => {
   if (value === 0) {
     return 0
@@ -282,4 +289,6 @@ const getReferenceTable = (currentNode, mcNodes) => {
   } else if (gender === 'female') {
     return Config.REFERENCES[currentNode.reference_table_female]
   }
+
+  return null
 }
