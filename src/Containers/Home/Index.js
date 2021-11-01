@@ -50,6 +50,9 @@ const IndexHomeContainer = ({ navigation }) => {
 
   const algorithm = useSelector(state => state.algorithm.item)
   const healthFacility = useSelector(state => state.healthFacility.item)
+  const hf = useSelector(state => state.healthFacility)
+
+  console.log('healthFacility', hf)
 
   const medicalCases = useSelector(
     state => state.databaseMedicalCase.getAll.item.data,

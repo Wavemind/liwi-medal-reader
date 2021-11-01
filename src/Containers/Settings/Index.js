@@ -16,7 +16,7 @@ import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
-import ChangeLanguage from '@/Store/System/ChangeLanguage'
+import ChangeLanguage from '@/Store/HealthFacility/ChangeLanguage'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 import DestroyAlgorithm from '@/Store/Algorithm/Destroy'
 import DestroyDevice from '@/Store/Device/Destroy'
@@ -41,10 +41,10 @@ const IndexSettingsContainer = () => {
 
   // Local state definition
   const [algorithmLanguage, setAlgorithmLanguage] = useState(
-    useSelector(state => state.system.algorithmLanguage),
+    useSelector(state => state.healthFacility.clinician.algo_language),
   )
   const [appLanguage, setAppLanguage] = useState(
-    useSelector(state => state.system.appLanguage),
+    useSelector(state => state.healthFacility.clinician.app_language),
   )
   const [algorithmLanguages] = useState(
     algorithm.version_languages.map(language => ({
@@ -83,7 +83,7 @@ const IndexSettingsContainer = () => {
     setAppLanguage(newAppLanguage)
     await dispatch(
       ChangeLanguage.action({
-        key: 'appLanguage',
+        key: 'app_language',
         newLanguage: newAppLanguage,
       }),
     )
@@ -96,7 +96,7 @@ const IndexSettingsContainer = () => {
   const changeAlgorithmLanguage = async newAlgorithmLanguage => {
     await dispatch(
       ChangeLanguage.action({
-        key: 'algorithmLanguage',
+        key: 'algo_language',
         newLanguage: newAlgorithmLanguage,
       }),
     )

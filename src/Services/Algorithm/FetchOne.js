@@ -14,10 +14,10 @@ import axios from 'axios'
  * The internal imports
  */
 import api from '@/Services/Algorithm/FetchOneApi'
-import ChangeLanguage from '@/Store/System/ChangeLanguage'
+// import ChangeLanguage from '@/Store/HealthFacility/ChangeLanguage'
 import { store } from '@/Store'
 import { Config } from '@/Config'
-import i18n from '@/Translations/index'
+// import i18n from '@/Translations/index'
 
 export default async ({ json_version }, { dispatch }) => {
   const macAddress = await getMacAddress()
@@ -91,29 +91,29 @@ export default async ({ json_version }, { dispatch }) => {
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  // TODO REMOVE IN NEXT RELEASE IF STATEMENT
-  if (algorithm.study.default_language) {
-    // Set app language
-    i18n.changeLanguage(algorithm.study.default_language)
-    await dispatch(
-      ChangeLanguage.action({
-        key: 'appLanguage',
-        newLanguage: algorithm.study.default_language,
-      }),
-    )
+  // // TODO REMOVE IN NEXT RELEASE IF STATEMENT
+  // if (algorithm.study.default_language) {
+  //   // Set app language
+  //   i18n.changeLanguage(algorithm.study.default_language)
+  //   await dispatch(
+  //     ChangeLanguage.action({
+  //       key: 'appLanguage',
+  //       newLanguage: algorithm.study.default_language,
+  //     }),
+  //   )
 
-    // Set algorithm language. If default language doesn't exist, fall back in english (default store value)
-    if (
-      algorithm.version_languages.includes(algorithm.study.default_language)
-    ) {
-      await dispatch(
-        ChangeLanguage.action({
-          key: 'algorithmLanguage',
-          newLanguage: algorithm.study.default_language,
-        }),
-      )
-    }
-  }
+  //   // Set algorithm language. If default language doesn't exist, fall back in english (default store value)
+  //   if (
+  //     algorithm.version_languages.includes(algorithm.study.default_language)
+  //   ) {
+  //     await dispatch(
+  //       ChangeLanguage.action({
+  //         key: 'algorithmLanguage',
+  //         newLanguage: algorithm.study.default_language,
+  //       }),
+  //     )
+  //   }
+  // }
 
   return algorithm
 }

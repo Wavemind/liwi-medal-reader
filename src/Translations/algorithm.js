@@ -7,7 +7,8 @@ import { store } from '@/Store'
  * @returns {*}
  */
 export const translate = (translation, fallback = true) => {
-  const algorithmTranslation = store.getState().system.algorithmLanguage
+  const algorithmTranslation =
+    store.getState().healthFacility.clinician.algo_language
   const type = typeof translation
 
   if (type === 'string') {
