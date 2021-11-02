@@ -36,5 +36,8 @@ export default async ({}) => {
     response.data.token,
   )
 
+  // TODO: UPDATE ONLY WHEN HAVE CHANGED
+  
+
   return response.data
 }
