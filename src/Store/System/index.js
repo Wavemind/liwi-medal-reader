@@ -1,18 +1,15 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
 import ChangeEnvironment from './ChangeEnvironment'
-import ChangeLanguage from './ChangeLanguage'
 import ChangeVersion from './ChangeVersion'
 
 const sliceInitialState = {
   item: {},
   environment: __DEV__ ? 'staging' : 'production',
-  appLanguage: 'en',
-  algorithmLanguage: 'en',
   versionId: null,
 }
 
 export default buildSlice(
   'system',
-  [ChangeEnvironment, ChangeLanguage, ChangeVersion],
+  [ChangeEnvironment, ChangeVersion],
   sliceInitialState,
 ).reducer

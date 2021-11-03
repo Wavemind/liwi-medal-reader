@@ -24,7 +24,7 @@ export default {
     const state = store.getState()
 
     // Set default language
-    const appLanguage = state.system.appLanguage
+    const appLanguage = state.healthFacility.clinician.app_language
     i18n.changeLanguage(appLanguage)
 
     // Set default theme
