@@ -410,6 +410,11 @@ export default {
       per_administration: 'par administration',
     },
   },
+  reference_table: {
+    above: '{{number}} ou supérieur',
+    lower: '{{number}} ou inférieur',
+    between: 'Entre {{number_1}} et {{number_2}}',
+  },
   validation: {
     is_required: 'La question « {{ field }} » est obligatoire',
     consent_file_blank:
