@@ -16,9 +16,11 @@ export default async ({}) => {
   const macAddress = await getMacAddress()
   const abort = axios.CancelToken.source()
 
+  const currentHealthFacility = store.getState().healthFacility.item
+
   const timeout = setTimeout(() => {
     abort.cancel()
-    return store.getState().healthFacility.item
+    return currentHealthFacility
   }, Config.TIMEOUT)
 
   let response
@@ -36,8 +38,49 @@ export default async ({}) => {
     response.data.token,
   )
 
-  // TODO: UPDATE ONLY WHEN HAVE CHANGED
-  
+  // Early return if health facility change
+  if (currentHealthFacility.id !== response.data.id) {
+    return response.data
+  }
 
-  return response.data
+  let medicalStaffs = response.data.medical_staffs
+
+  // Update medical staff
+  if (currentHealthFacility.hasOwnProperty('medical_staffs')) {
+    medicalStaffs = response.data.medical_staffs.map(newMedicalStaff => {
+      const storedMedicalStaff = currentHealthFacility.medical_staffs.find(
+        ms => ms.id === newMedicalStaff.id,
+      )
+
+      // Existing staff but updated in medAL-c
+      if (
+        storedMedicalStaff &&
+        storedMedicalStaff.updated_at !== newMedicalStaff.updated_at
+      ) {
+        return {
+          ...newMedicalStaff,
+          app_language: storedMedicalStaff.app_language,
+          algo_language: storedMedicalStaff.algo_language,
+        }
+      }
+
+      // New staff
+      if (!storedMedicalStaff) {
+        return newMedicalStaff
+      }
+
+      // Same staff
+      if (
+        storedMedicalStaff &&
+        storedMedicalStaff.updated_at === newMedicalStaff.updated_at
+      ) {
+        return storedMedicalStaff
+      }
+    })
+  }
+
+  return {
+    ...response.data,
+    medical_staffs: medicalStaffs,
+  }
 }
