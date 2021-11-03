@@ -17,6 +17,3 @@ export default buildSlice(
   [FetchOne, ChangeClinician, Destroy, ChangeLanguage],
   sliceInitialState,
 ).reducer
-
-// appLanguage: 'en',
-// algorithmLanguage: 'en',

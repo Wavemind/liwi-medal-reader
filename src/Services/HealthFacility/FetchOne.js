@@ -52,29 +52,23 @@ export default async ({}) => {
         ms => ms.id === newMedicalStaff.id,
       )
 
-      // Existing staff but updated in medAL-c
-      if (
-        storedMedicalStaff &&
-        storedMedicalStaff.updated_at !== newMedicalStaff.updated_at
-      ) {
-        return {
-          ...newMedicalStaff,
-          app_language: storedMedicalStaff.app_language,
-          algo_language: storedMedicalStaff.algo_language,
+      if (storedMedicalStaff) {
+        // Existing staff but updated in medAL-c
+        if (storedMedicalStaff.updated_at !== newMedicalStaff.updated_at) {
+          return {
+            ...newMedicalStaff,
+            app_language: storedMedicalStaff.app_language,
+            algo_language: storedMedicalStaff.algo_language,
+          }
         }
-      }
 
-      // New staff
-      if (!storedMedicalStaff) {
+        // Same staff
+        if (storedMedicalStaff.updated_at === newMedicalStaff.updated_at) {
+          return storedMedicalStaff
+        }
+      } else {
+        // New staff
         return newMedicalStaff
-      }
-
-      // Same staff
-      if (
-        storedMedicalStaff &&
-        storedMedicalStaff.updated_at === newMedicalStaff.updated_at
-      ) {
-        return storedMedicalStaff
       }
     })
   }
