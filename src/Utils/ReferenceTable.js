@@ -32,8 +32,8 @@ export const displayResult = (value, nodeId) => {
       case 4:
         if (5 in Object.values(reference)[0]) {
           return i18n.t('reference_table.between', {
-            number_1: 3,
-            number_2: 4,
+            number_1: 4,
+            number_2: 5,
           })
         } else {
           return i18n.t('reference_table.above', { number: 4 })
@@ -41,21 +41,21 @@ export const displayResult = (value, nodeId) => {
       case 3:
         if (4 in Object.values(reference)[0]) {
           return i18n.t('reference_table.between', {
-            number_1: 2,
-            number_2: 3,
+            number_1: 3,
+            number_2: 4,
           })
         } else {
           return i18n.t('reference_table.above', { number: 3 })
         }
       case 2:
         return i18n.t('reference_table.between', {
-          number_1: 1,
-          number_2: 2,
+          number_1: 2,
+          number_2: 3,
         })
       case 1:
         return i18n.t('reference_table.between', {
-          number_1: 0,
-          number_2: 1,
+          number_1: 1,
+          number_2: 2,
         })
       case -5:
         return i18n.t('reference_table.lower', { number: -5 })
@@ -63,7 +63,7 @@ export const displayResult = (value, nodeId) => {
         if (-5 in Object.values(reference)[0]) {
           return i18n.t('reference_table.between', {
             number_1: -4,
-            number_2: -3,
+            number_2: -5,
           })
         } else {
           return i18n.t('reference_table.lower', { number: -4 })
@@ -72,15 +72,15 @@ export const displayResult = (value, nodeId) => {
         if (-4 in Object.values(reference)[0]) {
           return i18n.t('reference_table.between', {
             number_1: -3,
-            number_2: -2,
+            number_2: -4,
           })
         } else {
           return i18n.t('reference_table.lower', { number: -3 })
         }
       case -2:
-        return i18n.t('reference_table.between', { number_1: -2, number_2: -1 })
+        return i18n.t('reference_table.between', { number_1: -2, number_2: -3 })
       case -1:
-        return i18n.t('reference_table.between', { number_1: 0, number_2: -1 })
+        return i18n.t('reference_table.between', { number_1: -1, number_2: -2 })
     }
   }
 
