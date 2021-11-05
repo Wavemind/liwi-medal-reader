@@ -125,6 +125,8 @@ export default function () {
         closedAt: medicalCaseData.closedAt,
         fail_safe: false,
         version_id: medicalCaseData.version_id,
+        createdAt: medicalCaseData.createdAt,
+        updatedAt: medicalCaseData.updatedAt,
       },
       patient: {
         id: patientData.id,
@@ -143,6 +145,8 @@ export default function () {
         consent: patientData.consent,
         consent_file: patientData.consent_file,
         fail_safe: false,
+        createdAt: patientData.createdAt,
+        updatedAt: patientData.updatedAt,
       },
     })
 
@@ -222,6 +226,8 @@ export default function () {
         advancement: medicalCase.advancement,
         synchronizedAt: medicalCase.synchronizedAt,
         closedAt: medicalCase.closedAt,
+        createdAt: medicalCase.createdAt,
+        updatedAt: medicalCase.updatedAt,
         fail_safe: medicalCase.fail_safe,
         version_id: medicalCase.version_id,
       }))
