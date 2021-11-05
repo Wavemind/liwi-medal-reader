@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { isFulfilled } from '@reduxjs/toolkit'
+import DeviceInfo from 'react-native-device-info'
 
 /**
  * The internal imports
@@ -58,6 +59,10 @@ const LoginAuthContainer = () => {
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
+
+  DeviceInfo.getMacAddress().then(mac => {
+    console.log('here !', mac)
+  })
 
   /**
    * Dispatches the login credentials to check validity and register the device
