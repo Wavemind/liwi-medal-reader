@@ -10,7 +10,6 @@ import { Config } from '@/Config'
  * @returns {string}
  */
 export const formulationLabel = drugDose => {
-  console.log(drugDose)
   switch (drugDose.medication_form) {
     case Config.MEDICATION_FORMS.pessary:
     case Config.MEDICATION_FORMS.spray:
