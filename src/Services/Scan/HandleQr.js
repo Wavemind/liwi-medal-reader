@@ -83,6 +83,8 @@ export default async ({
     const patient = await SearchPatient(QRData, sameFacility)
 
     if (patient !== null) {
+      // TODO: Change return url
+      console.log(patient)
       return {
         navigate: true,
         navigationParams: { patientId: patient.id, newMedicalCase: false },
