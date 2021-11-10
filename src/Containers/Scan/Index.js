@@ -80,7 +80,7 @@ const IndexScanContainer = () => {
           }
         }
       } else {
-        // TODO CHANGE
+        // Load patient in store
         const loadPatientResult = await dispatch(
           LoadPatient.action({
             patientId: scanData.navigationParams.patientId,
@@ -94,25 +94,6 @@ const IndexScanContainer = () => {
             } - ${formatDate(loadPatientResult.payload.birth_date)}`,
           })
         }
-
-        // if (isFulfilled(loadPatientResult)) {
-        //   const medicalCaseResult = await dispatch(
-        //     CreateMedicalCase.action({
-        //       algorithm,
-        //       patientId: scanData.navigationParams.patientId,
-        //     }),
-        //   )
-        //   if (isFulfilled(medicalCaseResult)) {
-        //     const patientValueNodes = transformPatientValues()
-        //     await dispatch(
-        //       UpdateNodeFields.action({ toUpdate: patientValueNodes }),
-        //     )
-        //     navigate('Home', {
-        //       screen: 'StageWrapper',
-        //       ...scanData.navigationParams,
-        //     })
-        //   }
-        // }
       }
     }
   }
