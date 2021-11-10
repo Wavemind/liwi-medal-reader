@@ -133,6 +133,7 @@ const IndexScanContainer = () => {
       }),
     )
   }
+
   return (
     <QRCodeScanner
       showMarker
