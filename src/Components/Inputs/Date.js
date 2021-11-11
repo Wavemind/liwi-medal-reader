@@ -72,7 +72,9 @@ const DateInput = () => {
   const algorithm = useSelector(state => state.algorithm.item)
   const ageLimit = useSelector(state => state.algorithm.item.config.age_limit)
 
-  const systemLanguage = useSelector(state => state.system.language)
+  const systemLanguage = useSelector(
+    state => state.healthFacility.clinician.app_language,
+  )
   const birth_date = useSelector(state => state.patient.item.birth_date)
 
   useEffect(() => {
