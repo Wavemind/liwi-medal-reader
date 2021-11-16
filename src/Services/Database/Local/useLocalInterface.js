@@ -266,13 +266,15 @@ export default function () {
           consent: medicalCaseData.consent,
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
+          metadata: {
+            appVersion: medicalCaseData.appVersion,
+          },
         })
         record.json_version = medicalCaseData.json_version
         record.stage = medicalCaseData.advancement.stage
         record.step = medicalCaseData.advancement.step
         record.synchronizedAt = medicalCaseData.synchronizedAt
         record.closedAt = medicalCaseData.closedAt
-        record.appVersion = medicalCaseData.appVersion
         record.fail_safe = failSafe
         record.version_id = medicalCaseData.version_id
         record.patient.set(patient)
@@ -295,6 +297,7 @@ export default function () {
     if (architecture === 'client_server') {
       failSafe = true
     }
+
     await database.action(async () => {
       patient = await collection.create(record => {
         record._raw.id = patientData.id
@@ -322,13 +325,15 @@ export default function () {
           consent: medicalCaseData.consent,
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
+          metadata: {
+            appVersion: medicalCaseData.appVersion,
+          },
         })
         nestedRecord.json_version = medicalCaseData.json_version
         nestedRecord.stage = medicalCaseData.advancement.stage
         nestedRecord.step = medicalCaseData.advancement.step
         nestedRecord.synchronizedAt = medicalCaseData.synchronizedAt
         nestedRecord.closedAt = medicalCaseData.closedAt
-        nestedRecord.appVersion = medicalCaseData.appVersion
         nestedRecord.fail_safe = failSafe
         nestedRecord.version_id = medicalCaseData.version_id
         nestedRecord.patient.set(patient)
@@ -568,6 +573,7 @@ export default function () {
     addPatient = true,
   ) => {
     const parsedJson = JSON.parse(watermelonDBMedicalCase.json)
+
     const medicalCase = {
       id: watermelonDBMedicalCase.id,
       activities: [],
@@ -586,7 +592,7 @@ export default function () {
       createdAt: watermelonDBMedicalCase.createdAt.getTime(),
       updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
       closedAt: watermelonDBMedicalCase.closedAt.getTime(),
-      appVersion: watermelonDBMedicalCase.appVersion,
+      appVersion: parsedJson.metadata?.appVersion,
       version_id: watermelonDBMedicalCase.version_id,
     }
 

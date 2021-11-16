@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import { FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -22,10 +21,6 @@ const RegistrationMedicalCaseContainer = () => {
   const { t } = useTranslation()
 
   const questions = RegistrationQuestionsService()
-
-  const medicalCase = useSelector(state => state)
-
-  console.log('here bitches', medicalCase)
 
   /**
    * Renders the correct question type

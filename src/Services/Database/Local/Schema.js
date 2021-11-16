@@ -19,7 +19,6 @@ export default appSchema({
         { name: 'json_version', type: 'number' },
         { name: 'forceClosed', type: 'boolean' },
         { name: 'closedAt', type: 'number' },
-        { name: 'appVersion', type: 'string' },
       ],
     }),
     tableSchema({

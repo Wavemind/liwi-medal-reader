@@ -15,7 +15,6 @@ export default schemaMigrations({
           columns: [
             { name: 'forceClosed', type: 'boolean' },
             { name: 'closedAt', type: 'number' },
-            { name: 'appVersion', type: 'string' },
           ],
         }),
       ],
