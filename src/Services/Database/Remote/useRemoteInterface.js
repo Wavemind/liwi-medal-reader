@@ -123,6 +123,7 @@ export default function () {
         advancement: medicalCaseData.advancement,
         synchronizedAt: medicalCaseData.synchronizedAt,
         closedAt: medicalCaseData.closedAt,
+        appVersion: medicalCaseData.appVersion,
         fail_safe: false,
         version_id: medicalCaseData.version_id,
         createdAt: medicalCaseData.createdAt,
@@ -226,6 +227,7 @@ export default function () {
         advancement: medicalCase.advancement,
         synchronizedAt: medicalCase.synchronizedAt,
         closedAt: medicalCase.closedAt,
+        appVersion: medicalCase.appVersion,
         createdAt: medicalCase.createdAt,
         updatedAt: medicalCase.updatedAt,
         fail_safe: medicalCase.fail_safe,
@@ -289,6 +291,7 @@ export default function () {
       createdAt: remoteMedicalCase.created_at,
       updatedAt: remoteMedicalCase.updated_at,
       closedAt: remoteMedicalCase.closedAt,
+      appVersion: remoteMedicalCase.appVersion,
       version_id: remoteMedicalCase.version_id,
       patient_id: remoteMedicalCase.patient_id,
     }

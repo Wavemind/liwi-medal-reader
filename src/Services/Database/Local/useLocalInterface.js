@@ -10,6 +10,7 @@ import uuid from 'react-native-uuid'
  * The internal imports
  */
 import schema from './Schema'
+import migrations from './Models/Migrations'
 import { Config } from '@/Config'
 import { store } from '@/Store'
 import {
@@ -24,12 +25,14 @@ let adapter = null
 if (process.env.NODE_ENV === 'test') {
   adapter = new LokiJSAdapter({
     schema,
+    migrations,
     useWebWorker: false,
     useIncrementalIndexedDB: true,
   })
 } else {
   adapter = new SQLiteAdapter({
     schema,
+    migrations,
     useWebWorker: false,
     useIncrementalIndexedDB: true,
   })
@@ -269,6 +272,7 @@ export default function () {
         record.step = medicalCaseData.advancement.step
         record.synchronizedAt = medicalCaseData.synchronizedAt
         record.closedAt = medicalCaseData.closedAt
+        record.appVersion = medicalCaseData.appVersion
         record.fail_safe = failSafe
         record.version_id = medicalCaseData.version_id
         record.patient.set(patient)
@@ -324,6 +328,7 @@ export default function () {
         nestedRecord.step = medicalCaseData.advancement.step
         nestedRecord.synchronizedAt = medicalCaseData.synchronizedAt
         nestedRecord.closedAt = medicalCaseData.closedAt
+        nestedRecord.appVersion = medicalCaseData.appVersion
         nestedRecord.fail_safe = failSafe
         nestedRecord.version_id = medicalCaseData.version_id
         nestedRecord.patient.set(patient)
@@ -581,6 +586,7 @@ export default function () {
       createdAt: watermelonDBMedicalCase.createdAt.getTime(),
       updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
       closedAt: watermelonDBMedicalCase.closedAt.getTime(),
+      appVersion: watermelonDBMedicalCase.appVersion,
       version_id: watermelonDBMedicalCase.version_id,
     }
 
