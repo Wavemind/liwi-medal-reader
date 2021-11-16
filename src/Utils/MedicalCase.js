@@ -329,6 +329,12 @@ export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
     })
 }
 
+/**
+ * Calculate node from bottom to top
+ * @param {Instances} conditions,
+ * @param {Instances} mcNodes,
+ * @returns true/false
+ */
 export const calculateConditionInverse = (conditions, mcNodes) => {
   const state = store.getState()
   const instances = state.algorithm.item.diagram.instances
