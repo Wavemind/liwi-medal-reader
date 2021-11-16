@@ -11,11 +11,8 @@ export default () => {
   const instances = state.algorithm.item.diagram.instances
   const mcNodes = state.medicalCase.item.nodes
 
-  return registrationOrder.filter(nodeId => {
+  return registrationOrder.filter(nodeId =>
     // Skip first name, last name and birth date
-    if (instances[nodeId]?.conditions.length > 0) {
-      return calculateConditionInverse(instances[nodeId]?.conditions, mcNodes)
-    }
-    return true
-  })
+    calculateConditionInverse(instances[nodeId]?.conditions, mcNodes),
+  )
 }

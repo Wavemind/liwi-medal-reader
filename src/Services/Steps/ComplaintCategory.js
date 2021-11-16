@@ -7,6 +7,7 @@ import differenceInDays from 'date-fns/differenceInDays'
  * The internal imports
  */
 import { store } from '@/Store'
+import { calculateConditionInverse } from '@/Utils/MedicalCase'
 
 export default () => {
   const state = store.getState()
@@ -28,13 +29,13 @@ export default () => {
     return neonatCC.filter(
       nodeId =>
         nodeId !== neonatGeneralId &&
-        stfu(instances[nodeId].conditions, mcNodes),
+        calculateConditionInverse(instances[nodeId].conditions, mcNodes),
     )
   } else {
     return olderCC.filter(
       nodeId =>
         nodeId !== olderGeneralId &&
-        stfu(instances[nodeId].conditions, mcNodes),
+        calculateConditionInverse(instances[nodeId].conditions, mcNodes),
     )
   }
 }
