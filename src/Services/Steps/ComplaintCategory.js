@@ -19,12 +19,22 @@ export default () => {
   const neonatCC = full_order.complaint_categories_step.neonat
   const olderGeneralId = basic_questions.general_cc_id
   const neonatGeneralId = basic_questions.yi_general_cc_id
+  const instances = state.algorithm.item.diagram.instances
+  const mcNodes = state.medicalCases.item.nodes
 
   const days = differenceInDays(new Date(createdAt), new Date(birthDate))
 
   if (days <= 60) {
-    return neonatCC.filter(item => item !== neonatGeneralId)
+    return neonatCC.filter(
+      nodeId =>
+        nodeId !== neonatGeneralId &&
+        stfu(instances[nodeId].conditions, mcNodes),
+    )
   } else {
-    return olderCC.filter(item => item !== olderGeneralId)
+    return olderCC.filter(
+      nodeId =>
+        nodeId !== olderGeneralId &&
+        stfu(instances[nodeId].conditions, mcNodes),
+    )
   }
 }

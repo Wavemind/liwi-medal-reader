@@ -17,7 +17,9 @@ const ComplaintCategoryMedicalCaseContainer = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
 
-  const [questions, setQuestions] = useState(ComplaintCategoryQuestionsService())
+  const [questions, setQuestions] = useState(
+    ComplaintCategoryQuestionsService(),
+  )
 
   // Update questions list only if question array change
   useEffect(() => {
