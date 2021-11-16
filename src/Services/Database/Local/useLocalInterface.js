@@ -25,7 +25,6 @@ let adapter = null
 if (process.env.NODE_ENV === 'test') {
   adapter = new LokiJSAdapter({
     schema,
-    migrations,
     useWebWorker: false,
     useIncrementalIndexedDB: true,
   })

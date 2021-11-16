@@ -14,7 +14,7 @@ export default schemaMigrations({
           table: 'medical_cases',
           columns: [
             { name: 'forceClosed', type: 'boolean' },
-            { name: 'closedAt', type: 'number' },
+            { name: 'closed_at', type: 'number' },
           ],
         }),
       ],
