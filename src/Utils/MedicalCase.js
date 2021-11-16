@@ -339,7 +339,7 @@ export const calculateConditionInverse = (conditions, mcNodes) => {
   const state = store.getState()
   const instances = state.algorithm.item.diagram.instances
 
-  if (conditions.length === 0) {
+  if (conditions === undefined || conditions.length === 0) {
     return true
   }
 

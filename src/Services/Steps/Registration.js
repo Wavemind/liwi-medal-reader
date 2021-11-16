@@ -12,7 +12,6 @@ export default () => {
   const mcNodes = state.medicalCase.item.nodes
 
   return registrationOrder.filter(nodeId =>
-    // Skip first name, last name and birth date
     calculateConditionInverse(instances[nodeId]?.conditions, mcNodes),
   )
 }
