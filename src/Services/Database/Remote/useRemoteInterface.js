@@ -118,6 +118,9 @@ export default function () {
           consent: medicalCaseData.consent,
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
+          metadata: {
+            appVersion: medicalCaseData.appVersion,
+          },
         },
         json_version: medicalCaseData.json_version,
         advancement: medicalCaseData.advancement,
@@ -221,6 +224,9 @@ export default function () {
           consent: medicalCase.consent,
           diagnosis: medicalCase.diagnosis,
           nodes: medicalCase.nodes,
+          metadata: {
+            appVersion: medicalCase.appVersion,
+          },
         },
         json_version: medicalCase.json_version,
         advancement: medicalCase.advancement,
@@ -289,6 +295,7 @@ export default function () {
       createdAt: remoteMedicalCase.created_at,
       updatedAt: remoteMedicalCase.updated_at,
       closedAt: remoteMedicalCase.closedAt,
+      appVersion: parsedJson.metadata?.appVersion,
       version_id: remoteMedicalCase.version_id,
       patient_id: remoteMedicalCase.patient_id,
     }
@@ -406,8 +413,8 @@ export default function () {
     findBy,
     insertActivities,
     insertPatient,
-    insertPatientValues,
-    updatePatientValues: insertPatientValues,
+    insertPatientValues, // TODO: Alain wtf is this ?
+    updatePatientValues: insertPatientValues, // TODO: Alain wtf is this ?
     getAll,
     update,
     insertMedicalCase,

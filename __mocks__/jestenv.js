@@ -58,6 +58,8 @@ jest.mock('react-native-device-info', () => {
     getModel: jest.fn(),
     isTablet: jest.fn(),
     getDeviceLocale: jest.fn(),
+    getVersion: jest.fn(),
+    getBuildNumber: jest.fn(),
   }
 })
 jest.mock('@react-navigation/native', () => {
