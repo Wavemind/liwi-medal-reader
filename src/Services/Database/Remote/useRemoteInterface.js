@@ -413,8 +413,8 @@ export default function () {
     findBy,
     insertActivities,
     insertPatient,
-    insertPatientValues, // TODO: Alain wtf is this ?
-    updatePatientValues: insertPatientValues, // TODO: Alain wtf is this ?
+    insertPatientValues,
+    updatePatientValues: insertPatientValues, // Due different use in local interface
     getAll,
     update,
     insertMedicalCase,
