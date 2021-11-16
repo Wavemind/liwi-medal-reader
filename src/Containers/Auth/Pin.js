@@ -53,6 +53,7 @@ const PinAuthContainer = () => {
     fadeIn(fadeAnim)
 
     if (__DEV__) {
+      console.log('')
       handlePin(HF_TOKEN)
     }
   }, [fadeAnim])

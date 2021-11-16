@@ -71,6 +71,7 @@ export default props => {
     nodeId,
     value,
   })
+
   return {
     ...newMedicalCase,
     lastSystemUpdated: {

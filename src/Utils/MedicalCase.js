@@ -329,6 +329,28 @@ export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
     })
 }
 
+export const calculateConditionInverse = (conditions, mcNodes) => {
+  const state = store.getState()
+  const instances = state.algorithm.item.diagram.instances
+
+  if (conditions.length === 0) {
+    return true
+  }
+
+  return conditions.some(condition => {
+    const conditionValue =
+      mcNodes[condition.node_id].answer === condition.answer_id
+    if (conditionValue) {
+      return calculateConditionInverse(
+        instances[condition.node_id].conditions,
+        mcNodes,
+      )
+    } else {
+      return false
+    }
+  })
+}
+
 /**
  * Show in the console where in what diagram a node need to be shown
  * @param {Integer} nodeId : Node Id we wanna have info on
