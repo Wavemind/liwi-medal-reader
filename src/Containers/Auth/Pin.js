@@ -9,6 +9,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
 import { useTranslation } from 'react-i18next'
 import { heightPercentageToDP } from 'react-native-responsive-screen'
 import { HF_TOKEN } from 'env'
+
 /**
  * The internal imports
  */
