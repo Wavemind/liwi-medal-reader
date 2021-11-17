@@ -19,7 +19,7 @@ export default () => {
         nodes[questionId].conditioned_by_cc.some(
           ccId => mcNodes[ccId].answer === getYesAnswer(nodes[ccId]).id,
         ) &&
-        calculateConditionInverse(instances[questionId].conditions, mcNodes)
+        calculateConditionInverse(instances[questionId]?.conditions, mcNodes)
       )
     }
     return true

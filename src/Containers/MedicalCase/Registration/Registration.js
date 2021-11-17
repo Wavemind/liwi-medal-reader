@@ -29,9 +29,9 @@ const RegistrationMedicalCaseContainer = () => {
 
   // Update questions list only if question array change
   useEffect(() => {
-    const assessmentQuestions = RegistrationQuestionsService()
-    if (!isEqual(assessmentQuestions, questions)) {
-      setQuestions(assessmentQuestions)
+    const registrationQuestions = RegistrationQuestionsService()
+    if (!isEqual(registrationQuestions, questions)) {
+      setQuestions(registrationQuestions)
     }
   }, [isFocused, mcNodes])
 

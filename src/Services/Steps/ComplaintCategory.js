@@ -21,7 +21,7 @@ export default () => {
   const olderGeneralId = basic_questions.general_cc_id
   const neonatGeneralId = basic_questions.yi_general_cc_id
   const instances = state.algorithm.item.diagram.instances
-  const mcNodes = state.medicalCases.item.nodes
+  const mcNodes = state.medicalCase.item.nodes
 
   const days = differenceInDays(new Date(createdAt), new Date(birthDate))
 
@@ -29,13 +29,13 @@ export default () => {
     return neonatCC.filter(
       nodeId =>
         nodeId !== neonatGeneralId &&
-        calculateConditionInverse(instances[nodeId].conditions, mcNodes),
+        calculateConditionInverse(instances[nodeId]?.conditions, mcNodes),
     )
   } else {
     return olderCC.filter(
       nodeId =>
         nodeId !== olderGeneralId &&
-        calculateConditionInverse(instances[nodeId].conditions, mcNodes),
+        calculateConditionInverse(instances[nodeId]?.conditions, mcNodes),
     )
   }
 }
