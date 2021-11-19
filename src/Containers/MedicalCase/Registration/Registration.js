@@ -16,7 +16,7 @@ import {
   EmptyList,
   RegistrationHeader,
   PatientString,
-  BirthDate,
+  PatientBirthDate,
 } from '@/Components'
 import { RegistrationQuestionsService } from '@/Services/Steps'
 
@@ -50,7 +50,7 @@ const RegistrationMedicalCaseContainer = () => {
         case 'last_name':
           return <PatientString field="last_name" />
         default:
-          return <BirthDate />
+          return <PatientBirthDate />
       }
     }
   }
