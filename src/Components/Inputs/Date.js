@@ -1,10 +1,15 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
-import { TextInput } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import { TextInput, TouchableOpacity } from 'react-native'
 import DatePicker from 'react-native-date-picker'
+import getUnixTime from 'date-fns/getUnixTime'
+import fromUnixTime from 'date-fns/fromUnixTime'
+import fr from 'date-fns/locale/fr'
+import enGB from 'date-fns/locale/en-GB'
 
 /**
  * The internal imports
@@ -12,8 +17,7 @@ import DatePicker from 'react-native-date-picker'
 import { useTheme } from '@/Theme'
 import setAnswer from '@/Utils/SetAnswer'
 import { translate } from '@/Translations/algorithm'
-import { displayResult } from '@/Utils/ReferenceTable'
-import { Config } from '@/Config'
+import { formatDate } from '@/Utils/Date'
 
 const DateInput = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
@@ -21,49 +25,69 @@ const DateInput = ({ questionId, editable = true }) => {
     Components: { string },
   } = useTheme()
 
+  const { t } = useTranslation()
+
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
   )
   const currentNode = useSelector(
     state => state.algorithm.item.nodes[questionId],
   )
+  const systemLanguage = useSelector(
+    state => state.healthFacility.clinician.app_language,
+  )
 
   // Local state definition
+  const [dateLanguage, setDateLanguage] = useState(enGB)
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    // if (question.value === null) {
-    //   setValue('')
-    // } else if (currentNode.display_format === Config.DISPLAY_FORMAT.reference) {
-    //   setValue(displayResult(question.value, questionId))
-    // } else {
-    //   setValue(question.value.toString())
-    // }
-  }, [question.value])
+  const [date, setDate] = useState(
+    question.value ? fromUnixTime(question.value) : null,
+  )
 
   /**
    * Save value in store
    * @param {Date} newDate
    */
   const handleConfirm = newDate => {
+    setOpen(false)
     if (question.value !== newDate) {
-      setAnswer(question.id, newDate)
+      setDate(newDate)
+      setAnswer(question.id, getUnixTime(newDate))
     }
   }
 
+  useEffect(() => {
+    if (systemLanguage === 'fr') {
+      setDateLanguage(fr)
+    }
+  }, [])
+
   return (
-    <DatePicker
-      modal
-      mode="date"
-      open={open}
-      date={question.value}
-      onConfirm={newDate => handleConfirm(newDate)}
-      onCancel={() => setOpen(false)}
-      locale="fr"
-      title="Put your title here"
-      confirmText="Put your confirm text here"
-      cancelText="Put your cancel text here"
-    />
+    <>
+      <TouchableOpacity onPress={() => setOpen(true)}>
+        <TextInput
+          style={string.input(editable)}
+          value={date ? formatDate(date) : ''}
+          editable={false}
+          placeholder={
+            currentNode.placeholder && translate(currentNode.placeholder)
+          }
+          pointerEvents="none"
+        />
+      </TouchableOpacity>
+      <DatePicker
+        modal
+        mode="date"
+        open={open}
+        date={date ? date : new Date()}
+        onConfirm={newDate => handleConfirm(newDate)}
+        onCancel={() => setOpen(false)}
+        locale={dateLanguage}
+        title={t('components.date.title')}
+        confirmText={t('components.date.confirm')}
+        cancelText={t('components.date.cancel')}
+      />
+    </>
   )
 }
 

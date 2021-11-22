@@ -219,6 +219,9 @@ export default {
         months: 'In months',
         years: 'In years',
       },
+      title: 'Select date',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
     },
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
