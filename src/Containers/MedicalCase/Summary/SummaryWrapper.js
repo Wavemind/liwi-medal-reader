@@ -114,12 +114,12 @@ const SummaryWrapperMedicalCaseContainer = () => {
 
       <View style={summaryWrapper.idContainer}>
         <Text style={summaryWrapper.idDisplay}>
-          {t('containers.medical_case.summary_wrapper.patient_uuid')}{' '}
-          {patient.id}
+          {`${t('containers.medical_case.summary_wrapper.patient_uuid')} ${
+            patient.id
+          }`}
         </Text>
         <Text style={summaryWrapper.idDisplay}>
-          {t('containers.medical_case.summary_wrapper.consultation_id')}{' '}
-          {medicalCase.id}
+          {`t('containers.medical_case.summary_wrapper.consultation_id') ${medicalCase.id}`}
         </Text>
       </View>
 

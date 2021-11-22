@@ -172,7 +172,7 @@ export default {
       },
       personal_info: {
         patient_info: 'Patient·e',
-        consultations_info: 'Consultations',
+        consultations_info: 'Détails admission',
       },
     },
     consent: {
