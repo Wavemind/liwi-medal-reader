@@ -1,15 +1,11 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { TextInput, TouchableOpacity } from 'react-native'
 import DatePicker from 'react-native-date-picker'
-import getUnixTime from 'date-fns/getUnixTime'
-import fromUnixTime from 'date-fns/fromUnixTime'
-import fr from 'date-fns/locale/fr'
-import enGB from 'date-fns/locale/en-GB'
 
 /**
  * The internal imports
@@ -38,10 +34,10 @@ const DateInput = ({ questionId, editable = true }) => {
   )
 
   // Local state definition
-  const [dateLanguage, setDateLanguage] = useState(enGB)
+  const [dateLanguage] = useState(systemLanguage)
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState(
-    question.value ? fromUnixTime(question.value) : null,
+    question.value ? new Date(question.value) : null,
   )
 
   /**
@@ -52,21 +48,15 @@ const DateInput = ({ questionId, editable = true }) => {
     setOpen(false)
     if (question.value !== newDate) {
       setDate(newDate)
-      setAnswer(question.id, getUnixTime(newDate))
+      setAnswer(question.id, newDate.getTime())
     }
   }
-
-  useEffect(() => {
-    if (systemLanguage === 'fr') {
-      setDateLanguage(fr)
-    }
-  }, [])
 
   return (
     <>
       <TouchableOpacity onPress={() => setOpen(true)}>
         <TextInput
-          style={string.input(editable)}
+          style={string.input(true)}
           value={date ? formatDate(date) : ''}
           editable={false}
           placeholder={
