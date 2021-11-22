@@ -224,6 +224,9 @@ export default {
         months: 'En mois',
         years: 'En années',
       },
+      title: 'Sélectionnez la date',
+      confirm: 'Confirmer',
+      cancel: 'Annuler',
     },
     summary: {
       no_questions: "Aucune question n'a été posée à cette étape",
