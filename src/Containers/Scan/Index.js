@@ -20,7 +20,6 @@ import CreatePatient from '@/Store/Patient/Create'
 import HandleQr from '@/Store/Scan/HandleQr'
 import LoadPatient from '@/Store/Patient/Load'
 import { formatDate } from '@/Utils/Date'
-import { navigate } from '@/Navigators/Root'
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
@@ -73,7 +72,7 @@ const IndexScanContainer = () => {
             }),
           )
           if (isFulfilled(medicalCaseResult)) {
-            navigate('Home', {
+            navigation.navigate('Home', {
               screen: 'StageWrapper',
               ...scanData.navigationParams,
             })

@@ -79,27 +79,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   )
   const errors = useSelector(state => state.validation.item)
 
-  // Adds an event listener to tablet back button press
-  // Opens the existMedicalCase modal and redirects to the Home screen
-  useEffect(() => {
-    const backAction = async () => {
-      await dispatch(
-        SetParams.action({
-          type: 'exitMedicalCase',
-          params: { routeName: 'Home', routeParams: {} },
-        }),
-      )
-      await dispatch(ToggleVisibility.action({}))
-    }
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    )
-
-    return () => backHandler.remove()
-  }, [])
-
   /**
    * Re dispatches the step verification process
    * @returns {Promise<void>}
