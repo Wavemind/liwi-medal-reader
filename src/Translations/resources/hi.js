@@ -169,7 +169,7 @@ export default {
       },
       personal_info: {
         patient_info: 'Patient information',
-        consultations_info: 'Consultations information',
+        consultations_info: 'Consultation information',
       },
     },
     consent: {

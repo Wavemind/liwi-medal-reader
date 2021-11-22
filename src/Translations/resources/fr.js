@@ -144,6 +144,10 @@ export default {
         management_consulting: 'Prise en charge et conseils',
         no_managements: 'Aucune prise en charge disponible',
       },
+      summary_wrapper: {
+        patient_uuid: 'UUID patient',
+        consultation_id: 'ID consultation',
+      },
     },
     scan: {
       scan: 'Scanner le code QR',
