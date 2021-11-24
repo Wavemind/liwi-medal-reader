@@ -11,7 +11,7 @@ import ChangeValueAuthSystem from '@/Store/Auth/ChangeValue'
 import { Config } from '@/Config'
 
 export default async ({ serverAddress, clientId }, { dispatch }) => {
-  const { authEndpoint, tokenEndpoint } = Config
+  const { authEndpoint, tokenEndpoint } = Config.OAUTH
 
   const config = {
     issuer: serverAddress,
@@ -47,5 +47,5 @@ export default async ({ serverAddress, clientId }, { dispatch }) => {
     response.refreshToken,
   )
 
-  return response
+  return true
 }

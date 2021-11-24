@@ -14,14 +14,8 @@ import { SquareSelect, ToggleSwitch } from '@/Components'
 import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
-import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
 import ChangeLanguage from '@/Store/HealthFacility/ChangeLanguage'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
-import DestroyAlgorithm from '@/Store/Algorithm/Destroy'
-import DestroyDevice from '@/Store/Device/Destroy'
-import DestroyHealthFacility from '@/Store/HealthFacility/Destroy'
-import DestroySession from '@/Store/User/DestroySession'
 
 const IndexSettingsContainer = () => {
   // Theme and style elements deconstruction
@@ -33,7 +27,6 @@ const IndexSettingsContainer = () => {
   const { t, i18n } = useTranslation()
 
   // Get values from the store
-  const environment = useSelector(state => state.system.environment)
   const device = useSelector(state => state.device.item)
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithm = useSelector(state => state.algorithm.item)
@@ -59,20 +52,6 @@ const IndexSettingsContainer = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   const dispatch = useDispatch()
-
-  /**
-   * Dispatch new environment to store.
-   * Clear device, health facility and algorithm store
-   * @param newEnvironment
-   */
-  const changeEnvironment = async newEnvironment => {
-    await dispatch(ChangeEnvironment.action({ newEnvironment }))
-    await dispatch(DestroyAlgorithm.action({}))
-    await dispatch(DestroyDevice.action({}))
-    await dispatch(DestroyHealthFacility.action({}))
-    await dispatch(DestroySession.action({}))
-    navigateAndSimpleReset('Auth')
-  }
 
   /**
    * Update app language and update store
@@ -128,14 +107,6 @@ const IndexSettingsContainer = () => {
         <Text style={[settings.text, Fonts.textBold]}>
           {`${appVersion}.${appBuildNumber}`}
         </Text>
-      </View>
-      <View style={settings.itemGeneral}>
-        <SquareSelect
-          label={t('containers.settings.general.environment')}
-          items={Config.ENVIRONMENTS}
-          handleOnSelect={changeEnvironment}
-          value={environment}
-        />
       </View>
       <View style={settings.itemGeneral}>
         <SquareSelect

@@ -4,6 +4,7 @@
 import axios from 'axios'
 import * as Keychain from 'react-native-keychain'
 import { showMessage } from 'react-native-flash-message'
+import { refresh } from 'react-native-app-auth'
 
 /**
  * The internal imports
@@ -22,20 +23,25 @@ const instance = axios.create({
 })
 
 /**
- * Defines the baseURL based on the selected environment
- * @param env
- * @returns {string}
+ * Generate config based on user selection
+ * @returns hash of OAuth config
  */
-export const defineBaseUrl = env => {
-  switch (env) {
-    case 'test':
-      return Config.URL_TEST_API
-    case 'staging':
-      return Config.URL_STAGING_API
-    case 'production':
-      return Config.URL_PRODUCTION_API
-    default:
-      return Config.URL_TEST_API
+const createConfig = async () => {
+  const state = store.getState()
+  const { serverAddress } = state.auth
+  const { authEndpoint, tokenEndpoint } = Config.AUTHO
+  const clientId = await Keychain.getInternetCredentials('client_id')
+
+  return {
+    issuer: serverAddress,
+    clientId: clientId.password,
+    redirectUrl: 'aaa://callback',
+    scopes: [],
+    serviceConfiguration: {
+      authorizationEndpoint: serverAddress + authEndpoint,
+      tokenEndpoint: serverAddress + tokenEndpoint,
+    },
+    dangerouslyAllowInsecureHttpRequests: true,
   }
 }
 
@@ -53,23 +59,10 @@ export const handleError = ({ message, data, status }) => {
 instance.interceptors.request.use(
   async function (config) {
     const state = store.getState()
-    const env = state.system.environment
+    const bearToken = await Keychain.getInternetCredentials('bear_token')
 
-    const accessToken = await Keychain.getInternetCredentials('access_token')
-    const client = await Keychain.getInternetCredentials('client')
-    const expiry = await Keychain.getInternetCredentials('expiry')
-    const uid = await Keychain.getInternetCredentials('uid')
-    const healthFacilityToken = await Keychain.getInternetCredentials(
-      'health_facility_token',
-    )
-    config.baseURL = defineBaseUrl(env)
-    config.headers.common['access-token'] = accessToken.password
-    config.headers.common['health-facility-token'] =
-      healthFacilityToken.password
-    config.headers.common.client = client.password
-    config.headers.common.expiry = expiry.password
-    config.headers.common.uid = uid.password
-
+    config.baseURL = state.auth.medAlDataURL + '/api/v1'
+    config.headers.Authorization = `Bearer ${bearToken.password}`
     return config
   },
   function (error) {
@@ -94,41 +87,46 @@ instance.interceptors.response.use(
       // from the refresh_token and retry request
       if (error.response.status === 403 && !originalRequest._retry) {
         originalRequest._retry = true
-
         const refreshToken = await Keychain.getInternetCredentials(
           'refresh_token',
         )
 
-        const response = await instance.post('auth/refresh', {
-          refresh_token: refreshToken.password,
+        const config = createConfig()
+
+        // Get new token with refresh token
+        const response = await refresh(config, {
+          refreshToken: refreshToken.password,
         })
 
+        // Set new bear token and refresh token
         await Keychain.setInternetCredentials(
-          'access_token',
-          'access_token',
-          response.data.data.attributes.token,
+          'bear_token',
+          'bear_token',
+          response.accessToken,
         )
 
         await Keychain.setInternetCredentials(
           'refresh_token',
           'refresh_token',
-          response.data.included.attributes.token,
+          response.refreshToken,
         )
 
-        const accessToken = {
-          token: response.data.data.attributes.token,
-          expiration: response.data.data.attributes.expiration,
-        }
-
-        originalRequest.headers.Authorization = `Bearer ${accessToken.token}`
+        originalRequest.headers.Authorization = `Bearer ${response.accessToken}`
         return instance(originalRequest)
-      } else if (originalRequest.url === 'auth/refresh') {
-        // error while trying to refresh access token, so disconnect!!
+      } else {
+        // error while trying to refresh access token, so disconnect
+        showMessage({
+          message: i18n.t('errors.offline.title', {
+            serverName: 'MedAL-Data',
+          }),
+          description: i18n.t('errors.offline.description'),
+          type: 'danger',
+          duration: 5000,
+        })
 
-        await Keychain.resetInternetCredentials('access_token')
+        await Keychain.resetInternetCredentials('bear_token')
         await Keychain.resetInternetCredentials('refresh_token')
-        // TODO change the screen to something that actually exists
-        navigate('Auth', { screen: 'IndexAuth' })
+        navigate('Auth', { screen: 'Login' })
       }
 
       // Default response
@@ -156,7 +154,7 @@ instance.interceptors.response.use(
       // http.ClientRequest in node.js
       showMessage({
         message: i18n.t('errors.offline.title', {
-          serverName: 'MedAL-Creator',
+          serverName: 'MedAL-Data',
         }),
         description: i18n.t('errors.offline.description'),
         type: 'danger',

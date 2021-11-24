@@ -1,7 +1,6 @@
 /**
  * The external imports
  */
-import { getMacAddress } from 'react-native-device-info'
 import {
   DocumentDirectoryPath,
   writeFile,
@@ -13,12 +12,11 @@ import axios from 'axios'
 /**
  * The internal imports
  */
-import api from '@/Services/Algorithm/FetchOneApi'
+import api from '@/Services'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
 export default async ({ json_version }, { dispatch }) => {
-  const macAddress = await getMacAddress()
   const abort = axios.CancelToken.source()
 
   const timeout = setTimeout(() => {
@@ -30,9 +28,8 @@ export default async ({ json_version }, { dispatch }) => {
   let response
 
   await api
-    .post('versions/retrieve_algorithm_version', {
+    .get('algorithm', {
       json_version,
-      mac_address: macAddress,
       cancelToken: abort.token,
     })
     .then(result => {

@@ -1,14 +1,14 @@
 import { StyleSheet } from 'react-native'
-import { hp } from '@/Theme/Responsive'
+import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
 
   return StyleSheet.create({
     formWrapper: {
-      width: '100%',
       ...Layout.center,
-      ...Gutters.largeBMargin,
+      ...Gutters.largeVMargin,
+      height: hp(70),
     },
     input: {
       height: hp(7),
@@ -26,15 +26,14 @@ export default function (props) {
     buttonWrapper: {
       ...Gutters.largeTMargin,
     },
+    loaderWrapper: {
+      width: wp(20),
+      height: hp(20),
+    },
     errorMessageWrapper: {
       height: hp(4),
       ...Gutters.hugeTMargin,
       ...Gutters.regularBMargin,
-      ...Layout.center,
-    },
-    loaderContainer: {
-      height: hp(11),
-      ...Gutters.hugeBMargin,
       ...Layout.center,
     },
   })

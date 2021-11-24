@@ -139,7 +139,7 @@ export const Config = {
     referral: 'referral_step',
     registration: 'registration_step',
   },
-  AUTHO: {
+  OAUTH: {
     authEndpoint: '/oauth/authorize',
     tokenEndpoint: '/oauth/token',
   },

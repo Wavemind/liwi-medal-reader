@@ -19,7 +19,6 @@ import databaseActivity from './DatabaseActivity'
 import databaseMedicalCase from './DatabaseMedicalCase'
 import databasePatient from './DatabasePatient'
 import databasePatientValues from './DatabasePatientValues'
-import device from './Device'
 import emergency from './Emergency'
 import filters from './Filters'
 import healthFacility from './HealthFacility'
@@ -32,7 +31,6 @@ import system from './System'
 import scan from './Scan'
 import theme from './Theme'
 import validation from './Validation'
-import user from './User'
 import synchronization from './Synchronization'
 
 const reducers = combineReducers({
@@ -42,7 +40,6 @@ const reducers = combineReducers({
   databaseMedicalCase,
   databasePatient,
   databasePatientValues,
-  device,
   emergency,
   filters,
   healthFacility,
@@ -56,7 +53,6 @@ const reducers = combineReducers({
   theme,
   scan,
   validation,
-  user,
   synchronization,
 })
 
@@ -65,13 +61,11 @@ const persistConfig = {
   storage: AsyncStorage,
   whitelist: [
     'auth',
-    'device',
     'medicalCase',
     'patient',
     'healthFacility',
     'system',
     'theme',
-    'user',
     'emergency',
   ],
 }

@@ -6,10 +6,7 @@ import { store } from '@/Store'
 export default () => {
   const state = store.getState()
   // Check auth status
-  const isAuthenticated = state.user.item.hasOwnProperty('id')
-  const deviceRegistered = state.device.item.hasOwnProperty('id')
-  const healthFacilityAssociated =
-    state.healthFacility.item.hasOwnProperty('id')
+  const isAuthenticated = state.auth.item.hasOwnProperty('id')
   const clinicianSelected = state.healthFacility.clinician.hasOwnProperty('id')
   let route = {}
 
@@ -25,10 +22,8 @@ export default () => {
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
     ]).then(res => {
       if (Object.values(res).every(result => result === 'granted')) {
-        if (!isAuthenticated || !deviceRegistered) {
-          route = 'EnrolmentSelection'
-        } else if (!healthFacilityAssociated) {
-          route = 'Synchronization'
+        if (!isAuthenticated) {
+          route = 'Login'
         } else if (!clinicianSelected) {
           route = 'ClinicianSelection'
         } else {

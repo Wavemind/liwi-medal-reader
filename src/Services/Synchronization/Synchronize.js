@@ -29,7 +29,7 @@ const normalizeFilePath = path => {
 export default async medicalCasesToSync => {
   const { getActivities, findBy } = useDatabase()
   const state = store.getState()
-  const mainDataUrl = state.healthFacility.item.main_data_ip
+  const mainDataUrl = state.auth.medAlDataURL
 
   const folder = `${DocumentDirectoryPath}/medical_cases`
   const targetPath = `${folder}.zip`
