@@ -10,13 +10,13 @@ import { useSelector } from 'react-redux'
 import { SynchronizationNavbar, StageWrapperNavbar } from '@/Components'
 
 const ActionsNavbar = ({ navigationState }) => {
-  const advancement = useSelector(state => state.medicalCase.item.advancement)
+  const medicalCase = useSelector(state => state.medicalCase.item)
 
-  if (advancement !== undefined) {
+  if (medicalCase !== undefined && medicalCase.closedAt === 0) {
     return (
       <StageWrapperNavbar
-        stageIndex={advancement.stage}
-        stepIndex={advancement.step}
+        stageIndex={medicalCase.advancement.stage}
+        stepIndex={medicalCase.advancement.step}
       />
     )
   } else {

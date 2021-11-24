@@ -57,11 +57,20 @@ const MainNavigator = ({ route, navigation }) => {
     }
   }, [route.state?.routes[0].params?.destroyCurrentConsultation, medicalCaseId])
 
-  // Prompt the user before leaving the screen
+  // Adds an event listener to tablet back button press
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = async () => {
-        if (
+        // Opens the existMedicalCase modal and redirects to the Home screen
+        if (medicalCaseId) {
+          await dispatch(
+            SetParams.action({
+              type: 'exitMedicalCase',
+              params: { routeName: 'Home', routeParams: {} },
+            }),
+          )
+          await dispatch(ToggleVisibility.action({}))
+        } else if (
           navigation.dangerouslyGetState()?.routes[0]?.state?.index &&
           !navigation.dangerouslyGetState()?.routes[0]?.state?.index !==
             route.key
@@ -79,7 +88,7 @@ const MainNavigator = ({ route, navigation }) => {
       BackHandler.addEventListener('hardwareBackPress', onBackPress)
       return () =>
         BackHandler.removeEventListener('hardwareBackPress', onBackPress)
-    }, []),
+    }, [medicalCaseId]),
   )
 
   return (
@@ -90,9 +99,7 @@ const MainNavigator = ({ route, navigation }) => {
         drawerStyle={Layout.fullWidth}
         screenOptions={{
           headerShown: true,
-          header: ({ scene }) => {
-            return <Header {...scene} />
-          },
+          header: ({ scene }) => <Header {...scene} />,
         }}
       >
         <Drawer.Screen

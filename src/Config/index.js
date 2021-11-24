@@ -37,7 +37,7 @@ export const Config = {
     input: 'Input',
     dropDownList: 'DropDownList',
     formula: 'Formula',
-    reference: 'Reference', // table reference
+    reference: 'Reference', // reference table
     string: 'String',
     autocomplete: 'Autocomplete',
     date: 'Date',
@@ -123,6 +123,7 @@ export const Config = {
     solution: 'solution',
     powder_for_injection: 'powder_for_injection',
     patch: 'patch',
+    lotion: 'lotion',
     cream: 'cream',
     pessary: 'pessary',
     ointment: 'ointment',

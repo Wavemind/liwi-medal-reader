@@ -10,6 +10,7 @@ import uuid from 'react-native-uuid'
  * The internal imports
  */
 import schema from './Schema'
+import migrations from './Models/Migrations'
 import { Config } from '@/Config'
 import { store } from '@/Store'
 import {
@@ -30,6 +31,7 @@ if (process.env.NODE_ENV === 'test') {
 } else {
   adapter = new SQLiteAdapter({
     schema,
+    migrations,
     useWebWorker: false,
     useIncrementalIndexedDB: true,
   })
@@ -140,9 +142,9 @@ export default function () {
 
     result = await collection.query(...queries)
 
-    // Order by updatedAt descending
+    // Order by createdAt descending
     result = result.sort(
-      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     )
 
     // Pagination
@@ -167,9 +169,9 @@ export default function () {
 
     result = await collection.query(...queries)
 
-    // Order by updatedAt descending
+    // Order by createdAt descending
     result = result.sort(
-      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     )
 
     result = result.filter(patient => !!patient.consent_file)
@@ -263,6 +265,9 @@ export default function () {
           consent: medicalCaseData.consent,
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
+          metadata: {
+            appVersion: medicalCaseData.appVersion,
+          },
         })
         record.json_version = medicalCaseData.json_version
         record.stage = medicalCaseData.advancement.stage
@@ -291,6 +296,7 @@ export default function () {
     if (architecture === 'client_server') {
       failSafe = true
     }
+
     await database.action(async () => {
       patient = await collection.create(record => {
         record._raw.id = patientData.id
@@ -318,6 +324,9 @@ export default function () {
           consent: medicalCaseData.consent,
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
+          metadata: {
+            appVersion: medicalCaseData.appVersion,
+          },
         })
         nestedRecord.json_version = medicalCaseData.json_version
         nestedRecord.stage = medicalCaseData.advancement.stage
@@ -563,6 +572,7 @@ export default function () {
     addPatient = true,
   ) => {
     const parsedJson = JSON.parse(watermelonDBMedicalCase.json)
+
     const medicalCase = {
       id: watermelonDBMedicalCase.id,
       activities: [],
@@ -581,6 +591,7 @@ export default function () {
       createdAt: watermelonDBMedicalCase.createdAt.getTime(),
       updatedAt: watermelonDBMedicalCase.updatedAt.getTime(),
       closedAt: watermelonDBMedicalCase.closedAt.getTime(),
+      appVersion: parsedJson.metadata?.appVersion,
       version_id: watermelonDBMedicalCase.version_id,
     }
 

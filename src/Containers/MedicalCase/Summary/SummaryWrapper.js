@@ -2,10 +2,11 @@
  * The external imports
  */
 import React from 'react'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, Text } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -28,28 +29,39 @@ const SummaryWrapperMedicalCaseContainer = () => {
   const {
     Layout,
     Gutters,
+    Fonts,
     Containers: { summaryWrapper },
   } = useTheme()
+  const isFocused = useIsFocused()
 
   const patient = useSelector(state => state.patient.item)
   const medicalCase = useSelector(state => state.medicalCase.item)
   const nodes = useSelector(state => state.algorithm.item.nodes)
-
-  // Get z-score questions
-  const basicMeasurements = BasicMeasurementQuestionsService()
-  const zScoreReferenceTableQuestions = basicMeasurements.filter(
-    nodeId => nodes[nodeId].reference_table_x_id,
-  )
-  ///////////////////////////////////////////////////////
-
-  // Get kind of consultation
   const kindOfConsultationId = useSelector(
     state =>
       state.algorithm.item.config.optional_basic_questions
         .kind_of_consultation_id,
   )
-  let kindOfConsultation = null
+  const genderNodeId = useSelector(
+    state => state.algorithm.item.config.basic_questions.gender_question_id,
+  )
 
+  let zScoreReferenceTableQuestions = null
+  let kindOfConsultation = null
+  let gender = null
+
+  if (!isFocused) {
+    return null
+  }
+
+  // Get z-score questions
+  const basicMeasurements = BasicMeasurementQuestionsService()
+  zScoreReferenceTableQuestions = basicMeasurements.filter(
+    nodeId => nodes[nodeId].reference_table_x_id,
+  )
+  ///////////////////////////////////////////////////////
+
+  // Get kind of consultation
   if (kindOfConsultationId) {
     const kindOfConsultationAnswerId = patient.patientValues.find(
       patientValue => parseInt(patientValue.node_id) === kindOfConsultationId,
@@ -61,15 +73,11 @@ const SummaryWrapperMedicalCaseContainer = () => {
   ///////////////////////////////////////////////////////
 
   // Get gender
-  const genderNodeId = useSelector(
-    state => state.algorithm.item.config.basic_questions.gender_question_id,
-  )
-
   const genderAnswerId = patient.patientValues.find(
     patientValue => parseInt(patientValue.node_id) === genderNodeId,
   ).answer_id
 
-  const gender = nodes[genderNodeId].answers[genderAnswerId]
+  gender = nodes[genderNodeId].answers[genderAnswerId]
   ///////////////////////////////////////////////////////
 
   return (
@@ -96,11 +104,23 @@ const SummaryWrapperMedicalCaseContainer = () => {
         <View style={summaryWrapper.rightColumn}>
           {zScoreReferenceTableQuestions.map(nodeId => (
             <SummaryMetadata
+              key={nodeId}
               label={translate(nodes[nodeId].label)}
               value={medicalCase.nodes[nodeId].value}
             />
           ))}
         </View>
+      </View>
+
+      <View style={summaryWrapper.idContainer}>
+        <Text style={summaryWrapper.idDisplay}>
+          {`${t('containers.medical_case.summary_wrapper.patient_uuid')} ${
+            patient.id
+          }`}
+        </Text>
+        <Text style={summaryWrapper.idDisplay}>
+          {`t('containers.medical_case.summary_wrapper.consultation_id') ${medicalCase.id}`}
+        </Text>
       </View>
 
       <Tab.Navigator

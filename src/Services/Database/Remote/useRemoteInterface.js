@@ -118,6 +118,9 @@ export default function () {
           consent: medicalCaseData.consent,
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
+          metadata: {
+            appVersion: medicalCaseData.appVersion,
+          },
         },
         json_version: medicalCaseData.json_version,
         advancement: medicalCaseData.advancement,
@@ -125,6 +128,8 @@ export default function () {
         closedAt: medicalCaseData.closedAt,
         fail_safe: false,
         version_id: medicalCaseData.version_id,
+        createdAt: medicalCaseData.createdAt,
+        updatedAt: medicalCaseData.updatedAt,
       },
       patient: {
         id: patientData.id,
@@ -143,6 +148,8 @@ export default function () {
         consent: patientData.consent,
         consent_file: patientData.consent_file,
         fail_safe: false,
+        createdAt: patientData.createdAt,
+        updatedAt: patientData.updatedAt,
       },
     })
 
@@ -217,11 +224,16 @@ export default function () {
           consent: medicalCase.consent,
           diagnosis: medicalCase.diagnosis,
           nodes: medicalCase.nodes,
+          metadata: {
+            appVersion: medicalCase.appVersion,
+          },
         },
         json_version: medicalCase.json_version,
         advancement: medicalCase.advancement,
         synchronizedAt: medicalCase.synchronizedAt,
         closedAt: medicalCase.closedAt,
+        createdAt: medicalCase.createdAt,
+        updatedAt: medicalCase.updatedAt,
         fail_safe: medicalCase.fail_safe,
         version_id: medicalCase.version_id,
       }))
@@ -283,6 +295,7 @@ export default function () {
       createdAt: remoteMedicalCase.created_at,
       updatedAt: remoteMedicalCase.updated_at,
       closedAt: remoteMedicalCase.closedAt,
+      appVersion: parsedJson.metadata?.appVersion,
       version_id: remoteMedicalCase.version_id,
       patient_id: remoteMedicalCase.patient_id,
     }
@@ -401,7 +414,7 @@ export default function () {
     insertActivities,
     insertPatient,
     insertPatientValues,
-    updatePatientValues: insertPatientValues,
+    updatePatientValues: insertPatientValues, // Due different use in local interface
     getAll,
     update,
     insertMedicalCase,

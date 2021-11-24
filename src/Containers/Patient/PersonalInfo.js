@@ -2,7 +2,7 @@
  * The external imports
  */
 import React from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
@@ -16,6 +16,7 @@ import { formatDate } from '@/Utils/Date'
 
 const PersonalInfoPatientContainer = () => {
   const {
+    Fonts,
     Gutters,
     Containers: { patientPersonalInfo },
   } = useTheme()
@@ -57,6 +58,7 @@ const PersonalInfoPatientContainer = () => {
       <SectionHeader
         label={t('containers.patient.personal_info.patient_info')}
       />
+      <Text style={patientPersonalInfo.uuid}>UUID: {patient.id}</Text>
       {patientInformation.map((info, i) => (
         <PatientPersonalInfoItem
           key={`patient_information_${i}`}

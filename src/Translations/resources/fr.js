@@ -144,6 +144,10 @@ export default {
         management_consulting: 'Prise en charge et conseils',
         no_managements: 'Aucune prise en charge disponible',
       },
+      summary_wrapper: {
+        patient_uuid: 'UUID patient',
+        consultation_id: 'ID consultation',
+      },
     },
     scan: {
       scan: 'Scanner le code QR',
@@ -168,7 +172,7 @@ export default {
       },
       personal_info: {
         patient_info: 'Patient·e',
-        consultations_info: 'Consultations',
+        consultations_info: 'Détails admission',
       },
     },
     consent: {
@@ -220,6 +224,9 @@ export default {
         months: 'En mois',
         years: 'En années',
       },
+      title: 'Sélectionnez la date',
+      confirm: 'Confirmer',
+      cancel: 'Annuler',
     },
     summary: {
       no_questions: "Aucune question n'a été posée à cette étape",
@@ -400,6 +407,7 @@ export default {
       powder_for_injection: 'Poudre pour injection',
       patch: 'Patch',
       cream: 'Crème',
+      lotion: 'Lotion',
       pessary: 'Pessaire (éponge)',
       ointment: 'Onguent',
       gel: 'Gel',
@@ -408,6 +416,11 @@ export default {
       per: 'par',
       per_administration: 'par administration',
     },
+  },
+  reference_table: {
+    above: '{{number}} ou supérieur',
+    lower: '{{number}} ou inférieur',
+    between: 'Entre {{number_1}} et {{number_2}}',
   },
   validation: {
     is_required: 'La question « {{ field }} » est obligatoire',

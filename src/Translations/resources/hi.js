@@ -169,7 +169,7 @@ export default {
       },
       personal_info: {
         patient_info: 'Patient information',
-        consultations_info: 'Consultations information',
+        consultations_info: 'Registration data',
       },
     },
     consent: {
@@ -219,6 +219,9 @@ export default {
         months: 'In months',
         years: 'In years',
       },
+      title: 'Select date',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
     },
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
@@ -397,6 +400,7 @@ export default {
       powder_for_injection: 'Powder for injection',
       patch: 'Patch',
       cream: 'Cream',
+      lotion: 'Lotion',
       pessary: 'Pessary',
       ointment: 'Ointment',
       gel: 'Gel',
@@ -405,6 +409,11 @@ export default {
       per: 'per',
       per_administration: 'per administration',
     },
+  },
+  reference_table: {
+    above: '{{number}} or above',
+    lower: '{{number}} or lower',
+    between: 'Between {{number_1}} and {{number_2}}',
   },
   validation: {
     is_required: 'Field "{{ field }}" is mandatory',

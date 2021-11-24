@@ -137,11 +137,12 @@ export const handleAnswerId = (node, value) => {
  * @returns See return of handleNumeric or handleAnswerId
  */
 export const setNodeValue = (mcNode, node, value) => {
-  const { int, float, bool, array, present, positive, string } =
+  const { int, float, bool, array, present, positive, string, date } =
     Config.VALUE_FORMATS
   switch (node.value_format) {
     case int:
     case float:
+    case date:
       return handleNumeric(mcNode, node, value)
     case bool:
     case array:

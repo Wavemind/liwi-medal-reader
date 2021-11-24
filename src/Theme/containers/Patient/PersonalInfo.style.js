@@ -33,5 +33,10 @@ export default function (props) {
       ...Fonts.textBold,
       color: Colors.primary,
     },
+    uuid: {
+      ...Fonts.textTiny,
+      ...Fonts.textItalic,
+      ...Fonts.textRight,
+    },
   })
 }

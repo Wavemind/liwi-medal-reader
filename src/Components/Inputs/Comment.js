@@ -64,15 +64,6 @@ const Comment = () => {
                   {t('answers.yes')}
                 </Text>
               }
-              rightComponent={
-                toggleValue ? (
-                  <Icon name="validate" />
-                ) : (
-                  <Text style={toggleComplaintCategory.rightText}>
-                    {t('answers.no')}
-                  </Text>
-                )
-              }
               trackBarStyle={toggleComplaintCategory.trackBarStyle}
               trackBar={{
                 activeBackgroundColor: Colors.primary,

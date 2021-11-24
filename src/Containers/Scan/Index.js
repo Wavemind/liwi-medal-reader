@@ -19,9 +19,7 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import HandleQr from '@/Store/Scan/HandleQr'
 import LoadPatient from '@/Store/Patient/Load'
-import { transformPatientValues } from '@/Utils/MedicalCase'
-import UpdateNodeFields from '@/Store/MedicalCase/UpdateNodeFields'
-import { navigateAndSimpleReset, navigate } from '@/Navigators/Root'
+import { formatDate } from '@/Utils/Date'
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
@@ -74,13 +72,14 @@ const IndexScanContainer = () => {
             }),
           )
           if (isFulfilled(medicalCaseResult)) {
-            navigate('Home', {
+            navigation.navigate('Home', {
               screen: 'StageWrapper',
               ...scanData.navigationParams,
             })
           }
         }
       } else {
+        // Load patient in store
         const loadPatientResult = await dispatch(
           LoadPatient.action({
             patientId: scanData.navigationParams.patientId,
@@ -88,22 +87,11 @@ const IndexScanContainer = () => {
         )
 
         if (isFulfilled(loadPatientResult)) {
-          const medicalCaseResult = await dispatch(
-            CreateMedicalCase.action({
-              algorithm,
-              patientId: scanData.navigationParams.patientId,
-            }),
-          )
-          if (isFulfilled(medicalCaseResult)) {
-            const patientValueNodes = transformPatientValues()
-            await dispatch(
-              UpdateNodeFields.action({ toUpdate: patientValueNodes }),
-            )
-            navigate('Home', {
-              screen: 'StageWrapper',
-              ...scanData.navigationParams,
-            })
-          }
+          navigation.navigate('PatientProfile', {
+            title: `${loadPatientResult.payload.first_name} ${
+              loadPatientResult.payload.last_name
+            } - ${formatDate(loadPatientResult.payload.birth_date)}`,
+          })
         }
       }
     }
@@ -144,6 +132,7 @@ const IndexScanContainer = () => {
       }),
     )
   }
+
   return (
     <QRCodeScanner
       showMarker
