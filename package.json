@@ -45,7 +45,7 @@
     "react-native-blob-util": "^0.13.11",
     "react-native-camera": "^3.43.9",
     "react-native-date-picker": "^4.1.1",
-    "react-native-device-info": "^8.1.2",
+    "react-native-device-info": "^8.4.5",
     "react-native-dotenv": "^3.2.0",
     "react-native-flash-message": "^0.1.23",
     "react-native-flipper": "^0.91.2",
