@@ -6,7 +6,7 @@ import { store } from '@/Store'
 export default () => {
   const state = store.getState()
   // Check auth status
-  const isAuthenticated = state.auth.item.hasOwnProperty('id')
+  const isAuthenticated = state.auth.item
   const clinicianSelected = state.healthFacility.clinician.hasOwnProperty('id')
   let route = {}
 

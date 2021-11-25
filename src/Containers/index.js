@@ -6,6 +6,7 @@ export { default as AssessmentArmControlContainer } from './ArmControl/Assessmen
 
 // Auth
 export { default as LoginAuthContainer } from './Auth/Login'
+export { default as SynchronizeAuthContainer } from './Auth/Synchronize'
 export { default as ClinicianSelectionAuthContainer } from './Auth/ClinicianSelection'
 export { default as PinAuthContainer } from './Auth/Pin'
 

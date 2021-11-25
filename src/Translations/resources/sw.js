@@ -41,15 +41,12 @@ export default {
   containers: {
     auth: {
       login: {
-        title: 'Connect to medAL-creator',
-        email: 'Email',
-        password: 'Password',
-        environment: 'Environment',
+        title: 'Connect to medAL-data',
+        server_address: 'Server address',
+        client_id: 'Device ID',
       },
-      synchronization: {
-        title: 'Synchronize with medAL-creator',
-        description:
-          'An administrator will assign this device to your health facility',
+      synchronize: {
+        title: 'Synchronize with medAL-data',
       },
       pin: {
         unlock: 'Enter the PIN to unlock the tablet',
@@ -144,6 +141,10 @@ export default {
         type_of_consultation: 'Type of consultation',
         management_consulting: 'Managements & Counselling',
         no_managements: 'No managements available',
+      },
+      summary_wrapper: {
+        patient_uuid: 'Patient UUID',
+        consultation_id: 'Consultation ID',
       },
     },
     scan: {

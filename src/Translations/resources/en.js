@@ -41,20 +41,12 @@ export default {
   containers: {
     auth: {
       login: {
-        title: 'Connect to medAL-creator',
-        email: 'Email',
-        password: 'Password',
-        environment: 'Environment',
-      },
-      data_login: {
         title: 'Connect to medAL-data',
         server_address: 'Server address',
-        client_id: 'Client ID',
+        client_id: 'Device ID',
       },
-      synchronization: {
-        title: 'Synchronize with medAL-creator',
-        description:
-          'An administrator will assign this device to your health facility',
+      synchronize: {
+        title: 'Synchronize with medAL-data',
       },
       pin: {
         unlock: 'Enter the PIN to unlock the tablet',

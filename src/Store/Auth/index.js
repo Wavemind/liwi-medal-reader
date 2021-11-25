@@ -3,7 +3,7 @@ import ChangeValue from './ChangeValue'
 import NewSession from './NewSession'
 
 const sliceInitialState = {
-  item: {},
+  item: false,
   medAlDataURL: null,
 }
 

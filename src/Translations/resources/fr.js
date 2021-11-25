@@ -41,15 +41,12 @@ export default {
   containers: {
     auth: {
       login: {
-        title: 'Connexion à medAL-creator',
-        email: 'E-mail',
-        password: 'Mot de passe',
-        environment: 'Environnement',
+        title: 'Connexion à medAL-data',
+        server_address: 'Adresse du serveur',
+        client_id: "ID de l'appareil",
       },
-      synchronization: {
-        title: 'Synchonisation avec medAL-creator',
-        description:
-          'Un·e administrateur·trice va associer cette tablette avec votre centre de santé',
+      synchronize: {
+        title: 'Synchonisation avec medAL-data',
       },
       pin: {
         unlock: "Entrer le NIP pour déverrouiller l'application",
