@@ -201,9 +201,6 @@ export default {
       health_facility: {
         title: 'Centre de santé',
       },
-      device: {
-        title: 'Appareil',
-      },
     },
   },
   components: {

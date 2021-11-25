@@ -27,7 +27,6 @@ const IndexSettingsContainer = () => {
   const { t, i18n } = useTranslation()
 
   // Get values from the store
-  const device = useSelector(state => state.device.item)
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithm = useSelector(state => state.algorithm.item)
   const darkMode = useSelector(state => state.theme.darkMode)
@@ -158,22 +157,6 @@ const IndexSettingsContainer = () => {
               <Text style={settings.text}>{t(`health_facility.${info}`)}</Text>
               <Text style={[settings.text, Fonts.textBold]}>
                 {healthFacility[info]}
-              </Text>
-            </View>
-          )
-        }
-      })}
-
-      <Text style={[settings.title]}>
-        {t('containers.settings.device.title')}
-      </Text>
-      {Object.keys(device).map(info => {
-        if (Config.DEVICE_INFO.includes(info)) {
-          return (
-            <View style={settings.item} key={info}>
-              <Text style={settings.text}>{t(`device.${info}`)}</Text>
-              <Text style={[settings.text, Fonts.textBold]}>
-                {device[info]}
               </Text>
             </View>
           )
