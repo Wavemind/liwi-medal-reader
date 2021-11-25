@@ -275,6 +275,7 @@ export default function () {
   }
 
   const _buildMedicalCase = remoteMedicalCase => {
+    // TODO NEED CHANGE
     const parsedJson = JSON.parse(remoteMedicalCase.json)
     const medicalCase = {
       id: remoteMedicalCase.id,
@@ -363,6 +364,7 @@ export default function () {
   }
 
   const _buildMedicalCaseLight = remoteMedicalCase => {
+    // TODO NEED CHANGE
     return {
       id: remoteMedicalCase.id,
       advancement: {

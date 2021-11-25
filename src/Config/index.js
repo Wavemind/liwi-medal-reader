@@ -26,7 +26,6 @@ export const Config = {
     uniqueTriageQuestion: 'unique_triage_question',
     referral: 'referral',
   },
-  DEVICE_INFO: ['mac_address', 'name', 'model', 'brand'],
   DAYS_IN_MONTH: 30.4166667,
   DATABASE_INTERFACE: {
     local: 'local',

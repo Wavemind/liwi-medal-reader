@@ -261,15 +261,6 @@ export default {
       file_not_supported: 'File not supported',
     },
   },
-  device: {
-    name: 'Name',
-    mac_address: 'MAC address',
-    model: 'Model',
-    brand: 'Brand',
-    os: 'OS',
-    os_version: 'OS Version',
-    name_not_available: 'no name available',
-  },
   database: {
     success: {
       message: 'Save',

@@ -11,6 +11,7 @@ export default class ActivityModel extends Model {
     medicalCases: { type: 'belongs_to', key: 'medical_case_id' },
   }
 
+  // TODO NEED CHANGE
   @field('step') step
   @field('clinician') clinician
   @field('nodes') nodes

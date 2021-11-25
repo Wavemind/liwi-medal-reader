@@ -59,6 +59,8 @@ export default function () {
     let result = await collection
       .query(Q.where('medical_case_id', medicalCaseId))
       .fetch()
+
+    // TODO NEED CHANGE
     return result.map(activity => ({
       id: activity._raw.id,
       step: activity.step,
@@ -223,6 +225,7 @@ export default function () {
     }
 
     await database.action(async () => {
+      // TODO NEED CHANGE
       activities.map(async activity => {
         await database.batch(
           database.get('activities').prepareCreate(record => {

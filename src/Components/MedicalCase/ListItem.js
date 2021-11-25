@@ -38,6 +38,7 @@ const ListItem = ({ item }) => {
   const [stages] = useState(getStages())
   const [locked, setLocked] = useState(isLocked(item))
 
+  // TODO: FIND ANOTHER SOLUTION
   useEffect(() => {
     setLocked(isLocked(item))
   }, [item.mac_address])
