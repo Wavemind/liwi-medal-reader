@@ -16,7 +16,7 @@ import api from '@/Services'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
-export default async ({ json_version }, { dispatch }) => {
+export default async ({ json_version = '' }, { dispatch }) => {
   const abort = axios.CancelToken.source()
 
   const timeout = setTimeout(() => {
@@ -28,8 +28,7 @@ export default async ({ json_version }, { dispatch }) => {
   let response
 
   await api
-    .get('algorithm', {
-      json_version,
+    .get(`algorithm?json_version=${json_version}`, {
       cancelToken: abort.token,
     })
     .then(result => {

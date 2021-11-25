@@ -94,7 +94,9 @@ export default async medicalCasesToSync => {
       return Promise.reject({ message: err })
     })
 
-  if (requestResult !== null && requestResult.data === 'Zip file received') {
+  const parsedResult = JSON.parse(requestResult.data)
+
+  if (requestResult !== null && parsedResult.status === 200) {
     await unlink(path)
 
     // Reset medicalCases to sync if request success
@@ -107,6 +109,6 @@ export default async medicalCasesToSync => {
       )
     })
   } else {
-    return Promise.reject({ message: requestResult.data })
+    return Promise.reject({ message: parsedResult.message })
   }
 }

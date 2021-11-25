@@ -15,9 +15,9 @@ import api from '@/Services'
 import { store } from '@/Store'
 
 export default async ({ emergencyContentVersion }) => {
-  const response = await api.get('emergency-content', {
-    emergency_content_version: emergencyContentVersion,
-  })
+  const response = await api.get(
+    `emergency-content?json_version=${emergencyContentVersion}`,
+  )
 
   // If emergency content doesn't change. Load current stored.
   if (response === undefined || response.status === 204) {
