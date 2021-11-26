@@ -43,6 +43,9 @@ const MainNavigator = ({ route, navigation }) => {
   const clinician = useSelector(state => state.healthFacility.clinician)
   const patient = useSelector(state => state.patient.item)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const medicalCaseClosedAt = useSelector(
+    state => state.medicalCase.item.closedAt,
+  )
   const medicalCaseCreatedAt = useSelector(
     state => state.medicalCase.item.createdAt,
   )
@@ -62,7 +65,7 @@ const MainNavigator = ({ route, navigation }) => {
     React.useCallback(() => {
       const onBackPress = async () => {
         // Opens the existMedicalCase modal and redirects to the Home screen
-        if (medicalCaseId) {
+        if (medicalCaseId && medicalCaseClosedAt === 0) {
           await dispatch(
             SetParams.action({
               type: 'exitMedicalCase',
