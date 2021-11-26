@@ -1,15 +1,15 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
-import Create from './Create'
-import SetAnswer from './SetAnswer'
-import ChangeAdvancement from './ChangeAdvancement'
-import UpdateNodeField from './UpdateNodeField'
-import UpdateNodeFields from './UpdateNodeFields'
-import UpdateComment from './UpdateComment'
+import Create from '@/Store/MedicalCase/Create'
+import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import ChangeAdvancement from '@/Store/MedicalCase/ChangeAdvancement'
+import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
+import ImportPatientValues from '@/Store/MedicalCase/ImportPatientValues'
+import UpdateComment from '@/Store/MedicalCase/UpdateComment'
 import UpdateField from '@/Store/MedicalCase/UpdateField'
-import Load from './Load'
-import HandleComplaintCategories from './HandleComplaintCategories'
-import HandleDateFormulas from './HandleDateFormulas'
-import Destroy from './Destroy'
+import Load from '@/Store/MedicalCase/Load'
+import HandleComplaintCategories from '@/Store/MedicalCase/HandleComplaintCategories'
+import HandleDateFormulas from '@/Store/MedicalCase/HandleDateFormulas'
+import Destroy from '@/Store/MedicalCase/Destroy'
 
 // Activities
 import AddStepActivities from './AddStepActivities'
@@ -62,7 +62,7 @@ export default buildSlice(
     HandleDateFormulas,
     SetAnswer,
     UpdateNodeField,
-    UpdateNodeFields,
+    ImportPatientValues,
     UpdateComment,
     UpdateField,
     Load,

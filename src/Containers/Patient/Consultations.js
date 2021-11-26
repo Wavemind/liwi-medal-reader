@@ -22,7 +22,7 @@ import {
 import { useTheme } from '@/Theme'
 import { transformPatientValues } from '@/Utils/MedicalCase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
-import UpdateNodeFields from '@/Store/MedicalCase/UpdateNodeFields'
+import ImportPatientValues from '@/Store/MedicalCase/ImportPatientValues'
 import LoadPatient from '@/Store/Patient/Load'
 
 const ConsultationPatientContainer = ({ navigation }) => {
@@ -90,7 +90,12 @@ const ConsultationPatientContainer = ({ navigation }) => {
     )
     if (isFulfilled(createMedicalCase)) {
       const patientValueNodes = transformPatientValues()
-      await dispatch(UpdateNodeFields.action({ toUpdate: patientValueNodes }))
+      await dispatch(
+        ImportPatientValues.action({
+          toUpdate: patientValueNodes,
+          currentNodes: algorithm.nodes,
+        }),
+      )
       navigation.navigate('StageWrapper')
     }
   }

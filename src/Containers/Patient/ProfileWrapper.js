@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React from 'react'
-import { View } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { Animated } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { useTranslation } from 'react-i18next'
 
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { fadeIn } from '@/Theme/Animation'
 import { PatientTabBar } from '@/Components'
 import {
   PersonalInfoPatientContainer,
@@ -17,13 +18,21 @@ import {
 } from '@/Containers'
 
 const ProfileWrapperPatientContainer = () => {
-  const { Layout } = useTheme()
-
+  const {
+    Layout,
+    Containers: { global },
+  } = useTheme()
   const { t } = useTranslation()
   const Tab = createMaterialTopTabNavigator()
 
+  const fadeAnim = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    fadeIn(fadeAnim)
+  }, [fadeAnim])
+
   return (
-    <View style={Layout.fill}>
+    <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
       <Tab.Navigator
         tabBarOptions={{ scrollEnabled: true }}
         tabBar={tabProps => <PatientTabBar {...tabProps} />}
@@ -43,7 +52,7 @@ const ProfileWrapperPatientContainer = () => {
           }}
         />
       </Tab.Navigator>
-    </View>
+    </Animated.View>
   )
 }
 

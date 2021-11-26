@@ -16,7 +16,6 @@ import { formatDate } from '@/Utils/Date'
 
 const PersonalInfoPatientContainer = () => {
   const {
-    Fonts,
     Gutters,
     Containers: { patientPersonalInfo },
   } = useTheme()
