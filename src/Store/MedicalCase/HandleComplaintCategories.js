@@ -29,7 +29,7 @@ export default {
       new Date(birthDate),
     )
 
-    if (days <= 60) {
+    if (days <= 59) {
       olderCC.forEach(ccId => {
         state.item.nodes[ccId].answer = getNoAnswer(nodes[ccId]).id
       })

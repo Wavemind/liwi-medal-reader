@@ -25,7 +25,7 @@ export default () => {
 
   const days = differenceInDays(new Date(createdAt), new Date(birthDate))
 
-  if (days <= 60) {
+  if (days <= 59) {
     return neonatCC.filter(
       nodeId =>
         nodeId !== neonatGeneralId &&

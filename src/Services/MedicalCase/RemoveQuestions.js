@@ -20,10 +20,10 @@ export default () => {
   // Remove / Keep neonat question based on patient age
   Object.keys(nodes).forEach(nodeId => {
     const mcNode = algorithm.nodes[nodeId]
-    // If patient is older than 60 days, we remove YI questions
+    // If patient is older than 59 days, we remove YI questions
     // Or if nodeId is a QuestionsSequence, we remove the question
     if (
-      (days > 60 &&
+      (days > 59 &&
         mcNode.conditioned_by_cc !== undefined &&
         mcNode.conditioned_by_cc.length > 0 &&
         mcNode.conditioned_by_cc.some(ccId => neonatCCs.includes(ccId))) ||
