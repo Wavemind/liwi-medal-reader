@@ -6,13 +6,14 @@ export default function (props) {
 
   return StyleSheet.create({
     formWrapper: {
-      ...Layout.center,
+      ...Layout.justifyContentCenter,
       ...Gutters.largeVMargin,
       height: hp(70),
     },
     input: {
       height: hp(7),
-      ...Gutters.regularTMargin,
+      ...Gutters.smallTMargin,
+      ...Gutters.largeBMargin,
       ...Gutters.regularVPadding,
       ...Gutters.regularHPadding,
       ...Fonts.textSmall,

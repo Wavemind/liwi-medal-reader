@@ -27,6 +27,8 @@ const LoginAuthContainer = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
+    Fonts,
+    Layout,
     Containers: { auth, authLogin, global },
   } = useTheme()
 
@@ -60,19 +62,23 @@ const LoginAuthContainer = () => {
         <Text style={auth.header}>{t('containers.auth.login.title')}</Text>
 
         <View style={authLogin.formWrapper}>
+          <Text style={Fonts.textRegular}>
+            {t('containers.auth.login.server_address')}
+          </Text>
           <TextInput
             style={authLogin.input}
             onChangeText={setServerAddress}
             value={serverAddress}
-            placeholder={t('containers.auth.login.server_address')}
             autoCapitalize="none"
           />
+          <Text style={Fonts.textRegular}>
+            {t('containers.auth.login.client_id')}
+          </Text>
           <TextInput
             style={authLogin.input}
             onChangeText={setClientId}
             value={clientId}
             keyboardType="decimal-pad"
-            placeholder={t('containers.auth.login.client_id')}
           />
           <View style={authLogin.buttonWrapper}>
             <SquareButton
