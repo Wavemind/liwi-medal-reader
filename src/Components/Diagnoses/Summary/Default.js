@@ -50,7 +50,7 @@ const Default = ({ drug, drugDose, diagnosisId }) => {
       <Text>{formulationLabel(drugDose)}</Text>
       <Text style={summary.drugText}>
         {t('formulations.drug.d')}:{' '}
-        {drugInstance.is_pre_referral
+        {drugInstance?.is_pre_referral
           ? `${t('formulations.drug.during')} ${t(
               'formulations.drug.pre_referral',
             )}`
