@@ -8,7 +8,7 @@ export default function (props) {
     formWrapper: {
       ...Layout.justifyContentCenter,
       ...Gutters.largeVMargin,
-      height: hp(70),
+      height: hp(65),
     },
     input: {
       height: hp(7),

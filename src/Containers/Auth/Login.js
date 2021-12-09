@@ -28,13 +28,12 @@ const LoginAuthContainer = () => {
   const { t } = useTranslation()
   const {
     Fonts,
-    Layout,
     Containers: { auth, authLogin, global },
   } = useTheme()
 
   // Local state definition
   const [serverAddress, setServerAddress] = useState('http://195.15.219.241')
-  const [clientId, setClientId] = useState('3')
+  const [clientId, setClientId] = useState('722')
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current

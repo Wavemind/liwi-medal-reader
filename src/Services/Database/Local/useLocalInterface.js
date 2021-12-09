@@ -66,7 +66,7 @@ export default function () {
       step: activity.step,
       clinician: activity.clinician,
       nodes: JSON.parse(activity.nodes),
-      mac_address: activity.mac_address,
+      device_id: activity.device_id,
       medical_case_id: activity.medical_case_id,
       fail_safe: activity.fail_safe,
     }))
@@ -225,7 +225,6 @@ export default function () {
     }
 
     await database.action(async () => {
-      // TODO NEED CHANGE
       activities.map(async activity => {
         await database.batch(
           database.get('activities').prepareCreate(record => {
@@ -233,7 +232,7 @@ export default function () {
             record.step = activity.step
             record.clinician = activity.clinician
             record.nodes = JSON.stringify(activity.nodes)
-            record.mac_address = activity.mac_address
+            record.device_id = activity.device_id
             record.medical_case_id = medicalCaseId
             record.fail_safe = failSafe
           }),

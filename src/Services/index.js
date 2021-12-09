@@ -28,8 +28,8 @@ const instance = axios.create({
  */
 const createConfig = async () => {
   const state = store.getState()
-  const { serverAddress } = state.auth
-  const { authEndpoint, tokenEndpoint } = Config.AUTHO
+  const serverAddress = state.auth.medAlDataURL
+  const { authEndpoint, tokenEndpoint } = Config.OAUTH
   const clientId = await Keychain.getInternetCredentials('client_id')
 
   return {
@@ -59,10 +59,66 @@ export const handleError = ({ message, data, status }) => {
 instance.interceptors.request.use(
   async function (config) {
     const state = store.getState()
-    const bearToken = await Keychain.getInternetCredentials('bear_token')
-
+    const bearToken = await Keychain.getInternetCredentials('accessToken')
+    const accessTokenExpirationDate = await Keychain.getInternetCredentials(
+      'accessTokenExpirationDate',
+    )
     config.baseURL = state.auth.medAlDataURL + '/api/v1'
-    config.headers.Authorization = `Bearer ${bearToken.password}`
+
+    // Test if token is valid and don't need to be refreshed
+    if (
+      accessTokenExpirationDate.password &&
+      new Date(accessTokenExpirationDate.password).getTime() >
+        new Date().getTime()
+    ) {
+      config.headers.Authorization = `Bearer ${bearToken.password}`
+    } else {
+      // Token expired
+      const refreshToken = await Keychain.getInternetCredentials('refreshToken')
+      const newConfig = await createConfig()
+
+      try {
+        // Get new token with refresh token
+        const response = await refresh(newConfig, {
+          refreshToken: refreshToken.password,
+        })
+
+        // Set new access token, refresh token and token expiration date
+        await Keychain.setInternetCredentials(
+          'accessToken',
+          'accessToken',
+          response.accessToken,
+        )
+        await Keychain.setInternetCredentials(
+          'accessTokenExpirationDate',
+          'accessTokenExpirationDate',
+          response.accessTokenExpirationDate,
+        )
+        await Keychain.setInternetCredentials(
+          'refreshToken',
+          'refreshToken',
+          response.refreshToken,
+        )
+
+        // Reset access token and continue with requested request
+        config.headers.Authorization = `Bearer ${response.accessToken}`
+      } catch (error) {
+        // error while trying to refresh access token, so disconnect
+        showMessage({
+          message: i18n.t('errors.offline.title', {
+            serverName: 'MedAL-Data',
+          }),
+          description: i18n.t('errors.offline.description'),
+          type: 'danger',
+          duration: 5000,
+        })
+
+        await Keychain.resetInternetCredentials('accessToken')
+        await Keychain.resetInternetCredentials('accessTokenExpirationDate')
+        await Keychain.resetInternetCredentials('refreshToken')
+        navigate('Auth', { screen: 'Login' })
+      }
+    }
     return config
   },
   function (error) {
@@ -80,64 +136,14 @@ instance.interceptors.response.use(
   },
   async function (error) {
     if (error.response) {
-      const originalRequest = error.config
-
-      // The request was made and the server responded with a 403 status code
-      // which means access_token is expired, so we try to get a new access_token
-      // from the refresh_token and retry request
-      if (error.response.status === 403 && !originalRequest._retry) {
-        originalRequest._retry = true
-        const refreshToken = await Keychain.getInternetCredentials(
-          'refresh_token',
-        )
-
-        const config = createConfig()
-
-        // Get new token with refresh token
-        const response = await refresh(config, {
-          refreshToken: refreshToken.password,
-        })
-
-        // Set new bear token and refresh token
-        await Keychain.setInternetCredentials(
-          'bear_token',
-          'bear_token',
-          response.accessToken,
-        )
-
-        await Keychain.setInternetCredentials(
-          'refresh_token',
-          'refresh_token',
-          response.refreshToken,
-        )
-
-        originalRequest.headers.Authorization = `Bearer ${response.accessToken}`
-        return instance(originalRequest)
-      } else {
-        // error while trying to refresh access token, so disconnect
-        showMessage({
-          message: i18n.t('errors.offline.title', {
-            serverName: 'MedAL-Data',
-          }),
-          description: i18n.t('errors.offline.description'),
-          type: 'danger',
-          duration: 5000,
-        })
-
-        await Keychain.resetInternetCredentials('bear_token')
-        await Keychain.resetInternetCredentials('refresh_token')
-        navigate('Auth', { screen: 'Login' })
-      }
-
       // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'
-
       // Response given by the application
-      if (error.response.data.errors) {
-        if (Array.isArray(error.response.data.errors)) {
-          errorMessage = error.response.data.errors[0]
+      if (error.response.data.message) {
+        if (Array.isArray(error.response.data.message)) {
+          errorMessage = error.response.data.message[0]
         } else {
-          errorMessage = error.response.data.errors
+          errorMessage = error.response.data.message
         }
       }
 
@@ -166,7 +172,6 @@ instance.interceptors.response.use(
       })
     } else {
       // Something happened in setting up the request that triggered an Error
-
       showMessage({
         message: i18n.t('errors.unknown.title'),
         description: i18n.t('errors.unknown.description'),

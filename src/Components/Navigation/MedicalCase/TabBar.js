@@ -27,6 +27,7 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
   const stages = getStages()
   const clinician = useSelector(state => state.healthFacility.clinician)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const deviceId = useSelector(state => state.auth.item.deviceId)
   const medicalCaseFailSafe = useSelector(
     state => state.medicalCase.item.fail_safe,
   )
@@ -43,6 +44,7 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
       step: step.label,
       clinician: `${clinician.first_name} ${clinician.last_name}`,
       medical_case_id: medicalCaseId,
+      device_id: deviceId,
       fail_safe: medicalCaseFailSafe,
       nodes: [],
     }

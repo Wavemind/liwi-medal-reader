@@ -44,6 +44,7 @@ instance.interceptors.request.use(
       Accept: 'application/json',
     }
     config.headers.clinician = `${clinician.first_name} ${clinician.last_name}`
+    config.headers.deviceid = parseInt(state.auth.item.deviceId, 10)
 
     return config
   },

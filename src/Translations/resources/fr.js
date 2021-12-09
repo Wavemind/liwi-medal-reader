@@ -295,6 +295,10 @@ export default {
       title: 'Erreur de communication avec {{ serverName }}',
       description: 'Serveur introuvable',
     },
+    unknown: {
+      title: 'Erreur de communication',
+      description: 'Un problème inconnu est survenu',
+    },
     timeout: 'Connexion au serveur interrompue',
   },
   health_facility: {

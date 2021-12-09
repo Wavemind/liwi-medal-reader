@@ -26,6 +26,7 @@ const RegistrationMedicalCaseContainer = () => {
 
   const [questions, setQuestions] = useState(RegistrationQuestionsService())
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)
+  const mc = useSelector(state => state.medicalCase)
 
   // Update questions list only if question array change
   useEffect(() => {

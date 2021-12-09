@@ -38,10 +38,9 @@ const ListItem = ({ item }) => {
   const [stages] = useState(getStages())
   const [locked, setLocked] = useState(isLocked(item))
 
-  // TODO: FIND ANOTHER SOLUTION
   useEffect(() => {
     setLocked(isLocked(item))
-  }, [item.mac_address])
+  }, [item.device_id])
 
   /**
    * Will load the Medical case in the store then navigate to the Medical Case

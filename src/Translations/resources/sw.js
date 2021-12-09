@@ -284,6 +284,10 @@ export default {
       title: 'Communication error with {{ serverName }}',
       description: 'Server not accessible',
     },
+    unknown: {
+      title: 'Communication error',
+      description: 'An unknown error occurred',
+    },
     timeout: 'Server connection aborted',
   },
   health_facility: {

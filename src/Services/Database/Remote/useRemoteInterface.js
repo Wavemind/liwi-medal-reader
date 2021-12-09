@@ -287,7 +287,7 @@ export default function () {
       json: null,
       json_version: remoteMedicalCase.json_version,
       clinician: remoteMedicalCase.clinician,
-      mac_address: remoteMedicalCase.mac_address,
+      device_id: remoteMedicalCase.device_id,
       advancement: {
         stage: remoteMedicalCase.advancement.stage,
         step: remoteMedicalCase.advancement.step,
@@ -364,7 +364,6 @@ export default function () {
   }
 
   const _buildMedicalCaseLight = remoteMedicalCase => {
-    // TODO NEED CHANGE
     return {
       id: remoteMedicalCase.id,
       advancement: {
@@ -376,7 +375,7 @@ export default function () {
       createdAt: remoteMedicalCase.created_at,
       updatedAt: remoteMedicalCase.updated_at,
       clinician: remoteMedicalCase.clinician,
-      mac_address: remoteMedicalCase.mac_address,
+      device_id: remoteMedicalCase.device_id,
       closedAt: remoteMedicalCase.closedAt,
       version_id: remoteMedicalCase.version_id,
       patient: {

@@ -80,6 +80,5 @@ export default async ({ json_version = '' }, { dispatch }) => {
   }
 
   await writeFile(algorithmTargetPath, JSON.stringify(algorithm))
-
   return algorithm
 }

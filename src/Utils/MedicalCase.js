@@ -511,6 +511,6 @@ export const isLocked = medicalCase => {
     isConnected &&
     architecture === 'client_server' &&
     medicalCase.closedAt === 0 &&
-    medicalCase.mac_address !== null
+    medicalCase.device_id !== null
   )
 }

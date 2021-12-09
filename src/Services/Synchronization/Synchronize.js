@@ -75,7 +75,7 @@ export default async medicalCasesToSync => {
   // Upload process
   const requestResult = await ReactNativeBlobUtil.fetch(
     'POST',
-    `${mainDataUrl}/api/sync_medical_cases`,
+    `${mainDataUrl}/api/v1/sync_medical_cases`,
     {
       'Content-Type': 'multipart/form-data',
     },

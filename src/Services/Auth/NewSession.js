@@ -27,7 +27,6 @@ export default async ({ serverAddress, clientId }, { dispatch }) => {
 
   const response = await authorize(config)
 
-  // Store
   await dispatch(
     ChangeValueAuthSystem.action({ key: 'medAlDataURL', value: serverAddress }),
   )
@@ -37,15 +36,20 @@ export default async ({ serverAddress, clientId }, { dispatch }) => {
 
   await Keychain.setInternetCredentials('client_id', 'client_id', clientId)
   await Keychain.setInternetCredentials(
-    'bear_token',
-    'bear_token',
+    'accessToken',
+    'accessToken',
     response.accessToken,
   )
   await Keychain.setInternetCredentials(
-    'refresh_token',
-    'refresh_token',
+    'accessTokenExpirationDate',
+    'accessTokenExpirationDate',
+    response.accessTokenExpirationDate,
+  )
+  await Keychain.setInternetCredentials(
+    'refreshToken',
+    'refreshToken',
     response.refreshToken,
   )
 
-  return true
+  return { deviceId: clientId }
 }
