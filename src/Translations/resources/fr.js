@@ -201,6 +201,9 @@ export default {
       health_facility: {
         title: 'Centre de santé',
       },
+      device: {
+        title: 'Appareil',
+      },
     },
   },
   components: {
@@ -264,12 +267,7 @@ export default {
   },
   device: {
     name: 'Nom',
-    mac_address: 'Adresse MAC',
-    model: 'Modèle',
-    brand: 'Marque',
-    os: "Système d'exploitation (OS)",
-    os_version: "Version d'OS",
-    name_not_available: 'Pas de nom disponible',
+    device_id: 'ID',
   },
   database: {
     success: {

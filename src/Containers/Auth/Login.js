@@ -22,6 +22,9 @@ import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
 import { navigate } from '@/Navigators/Root'
 import NewSessionAuth from '@/Store/Auth/NewSession'
+import DestroyAlgorithm from '@/Store/Algorithm/Destroy'
+import DestroyHealthFacility from '@/Store/HealthFacility/Destroy'
+import DestroyAuth from '@/Store/Auth/Destroy'
 
 const LoginAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -38,6 +41,13 @@ const LoginAuthContainer = () => {
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    // Remove element in persist storage if user is disconnected
+    dispatch(DestroyAlgorithm.action())
+    dispatch(DestroyHealthFacility.action())
+    dispatch(DestroyAuth.action())
+  }, [])
 
   useEffect(() => {
     fadeIn(fadeAnim)

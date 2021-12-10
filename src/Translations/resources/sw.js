@@ -202,6 +202,9 @@ export default {
         title: 'Health facility',
       },
     },
+    device: {
+      title: 'Device',
+    },
   },
   components: {
     consent: {
@@ -260,6 +263,10 @@ export default {
     media: {
       file_not_supported: 'File not supported',
     },
+  },
+  device: {
+    name: 'Name',
+    device_id: 'ID',
   },
   database: {
     success: {

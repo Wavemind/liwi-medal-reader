@@ -29,7 +29,6 @@ export default () => {
         } else {
           route = 'Pin'
         }
-
         navigateAndReset([{ name: 'Auth', params: { screen: route } }])
       } else if (
         Object.values(res).some(

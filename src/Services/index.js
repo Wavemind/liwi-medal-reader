@@ -10,7 +10,7 @@ import { refresh } from 'react-native-app-auth'
  * The internal imports
  */
 import { Config } from '@/Config'
-import { navigate } from '@/Navigators/Root'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 import i18n from '@/Translations/index'
 import { store } from '@/Store'
 
@@ -103,7 +103,7 @@ instance.interceptors.request.use(
         // Reset access token and continue with requested request
         config.headers.Authorization = `Bearer ${response.accessToken}`
       } catch (error) {
-        // error while trying to refresh access token, so disconnect
+        // Error while trying to refresh access token, so disconnect
         showMessage({
           message: i18n.t('errors.offline.title', {
             serverName: 'MedAL-Data',
@@ -113,10 +113,13 @@ instance.interceptors.request.use(
           duration: 5000,
         })
 
+        // Remove tokens
         await Keychain.resetInternetCredentials('accessToken')
         await Keychain.resetInternetCredentials('accessTokenExpirationDate')
         await Keychain.resetInternetCredentials('refreshToken')
-        navigate('Auth', { screen: 'Login' })
+
+        // Ask user to enrol again
+        navigateAndSimpleReset('Auth', { screen: 'Login' })
       }
     }
     return config

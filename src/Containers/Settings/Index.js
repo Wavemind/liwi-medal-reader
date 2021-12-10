@@ -16,6 +16,7 @@ import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
 import ChangeLanguage from '@/Store/HealthFacility/ChangeLanguage'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
+import { formatDateTime } from '@/Utils/Date'
 
 const IndexSettingsContainer = () => {
   // Theme and style elements deconstruction
@@ -30,6 +31,7 @@ const IndexSettingsContainer = () => {
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithm = useSelector(state => state.algorithm.item)
   const darkMode = useSelector(state => state.theme.darkMode)
+  const auth = useSelector(state => state.auth)
 
   // Local state definition
   const [algorithmLanguage, setAlgorithmLanguage] = useState(
@@ -140,7 +142,9 @@ const IndexSettingsContainer = () => {
             <View style={settings.item} key={info}>
               <Text style={settings.text}>{t(`algorithm.${info}`)}</Text>
               <Text style={[settings.text, Fonts.textBold]}>
-                {algorithm[info]}
+                {info === 'updated_at'
+                  ? formatDateTime(new Date(algorithm[info]))
+                  : algorithm[info]}
               </Text>
             </View>
           )
@@ -156,12 +160,24 @@ const IndexSettingsContainer = () => {
             <View style={settings.item} key={info}>
               <Text style={settings.text}>{t(`health_facility.${info}`)}</Text>
               <Text style={[settings.text, Fonts.textBold]}>
-                {healthFacility[info]}
+                {info === 'main_data_ip'
+                  ? auth.medAlDataURL
+                  : healthFacility[info]}
               </Text>
             </View>
           )
         }
       })}
+
+      <Text style={[settings.title]}>
+        {t('containers.settings.device.title')}
+      </Text>
+      <View style={settings.item} key="device_id">
+        <Text style={settings.text}>{t('device.device_id')}</Text>
+        <Text style={[settings.text, Fonts.textBold]}>
+          {auth.item.deviceId}
+        </Text>
+      </View>
     </Animated.ScrollView>
   )
 }

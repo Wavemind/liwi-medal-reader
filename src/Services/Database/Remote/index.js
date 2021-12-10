@@ -46,6 +46,7 @@ instance.interceptors.request.use(
     config.headers.clinician = `${clinician.first_name} ${clinician.last_name}`
     config.headers.deviceid = parseInt(state.auth.item.deviceId, 10)
 
+    console.log(config)
     return config
   },
   function (error) {
