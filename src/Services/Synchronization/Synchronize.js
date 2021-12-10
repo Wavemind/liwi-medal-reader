@@ -78,6 +78,7 @@ export default async medicalCasesToSync => {
     `${mainDataUrl}/api/v1/sync_medical_cases`,
     {
       'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
     },
     [
       {
