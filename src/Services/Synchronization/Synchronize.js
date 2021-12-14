@@ -15,6 +15,7 @@ import { zip } from 'react-native-zip-archive'
  */
 import useDatabase from '../Database/useDatabase'
 import { store } from '@/Store'
+import { RefreshTokenAuthService } from '@/Services/Auth'
 import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
 
 /**
@@ -72,6 +73,8 @@ export default async medicalCasesToSync => {
     }),
   )
 
+  const bearToken = await RefreshTokenAuthService()
+
   // Upload process
   const requestResult = await ReactNativeBlobUtil.fetch(
     'POST',
@@ -79,6 +82,7 @@ export default async medicalCasesToSync => {
     {
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json',
+      Authorization: bearToken,
     },
     [
       {
@@ -95,9 +99,7 @@ export default async medicalCasesToSync => {
       return Promise.reject({ message: err })
     })
 
-  const parsedResult = JSON.parse(requestResult.data)
-
-  if (requestResult !== null && parsedResult.status === 200) {
+  if (requestResult !== null && requestResult.respInfo.status === 200) {
     await unlink(path)
 
     // Reset medicalCases to sync if request success
@@ -110,6 +112,6 @@ export default async medicalCasesToSync => {
       )
     })
   } else {
-    return Promise.reject({ message: parsedResult.message })
+    return Promise.reject({ message: requestResult.data })
   }
 }

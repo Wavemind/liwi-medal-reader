@@ -15,7 +15,6 @@ export default async () => {
   const medicalCases = await getMedicalCases()
 
   const algorithm = store.getState().algorithm.item
-
   return medicalCases.filter(
     medicalCase =>
       medicalCase.synchronizedAt === 0 &&
