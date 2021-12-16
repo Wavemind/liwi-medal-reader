@@ -22,10 +22,7 @@ export default schemaMigrations({
       steps: [
         addColumns({
           table: 'medical_cases',
-          columns: [
-            { name: 'forceClosed', type: 'boolean' },
-            { name: 'closed_at', type: 'number' },
-          ],
+          columns: [{ name: 'forceClosed', type: 'boolean' }],
         }),
       ],
     },
