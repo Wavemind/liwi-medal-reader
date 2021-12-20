@@ -506,7 +506,6 @@ export const isLocked = medicalCase => {
   const isConnected = state.network.isConnected
   const architecture = state.healthFacility.item.architecture
 
-  // TODO NEED CHANGE
   return (
     isConnected &&
     architecture === 'client_server' &&

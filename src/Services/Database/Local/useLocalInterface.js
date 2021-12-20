@@ -60,7 +60,6 @@ export default function () {
       .query(Q.where('medical_case_id', medicalCaseId))
       .fetch()
 
-    // TODO NEED CHANGE
     return result.map(activity => ({
       id: activity._raw.id,
       step: activity.step,
