@@ -81,7 +81,7 @@ const SearchAdditionalMedicalCaseContainer = ({
           const isNeoNat = nodes[item.cc].is_neonat
           return (
             !proposed.includes(item.id) &&
-            ((days <= 60 && isNeoNat) || (days > 60 && !isNeoNat))
+            ((days <= 59 && isNeoNat) || (days > 59 && !isNeoNat))
           )
         })
         .sort((a, b) => {

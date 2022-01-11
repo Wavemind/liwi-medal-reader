@@ -15,6 +15,7 @@ import { zip } from 'react-native-zip-archive'
  */
 import useDatabase from '../Database/useDatabase'
 import { store } from '@/Store'
+import { RefreshTokenAuthService } from '@/Services/Auth'
 import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
 
 /**
@@ -29,7 +30,7 @@ const normalizeFilePath = path => {
 export default async medicalCasesToSync => {
   const { getActivities, findBy } = useDatabase()
   const state = store.getState()
-  const mainDataUrl = state.healthFacility.item.main_data_ip
+  const mainDataUrl = state.auth.medAlDataURL
 
   const folder = `${DocumentDirectoryPath}/medical_cases`
   const targetPath = `${folder}.zip`
@@ -72,12 +73,16 @@ export default async medicalCasesToSync => {
     }),
   )
 
+  const bearToken = await RefreshTokenAuthService()
+
   // Upload process
   const requestResult = await ReactNativeBlobUtil.fetch(
     'POST',
-    `${mainDataUrl}/api/sync_medical_cases`,
+    `${mainDataUrl}/api/v1/sync_medical_cases`,
     {
       'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      Authorization: bearToken,
     },
     [
       {
@@ -94,7 +99,7 @@ export default async medicalCasesToSync => {
       return Promise.reject({ message: err })
     })
 
-  if (requestResult !== null && requestResult.data === 'Zip file received') {
+  if (requestResult !== null && requestResult.respInfo.status === 200) {
     await unlink(path)
 
     // Reset medicalCases to sync if request success

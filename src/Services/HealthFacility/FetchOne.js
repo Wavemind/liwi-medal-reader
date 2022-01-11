@@ -1,8 +1,6 @@
 /**
  * The external imports
  */
-import { getMacAddress } from 'react-native-device-info'
-import * as Keychain from 'react-native-keychain'
 import axios from 'axios'
 
 /**
@@ -13,7 +11,6 @@ import { Config } from '@/Config'
 import { store } from '@/Store'
 
 export default async ({}) => {
-  const macAddress = await getMacAddress()
   const abort = axios.CancelToken.source()
 
   const currentHealthFacility = store.getState().healthFacility.item
@@ -25,18 +22,11 @@ export default async ({}) => {
 
   let response
 
-  await api.get(`devices/${macAddress}`).then(result => {
+  await api.get('health-facility-info').then(result => {
     // Clear The Timeout
     clearTimeout(timeout)
     response = result
   })
-
-  // Store health facility token
-  await Keychain.setInternetCredentials(
-    'health_facility_token',
-    'health_facility_token',
-    response.data.token,
-  )
 
   // Early return if health facility change
   if (currentHealthFacility.id !== response.data.id) {

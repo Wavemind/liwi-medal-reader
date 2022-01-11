@@ -116,7 +116,7 @@ const IndexHomeContainer = ({ navigation }) => {
         patientId: null,
         newMedicalCase: true,
         facility: {
-          study_id: String(algorithm.study.id.study_id),
+          study_id: String(algorithm.study.id),
           group_id: String(healthFacility.id),
           uid: uuid.v4(),
         },

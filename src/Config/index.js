@@ -26,7 +26,6 @@ export const Config = {
     uniqueTriageQuestion: 'unique_triage_question',
     referral: 'referral',
   },
-  DEVICE_INFO: ['mac_address', 'name', 'model', 'brand'],
   DAYS_IN_MONTH: 30.4166667,
   DATABASE_INTERFACE: {
     local: 'local',
@@ -81,9 +80,6 @@ export const Config = {
   PING_INTERVAL: 5000,
   TIMEOUT: 3500,
   TIMEOUT_AXIOS: 3000,
-  URL_PRODUCTION_API: 'https://medalc.unisante.ch/api/v1',
-  URL_STAGING_API: 'https://liwi.wavelab.top/api/v1/',
-  URL_TEST_API: 'https://liwi-test.wavelab.top/api/v1/',
   MOVIES_EXTENSION: ['mp4', 'mov', 'avi'],
   AUDIOS_EXTENSION: ['mp3', 'ogg'],
   PICTURES_EXTENSION: ['jpg', 'jpeg', 'gif', 'png', 'tiff'],
@@ -138,5 +134,9 @@ export const Config = {
     physicalExam: 'physical_exam',
     referral: 'referral_step',
     registration: 'registration_step',
+  },
+  OAUTH: {
+    authEndpoint: '/oauth/authorize',
+    tokenEndpoint: '/oauth/token',
   },
 }

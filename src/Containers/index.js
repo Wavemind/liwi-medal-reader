@@ -5,10 +5,10 @@ export { default as ReferralArmControlContainer } from './ArmControl/Diagnoses/R
 export { default as AssessmentArmControlContainer } from './ArmControl/Assessment'
 
 // Auth
-export { default as ClinicianSelectionAuthContainer } from './Auth/ClinicianSelection'
 export { default as LoginAuthContainer } from './Auth/Login'
+export { default as SynchronizeAuthContainer } from './Auth/Synchronize'
+export { default as ClinicianSelectionAuthContainer } from './Auth/ClinicianSelection'
 export { default as PinAuthContainer } from './Auth/Pin'
-export { default as SynchronizationAuthContainer } from './Auth/Synchronization'
 
 // Consent
 export { default as CameraConsentContainer } from './Consent/Camera'

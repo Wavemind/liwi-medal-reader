@@ -9,7 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack'
  */
 import {
   LoginAuthContainer,
-  SynchronizationAuthContainer,
+  SynchronizeAuthContainer,
   PinAuthContainer,
   ClinicianSelectionAuthContainer,
 } from '@/Containers'
@@ -20,10 +20,7 @@ const AuthNavigator = () => {
   return (
     <Stack.Navigator headerMode="none" mode="modal">
       <Stack.Screen name="Login" component={LoginAuthContainer} />
-      <Stack.Screen
-        name="Synchronization"
-        component={SynchronizationAuthContainer}
-      />
+      <Stack.Screen name="Synchronize" component={SynchronizeAuthContainer} />
       <Stack.Screen name="Pin" component={PinAuthContainer} />
       <Stack.Screen
         name="ClinicianSelection"

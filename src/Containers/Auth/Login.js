@@ -6,144 +6,99 @@ import {
   View,
   Text,
   Animated,
-  TextInput,
   KeyboardAvoidingView,
-  Keyboard,
+  TextInput,
   SafeAreaView,
 } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
  * The internal imports
  */
-import {
-  SquareButton,
-  SquareSelect,
-  ToggleSwitchDarkMode,
-  Loader,
-} from '@/Components'
+import { ToggleSwitchDarkMode, SquareButton } from '@/Components'
 import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
-import { Config } from '@/Config'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
-import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
-import NewSessionUser from '@/Store/User/NewSession'
-import DeviceRegister from '@/Store/Device/Register'
-import { DEV_EMAIL } from 'env'
+import { navigate } from '@/Navigators/Root'
+import NewSessionAuth from '@/Store/Auth/NewSession'
+import DestroyAlgorithm from '@/Store/Algorithm/Destroy'
+import DestroyHealthFacility from '@/Store/HealthFacility/Destroy'
+import DestroyAuth from '@/Store/Auth/Destroy'
 
 const LoginAuthContainer = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
+    Fonts,
     Containers: { auth, authLogin, global },
   } = useTheme()
 
   // Local state definition
-  const [email, setEmail] = useState(__DEV__ ? DEV_EMAIL : '')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-
-  // Get values from the store
-  const newSessionError = useSelector(state => state.user.newSession.error)
-  const registerError = useSelector(state => state.device.register.error)
-  const environment = useSelector(state => state.system.environment)
+  const [serverAddress, setServerAddress] = useState(
+    __DEV__ ? 'http://195.15.219.241' : '',
+  )
+  const [clientId, setClientId] = useState(__DEV__ ? '1333' : '')
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
-
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    // Remove element in persist storage if user is disconnected
+    dispatch(DestroyAlgorithm.action())
+    dispatch(DestroyHealthFacility.action())
+    dispatch(DestroyAuth.action())
+  }, [])
 
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
   /**
-   * Dispatches the login credentials to check validity and register the device
+   * PKCE process to obtain accessToken, accessTokenExpirationDate and refreshToken
    */
-  const handleLogin = async () => {
-    Keyboard.dismiss()
-    setLoading(true)
-
-    // Dispatches the user information to open a new session
-    const newSessionUser = await dispatch(
-      NewSessionUser.action({ email, password }),
+  const processAuth = async () => {
+    const newSessionResponse = await dispatch(
+      NewSessionAuth.action({ serverAddress, clientId }),
     )
-
-    if (isFulfilled(newSessionUser)) {
-      // Register device in medAl-creator
-      const deviceRegister = await dispatch(DeviceRegister.action({}))
-
-      if (isFulfilled(deviceRegister)) {
-        // Navigate and reset to Synchronization container
-        setLoading(false)
-        navigateAndSimpleReset('Synchronization')
-      } else {
-        setLoading(false)
-      }
-    } else {
-      setLoading(false)
+    if (isFulfilled(newSessionResponse)) {
+      navigate('Synchronize')
     }
-  }
-
-  /**
-   * Dispatches new environment to store
-   * @param newEnvironment
-   */
-  const updateEnvironment = newEnvironment => {
-    dispatch(ChangeEnvironment.action({ newEnvironment }))
   }
 
   return (
     <KeyboardAvoidingView behavior="height" style={global.wrapper}>
       <Animated.View style={global.animation(fadeAnim)}>
         <Text style={auth.header}>{t('containers.auth.login.title')}</Text>
-        <View style={authLogin.errorMessageWrapper}>
-          {newSessionError && (
-            <Text style={auth.errorMessage}>{newSessionError.message}</Text>
-          )}
-          {registerError && (
-            <Text style={auth.errorMessage}>{registerError.message}</Text>
-          )}
-        </View>
+
         <View style={authLogin.formWrapper}>
+          <Text style={Fonts.textRegular}>
+            {t('containers.auth.login.server_address')}
+          </Text>
           <TextInput
             style={authLogin.input}
-            onChangeText={setEmail}
-            value={email}
-            autoCompleteType="email"
-            placeholder={t('containers.auth.login.email')}
-            keyboardType="email-address"
+            onChangeText={setServerAddress}
+            value={serverAddress}
             autoCapitalize="none"
           />
+          <Text style={Fonts.textRegular}>
+            {t('containers.auth.login.client_id')}
+          </Text>
           <TextInput
             style={authLogin.input}
-            onChangeText={setPassword}
-            value={password}
-            secureTextEntry
-            autoCompleteType="password"
-            placeholder={t('containers.auth.login.password')}
-            autoCapitalize="none"
-          />
-          <SquareSelect
-            label={t('containers.auth.login.environment')}
-            items={Config.ENVIRONMENTS}
-            prompt={t('containers.auth.login.environment')}
-            handleOnSelect={updateEnvironment}
-            value={environment}
+            onChangeText={setClientId}
+            value={clientId}
+            keyboardType="decimal-pad"
           />
           <View style={authLogin.buttonWrapper}>
             <SquareButton
               label={t('actions.login')}
               filled
-              onPress={() => handleLogin()}
-              disabled={loading}
+              onPress={processAuth}
             />
           </View>
         </View>
-
-        <View style={authLogin.loaderContainer}>{loading && <Loader />}</View>
 
         <SafeAreaView>
           <View style={auth.themeToggleWrapper}>

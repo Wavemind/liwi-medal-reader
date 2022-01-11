@@ -41,15 +41,12 @@ export default {
   containers: {
     auth: {
       login: {
-        title: 'Connexion à medAL-creator',
-        email: 'E-mail',
-        password: 'Mot de passe',
-        environment: 'Environnement',
+        title: 'Connexion à medAL-data',
+        server_address: 'Adresse du serveur',
+        client_id: "ID de l'appareil",
       },
-      synchronization: {
-        title: 'Synchonisation avec medAL-creator',
-        description:
-          'Un·e administrateur·trice va associer cette tablette avec votre centre de santé',
+      synchronize: {
+        title: 'Synchonisation avec medAL-data',
       },
       pin: {
         unlock: "Entrer le NIP pour déverrouiller l'application",
@@ -270,12 +267,7 @@ export default {
   },
   device: {
     name: 'Nom',
-    mac_address: 'Adresse MAC',
-    model: 'Modèle',
-    brand: 'Marque',
-    os: "Système d'exploitation (OS)",
-    os_version: "Version d'OS",
-    name_not_available: 'Pas de nom disponible',
+    device_id: 'ID',
   },
   database: {
     success: {
@@ -300,6 +292,10 @@ export default {
     offline: {
       title: 'Erreur de communication avec {{ serverName }}',
       description: 'Serveur introuvable',
+    },
+    unknown: {
+      title: 'Erreur de communication',
+      description: 'Un problème inconnu est survenu',
     },
     timeout: 'Connexion au serveur interrompue',
   },

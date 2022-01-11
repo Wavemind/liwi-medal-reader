@@ -30,8 +30,6 @@ import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertMedicalCase from '@/Store/DatabaseMedicalCase/Insert'
 import ResetAssessments from '@/Store/MedicalCase/ArmControl/ResetAssessments'
-import SetParams from '@/Store/Modal/SetParams'
-import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction

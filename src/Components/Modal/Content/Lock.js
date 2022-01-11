@@ -29,7 +29,7 @@ const Lock = () => {
   const medicalCase = useSelector(state => state.medicalCase.item)
 
   /**
-   * Sets the mac_address and clinician to the current values and navigates to the medicalCase
+   * Sets the clinician to the current values and navigates to the medicalCase
    */
   const handleForceUnlock = async () => {
     await dispatch(LockMedicalCase.action({ medicalCaseId: medicalCase.id }))

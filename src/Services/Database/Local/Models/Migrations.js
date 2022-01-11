@@ -8,14 +8,21 @@ export default schemaMigrations({
   migrations: [
     {
       // ⚠️ Set this to a number one larger than the current schema version
+      toVersion: 18,
+      steps: [
+        addColumns({
+          table: 'activities',
+          columns: [{ name: 'device_id', type: 'string' }],
+        }),
+      ],
+    },
+    {
+      // ⚠️ Set this to a number one larger than the current schema version
       toVersion: 17,
       steps: [
         addColumns({
           table: 'medical_cases',
-          columns: [
-            { name: 'forceClosed', type: 'boolean' },
-            { name: 'closed_at', type: 'number' },
-          ],
+          columns: [{ name: 'forceClosed', type: 'boolean' }],
         }),
       ],
     },
