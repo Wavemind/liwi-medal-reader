@@ -80,6 +80,7 @@ const LoginAuthContainer = () => {
             style={authLogin.input}
             onChangeText={setServerAddress}
             value={serverAddress}
+            placeholder="https://.."
             autoCapitalize="none"
           />
           <Text style={Fonts.textRegular}>
