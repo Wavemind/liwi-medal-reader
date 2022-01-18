@@ -411,6 +411,7 @@ export default {
       inhaler: 'Inhalateur',
       per: 'par',
       per_administration: 'par administration',
+      per_application: 'application(s) par administration',
     },
   },
   reference_table: {

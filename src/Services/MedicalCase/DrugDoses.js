@@ -47,6 +47,7 @@ const drugDoses = (formulationIndex, drugId) => {
       case Config.MEDICATION_FORMS.syrup:
       case Config.MEDICATION_FORMS.suspension:
       case Config.MEDICATION_FORMS.powder_for_injection:
+      case Config.MEDICATION_FORMS.ointment:
       case Config.MEDICATION_FORMS.solution:
         minDoseMg = roundSup(
           (mcWeight.value * formulation.minimal_dose_per_kg) /
