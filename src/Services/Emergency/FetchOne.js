@@ -11,15 +11,12 @@ import {
 /**
  * The internal imports
  */
-import api from '@/Services/Algorithm/FetchOneApi'
+import api from '@/Services'
 import { store } from '@/Store'
 
-export default async ({ emergencyContentVersion, algorithmId }) => {
-  const response = await api.post(
-    `algorithms/${algorithmId}/emergency_content`,
-    {
-      emergency_content_version: emergencyContentVersion,
-    },
+export default async ({ emergencyContentVersion }) => {
+  const response = await api.get(
+    `emergency-content?json_version=${emergencyContentVersion}`,
   )
 
   // If emergency content doesn't change. Load current stored.

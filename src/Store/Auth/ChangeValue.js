@@ -2,8 +2,8 @@ import { createAction } from '@reduxjs/toolkit'
 
 export default {
   initialState: {},
-  action: createAction('system/changeEnvironment'),
+  action: createAction('auth/changeMedAlDataURL'),
   reducers(state, { payload }) {
-    state.environment = payload.newEnvironment
+    state[payload.key] = payload.value
   },
 }

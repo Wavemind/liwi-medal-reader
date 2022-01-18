@@ -30,8 +30,6 @@ import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertMedicalCase from '@/Store/DatabaseMedicalCase/Insert'
 import ResetAssessments from '@/Store/MedicalCase/ArmControl/ResetAssessments'
-import SetParams from '@/Store/Modal/SetParams'
-import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -78,27 +76,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     state => state.databasePatientValues.update.error,
   )
   const errors = useSelector(state => state.validation.item)
-
-  // Adds an event listener to tablet back button press
-  // Opens the existMedicalCase modal and redirects to the Home screen
-  useEffect(() => {
-    const backAction = async () => {
-      await dispatch(
-        SetParams.action({
-          type: 'exitMedicalCase',
-          params: { routeName: 'Home', routeParams: {} },
-        }),
-      )
-      await dispatch(ToggleVisibility.action({}))
-    }
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    )
-
-    return () => backHandler.remove()
-  }, [])
 
   /**
    * Re dispatches the step verification process

@@ -1,9 +1,12 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import isEqual from 'lodash/isEqual'
+import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -13,14 +16,24 @@ import {
   EmptyList,
   RegistrationHeader,
   PatientString,
-  BirthDate,
+  PatientBirthDate,
 } from '@/Components'
 import { RegistrationQuestionsService } from '@/Services/Steps'
 
 const RegistrationMedicalCaseContainer = () => {
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
 
-  const questions = RegistrationQuestionsService()
+  const [questions, setQuestions] = useState(RegistrationQuestionsService())
+  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
+
+  // Update questions list only if question array change
+  useEffect(() => {
+    const registrationQuestions = RegistrationQuestionsService()
+    if (!isEqual(registrationQuestions, questions)) {
+      setQuestions(registrationQuestions)
+    }
+  }, [isFocused, mcNodes])
 
   /**
    * Renders the correct question type
@@ -37,7 +50,7 @@ const RegistrationMedicalCaseContainer = () => {
         case 'last_name':
           return <PatientString field="last_name" />
         default:
-          return <BirthDate />
+          return <PatientBirthDate />
       }
     }
   }

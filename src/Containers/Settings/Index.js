@@ -14,14 +14,9 @@ import { SquareSelect, ToggleSwitch } from '@/Components'
 import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
-import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
 import ChangeLanguage from '@/Store/HealthFacility/ChangeLanguage'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
-import DestroyAlgorithm from '@/Store/Algorithm/Destroy'
-import DestroyDevice from '@/Store/Device/Destroy'
-import DestroyHealthFacility from '@/Store/HealthFacility/Destroy'
-import DestroySession from '@/Store/User/DestroySession'
+import { formatDateTime } from '@/Utils/Date'
 
 const IndexSettingsContainer = () => {
   // Theme and style elements deconstruction
@@ -33,11 +28,10 @@ const IndexSettingsContainer = () => {
   const { t, i18n } = useTranslation()
 
   // Get values from the store
-  const environment = useSelector(state => state.system.environment)
-  const device = useSelector(state => state.device.item)
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithm = useSelector(state => state.algorithm.item)
   const darkMode = useSelector(state => state.theme.darkMode)
+  const auth = useSelector(state => state.auth)
 
   // Local state definition
   const [algorithmLanguage, setAlgorithmLanguage] = useState(
@@ -59,20 +53,6 @@ const IndexSettingsContainer = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   const dispatch = useDispatch()
-
-  /**
-   * Dispatch new environment to store.
-   * Clear device, health facility and algorithm store
-   * @param newEnvironment
-   */
-  const changeEnvironment = async newEnvironment => {
-    await dispatch(ChangeEnvironment.action({ newEnvironment }))
-    await dispatch(DestroyAlgorithm.action({}))
-    await dispatch(DestroyDevice.action({}))
-    await dispatch(DestroyHealthFacility.action({}))
-    await dispatch(DestroySession.action({}))
-    navigateAndSimpleReset('Auth')
-  }
 
   /**
    * Update app language and update store
@@ -131,14 +111,6 @@ const IndexSettingsContainer = () => {
       </View>
       <View style={settings.itemGeneral}>
         <SquareSelect
-          label={t('containers.settings.general.environment')}
-          items={Config.ENVIRONMENTS}
-          handleOnSelect={changeEnvironment}
-          value={environment}
-        />
-      </View>
-      <View style={settings.itemGeneral}>
-        <SquareSelect
           label={t('containers.settings.general.app_languages')}
           items={Config.LANGUAGES}
           handleOnSelect={changeAppLanguage}
@@ -170,7 +142,9 @@ const IndexSettingsContainer = () => {
             <View style={settings.item} key={info}>
               <Text style={settings.text}>{t(`algorithm.${info}`)}</Text>
               <Text style={[settings.text, Fonts.textBold]}>
-                {algorithm[info]}
+                {info === 'updated_at'
+                  ? formatDateTime(new Date(algorithm[info]))
+                  : algorithm[info]}
               </Text>
             </View>
           )
@@ -186,7 +160,9 @@ const IndexSettingsContainer = () => {
             <View style={settings.item} key={info}>
               <Text style={settings.text}>{t(`health_facility.${info}`)}</Text>
               <Text style={[settings.text, Fonts.textBold]}>
-                {healthFacility[info]}
+                {info === 'main_data_ip'
+                  ? auth.medAlDataURL
+                  : healthFacility[info]}
               </Text>
             </View>
           )
@@ -196,18 +172,12 @@ const IndexSettingsContainer = () => {
       <Text style={[settings.title]}>
         {t('containers.settings.device.title')}
       </Text>
-      {Object.keys(device).map(info => {
-        if (Config.DEVICE_INFO.includes(info)) {
-          return (
-            <View style={settings.item} key={info}>
-              <Text style={settings.text}>{t(`device.${info}`)}</Text>
-              <Text style={[settings.text, Fonts.textBold]}>
-                {device[info]}
-              </Text>
-            </View>
-          )
-        }
-      })}
+      <View style={settings.item} key="device_id">
+        <Text style={settings.text}>{t('device.device_id')}</Text>
+        <Text style={[settings.text, Fonts.textBold]}>
+          {auth.item.deviceId}
+        </Text>
+      </View>
     </Animated.ScrollView>
   )
 }

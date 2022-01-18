@@ -24,6 +24,7 @@ jest.mock('react-native-sound-player', () => {})
 jest.mock('react-native-orientation-locker', () => {})
 jest.mock('react-native-vector-icons/Feather', () => {})
 jest.mock('react-native-blob-util', () => {})
+jest.mock('react-native-date-picker', () => jest.fn())
 jest.mock('react-native-offline', () => {
   return {
     reducer: {},
@@ -58,6 +59,8 @@ jest.mock('react-native-device-info', () => {
     getModel: jest.fn(),
     isTablet: jest.fn(),
     getDeviceLocale: jest.fn(),
+    getVersion: jest.fn(),
+    getBuildNumber: jest.fn(),
   }
 })
 jest.mock('@react-navigation/native', () => {

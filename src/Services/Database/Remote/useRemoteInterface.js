@@ -118,6 +118,9 @@ export default function () {
           consent: medicalCaseData.consent,
           diagnosis: medicalCaseData.diagnosis,
           nodes: medicalCaseData.nodes,
+          metadata: {
+            appVersion: medicalCaseData.appVersion,
+          },
         },
         json_version: medicalCaseData.json_version,
         advancement: medicalCaseData.advancement,
@@ -221,6 +224,9 @@ export default function () {
           consent: medicalCase.consent,
           diagnosis: medicalCase.diagnosis,
           nodes: medicalCase.nodes,
+          metadata: {
+            appVersion: medicalCase.appVersion,
+          },
         },
         json_version: medicalCase.json_version,
         advancement: medicalCase.advancement,
@@ -270,6 +276,7 @@ export default function () {
 
   const _buildMedicalCase = remoteMedicalCase => {
     const parsedJson = JSON.parse(remoteMedicalCase.json)
+
     const medicalCase = {
       id: remoteMedicalCase.id,
       activities: [],
@@ -280,7 +287,7 @@ export default function () {
       json: null,
       json_version: remoteMedicalCase.json_version,
       clinician: remoteMedicalCase.clinician,
-      mac_address: remoteMedicalCase.mac_address,
+      device_id: remoteMedicalCase.device_id,
       advancement: {
         stage: remoteMedicalCase.advancement.stage,
         step: remoteMedicalCase.advancement.step,
@@ -289,6 +296,7 @@ export default function () {
       createdAt: remoteMedicalCase.created_at,
       updatedAt: remoteMedicalCase.updated_at,
       closedAt: remoteMedicalCase.closedAt,
+      appVersion: parsedJson.metadata?.appVersion,
       version_id: remoteMedicalCase.version_id,
       patient_id: remoteMedicalCase.patient_id,
     }
@@ -367,7 +375,7 @@ export default function () {
       createdAt: remoteMedicalCase.created_at,
       updatedAt: remoteMedicalCase.updated_at,
       clinician: remoteMedicalCase.clinician,
-      mac_address: remoteMedicalCase.mac_address,
+      device_id: remoteMedicalCase.device_id,
       closedAt: remoteMedicalCase.closedAt,
       version_id: remoteMedicalCase.version_id,
       patient: {
@@ -407,7 +415,7 @@ export default function () {
     insertActivities,
     insertPatient,
     insertPatientValues,
-    updatePatientValues: insertPatientValues,
+    updatePatientValues: insertPatientValues, // Due different use in local interface
     getAll,
     update,
     insertMedicalCase,

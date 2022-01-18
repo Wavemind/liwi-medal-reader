@@ -30,6 +30,9 @@ export default async () => {
             consent: medicalCase.consent,
             diagnosis: medicalCase.diagnosis,
             nodes: medicalCase.nodes,
+            metadata: {
+              appVersion: medicalCase.appVersion,
+            },
           }),
         },
       ],

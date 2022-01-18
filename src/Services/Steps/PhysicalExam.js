@@ -1,4 +1,5 @@
 import isEqual from 'lodash/isEqual'
+
 /**
  * The internal imports
  */
@@ -8,6 +9,7 @@ import {
   getValidDiagnoses,
   getTopConditions,
   handleChildren,
+  calculateConditionInverse,
   uniq,
 } from '@/Utils/MedicalCase'
 
@@ -21,6 +23,7 @@ export default () => {
   const physicalExamStep =
     state.algorithm.item.config.full_order.physical_exam_step
   const currentSystems = state.questionsPerSystem.item.physicalExam
+  const instances = state.algorithm.item.diagram.instances
 
   const validDiagnoses = getValidDiagnoses()
 
@@ -41,10 +44,14 @@ export default () => {
     )
   })
 
+  const mcNodes = store.getState().medicalCase.item.nodes
+
   const updatedSystems = {}
   physicalExamStep.forEach(system => {
-    const newQuestions = system.data.filter(questionId =>
-      questionPerSystems[system.title]?.includes(questionId),
+    const newQuestions = system.data.filter(
+      questionId =>
+        questionPerSystems[system.title]?.includes(questionId) &&
+        calculateConditionInverse(instances[questionId]?.conditions, mcNodes),
     )
     if (!isEqual(currentSystems[system.title], newQuestions)) {
       updatedSystems[system.title] = newQuestions

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Layout, Gutters } = props
+  const { Layout, Gutters, Fonts } = props
 
   return StyleSheet.create({
     patientValues: {
@@ -18,6 +18,15 @@ export default function (props) {
       ...Layout.fill,
       ...Layout.column,
       ...Gutters.tinyLMargin,
+    },
+    idContainer: {
+      ...Gutters.smallHMargin,
+      ...Gutters.smallVPadding,
+      borderTopWidth: 1,
+    },
+    idDisplay: {
+      ...Fonts.textTiny,
+      ...Fonts.textItalic,
     },
   })
 }

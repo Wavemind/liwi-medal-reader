@@ -1,13 +1,15 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
+import ChangeValue from './ChangeValue'
 import NewSession from './NewSession'
-import DestroySession from './DestroySession'
+import Destroy from './Destroy'
 
 const sliceInitialState = {
-  item: {},
+  item: false,
+  medAlDataURL: null,
 }
 
 export default buildSlice(
-  'user',
-  [NewSession, DestroySession],
+  'auth',
+  [ChangeValue, NewSession, Destroy],
   sliceInitialState,
 ).reducer

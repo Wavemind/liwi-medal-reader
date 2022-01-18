@@ -330,6 +330,34 @@ export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
 }
 
 /**
+ * Calculate node from bottom to top
+ * @param {Instances} conditions,
+ * @param {Instances} mcNodes,
+ * @returns true/false
+ */
+export const calculateConditionInverse = (conditions, mcNodes) => {
+  const state = store.getState()
+  const instances = state.algorithm.item.diagram.instances
+
+  if (conditions === undefined || conditions.length === 0) {
+    return true
+  }
+
+  return conditions.some(condition => {
+    const conditionValue =
+      mcNodes[condition.node_id].answer === condition.answer_id
+    if (conditionValue) {
+      return calculateConditionInverse(
+        instances[condition.node_id].conditions,
+        mcNodes,
+      )
+    } else {
+      return false
+    }
+  })
+}
+
+/**
  * Show in the console where in what diagram a node need to be shown
  * @param {Integer} nodeId : Node Id we wanna have info on
  * @param {Array<Node>} mcNodes : Current state of medical case nodes
@@ -475,7 +503,6 @@ export const transformPatientValues = () => {
  */
 export const isLocked = medicalCase => {
   const state = store.getState()
-  const device = state.device.item
   const isConnected = state.network.isConnected
   const architecture = state.healthFacility.item.architecture
 
@@ -483,7 +510,6 @@ export const isLocked = medicalCase => {
     isConnected &&
     architecture === 'client_server' &&
     medicalCase.closedAt === 0 &&
-    medicalCase.mac_address !== null &&
-    medicalCase.mac_address !== device.mac_address
+    medicalCase.device_id !== null
   )
 }

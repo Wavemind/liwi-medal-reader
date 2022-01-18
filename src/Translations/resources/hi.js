@@ -41,15 +41,12 @@ export default {
   containers: {
     auth: {
       login: {
-        title: 'Connect to medAL-creator',
-        email: 'Email',
-        password: 'Password',
-        environment: 'Environment',
+        title: 'Connect to medAL-data',
+        server_address: 'Server address',
+        client_id: 'Device ID',
       },
-      synchronization: {
-        title: 'Synchronize with medAL-creator',
-        description:
-          'An administrator will assign this device to your health facility',
+      synchronize: {
+        title: 'Synchronize with medAL-data',
       },
       pin: {
         unlock: 'Enter the PIN to unlock the tablet',
@@ -145,6 +142,10 @@ export default {
         management_consulting: 'Managements & Counselling',
         no_managements: 'No managements available',
       },
+      summary_wrapper: {
+        patient_uuid: 'Patient UUID',
+        consultation_id: 'Consultation ID',
+      },
     },
     scan: {
       scan: 'Scan the QR code',
@@ -169,7 +170,7 @@ export default {
       },
       personal_info: {
         patient_info: 'Patient information',
-        consultations_info: 'Consultations information',
+        consultations_info: 'Registration data',
       },
     },
     consent: {
@@ -219,6 +220,9 @@ export default {
         months: 'In months',
         years: 'In years',
       },
+      title: 'Select date',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
     },
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
@@ -262,12 +266,7 @@ export default {
   },
   device: {
     name: 'Name',
-    mac_address: 'MAC address',
-    model: 'Model',
-    brand: 'Brand',
-    os: 'OS',
-    os_version: 'OS Version',
-    name_not_available: 'no name available',
+    device_id: 'ID',
   },
   database: {
     success: {
@@ -291,6 +290,10 @@ export default {
     offline: {
       title: 'Communication error with {{ serverName }}',
       description: 'Server not accessible',
+    },
+    unknown: {
+      title: 'Communication error',
+      description: 'An unknown error occurred',
     },
     timeout: 'Server connection aborted',
   },

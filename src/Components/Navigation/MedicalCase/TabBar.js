@@ -25,9 +25,9 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
   const dispatch = useDispatch()
 
   const stages = getStages()
-  const macAddress = useSelector(state => state.device.item.mac_address)
   const clinician = useSelector(state => state.healthFacility.clinician)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const deviceId = useSelector(state => state.auth.item.deviceId)
   const medicalCaseFailSafe = useSelector(
     state => state.medicalCase.item.fail_safe,
   )
@@ -43,8 +43,8 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
       id: uuid.v4(),
       step: step.label,
       clinician: `${clinician.first_name} ${clinician.last_name}`,
-      mac_address: macAddress,
       medical_case_id: medicalCaseId,
+      device_id: deviceId,
       fail_safe: medicalCaseFailSafe,
       nodes: [],
     }

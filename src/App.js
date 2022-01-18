@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { AppState, ScrollView, Text } from 'react-native'
 import { PersistGate } from 'redux-persist/lib/integration/react'

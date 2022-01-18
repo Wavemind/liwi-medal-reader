@@ -2,7 +2,7 @@
  * The external imports
  */
 import React from 'react'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, Text } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -29,6 +29,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
   const {
     Layout,
     Gutters,
+    Fonts,
     Containers: { summaryWrapper },
   } = useTheme()
   const isFocused = useIsFocused()
@@ -103,11 +104,25 @@ const SummaryWrapperMedicalCaseContainer = () => {
         <View style={summaryWrapper.rightColumn}>
           {zScoreReferenceTableQuestions.map(nodeId => (
             <SummaryMetadata
+              key={nodeId}
               label={translate(nodes[nodeId].label)}
               value={medicalCase.nodes[nodeId].value}
             />
           ))}
         </View>
+      </View>
+
+      <View style={summaryWrapper.idContainer}>
+        <Text style={summaryWrapper.idDisplay}>
+          {`${t('containers.medical_case.summary_wrapper.patient_uuid')} ${
+            patient.id
+          }`}
+        </Text>
+        <Text style={summaryWrapper.idDisplay}>
+          {`${t('containers.medical_case.summary_wrapper.consultation_id')} ${
+            medicalCase.id
+          }`}
+        </Text>
       </View>
 
       <Tab.Navigator

@@ -2,8 +2,9 @@ import { createAction } from '@reduxjs/toolkit'
 
 export default {
   initialState: {},
-  action: createAction('device/destroy'),
+  action: createAction('auth/destroy'),
   reducers(state) {
-    state.item = {}
+    state.item = false
+    state.medAlDataURL = null
   },
 }

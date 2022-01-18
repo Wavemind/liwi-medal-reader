@@ -2,6 +2,7 @@
  * The external imports
  */
 import uuid from 'react-native-uuid'
+import { getVersion, getBuildNumber } from 'react-native-device-info'
 
 /**
  * The internal imports
@@ -9,6 +10,9 @@ import uuid from 'react-native-uuid'
 import { GenerateNodesService } from '@/Services/Node'
 
 export default async ({ algorithm, patientId }) => {
+  const appVersion = getVersion()
+  const appBuildNumber = getBuildNumber()
+
   return {
     activities: [],
     comment: '',
@@ -38,5 +42,6 @@ export default async ({ algorithm, patientId }) => {
     version_id: algorithm.version_id,
     fail_safe: false,
     savedInDatabase: false,
+    appVersion: `${appVersion}.${appBuildNumber}`,
   }
 }

@@ -82,6 +82,7 @@ describe('findBy should find an object based on a query', () => {
       'json_version',
       'synchronizedAt',
       'advancement',
+      'appVersion',
       'fail_safe',
       'patient',
       'closedAt',

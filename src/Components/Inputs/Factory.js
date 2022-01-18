@@ -16,6 +16,7 @@ import {
   String,
   Toggle,
   Autocomplete,
+  DatePicker,
 } from '@/Components'
 import { Config } from '@/Config'
 
@@ -42,6 +43,8 @@ const Factory = ({ questionId }) => {
     case Config.DISPLAY_FORMAT.reference:
     case Config.DISPLAY_FORMAT.formula:
       return <String questionId={questionId} editable={false} />
+    case Config.DISPLAY_FORMAT.date:
+      return <DatePicker questionId={questionId} />
     default:
       return <Text>{translate(currentNode.label)}</Text>
   }

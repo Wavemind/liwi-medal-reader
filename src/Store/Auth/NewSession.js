@@ -4,11 +4,11 @@ import {
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import { NewSessionUserService } from '@/Services/User'
+import { NewSessionAuthService } from '@/Services/Auth'
 
 export default {
   initialState: buildAsyncState('newSession'),
-  action: buildAsyncActions('user/newSession', NewSessionUserService),
+  action: buildAsyncActions('auth/newSession', NewSessionAuthService),
   reducers: buildAsyncReducers({
     errorKey: 'newSession.error',
     loadingKey: 'newSession.loading',

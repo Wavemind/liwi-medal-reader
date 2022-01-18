@@ -43,7 +43,7 @@ export { default as Icon } from './Icons/Icon'
 // Inputs
 export { default as Autocomplete } from './Inputs/Autocomplete'
 export { default as Autosuggest } from './Inputs/Autosuggest'
-export { default as BirthDate } from './Inputs/BirthDate'
+export { default as PatientBirthDate } from './Inputs/PatientBirthDate'
 export { default as Boolean } from './Inputs/Boolean'
 export { default as Checkbox } from './Inputs/Checkbox'
 export { default as Comment } from './Inputs/Comment'
@@ -56,6 +56,7 @@ export { default as SquareSelect } from './Inputs/SquareSelect'
 export { default as String } from './Inputs/String'
 export { default as Toggle } from './Inputs/Toggle'
 export { default as ToggleSwitch } from './Inputs/ToggleSwitch'
+export { default as DatePicker } from './Inputs/Date'
 
 // Loaders
 export { default as Loader } from './Loaders/Loader'
