@@ -257,12 +257,12 @@ export default {
         ok: 'OK',
         back: 'Annuler',
       },
+      study: {
+        no_content: 'No content',
+      },
     },
     media: {
       file_not_supported: 'Format de fichier non pris en charge',
-    },
-    study: {
-      no_content: 'No content',
     },
   },
   device: {
