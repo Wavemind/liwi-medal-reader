@@ -132,17 +132,13 @@ const MainNavigator = ({ route, navigation }) => {
           name="StageWrapper"
           component={StageWrapperMedicalCaseContainer}
           options={{
-            title: t('navigation.medical_case', {
-              first_name: patient.first_name,
-              last_name: patient.last_name,
-              birth_date: patient.birth_date
-                ? formatDate(patient.birth_date)
-                : '',
-              readable_date:
-                patient.birth_date && medicalCaseCreatedAt
-                  ? ReadableDate(medicalCaseCreatedAt, patient.birth_date)
-                  : '',
-            }),
+            title: `${patient.first_name} ${patient.last_name} - ${
+              patient.birth_date && formatDate(patient.birth_date)
+            } (${
+              patient.birth_date && medicalCaseCreatedAt
+                ? ReadableDate(medicalCaseCreatedAt, patient.birth_date)
+                : ''
+            })`,
           }}
         />
         <Drawer.Screen

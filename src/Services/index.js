@@ -86,6 +86,8 @@ instance.interceptors.response.use(
         duration: 5000,
       })
 
+      console.log('ICI', error.response)
+
       return handleError({
         message: 'No response received (' + error.message + ')',
       })
