@@ -20,7 +20,7 @@ export default async props => {
     birth_date_estimated_type: null,
     consent: true,
     consent_file: null,
-    createdAt: new Date().getTime() / 1000, // Transform ms to s
+    createdAt: new Date().getTime(),
     fail_safe: false,
     group_id,
     id: uuid.v4(),
@@ -33,6 +33,6 @@ export default async props => {
     savedInDatabase: !newMedicalCase, // TODO check if we can set false directly
     study_id,
     uid,
-    updatedAt: new Date().getTime() / 1000, // Transform ms to s
+    updatedAt: new Date().getTime(),
   }
 }
