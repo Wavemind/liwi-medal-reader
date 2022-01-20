@@ -5,9 +5,13 @@ import {
   DocumentDirectoryPath,
   writeFile,
   unlink,
+  mkdir,
   exists,
+  readFile,
 } from 'react-native-fs'
 import axios from 'axios'
+import { unzip } from 'react-native-zip-archive'
+import ReactNativeBlobUtil from 'react-native-blob-util'
 
 /**
  * The internal imports
@@ -15,8 +19,11 @@ import axios from 'axios'
 import api from '@/Services'
 import { store } from '@/Store'
 import { Config } from '@/Config'
+import { RefreshTokenAuthService } from '@/Services/Auth'
 
 export default async ({ json_version = '' }) => {
+  // TODO: CLEAR WHEN ALL DATA IS UP TO DATE WItH ZIP
+  const state = store.getState()
   const abort = axios.CancelToken.source()
 
   const timeout = setTimeout(() => {
@@ -26,6 +33,7 @@ export default async ({ json_version = '' }) => {
   }, Config.TIMEOUT)
 
   let response
+  let data
 
   await api
     .get(`algorithm?json_version=${json_version}`, {
@@ -35,6 +43,7 @@ export default async ({ json_version = '' }) => {
       // Clear The Timeout
       clearTimeout(timeout)
       response = result
+      data = result.data
     })
 
   //////////////////////////////////////////////////////////////////////////////
@@ -42,27 +51,60 @@ export default async ({ json_version = '' }) => {
   //////////////////////////////////////////////////////////////////////////////
 
   // If algorithm doesn't change. Load current stored.
-  if (response === undefined || response.status === 204) {
-    const state = store.getState()
+  if (response.status === 204) {
     const oldAlgorithm = state.algorithm.item
     return { ...oldAlgorithm, updated: false }
   }
 
+  if (response.headers['content-type'] === 'application/zip') {
+    // ZIP FETCH
+    const bearToken = await RefreshTokenAuthService()
+    const mainDataUrl = state.auth.medAlDataURL
+
+    const zipResponse = await ReactNativeBlobUtil.config({
+      fileCache: true,
+      appendExt: 'zip',
+    })
+      .fetch(
+        'GET',
+        `${mainDataUrl}/api/v1/algorithm?json_version=${json_version}`,
+        {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/zip',
+          Authorization: bearToken,
+        },
+      )
+      .catch(err => {
+        return Promise.reject({ message: err })
+      })
+
+    // Create tmp file to process zip
+    const targetPath = `${DocumentDirectoryPath}/tmp_algorithm_zip`
+    await mkdir(targetPath)
+    const unzipPath = await unzip(zipResponse.path(), targetPath)
+
+    const zipContent = await readFile(unzipPath + '/content.json')
+    data = JSON.parse(zipContent)
+
+    await unlink(unzipPath)
+    /////////////////////////////////////////////////////
+  }
+
   // Regroup nodes, final diagnoses and health cares into nodes key
   const nodes = {
-    ...response.data.nodes,
-    ...response.data.final_diagnoses,
-    ...response.data.health_cares,
+    ...data.nodes,
+    ...data.final_diagnoses,
+    ...data.health_cares,
   }
 
   // Remove useless key
-  delete response.data.nodes
-  delete response.data.final_diagnoses
-  delete response.data.health_cares
+  delete data.nodes
+  delete data.final_diagnoses
+  delete data.health_cares
 
   // Store algorithm
   const algorithm = {
-    ...response.data,
+    ...data,
     updated: true,
     nodes: { ...nodes },
   }
