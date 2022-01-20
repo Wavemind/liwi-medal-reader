@@ -86,9 +86,12 @@ instance.interceptors.response.use(
         duration: 5000,
       })
 
-      return handleError({
-        message: 'No response received (' + error.message + ')',
-      })
+      // Avoid raise an error if request was for getting an algorithm when tablet doesn't have any internet connection
+      if (error.request._url.search('algorithm') === -1) {
+        return handleError({
+          message: 'No response received (' + error.message + ')',
+        })
+      }
     } else {
       // Something happened in setting up the request that triggered an Error
       showMessage({

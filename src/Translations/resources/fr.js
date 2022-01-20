@@ -257,12 +257,12 @@ export default {
         ok: 'OK',
         back: 'Annuler',
       },
+      study: {
+        no_content: 'Aucun contenu',
+      },
     },
     media: {
       file_not_supported: 'Format de fichier non pris en charge',
-    },
-    study: {
-      no_content: 'No content',
     },
   },
   device: {
@@ -331,8 +331,6 @@ export default {
     consent_list: 'Consentements',
     current_consultation: 'Consultation en cours',
     home: 'Accueil',
-    medical_case:
-      '{{first_name}} {{last_name}} - {{birth_date }} ({{ readable_date }})',
     synchronization: 'Synchronisation',
     welcome: 'Bienvenue {{ clinician }}',
     settings: 'Réglages',

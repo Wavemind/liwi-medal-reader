@@ -16,7 +16,7 @@ import api from '@/Services'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
-export default async ({ json_version = '' }, { dispatch }) => {
+export default async ({ json_version = '' }) => {
   const abort = axios.CancelToken.source()
 
   const timeout = setTimeout(() => {

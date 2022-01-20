@@ -19,13 +19,11 @@ const RotatedText = ({ label, status }) => {
 
   return (
     <View style={sideBar.rotatedTextWrapper}>
-      {array.map((char, index) => {
-        return (
-          <Text key={`${label}_${index}`} style={[sideBar.text(status)]}>
-            {char}
-          </Text>
-        )
-      })}
+      {array.map((char, index) => (
+        <Text key={`${label}_${index}`} style={[sideBar.text(status)]}>
+          {char}
+        </Text>
+      ))}
     </View>
   )
 }
