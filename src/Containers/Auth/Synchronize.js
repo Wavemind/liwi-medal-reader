@@ -28,6 +28,7 @@ const SynchronizeAuthContainer = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
+    Layout,
     Containers: { auth, authLogin, global },
   } = useTheme()
   const dispatch = useDispatch()
@@ -71,7 +72,7 @@ const SynchronizeAuthContainer = () => {
         )
         if (isFulfilled(fetchOneEmergency)) {
           setLoading(false)
-          // Navigate and reset to Pin container
+          // // Navigate and reset to Pin container
           navigateAndSimpleReset('Study', { source: 'auth' })
         }
       }
@@ -96,7 +97,9 @@ const SynchronizeAuthContainer = () => {
               onPress={fetchData}
             />
           </View>
-          <View style={authLogin.loaderWrapper}>{loading && <Loader />}</View>
+          <View style={Layout.rowCenter}>
+            <View style={authLogin.loaderWrapper}>{loading && <Loader />}</View>
+          </View>
 
           <View style={authLogin.buttonWrapper}>
             {healthFacilityFetchOneError && (
