@@ -28,6 +28,7 @@ const SynchronizeAuthContainer = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
+    Layout,
     Containers: { auth, authLogin, global },
   } = useTheme()
   const dispatch = useDispatch()
@@ -96,7 +97,14 @@ const SynchronizeAuthContainer = () => {
               onPress={fetchData}
             />
           </View>
-          <View style={authLogin.loaderWrapper}>{loading && <Loader />}</View>
+          
+          {loading && (
+            <View style={Layout.rowCenter}>
+              <View style={authLogin.loaderWrapper}>
+                <Loader />
+              </View>
+            </View>
+          )}
 
           <View style={authLogin.buttonWrapper}>
             {healthFacilityFetchOneError && (

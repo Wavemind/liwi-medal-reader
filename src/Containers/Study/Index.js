@@ -37,7 +37,7 @@ const IndexStudyContainer = ({
   const htmlContent =
     translate(studyDescription) !== ''
       ? translate(studyDescription)
-      : t('components.modal.study.no_content')
+      : t('components.modals.study.no_content')
 
   /**
    * Manages the navigation when the "Continue" button is pressed
