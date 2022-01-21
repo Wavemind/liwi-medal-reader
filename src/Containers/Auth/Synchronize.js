@@ -72,7 +72,7 @@ const SynchronizeAuthContainer = () => {
         )
         if (isFulfilled(fetchOneEmergency)) {
           setLoading(false)
-          // // Navigate and reset to Pin container
+          // Navigate and reset to Pin container
           navigateAndSimpleReset('Study', { source: 'auth' })
         }
       }
@@ -97,9 +97,14 @@ const SynchronizeAuthContainer = () => {
               onPress={fetchData}
             />
           </View>
-          <View style={Layout.rowCenter}>
-            <View style={authLogin.loaderWrapper}>{loading && <Loader />}</View>
-          </View>
+          
+          {loading && (
+            <View style={Layout.rowCenter}>
+              <View style={authLogin.loaderWrapper}>
+                <Loader />
+              </View>
+            </View>
+          )}
 
           <View style={authLogin.buttonWrapper}>
             {healthFacilityFetchOneError && (
