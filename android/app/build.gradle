@@ -135,7 +135,7 @@ android {
         applicationId "com.liwi_native"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 113
+        versionCode 114
         versionName "1.0"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
