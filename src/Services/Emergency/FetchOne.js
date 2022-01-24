@@ -28,10 +28,10 @@ export default async ({ emergencyContentVersion }) => {
     `emergency-content?json_version=${emergencyContentVersion}`,
   )
 
-  emergencyContent = response.data.emergency_content
+  emergencyContent = response?.data?.emergency_content
 
   // If emergency content doesn't change. Load current stored.
-  if (response.status === 204) {
+  if (response === undefined || response.status === 204) {
     const state = store.getState()
     return state.emergency.item
   }

@@ -43,7 +43,7 @@ export default async ({ json_version = '' }) => {
       // Clear The Timeout
       clearTimeout(timeout)
       response = result
-      data = result.data
+      data = result?.data
     })
 
   //////////////////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ export default async ({ json_version = '' }) => {
   //////////////////////////////////////////////////////////////////////////////
 
   // If algorithm doesn't change. Load current stored.
-  if (response.status === 204) {
+  if (response === undefined || response.status === 204) {
     const oldAlgorithm = state.algorithm.item
     return { ...oldAlgorithm, updated: false }
   }
@@ -108,7 +108,7 @@ export default async ({ json_version = '' }) => {
   const algorithm = {
     ...data,
     updated: true,
-    nodes: { ...nodes }, 
+    nodes: { ...nodes },
   }
 
   //////////////////////////////////////////////////////////////////////////////
