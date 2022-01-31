@@ -102,13 +102,11 @@ export default async ({ json_version = '' }) => {
   delete data.final_diagnoses
   delete data.health_cares
 
-  // Store algorithm
-
-  // TODO CHECK IF PUT ONLY nodes INSTEAD OF {...nodes}
+  // Create new algorithm key for store
   const algorithm = {
     ...data,
     updated: true,
-    nodes: { ...nodes },
+    nodes,
   }
 
   //////////////////////////////////////////////////////////////////////////////

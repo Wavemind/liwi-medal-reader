@@ -308,7 +308,7 @@ export default function () {
         record.birth_date_estimated_type = patientData.birth_date_estimated_type
         record.uid = patientData.uid
         record.study_id = patientData.study_id
-        record.group_id = patientData.group_id
+        record.group_id = String(patientData.group_id) // In case of fail safe, hub give us an integer instead of a string
         record.other_uid = patientData.other_uid
         record.other_study_id = patientData.other_study_id
         record.other_group_id = patientData.other_group_id

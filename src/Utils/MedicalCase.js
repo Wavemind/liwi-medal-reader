@@ -510,6 +510,9 @@ export const isLocked = medicalCase => {
     isConnected &&
     architecture === 'client_server' &&
     medicalCase.closedAt === 0 &&
-    medicalCase.device_id !== null
+    !(
+      String(medicalCase.device_id) === state.auth.item.deviceId ||
+      medicalCase.device_id === null
+    )
   )
 }

@@ -42,7 +42,7 @@ const Autocomplete = ({ questionId }) => {
       const filteredVillageList = filter(villageList, village =>
         Object.values(village)[0].match(new RegExp(term, 'i')),
       )
-      setSearchResults(filteredVillageList.slice(0, 5))
+      setSearchResults(filteredVillageList.slice(0, 10))
     }, 500),
     [],
   )
