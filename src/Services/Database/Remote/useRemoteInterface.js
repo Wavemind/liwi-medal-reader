@@ -110,6 +110,7 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertPatient = async (patientData, medicalCaseData) => {
+
     const response = await api.post('/api/patients', {
       medical_case: {
         id: medicalCaseData.id,
@@ -140,7 +141,7 @@ export default function () {
         birth_date_estimated_type: patientData.birth_date_estimated_type,
         uid: patientData.uid,
         study_id: patientData.study_id,
-        group_id: patientData.group_id,
+        group_id: String(patientData.group_id),
         other_uid: patientData.other_uid,
         other_study_id: patientData.other_study_id,
         other_group_id: patientData.other_group_id,
@@ -308,6 +309,7 @@ export default function () {
     const medicalCases = remotePatient.medical_cases.map(remoteMedicalCase =>
       _buildMedicalCase(remoteMedicalCase, false),
     )
+
     // Build patient
     const patient = {
       first_name: remotePatient.first_name,
