@@ -48,6 +48,6 @@ export default (from, to) => {
       value: Math.floor(ageInDays / 365.25),
     })
   }
-  console.log('utils', readableDate)
+
   return readableDate
 }
