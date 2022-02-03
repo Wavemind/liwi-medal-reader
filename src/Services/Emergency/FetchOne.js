@@ -11,6 +11,7 @@ import {
 } from 'react-native-fs'
 import { unzip } from 'react-native-zip-archive'
 import ReactNativeBlobUtil from 'react-native-blob-util'
+import { checkInternetConnection } from 'react-native-offline'
 
 /**
  * The internal imports
@@ -20,8 +21,23 @@ import { store } from '@/Store'
 import { RefreshTokenAuthService } from '@/Services/Auth'
 
 export default async ({ emergencyContentVersion }) => {
-  // TODO: CLEAR WHEN ALL DATA IS UP TO DATE WItH ZIP
   const state = store.getState()
+  const mainDataUrl = state.auth.medAlDataURL
+  const oldEmergencyContent = state.emergency.item
+
+  // Test if medAL-Data is reachable.
+  const isConnected = await checkInternetConnection(mainDataUrl)
+
+  // If it's not return previous emergency content stored
+  if (!isConnected) {
+    return oldEmergencyContent
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  // TODO: CLEAR WHEN ALL DATA IS UP TO DATE WItH ZIP
   let emergencyContent
 
   const response = await api.get(
@@ -32,14 +48,12 @@ export default async ({ emergencyContentVersion }) => {
 
   // If emergency content doesn't change. Load current stored.
   if (response === undefined || response.status === 204) {
-    const state = store.getState()
-    return state.emergency.item
+    return oldEmergencyContent
   }
 
   if (response.headers['content-type'] === 'application/zip') {
     // ZIP FETCH
     const bearToken = await RefreshTokenAuthService()
-    const mainDataUrl = state.auth.medAlDataURL
 
     const zipResponse = await ReactNativeBlobUtil.config({
       fileCache: true,
