@@ -12,6 +12,7 @@ import {
 import axios from 'axios'
 import { unzip } from 'react-native-zip-archive'
 import ReactNativeBlobUtil from 'react-native-blob-util'
+import { checkInternetConnection } from 'react-native-offline'
 
 /**
  * The internal imports
@@ -22,12 +23,26 @@ import { Config } from '@/Config'
 import { RefreshTokenAuthService } from '@/Services/Auth'
 
 export default async ({ json_version = '' }) => {
-  // TODO: CLEAR WHEN ALL DATA IS UP TO DATE WItH ZIP
   const state = store.getState()
+  const mainDataUrl = state.auth.medAlDataURL
+  const oldAlgorithm = state.algorithm.item
+
+  // Test if medAL-Data is reachable.
+  const isConnected = await checkInternetConnection(mainDataUrl)
+
+  // If it's not return previous algorithm stored
+  if (!isConnected) {
+    return { ...oldAlgorithm, updated: false }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  // TODO: CLEAR WHEN ALL MEDAL-DATA IS UP TO DATE WItH ZIP
   const abort = axios.CancelToken.source()
 
   const timeout = setTimeout(() => {
-    const oldAlgorithm = store.getState().algorithm.item
     abort.cancel()
     return { ...oldAlgorithm, updated: false }
   }, Config.TIMEOUT)
@@ -52,14 +67,12 @@ export default async ({ json_version = '' }) => {
 
   // If algorithm doesn't change. Load current stored.
   if (response === undefined || response.status === 204) {
-    const oldAlgorithm = state.algorithm.item
     return { ...oldAlgorithm, updated: false }
   }
 
   if (response.headers['content-type'] === 'application/zip') {
     // ZIP FETCH
     const bearToken = await RefreshTokenAuthService()
-    const mainDataUrl = state.auth.medAlDataURL
 
     const zipResponse = await ReactNativeBlobUtil.config({
       fileCache: true,

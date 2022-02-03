@@ -40,6 +40,7 @@ export default async ({ serverAddress, clientId }, { dispatch }) => {
     'accessToken',
     response.accessToken,
   )
+
   await Keychain.setInternetCredentials(
     'accessTokenExpirationDate',
     'accessTokenExpirationDate',

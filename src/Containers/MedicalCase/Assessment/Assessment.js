@@ -19,7 +19,6 @@ const AssessmentMedicalCaseContainer = () => {
   const isFocused = useIsFocused()
 
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)
-
   const [questions, setQuestions] = useState(AssessmentQuestionsService())
 
   // Update questions list only if question array change

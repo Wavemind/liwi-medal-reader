@@ -2,6 +2,7 @@
  * The external imports
  */
 import axios from 'axios'
+import { checkInternetConnection } from 'react-native-offline'
 
 /**
  * The internal imports
@@ -11,9 +12,23 @@ import { Config } from '@/Config'
 import { store } from '@/Store'
 
 export default async ({}) => {
-  const abort = axios.CancelToken.source()
+  const state = store.getState()
+  const mainDataUrl = state.auth.medAlDataURL
+  const currentHealthFacility = state.healthFacility.item
 
-  const currentHealthFacility = store.getState().healthFacility.item
+  // Test if medAL-Data is reachable.
+  const isConnected = await checkInternetConnection(mainDataUrl)
+
+  // If it's not return previous health facility stored
+  if (!isConnected) {
+    return currentHealthFacility
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  const abort = axios.CancelToken.source()
 
   const timeout = setTimeout(() => {
     abort.cancel()
