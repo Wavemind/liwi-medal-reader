@@ -81,13 +81,20 @@ export default async () => {
       return `Bearer ${response.accessToken}`
     } catch (error) {
       // Error while trying to refresh access token, so disconnect
+      // showMessage({
+      //   message: i18n.t('errors.offline.title', {
+      //     serverName: 'MedAL-Data',
+      //   }),
+      //   description: i18n.t('errors.offline.description'),
+      //   type: 'danger',
+      //   duration: 5000,
+      // })
+
       showMessage({
-        message: i18n.t('errors.offline.title', {
-          serverName: 'MedAL-Data',
-        }),
-        description: i18n.t('errors.offline.description'),
+        message: 'Refresh token error',
+        description: JSON.parse(error),
         type: 'danger',
-        duration: 5000,
+        duration: 15000,
       })
 
       // Remove tokens

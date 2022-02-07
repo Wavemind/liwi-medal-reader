@@ -43,7 +43,6 @@ export default async ({ json_version = '' }) => {
   const abort = axios.CancelToken.source()
 
   const timeout = setTimeout(() => {
-    abort.cancel()
     return { ...oldAlgorithm, updated: false }
   }, Config.TIMEOUT)
 

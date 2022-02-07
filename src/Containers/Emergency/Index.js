@@ -19,7 +19,6 @@ const IndexEmergencyContainer = ({ navigation }) => {
   const emergencyContent = useSelector(
     state => state.emergency.item.emergency_content_translations,
   )
-
   // Theme and style elements deconstruction
   const {
     Containers: { emergency },

@@ -93,6 +93,7 @@ instance.interceptors.response.use(
         })
       }
     } else {
+      console.log(error)
       // Something happened in setting up the request that triggered an Error
       showMessage({
         message: i18n.t('errors.unknown.title'),
