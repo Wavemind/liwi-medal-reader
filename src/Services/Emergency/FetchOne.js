@@ -95,5 +95,5 @@ export default async ({ emergencyContentVersion }) => {
     await writeFile(emergencyContentTargetPath, emergencyContent)
   }
 
-  return response.data
+  return emergencyContent
 }
