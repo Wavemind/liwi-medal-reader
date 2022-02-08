@@ -1,5 +1,5 @@
 export const Config = {
-  ALGORITHM_INFO: ['version_name', 'version_id', 'updated_at'],
+  ALGORITHM_INFO: ['version_name', 'json_version', 'version_id', 'updated_at'],
   CATEGORIES: {
     assessment: 'assessment_test',
     chronicCondition: 'chronic_condition',
