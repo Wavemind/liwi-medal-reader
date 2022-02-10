@@ -101,11 +101,10 @@ const PinAuthContainer = () => {
       } else {
         setStatus('failure')
       }
-      setLoading(false)
     } else {
-      setLoading(false)
       setStatus('failure')
     }
+    setLoading(false)
   }
 
   return (
