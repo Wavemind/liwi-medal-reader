@@ -68,6 +68,7 @@ const persistConfig = {
     'theme',
     'emergency',
   ],
+  timeout: null,
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)

@@ -9,10 +9,14 @@ import {
 } from 'react-native-fs'
 import ReactNativeBlobUtil from 'react-native-blob-util'
 import { zip } from 'react-native-zip-archive'
+import { checkInternetConnection } from 'react-native-offline'
+
+import { showMessage } from 'react-native-flash-message'
 
 /**
  * The internal imports
  */
+import i18n from '@/Translations/index'
 import useDatabase from '../Database/useDatabase'
 import { store } from '@/Store'
 import { RefreshTokenAuthService } from '@/Services/Auth'
@@ -72,6 +76,25 @@ export default async medicalCasesToSync => {
       await unlink(`${folder}/${medicalCase.id}.json`)
     }),
   )
+
+  // Test if medAL-Data is reachable.
+  const isConnected = await checkInternetConnection(mainDataUrl)
+
+  // If it's not return stop synchronization
+  if (!isConnected) {
+    await unlink(path)
+
+    showMessage({
+      message: i18n.t('errors.offline.title', {
+        serverName: 'MedAL-Data',
+      }),
+      description: i18n.t('errors.offline.description'),
+      type: 'danger',
+      duration: 5000,
+    })
+
+    return Promise.reject({ message: i18n.t('errors.offline.description') })
+  }
 
   const bearToken = await RefreshTokenAuthService()
 

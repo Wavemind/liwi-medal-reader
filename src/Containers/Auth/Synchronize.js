@@ -97,7 +97,7 @@ const SynchronizeAuthContainer = () => {
               onPress={fetchData}
             />
           </View>
-          
+
           {loading && (
             <View style={Layout.rowCenter}>
               <View style={authLogin.loaderWrapper}>

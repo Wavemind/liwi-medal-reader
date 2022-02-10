@@ -22,6 +22,6 @@ export default () => {
         calculateConditionInverse(instances[questionId]?.conditions, mcNodes)
       )
     }
-    return true
+    return calculateConditionInverse(instances[questionId]?.conditions, mcNodes)
   })
 }

@@ -98,11 +98,13 @@ const PinAuthContainer = () => {
         } else {
           navigateAndSimpleReset('Home')
         }
+      } else {
+        setStatus('failure')
       }
     } else {
-      setLoading(false)
       setStatus('failure')
     }
+    setLoading(false)
   }
 
   return (
