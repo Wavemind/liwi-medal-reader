@@ -90,6 +90,7 @@ export default async () => {
       //   duration: 5000,
       // })
 
+      // TODO: REMOVE WHEN TESTING IS DONE !
       showMessage({
         message: 'Refresh token error',
         description: JSON.parse(error),
