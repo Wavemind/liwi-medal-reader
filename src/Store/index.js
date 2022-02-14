@@ -14,7 +14,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist'
-import * as _ from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 
 import algorithm from './Algorithm'
 import auth from './Auth'
@@ -88,7 +88,7 @@ const persistConfig = {
     ) {
       // if state from fs storage is empty try to read state from previous storage
       try {
-        if (!_.isEmpty(asyncState)) {
+        if (!isEmpty(asyncState)) {
           // if data exists in `AsyncStorage` - rehydrate fs persistor with it
           return asyncState
         }
