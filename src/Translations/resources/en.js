@@ -330,7 +330,7 @@ export default {
     current_consultation: 'Current consultation',
     home: 'Home',
     synchronization: 'Synchronization',
-    welcome: 'Welcome {{ clinician }}',
+    welcome: 'Welcome',
     settings: 'Settings',
     about: 'About',
     synchronize: 'Synchronize',

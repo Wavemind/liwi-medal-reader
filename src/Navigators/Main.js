@@ -109,9 +109,9 @@ const MainNavigator = ({ route, navigation }) => {
           name="Home"
           component={IndexHomeContainer}
           options={{
-            title: t('navigation.welcome', {
-              clinician: `${clinician.first_name} ${clinician.last_name}`,
-            }),
+            title:
+              t('navigation.welcome') +
+              ` ${clinician.first_name} ${clinician.last_name}`,
           }}
         />
         <Drawer.Screen

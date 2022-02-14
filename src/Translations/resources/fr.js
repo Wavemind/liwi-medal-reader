@@ -332,7 +332,7 @@ export default {
     current_consultation: 'Consultation en cours',
     home: 'Accueil',
     synchronization: 'Synchronisation',
-    welcome: 'Bienvenue {{ clinician }}',
+    welcome: 'Bienvenue',
     settings: 'Réglages',
     about: 'À propos',
     synchronize: 'Synchroniser',
