@@ -6,7 +6,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import {
   persistReducer,
   persistStore,
-  getStoredState,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -14,7 +13,8 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist'
-import _ from 'lodash'
+
+import newGetStoredState from './newGetStoredState'
 
 import algorithm from './Algorithm'
 import auth from './Auth'
@@ -74,6 +74,9 @@ const persistConfig = {
   timeout: null,
 }
 
+// Migration from AsyncStorage to FilesystemStorage
+persistConfig.getStoredState = newGetStoredState
+
 const persistedReducer = persistReducer(persistConfig, reducers)
 
 const store = configureStore({
@@ -94,20 +97,6 @@ const store = configureStore({
   },
 })
 
-// Migration from AsyncStorage to FilesystemStorage
-const persistor = persistStore(store, async (fsError, fsResult) => {
-  if (_.isEmpty(fsResult)) {
-    // if state from fs storage is empty try to read state from previous storage
-    try {
-      const asyncState = await getStoredState({ storage: AsyncStorage })
-      if (!_.isEmpty(asyncState)) {
-        // if data exists in `AsyncStorage` - rehydrate fs persistor with it
-        persistor.rehydrate(asyncState, { serial: false })
-      }
-    } catch (getStateError) {
-      console.warn('getStoredState error', getStateError)
-    }
-  }
-})
+const persistor = persistStore(store)
 
 export { store, persistor }
