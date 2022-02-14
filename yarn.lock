@@ -7137,6 +7137,14 @@ react-native-blob-util@^0.13.11:
     base-64 "0.1.0"
     glob "^7.1.6"
 
+react-native-blob-util@^0.13.12:
+  version "0.13.18"
+  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.13.18.tgz#7b924d55607bda380d6e9862b621ed1ac0c007ec"
+  integrity sha512-f9NyydQKMd24QiyW+LZmDg2rjCTi4GBff3UJzP1BDgEQ8aoHMs4MZmPs5erNH4E577qhEFp5v7HGzXVRQL8SnQ==
+  dependencies:
+    base-64 "0.1.0"
+    glob "^7.1.6"
+
 react-native-camera@^3.43.9:
   version "3.44.3"
   resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.44.3.tgz#f8f35f2484e508b0694dee54a8801a1e0833d851"
@@ -7568,6 +7576,13 @@ redux-flipper@^1.4.2:
   dependencies:
     cycle "^1.0.3"
     dayjs "^1.8.29"
+
+redux-persist-filesystem-storage@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/redux-persist-filesystem-storage/-/redux-persist-filesystem-storage-4.0.0.tgz#a2461807ccbc59f7e198a9bd7b79a5510e44e600"
+  integrity sha512-NuiMhziWU5XkJeR5e4trxTIEpgAMR7X6hubwAAIFnaDKCPhLG5V1sO1sDKe7L6GgbZzYbTLXp/C3hKFkJ99ICw==
+  dependencies:
+    react-native-blob-util "^0.13.12"
 
 redux-persist@^6.0.0:
   version "6.0.0"
