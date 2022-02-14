@@ -6,7 +6,6 @@ import 'react-native-gesture-handler/jestSetup'
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage)
 jest.mock('@react-native-community/netinfo', () => mockNetInfo)
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage)
-jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage)
 jest.mock('@react-native-picker/picker', () => {})
 jest.mock('@react-native-community/checkbox', () => {})
 jest.mock('lottie-react-native', () => {})
@@ -25,6 +24,7 @@ jest.mock('react-native-orientation-locker', () => {})
 jest.mock('react-native-vector-icons/Feather', () => {})
 jest.mock('react-native-blob-util', () => {})
 jest.mock('react-native-date-picker', () => jest.fn())
+jest.mock('redux-persist-filesystem-storage', () => mockAsyncStorage)
 jest.mock('react-native-offline', () => {
   return {
     reducer: {},
