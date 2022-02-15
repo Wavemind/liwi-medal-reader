@@ -12,12 +12,10 @@ import {
 import { unzip } from 'react-native-zip-archive'
 import ReactNativeBlobUtil from 'react-native-blob-util'
 import { checkInternetConnection } from 'react-native-offline'
-import axios from 'axios'
 
 /**
  * The internal imports
  */
-import api from '@/Services'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { RefreshTokenAuthService } from '@/Services/Auth'
@@ -39,64 +37,55 @@ export default async ({ emergencyContentVersion }) => {
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  // TODO: CLEAR WHEN ALL DATA IS UP TO DATE WItH ZIP
-  const abort = axios.CancelToken.source()
+  // Get refresh token
+  const bearToken = await RefreshTokenAuthService()
 
+  // Setup a timeout in case request take too long
   const timeout = setTimeout(() => {
     return oldEmergencyContent
   }, Config.TIMEOUT)
 
-  let emergencyContent
-  let response
+  const response = await ReactNativeBlobUtil.config({
+    fileCache: true,
+    appendExt: 'zip',
+  })
+    .fetch(
+      'GET',
+      `${mainDataUrl}/api/v1/emergency-content?json_version=${emergencyContentVersion}`,
+      {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/zip',
+        Authorization: bearToken,
+      },
+    )
+    .catch(err => {
+      return Promise.reject({ message: err })
+    })
 
-  await api
-    .get(`emergency-content?json_version=${emergencyContentVersion}`, {
-      cancelToken: abort.token,
-    })
-    .then(result => {
-      // Clear The Timeout
-      clearTimeout(timeout)
-      response = result
-      emergencyContent = response?.data?.emergency_content
-    })
+  clearTimeout(timeout)
 
   // If emergency content doesn't change. Load current stored.
-  if (response === undefined || response.status === 204) {
+  if (response === undefined || response.respInfo.status === 204) {
     return oldEmergencyContent
   }
 
-  if (response.headers['content-type'] === 'application/zip') {
-    // ZIP FETCH
-    const bearToken = await RefreshTokenAuthService()
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
 
-    const zipResponse = await ReactNativeBlobUtil.config({
-      fileCache: true,
-      appendExt: 'zip',
-    })
-      .fetch(
-        'GET',
-        `${mainDataUrl}/api/v1/emergency-content?json_version=${emergencyContentVersion}`,
-        {
-          'Content-Type': 'multipart/form-data',
-          Accept: 'application/zip',
-          Authorization: bearToken,
-        },
-      )
-      .catch(err => {
-        return Promise.reject({ message: err })
-      })
+  // Create tmp file to process zip
+  const targetPath = `${DocumentDirectoryPath}/tmp_emergency_content_zip`
+  await mkdir(targetPath)
+  const unzipPath = await unzip(response.path(), targetPath)
 
-    // Create tmp file to process zip
-    const targetPath = `${DocumentDirectoryPath}/tmp_emergency_content_zip`
-    await mkdir(targetPath)
-    const unzipPath = await unzip(zipResponse.path(), targetPath)
+  const zipContent = await readFile(unzipPath + '/content.json')
+  const emergencyContent = JSON.parse(zipContent)
 
-    const zipContent = await readFile(unzipPath + '/content.json')
-    emergencyContent = JSON.parse(zipContent)
+  await unlink(unzipPath)
 
-    await unlink(unzipPath)
-    /////////////////////////////////////////////////////
-  }
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
 
   // Store emergency content in file
   const emergencyContentTargetPath = `${DocumentDirectoryPath}/emergency_content.json`
