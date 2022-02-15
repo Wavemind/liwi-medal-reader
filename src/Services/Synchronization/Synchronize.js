@@ -80,7 +80,7 @@ export default async medicalCasesToSync => {
   // Test if medAL-Data is reachable.
   const isConnected = await checkInternetConnection(mainDataUrl)
 
-  // If it's not return stop synchronization
+  // If it's not stop synchronization
   if (!isConnected) {
     await unlink(path)
 

@@ -9,7 +9,6 @@ import {
   exists,
   readFile,
 } from 'react-native-fs'
-import axios from 'axios'
 import { unzip } from 'react-native-zip-archive'
 import ReactNativeBlobUtil from 'react-native-blob-util'
 import { checkInternetConnection } from 'react-native-offline'
@@ -17,7 +16,6 @@ import { checkInternetConnection } from 'react-native-offline'
 /**
  * The internal imports
  */
-import api from '@/Services'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { RefreshTokenAuthService } from '@/Services/Auth'
@@ -39,68 +37,55 @@ export default async ({ json_version = '' }) => {
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  // TODO: CLEAR WHEN ALL MEDAL-DATA IS UP TO DATE WItH ZIP
-  const abort = axios.CancelToken.source()
+  // Get refresh token
+  const bearToken = await RefreshTokenAuthService()
 
+  // Setup a timeout in case request take too long
   const timeout = setTimeout(() => {
     return { ...oldAlgorithm, updated: false }
   }, Config.TIMEOUT)
 
-  let response
-  let data
-
-  await api
-    .get(`algorithm?json_version=${json_version}`, {
-      cancelToken: abort.token,
+  const response = await ReactNativeBlobUtil.config({
+    fileCache: true,
+    appendExt: 'zip',
+  })
+    .fetch(
+      'GET',
+      `${mainDataUrl}/api/v1/algorithm?json_version=${json_version}`,
+      {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/zip',
+        Authorization: bearToken,
+      },
+    )
+    .catch(err => {
+      return Promise.reject({ message: err })
     })
-    .then(result => {
-      // Clear The Timeout
-      clearTimeout(timeout)
-      response = result
-      data = result?.data
-    })
 
-  //////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////
+  clearTimeout(timeout)
 
   // If algorithm doesn't change. Load current stored.
-  if (response === undefined || response.status === 204) {
+  if (response === undefined || response.respInfo.status === 204) {
     return { ...oldAlgorithm, updated: false }
   }
 
-  if (response.headers['content-type'] === 'application/zip') {
-    // ZIP FETCH
-    const bearToken = await RefreshTokenAuthService()
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
 
-    const zipResponse = await ReactNativeBlobUtil.config({
-      fileCache: true,
-      appendExt: 'zip',
-    })
-      .fetch(
-        'GET',
-        `${mainDataUrl}/api/v1/algorithm?json_version=${json_version}`,
-        {
-          'Content-Type': 'multipart/form-data',
-          Accept: 'application/zip',
-          Authorization: bearToken,
-        },
-      )
-      .catch(err => {
-        return Promise.reject({ message: err })
-      })
+  // Create tmp file to process zip
+  const targetPath = `${DocumentDirectoryPath}/tmp_algorithm_zip`
+  await mkdir(targetPath)
+  const unzipPath = await unzip(response.path(), targetPath)
 
-    // Create tmp file to process zip
-    const targetPath = `${DocumentDirectoryPath}/tmp_algorithm_zip`
-    await mkdir(targetPath)
-    const unzipPath = await unzip(zipResponse.path(), targetPath)
+  const zipContent = await readFile(unzipPath + '/content.json')
+  const data = JSON.parse(zipContent)
 
-    const zipContent = await readFile(unzipPath + '/content.json')
-    data = JSON.parse(zipContent)
+  await unlink(unzipPath)
 
-    await unlink(unzipPath)
-    /////////////////////////////////////////////////////
-  }
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
 
   // Regroup nodes, final diagnoses and health cares into nodes key
   const nodes = {
