@@ -17,7 +17,7 @@ import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../algorithm.json')
+  const algorithmFile = require('../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,
@@ -181,10 +181,11 @@ describe('Final diagnosis are included / excluded correctly', () => {
 
   it('Reference table - should include complicated severe acute malnutrition', async () => {
     await setAnswer(97, 10) // Muac => 10
+    await setAnswer(461, 725) // Cc General 2mois-5ans => Yes
     await setAnswer(3184, 2341) // Vomiting everything => Yes
     await setAnswer(86, 146) // Unconscious or Lethargic (Unusually sleepy) => No
     await setAnswer(1685, 752) // Convulsing now => No
-    await setAnswer(11645, 10268) // Oral fluid test => Not able to drink / vomits after drinking
+    await setAnswer(22742, 26878) // Oral fluid test => Completely unable to drink
     const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([3806]))
   })

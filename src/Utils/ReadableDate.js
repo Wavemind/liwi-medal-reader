@@ -37,16 +37,16 @@ export default (from, to) => {
     })
   }
 
+  /* https://wavemind.atlassian.net/jira/software/c/projects/LIWI/boards/8/backlog?view=detail&selectedIssue=LIWI-1668&issueLimit=100 */
   if (ageInDays >= 31 && ageInDays < 730) {
     readableDate = i18n.t('patient.readable_birth_date.months', {
-      value: Math.floor(ageInDays / 30.4375),
+      value: Math.floor(ageInDays / 30),
     })
   }
 
   if (ageInDays >= 730) {
     readableDate = i18n.t('patient.readable_birth_date.years', {
-      value:
-        ageInDays === 730 ? ageInDays / 365 : Math.floor(ageInDays / 365.25),
+      value: ageInDays === 730 ? ageInDays / 365 : Math.floor(ageInDays / 365),
     })
   }
 

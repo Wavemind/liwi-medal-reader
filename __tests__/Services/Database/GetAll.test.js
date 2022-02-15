@@ -15,7 +15,7 @@ import InsertPatient from '@/Store/DatabasePatient/Insert'
 import { store } from '@/Store/index'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../algorithm.json')
+  const algorithmFile = require('../../version_1.json')
 
   await store.dispatch(
     LoadAlgorithm.action({

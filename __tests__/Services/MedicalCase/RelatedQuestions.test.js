@@ -14,7 +14,7 @@ import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../algorithm.json')
+  const algorithmFile = require('../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,

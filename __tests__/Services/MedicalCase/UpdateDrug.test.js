@@ -17,7 +17,7 @@ import { agreeFinalDiagnosis } from '../../Utils/FinalDiagnosis'
 import { getAvailableHealthcare } from '@/Utils/Drug'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../algorithm.json')
+  const algorithmFile = require('../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,
@@ -49,6 +49,9 @@ describe('Test Drugs Exclusion', () => {
     const pharyngitisId = 192
     const pharyngitis = algorithm.nodes[pharyngitisId]
 
+    const weightId = algorithm.config.basic_questions.weight_question_id
+    await setAnswer(weightId, '15')
+
     // Treatment Condition
     await setAnswer(2103, 925)
 
@@ -62,6 +65,7 @@ describe('Test Drugs Exclusion', () => {
     // Treatment Condition
     await setAnswer(2253, 1171)
     await setAnswer(2251, 1166)
+    await setAnswer(2103, 925)
 
     // Agree pyelonephritis
     const pyelonephritisId = 257
