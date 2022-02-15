@@ -105,9 +105,7 @@ const IndexSettingsContainer = () => {
         <Text style={settings.text}>
           {t('containers.settings.general.app_version')}
         </Text>
-        <Text style={[settings.text, Fonts.textBold]}>
-          {`${appVersion}.${appBuildNumber}`}
-        </Text>
+        <Text style={[settings.text, Fonts.textBold]}>{appVersion}</Text>
       </View>
       <View style={settings.itemGeneral}>
         <SquareSelect
