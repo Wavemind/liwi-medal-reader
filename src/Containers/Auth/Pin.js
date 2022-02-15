@@ -73,7 +73,7 @@ const PinAuthContainer = () => {
       const result = await dispatch(
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
-      console.log(result)
+
       setMessageTypes(prev => [
         ...prev,
         result.payload.updated ? 'new_algorithm' : 'no_change_algorithm',
