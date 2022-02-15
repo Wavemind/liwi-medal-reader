@@ -51,6 +51,13 @@ export default {
       pin: {
         unlock: 'Enter the PIN to unlock the tablet',
         delete: 'Delete',
+        retrieving_algorithm: 'Retrieving algorithm...',
+        new_algorithm: 'New algorithm loaded',
+        no_change_algorithm: 'No change. Keeping local algorithm',
+        retrieving_emergency_content: 'Retrieving emergency content...',
+        new_emergency_content: 'New emergency content loaded',
+        no_change_emergency_content:
+          'No change. Keeping local emergency content',
       },
     },
     additional_list: {

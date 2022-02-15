@@ -51,6 +51,15 @@ export default {
       pin: {
         unlock: "Entrer le NIP pour déverrouiller l'application",
         delete: 'Effacer',
+        retrieving_algorithm: 'Recherche de nouvel algorithme...',
+        new_algorithm: 'Nouvel algorithme chargé',
+        no_change_algorithm:
+          "Pas de changement. Chargement de l'algorithme local",
+        retrieving_emergency_content:
+          "Recherche de mise à jour du contenu d'urgence...",
+        new_emergency_content: "Contenu d'urgence chargé",
+        no_change_emergency_content:
+          'Pas de changement. Chargement du contenu local',
       },
     },
     additional_list: {
