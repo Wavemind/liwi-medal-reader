@@ -201,9 +201,9 @@ export default {
       health_facility: {
         title: 'Health facility',
       },
-    },
-    device: {
-      title: 'Device',
+      device: {
+        title: 'Device',
+      },
     },
   },
   components: {
@@ -330,7 +330,7 @@ export default {
     current_consultation: 'Current consultation',
     home: 'Home',
     synchronization: 'Synchronization',
-    welcome: 'Welcome {{ clinician }}',
+    welcome: 'Welcome',
     settings: 'Settings',
     about: 'About',
     synchronize: 'Synchronize',

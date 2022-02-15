@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import FilesystemStorage from 'redux-persist-filesystem-storage'
 import { combineReducers } from 'redux'
 import { reducer as network } from 'react-native-offline'
 import { configureStore } from '@reduxjs/toolkit'
 import {
+  getStoredState,
   persistReducer,
   persistStore,
   FLUSH,
@@ -12,6 +14,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist'
+import isEmpty from 'lodash/isEmpty'
 
 import algorithm from './Algorithm'
 import auth from './Auth'
@@ -58,7 +61,7 @@ const reducers = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
+  storage: FilesystemStorage,
   whitelist: [
     'auth',
     'medicalCase',
@@ -68,7 +71,33 @@ const persistConfig = {
     'theme',
     'emergency',
   ],
+  version: 1,
   timeout: null,
+  migrate: async state => {
+    // TODO: SHOULD BE REMOVED IN NEXT RELEASE
+    // Migrate from AsyncStorage to FilesystemStorage
+    const asyncState = await getStoredState({
+      key: 'root',
+      storage: AsyncStorage,
+    })
+
+    if (
+      !!asyncState &&
+      asyncState?.auth?.item.hasOwnProperty('deviceId') &&
+      !state?.auth?.item.hasOwnProperty('deviceId')
+    ) {
+      // if state from fs storage is empty try to read state from previous storage
+      try {
+        if (!isEmpty(asyncState)) {
+          // if data exists in `AsyncStorage` - rehydrate fs persistor with it
+          return asyncState
+        }
+      } catch (getStateError) {
+        __DEV__ && console.warn('getStoredState error', getStateError)
+      }
+    }
+    return state
+  },
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
