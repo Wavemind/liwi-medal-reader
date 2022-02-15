@@ -6,7 +6,7 @@ import ArmAddCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmAddCustomDrugs'
 import ArmRemoveCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmRemoveCustomDrugs'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../../algorithm.json')
+  const algorithmFile = require('../../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,

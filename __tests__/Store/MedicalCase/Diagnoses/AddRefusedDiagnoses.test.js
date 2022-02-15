@@ -4,7 +4,7 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnoses'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../../algorithm.json')
+  const algorithmFile = require('../../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,
@@ -24,6 +24,8 @@ describe('Handle refused diagnosis addition', () => {
       }),
     )
 
-    expect(store.getState().medicalCase.item.diagnosis.refused.includes(diagnosisId)).toBe(true)
+    expect(
+      store.getState().medicalCase.item.diagnosis.refused.includes(diagnosisId),
+    ).toBe(true)
   })
 })

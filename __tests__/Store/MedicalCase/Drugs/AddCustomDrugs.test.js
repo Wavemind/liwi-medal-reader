@@ -5,7 +5,7 @@ import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses
 import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../../algorithm.json')
+  const algorithmFile = require('../../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,
@@ -55,7 +55,7 @@ describe('Handle custom drugs addition', () => {
     expect(
       store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs,
     ).toStrictEqual({
-      '1679': {
+      1679: {
         id: '1679',
         name: 'Alcohol',
         duration: '',

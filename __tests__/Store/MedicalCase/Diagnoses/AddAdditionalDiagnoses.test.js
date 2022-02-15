@@ -4,7 +4,7 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../../algorithm.json')
+  const algorithmFile = require('../../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,
@@ -47,7 +47,7 @@ describe('Handle additional diagnosis addition', () => {
         id: 60,
         managements: [1808, 3354],
         drugs: {
-          proposed: [1660, 1709, 3360, 3501],
+          proposed: [1660, 1709, 3360, 3501, 22749],
           agreed: {},
           refused: [],
           additional: {},

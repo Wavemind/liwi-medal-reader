@@ -4,7 +4,7 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../../algorithm.json')
+  const algorithmFile = require('../../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,

@@ -7,7 +7,7 @@ import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
 import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../../algorithm.json')
+  const algorithmFile = require('../../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,
@@ -125,8 +125,8 @@ describe('Handle agreed drugs removal', () => {
 
     expect(
       Object.keys(
-        store.getState().medicalCase.item.diagnosis.additional[diagnosisId].drugs
-          .agreed,
+        store.getState().medicalCase.item.diagnosis.additional[diagnosisId]
+          .drugs.agreed,
       ).includes(drugId.toString()),
     ).toBe(false)
   })

@@ -8,7 +8,7 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../algorithm.json')
+  const algorithmFile = require('../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,

@@ -6,7 +6,7 @@ import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalD
 import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
 
 beforeAll(async () => {
-  const algorithmFile = require('../../../algorithm.json')
+  const algorithmFile = require('../../../version_1.json')
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,
