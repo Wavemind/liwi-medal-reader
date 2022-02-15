@@ -39,14 +39,13 @@ export default (from, to) => {
 
   if (ageInDays >= 31 && ageInDays < 730) {
     readableDate = i18n.t('patient.readable_birth_date.months', {
-      value: Math.floor(ageInDays / 30.4375),
+      value: Math.floor(ageInDays / 30),
     })
   }
 
   if (ageInDays >= 730) {
     readableDate = i18n.t('patient.readable_birth_date.years', {
-      value:
-        ageInDays === 730 ? ageInDays / 365 : Math.floor(ageInDays / 365.25),
+      value: ageInDays === 730 ? ageInDays / 365 : Math.floor(ageInDays / 365),
     })
   }
 
