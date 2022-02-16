@@ -126,7 +126,7 @@ return <Icon name="about" />
 ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/setIcons-2.jpg?raw=true 'section 2')
 ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/setIcons-3.jpg?raw=true 'section 3')
 
-## Writing and tunning tests
+## Writing and running tests
 
 This project is set up to use [jest](https://facebook.github.io/jest/) for tests. You can configure whatever testing strategy you like, but jest works out of the box. Create test files in directories called `__tests__` or with the `.test` extension to have the files loaded by jest. See the [the template project](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/App.test.js) for an example test. The [jest documentation](https://facebook.github.io/jest/docs/en/getting-started.html) is also a wonderful resource, as is the [React Native testing tutorial](https://facebook.github.io/jest/docs/en/tutorial-react-native.html).
 
