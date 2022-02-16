@@ -1,6 +1,6 @@
 {
   "name": "medAL-reader",
-  "version": "1.0.122",
+  "version": "1.0.120",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
