@@ -10,8 +10,7 @@
     "test": "jest --verbose --coverage",
     "test:update": "jest --verbose --coverage --updateSnapshot",
     "test:watch": "jest --verbose --watch",
-    "setVersion": "npx react-native-version-setter",
-    "version": "auto-changelog -p && git add CHANGELOG.md",
+    "setVersion": "npx react-native-version-setter ${0} && auto-changelog -v ${0} && git add .",
     "coverage": "jest --verbose --coverage && open ./coverage/lcov-report/index.html"
   },
   "dependencies": {
@@ -22,7 +21,7 @@
     "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/checkbox": "^0.5.7",
     "@react-native-community/masked-view": "^0.1.11",
-    "@react-native-community/netinfo": "^6.0.      0",
+    "@react-native-community/netinfo": "^6.0.0",
     "@react-native-community/slider": "^3.0.3",
     "@react-native-picker/picker": "^1.16.1",
     "@react-navigation/bottom-tabs": "^5.11.8",
@@ -124,5 +123,6 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!@react-native|react-native)"
     ]
-  }
+  },
+  "packageManager": "yarn@3.1.1"
 }
