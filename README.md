@@ -8,29 +8,31 @@ This project was bootstrapped with [TheCodingMachine React Native boilerplate](h
 
 Below you'll find information about performing common tasks.
 
-## Table of Contents
+## Table of contents
 
-- [MedAl-reader](#medal-reader-)
+- [MedAl-reader ![CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)](#medal-reader-)
   - [Setup](#setup)
-  - [Table of Contents](#table-of-contents)
-  - [Available Scripts](#available-scripts)
+  - [Table of contents](#table-of-contents)
+  - [Available scripts](#available-scripts)
       - [`yarn run android`](#yarn-run-android)
       - [`yarn test`](#yarn-test)
       - [`yarn build` only for Linux and MacOS](#yarn-build-only-for-linux-and-macos)
       - [`yarn w-build` only for Windows](#yarn-w-build-only-for-windows)
       - [`yarn test:watch`](#yarn-testwatch)
-  - [Customizing App Display Name and Icon](#customizing-app-display-name-and-icon)
-  - [Data Structure](#data-structure)
-    - [Medical Case](#medical-case)
+      - [`yarn setVersion`](#yarn-setversion-semanticversion)
+      - [`yarn changeLog`](#yarn-setchangelog)
+  - [Customizing app display name and icons](#customizing-app-display-name-and-icon)
+  - [Data structure](#data-structure)
+    - [Medical case](#medical-case)
   - [Icons available](#icons-available)
   - [Date](#date)
     - [ColoredIcon](#coloredicon)
     - [Icon](#icon)
     - [API](#api)
-  - [Writing and Running Tests](#writing-and-running-tests)
+  - [Writing and running tests](#writing-and-running-tests)
   - [Publishing](#publishing)
 
-## Available Scripts
+## Available scripts
 
 If Yarn was installed when the project was initialized, then dependencies will have been installed via Yarn, and you should probably use it to run these commands as well. Unlike dependency installation, command running syntax is identical for Yarn and NPM at the time of this writing.
 
@@ -54,13 +56,21 @@ Generate release version of app
 
 Watches your code and runs the tests everytime your code is edited
 
-## Customizing App Display Name and Icon
+### `yarn setVersion [SemanticVersion]`
+
+Set version number and build number
+
+### `yarn setChangelog`
+
+Define changelog
+
+## Customizing app display name and icons
 
 Please refer to [TheCodingMachine React Native boilerplate](https://github.com/thecodingmachine/react-native-boilerplate) instruction.
 
-## Data Structure
+## Data structure
 
-### Medical Case
+### Medical case
 
 | Field           | type                         | Description                                                                  |
 | --------------- | ---------------------------- | ---------------------------------------------------------------------------- |
@@ -121,10 +131,9 @@ return <Icon name="about" />
 ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/setIcons-2.jpg?raw=true 'section 2')
 ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/setIcons-3.jpg?raw=true 'section 3')
 
-## Writing and Running Tests
+## Writing and running tests
 
 This project is set up to use [jest](https://facebook.github.io/jest/) for tests. You can configure whatever testing strategy you like, but jest works out of the box. Create test files in directories called `__tests__` or with the `.test` extension to have the files loaded by jest. See the [the template project](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/App.test.js) for an example test. The [jest documentation](https://facebook.github.io/jest/docs/en/getting-started.html) is also a wonderful resource, as is the [React Native testing tutorial](https://facebook.github.io/jest/docs/en/tutorial-react-native.html).
 
 ## Publishing
-
-Choose a version name on this [website](https://www.ikea.com/)
+We're using [sementic](https://semver.org) for version number. We have set up [react-native-version-setter](https://github.com/tj-mc/react-native-version-setter) to manage version number

@@ -27,6 +27,7 @@ build/
 .idea
 .vscode
 .gradle
+.yarn
 local.properties
 *.iml
 android/java_*.hprof
