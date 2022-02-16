@@ -34,6 +34,7 @@ const PinAuthContainer = () => {
 
   // Local state definition
   const [status, setStatus] = useState('initial')
+  const [messageTypes, setMessageTypes] = useState([])
   const [loading, setLoading] = useState(false)
 
   // Get values from the store
@@ -64,21 +65,34 @@ const PinAuthContainer = () => {
    * @returns {}
    */
   const handlePin = async value => {
+    setMessageTypes([])
     if (value === pinCode) {
       setLoading(true)
+      setMessageTypes(prev => [...prev, 'retrieving_algorithm'])
 
       const result = await dispatch(
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
 
+      setMessageTypes(prev => [
+        ...prev,
+        result.payload.updated ? 'new_algorithm' : 'no_change_algorithm',
+      ])
+
       if (isFulfilled(result)) {
+        setMessageTypes(prev => [...prev, 'retrieving_emergency_content'])
         await dispatch(
           FetchOneEmergency.action({
             emergencyContentVersion: emergencyContentVersion,
             algorithmId: result.payload.algorithm_id,
           }),
         )
-
+        setMessageTypes(prev => [
+          ...prev,
+          result.payload.updated
+            ? 'new_emergency_content'
+            : 'no_change_emergency_content',
+        ])
         await dispatch(
           ChangeVersion.action({
             newVersionId: result.payload.version_id,
@@ -109,7 +123,7 @@ const PinAuthContainer = () => {
 
   return (
     <KeyboardAvoidingView behavior="height" style={global.wrapper}>
-      <Animated.View style={global.animation(fadeAnim)}>
+      <Animated.ScrollView style={global.animation(fadeAnim)}>
         <Text style={auth.header}>
           {currentClinician.first_name} {currentClinician.last_name}
           {'\n'}
@@ -122,6 +136,13 @@ const PinAuthContainer = () => {
             {algorithmFetchOneError.message}
           </Text>
         )}
+        <View style={authPin.messageWrapper}>
+          {messageTypes.map(messageType => (
+            <Text style={authPin.secondTitle}>
+              {t(`containers.auth.pin.${messageType}`)}
+            </Text>
+          ))}
+        </View>
         <View style={authPin.wrapper}>
           <PINCode
             passwordLength={pinCode.length}
@@ -156,7 +177,7 @@ const PinAuthContainer = () => {
         <View style={auth.themeToggleWrapper}>
           <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
         </View>
-      </Animated.View>
+      </Animated.ScrollView>
     </KeyboardAvoidingView>
   )
 }
