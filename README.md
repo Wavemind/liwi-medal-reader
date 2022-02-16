@@ -20,6 +20,7 @@ Below you'll find information about performing common tasks.
       - [`yarn w-build` only for Windows](#yarn-w-build-only-for-windows)
       - [`yarn test:watch`](#yarn-testwatch)
       - [`yarn setVersion`](#yarn-setversion-semanticversion)
+      - [`yarn changeLog`](#yarn-setchangelog)
   - [Customizing app display name and icons](#customizing-app-display-name-and-icon)
   - [Data structure](#data-structure)
     - [Medical case](#medical-case)
@@ -58,6 +59,10 @@ Watches your code and runs the tests everytime your code is edited
 ### `yarn setVersion [SemanticVersion]`
 
 Set version number and build number
+
+### `yarn setChangelog`
+
+Define changelog
 
 ## Customizing app display name and icons
 

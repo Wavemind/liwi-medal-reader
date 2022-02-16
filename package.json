@@ -10,7 +10,8 @@
     "test": "jest --verbose --coverage",
     "test:update": "jest --verbose --coverage --updateSnapshot",
     "test:watch": "jest --verbose --watch",
-    "setVersion": "npx react-native-version-setter ${0} && auto-changelog -v ${0} && git add .",
+    "setVersion": "npx react-native-version-setter",
+    "setChangelog": "auto-changelog -p && git add CHANGELOG.md",
     "coverage": "jest --verbose --coverage && open ./coverage/lcov-report/index.html"
   },
   "dependencies": {
