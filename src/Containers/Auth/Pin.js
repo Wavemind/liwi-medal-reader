@@ -138,7 +138,7 @@ const PinAuthContainer = () => {
         )}
         <View style={authPin.messageWrapper}>
           {messageTypes.map(messageType => (
-            <Text style={authPin.secondTitle}>
+            <Text style={authPin.secondTitle} key={messageType}>
               {t(`containers.auth.pin.${messageType}`)}
             </Text>
           ))}
