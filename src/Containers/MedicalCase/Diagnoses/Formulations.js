@@ -3,9 +3,11 @@
  */
 import React, { useEffect, useState } from 'react'
 import { ScrollView, View, Text } from 'react-native'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useIsFocused } from '@react-navigation/native'
 import isEqual from 'lodash/isEqual'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -25,6 +27,7 @@ const FormulationsMedicalCaseContainer = () => {
   const isFocused = useIsFocused()
 
   const [drugs, setDrugs] = useState(TransformFormulationsService())
+  const nodes = useSelector(state => state.algorithm.item.nodes)
 
   /**
    * Transforms stored diagnoses/drugs into a usable local format
@@ -47,6 +50,16 @@ const FormulationsMedicalCaseContainer = () => {
     setDrugs(newDrugs)
   }
 
+  /**
+   * Sorts the drugs by level_of_urgency
+   * @returns {*}
+   */
+  const sortDrugsByUrgency = () =>
+    orderBy(Object.values(drugs), drug => nodes[drug.id].level_of_urgency, [
+      'desc',
+      'asc',
+    ])
+
   return (
     <ScrollView>
       <View style={formulations.wrapper}>
@@ -56,7 +69,7 @@ const FormulationsMedicalCaseContainer = () => {
           </Text>
         </View>
         <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-          {Object.values(drugs).map((drug, i) => (
+          {sortDrugsByUrgency().map((drug, i) => (
             <FormulationDrugs
               key={`formulation_drug-${drug.id}`}
               drug={drug}
