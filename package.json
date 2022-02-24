@@ -1,6 +1,6 @@
 {
   "name": "medAL-reader",
-  "version": "1.0.121",
+  "version": "1.0.120",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Wavemind/liwi-medal-reader.git"
+    "url": "git+git@github.com:Wavemind/liwi-medal-reader.git"
   },
   "dependencies": {
     "@appsignal/javascript": "^1.3.12",
