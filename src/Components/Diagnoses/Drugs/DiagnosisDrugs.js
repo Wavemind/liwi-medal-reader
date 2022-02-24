@@ -29,7 +29,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
 
-  const algorithm = useSelector(state => state.algorithm.item)
+  const nodes = useSelector(state => state.algorithm.item.nodes)
   const diagnoses = useSelector(
     state => state.medicalCase.item.diagnosis[diagnosisKey],
   )
@@ -38,13 +38,12 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
    * Sorts the diagnoses by level_of_urgency
    * @returns {*}
    */
-  const sortDiagnosesByUrgency = () => {
-    return orderBy(
+  const sortDiagnosesByUrgency = () =>
+    orderBy(
       Object.values(diagnoses),
-      finalDiagnosis => algorithm.nodes[finalDiagnosis.id].level_of_urgency,
+      finalDiagnosis => nodes[finalDiagnosis.id].level_of_urgency,
       ['desc', 'asc'],
     )
-  }
 
   const [sortedDiagnoses, setSortedDiagnoses] = useState(
     sortDiagnosesByUrgency(),
@@ -91,7 +90,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
     <View key={`diagnosis-${diagnosis.id}`} style={drugs.wrapper}>
       <View style={drugs.diagnosisHeaderWrapper}>
         <Text style={drugs.diagnosisHeader}>
-          {translate(algorithm.nodes[diagnosis.id].label)}
+          {translate(nodes[diagnosis.id].label)}
         </Text>
         <Text style={drugs.diagnosisKey}>
           {t(
@@ -112,7 +111,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
         ) : (
           orderBy(
             diagnosis.drugs.proposed,
-            drugId => algorithm.nodes[drugId].level_of_urgency,
+            drugId => nodes[drugId].level_of_urgency,
             ['desc', 'asc'],
           ).map((drugId, i) => (
             <View
@@ -123,7 +122,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
             >
               <View style={drugs.drugTitleWrapper}>
                 <Text style={drugs.drugTitle}>
-                  {translate(algorithm.nodes[drugId].label)}
+                  {translate(nodes[drugId].label)}
                 </Text>
                 <DrugBooleanButton
                   diagnosis={diagnosis}

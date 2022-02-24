@@ -22,11 +22,10 @@ const FinalDiagnosesMedicalCaseContainer = () => {
   // Theme and style elements deconstruction
   const { Gutters } = useTheme()
   const dispatch = useDispatch()
-
   const { t } = useTranslation()
+  const versionName = useSelector(state => state.algorithm.item.version_name)
 
   useEffect(() => dispatch(SetDiagnoses.action({})), [])
-  const versionName = useSelector(state => state.algorithm.item.version_name)
 
   return (
     <ScrollView style={Gutters.regularHPadding}>
