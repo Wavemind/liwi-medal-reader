@@ -11,7 +11,7 @@
     "test:update": "jest --verbose --coverage --updateSnapshot",
     "test:watch": "jest --verbose --watch",
     "np": "np --no-publish",
-    "postversion": "react-native-version",
+    "postversion": "react-native-version -t android",
     "coverage": "jest --verbose --coverage && open ./coverage/lcov-report/index.html"
   },
   "repository": {
