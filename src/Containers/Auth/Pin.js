@@ -49,6 +49,9 @@ const PinAuthContainer = () => {
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
+  const emergencyContentFetchOneError = useSelector(
+    state => state.emergency.emergency.error,
+  )
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -66,6 +69,7 @@ const PinAuthContainer = () => {
    */
   const handlePin = async value => {
     setMessageTypes([])
+
     if (value === pinCode) {
       setLoading(true)
       setMessageTypes(prev => [...prev, 'retrieving_algorithm'])
@@ -74,12 +78,12 @@ const PinAuthContainer = () => {
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
 
-      setMessageTypes(prev => [
-        ...prev,
-        result.payload.updated ? 'new_algorithm' : 'no_change_algorithm',
-      ])
-
       if (isFulfilled(result)) {
+        setMessageTypes(prev => [
+          ...prev,
+          result.payload.updated ? 'new_algorithm' : 'no_change_algorithm',
+        ])
+
         setMessageTypes(prev => [...prev, 'retrieving_emergency_content'])
         await dispatch(
           FetchOneEmergency.action({
@@ -114,11 +118,11 @@ const PinAuthContainer = () => {
         }
       } else {
         setStatus('failure')
+        setLoading(false)
       }
     } else {
       setStatus('failure')
     }
-    setLoading(false)
   }
 
   return (
@@ -134,6 +138,11 @@ const PinAuthContainer = () => {
         {algorithmFetchOneError && (
           <Text style={auth.errorMessage}>
             {algorithmFetchOneError.message}
+          </Text>
+        )}
+        {emergencyContentFetchOneError && (
+          <Text style={auth.errorMessage}>
+            {emergencyContentFetchOneError.message}
           </Text>
         )}
         <View style={authPin.messageWrapper}>
@@ -173,7 +182,6 @@ const PinAuthContainer = () => {
             stylePinCodeRowButtons={authPin.codeButtons}
           />
         </View>
-
         <View style={auth.themeToggleWrapper}>
           <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
         </View>
