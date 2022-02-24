@@ -30,7 +30,7 @@ const transformFormulations = () => {
             const drugFormulations = nodes[drug.id].formulations
             newDrugs[drug.id] = {
               id: drug.id,
-              relatedDiagnoses: [relatedDiagnosis], 
+              relatedDiagnoses: [relatedDiagnosis],
               selectedFormulationId:
                 drugFormulations.length === 1
                   ? drugFormulations[0].id

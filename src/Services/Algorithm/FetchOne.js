@@ -59,7 +59,7 @@ export default async ({ json_version = '' }) => {
       },
     )
     .catch(err => {
-      return Promise.reject({ message: err })
+      return Promise.reject({ message: `Algorithm - ${err}` })
     })
 
   clearTimeout(timeout)

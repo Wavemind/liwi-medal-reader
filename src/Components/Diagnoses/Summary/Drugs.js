@@ -2,8 +2,10 @@
  * The external imports
  */
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Text, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -19,8 +21,19 @@ const Drugs = ({ diagnosis }) => {
   } = useTheme()
 
   const { t } = useTranslation()
-
+  const nodes = useSelector(state => state.algorithm.item.nodes)
   const [keys] = useState(['agreed', 'additional'])
+
+  /**
+   * Sorts the drugs by level_of_urgency
+   * @returns {*}
+   */
+  const sortDrugsByUrgency = key =>
+    orderBy(
+      Object.values(diagnosis.drugs[key]),
+      drug => nodes[drug.id].level_of_urgency,
+      ['desc', 'asc'],
+    )
 
   return (
     <View>
@@ -37,7 +50,7 @@ const Drugs = ({ diagnosis }) => {
         </Text>
       ) : (
         keys.map(key =>
-          Object.values(diagnosis.drugs[key]).map((drug, i) => (
+          sortDrugsByUrgency(key).map((drug, i) => (
             <Drug
               key={`summary_diagnosis_drugs-${drug.id}`}
               drug={drug}

@@ -110,7 +110,6 @@ export default function () {
    * @returns {Promise<void>}
    */
   const insertPatient = async (patientData, medicalCaseData) => {
-
     const response = await api.post('/api/patients', {
       medical_case: {
         id: medicalCaseData.id,

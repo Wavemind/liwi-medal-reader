@@ -55,10 +55,7 @@ export const handleManagements = (children, questionsToDisplay, instances) => {
     .map(agreedFinalDiagnosis =>
       Object.values(nodes[agreedFinalDiagnosis.id].managements)
         .filter(management => {
-          if (
-            management.conditions.length === 0 ||
-            calculateCondition(management)
-          ) {
+          if (calculateCondition(management)) {
             return management
           }
         })
@@ -67,7 +64,7 @@ export const handleManagements = (children, questionsToDisplay, instances) => {
     .flat()
 
   children.forEach(instance => {
-    if (instance.conditions.length === 0 || calculateCondition(instance)) {
+    if (calculateCondition(instance)) {
       if (nodes[instance.id].category === Config.CATEGORIES.management) {
         if (!isHealthcareExcluded(instance.id, managements)) {
           questionsToDisplay.push(instance.id)
@@ -107,7 +104,7 @@ export const handleDrugs = (
   }
 
   children.forEach(instance => {
-    if (instance.conditions.length === 0 || calculateCondition(instance)) {
+    if (calculateCondition(instance)) {
       if (nodes[instance.id].category === Config.CATEGORIES.drug) {
         if (exclusion) {
           if (!isHealthcareExcluded(instance.id, agreedDrugs)) {

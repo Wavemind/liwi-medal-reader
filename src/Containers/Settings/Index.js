@@ -5,7 +5,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { getVersion, getBuildNumber } from 'react-native-device-info'
+import { getVersion } from 'react-native-device-info'
 
 /**
  * The internal imports
@@ -47,7 +47,6 @@ const IndexSettingsContainer = () => {
     })),
   )
   const [appVersion] = useState(getVersion())
-  const [appBuildNumber] = useState(getBuildNumber())
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current

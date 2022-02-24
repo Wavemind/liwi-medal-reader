@@ -59,7 +59,7 @@ export default async ({ emergencyContentVersion }) => {
       },
     )
     .catch(err => {
-      return Promise.reject({ message: err })
+      return Promise.reject({ message: `Emergency - ${err}` })
     })
 
   clearTimeout(timeout)
