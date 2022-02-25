@@ -13,6 +13,8 @@ import { store } from '@/Store'
 import { SetDiagnosesService } from '@/Services/MedicalCase'
 import { setBirthDate } from '../../Utils/BirthDate'
 import { setAnswer } from '../../Utils/Answer'
+import { agreeFinalDiagnosis } from '../../Utils/FinalDiagnosis'
+import { getAvailableHealthcare } from '@/Utils/Drug'
 
 beforeAll(async () => {
   const algorithmFile = require('../../version_41.json')
@@ -45,15 +47,24 @@ beforeEach(async () => {
 
 describe('Final diagnosis are included / excluded correctly in TIMCI Senegale ', () => {
   it('Should be propose uncomplicated hernia', async () => {
+    const state = store.getState()
+    const algorithm = state.algorithm.item
+    const uncomplicatedHernia = algorithm.nodes[10047]
+
     await setAnswer(9770, 8314) // Urine or genital problems
     await setAnswer(9439, 8069) // Groin or genital pain / swelling
 
     await setAnswer(9297, 7752) // Painful swelling of groin
     await setAnswer(9384, 7941) // Inguinal / femoral hernia
 
-    await setAnswer(10049, 3252) // Hernia reducible
+    await setAnswer(10049, 8449) // Hernia reducible
 
     const result = SetDiagnosesService()
     expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([10047])) // Uncomplicated hernia
+    agreeFinalDiagnosis(10047)
+
+    expect(getAvailableHealthcare(uncomplicatedHernia, 'managements')).toEqual(
+      expect.arrayContaining([9627]), // Refer for specialized outpatient management: Surgical
+    )
   })
 })
