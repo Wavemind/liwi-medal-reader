@@ -81,7 +81,7 @@ describe('Final diagnosis are included / excluded correctly in Timci Tanzania ',
   //   await setAnswer(5136, 5273) // MUAC -> Default value
 
   //   await setAnswer(6083, 4835) // Convulsing now -> No
-  //   await setAnswer(22730, 26835) // Unconscious -> No
+  // await setAnswer(22730, 26835) // Unconscious -> No
   //   await setAnswer(5602, 4217) // Lethargic -> No
   //   await setAnswer(5751, 4572) // Vomiting everything -> No
   //   await setAnswer(5533, 4056) // Fever whithin the last 2 days -> Yes
@@ -116,4 +116,39 @@ describe('Final diagnosis are included / excluded correctly in Timci Tanzania ',
   //     expect.arrayContaining([6206, 6259]),
   //   ) // Moderate malnutrition, Mastoiditis
   // })
+
+  it('Should propose hypoxaemia', async () => {
+    const algorithm = store.getState().algorithm.item
+    const weightId = algorithm.config.basic_questions.weight_question_id
+    await setBirthDate(store, 8, 'month')
+    await setAnswer(weightId, '9') // Weight
+
+    await setAnswer(22727, 26825) // Type of consultation -> First visit
+    await setAnswer(10460, 8681) // Emergency question -> No
+    await setAnswer(5144, 3359) // CC
+    await setAnswer(5553, '37') // Ax temp (BM) -> 37
+    await setAnswer(5140, 5274) // Height -> Not feasible
+    await setAnswer(5136, '25') // MUAC -> Default value
+
+    await setAnswer(6083, 4835) // Convulsing now -> No
+    await setAnswer(6082, 4832) // Convulsing in present illness -> Yes
+
+    const state = store.getState()
+    expect(state.medicalCase.item.nodes[6477].answer).toEqual(5143)
+
+    await setAnswer(5533, 4057) // Fever whithin the last 2 days -> Yes
+    await setAnswer(5549, 4091) // Axilary temperature -> < 38°
+    await setAnswer(22730, 26835) // Unconscious -> No
+    await setAnswer(22732, 26838) // Lethargic -> Yes
+    await setAnswer(5564, 4125) // Malaria rapid diagnostic test -> Positive
+    await setAnswer(6148, 4967) // Confirmed malaria -> Positive
+    await setAnswer(6113, 4886) // Oxygen saturation % -> <90
+
+    // const state = store.getState()
+    // expect(state.medicalCase.item.nodes[6477].answer).toEqual(5144)
+    // expect(state.medicalCase.item.nodes[6478].answer).toEqual(5145)
+
+    const result = SetDiagnosesService()
+    expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([6266])) // Hypoxaemia
+  })
 })
