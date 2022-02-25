@@ -19,15 +19,14 @@ Below you'll find information about performing common tasks.
       - [`yarn build` only for Linux and MacOS](#yarn-build-only-for-linux-and-macos)
       - [`yarn w-build` only for Windows](#yarn-w-build-only-for-windows)
       - [`yarn test:watch`](#yarn-testwatch)
-      - [`yarn setVersion`](#yarn-setversion-semanticversion)
-      - [`yarn changeLog`](#yarn-setchangelog)
+      - [`yarn np`](#yarn-np)
   - [Customizing app display name and icons](#customizing-app-display-name-and-icon)
   - [Data structure](#data-structure)
     - [Medical case](#medical-case)
   - [Icons available](#icons-available)
   - [Date](#date)
     - [ColoredIcon](#coloredicon)
-    - [Icon](#icon)
+    - [Icon](#i
     - [API](#api)
   - [Writing and running tests](#writing-and-running-tests)
   - [Publishing](#publishing)
@@ -56,13 +55,10 @@ Generate release version of app
 
 Watches your code and runs the tests everytime your code is edited
 
-### `yarn setVersion [SemanticVersion]`
+### `yarn np`
 
-Set version number and build number
+Set version number, build number, generate a new release and create a changelog
 
-### `yarn setChangelog`
-
-Define changelog
 
 ## Customizing app display name and icons
 
