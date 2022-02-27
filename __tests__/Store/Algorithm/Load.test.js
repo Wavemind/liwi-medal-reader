@@ -13,7 +13,6 @@ describe('Load ePOCT+ Dynamic Tanzania algorithm', () => {
                 newAlgorithm: algorithmFile,
             }),
         )
-        console.log(store.getState())
         expect(store.getState().algorithm.item.algorithm_name).toBe('ePOCT+ Dynamic Tanzania')
     })
 })
