@@ -83,7 +83,7 @@ describe('Final diagnosis are included / excluded correctly in Timci Tanzania ',
   //   await setAnswer(5136, 5273) // MUAC -> Default value
 
   //   await setAnswer(6083, 4835) // Convulsing now -> No
-  // await setAnswer(22730, 26835) // Unconscious -> No
+  //   await setAnswer(22730, 26835) // Unconscious -> No
   //   await setAnswer(5602, 4217) // Lethargic -> No
   //   await setAnswer(5751, 4572) // Vomiting everything -> No
   //   await setAnswer(5533, 4056) // Fever whithin the last 2 days -> Yes
