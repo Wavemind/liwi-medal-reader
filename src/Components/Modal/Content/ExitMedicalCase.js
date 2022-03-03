@@ -15,11 +15,11 @@ import { SquareButton } from '@/Components'
 import { useTheme } from '@/Theme'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { SaveMedicalCaseService } from '@/Services/MedicalCase'
+import { GenerateUpdatePatient } from '@/Utils'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
-import { GenerateUpdatePatient } from '@/Utils'
-import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
+import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
 
 const ExitMedicalCase = () => {
   // Theme and style elements deconstruction

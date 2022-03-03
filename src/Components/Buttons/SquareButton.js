@@ -2,7 +2,7 @@
  * The external imports
  */
 import React from 'react'
-import { TouchableOpacity, Text, View } from 'react-native'
+import { Text, View, Pressable } from 'react-native'
 
 /**
  * The internal imports
@@ -16,6 +16,7 @@ const SquareButton = ({
   filled,
   disabled,
   onPress,
+  onLongPress = null,
   icon,
   big,
   iconAfter = false,
@@ -39,9 +40,13 @@ const SquareButton = ({
 
   return (
     <View style={squareButton.wrapper(fullWidth)}>
-      <TouchableOpacity
+      <Pressable
         onPress={() => onPress()}
-        style={squareButton[type](disabled, bgColor, align, big)}
+        onLongPress={() => onLongPress()} // Doesn't work with chrome debugger open https://github.com/facebook/react-native/issues/4944
+        style={({ pressed }) => [
+          squareButton[type](disabled, bgColor, align, big),
+          pressed ? { opacity: 0.9 } : {},
+        ]}
         disabled={disabled}
       >
         <View style={Layout.rowCenter}>
@@ -67,7 +72,7 @@ const SquareButton = ({
             />
           )}
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   )
 }
