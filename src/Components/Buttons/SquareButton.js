@@ -16,7 +16,6 @@ const SquareButton = ({
   filled,
   disabled,
   onPress,
-  onLongPress = () => {},
   icon,
   big,
   iconAfter = false,

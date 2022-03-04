@@ -27,21 +27,26 @@ const SynchronizationNavbar = () => {
   const [unSynced, setUnSynced] = useState([])
   const [loading, setLoading] = useState(false)
 
-  useEffect(async () => {
-    const result = await GetNonSynchronizedService()
-    setUnSynced(result)
+  useEffect(() => {
+    setNonSynchronized()
   }, [])
 
   /**
    * Needed to know if there is un sync case remaining
    */
-  useEffect(async () => {
+  useEffect(() => {
     if (loading) {
-      const result = await GetNonSynchronizedService()
-
-      setUnSynced(result)
+      setNonSynchronized()
     }
   }, [loading])
+
+  /**
+   * Fetch non synchronized case and save it in local state
+   */
+  const setNonSynchronized = async () => {
+    const result = await GetNonSynchronizedService()
+    setUnSynced(result)
+  }
 
   /**
    * Handles the synchronization action

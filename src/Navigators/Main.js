@@ -89,7 +89,8 @@ const MainNavigator = ({ route, navigation }) => {
         }
       }
       BackHandler.addEventListener('hardwareBackPress', onBackPress)
-      return () => BackHandler.removeListener('hardwareBackPress', onBackPress)
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress)
     }, [medicalCaseId]),
   )
 

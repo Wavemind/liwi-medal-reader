@@ -18,13 +18,16 @@ const ConnectionStatus = () => {
     state => state.healthFacility.item.architecture,
   )
 
-  useEffect(async () => {
-    if (isConnected && architecture === 'client_server') {
-      const patients = await LocalInterface().getAll('Patient')
-      if (patients.length > 0) {
-        await RemoteInterface().synchronizePatients(patients)
+  useEffect(() => {
+    async function synchronizePatients() {
+      if (isConnected && architecture === 'client_server') {
+        const patients = await LocalInterface().getAll('Patient')
+        if (patients.length > 0) {
+          await RemoteInterface().synchronizePatients(patients)
+        }
       }
     }
+    synchronizePatients()
   }, [isConnected])
 
   return isConnected ? <Icon name="wifi-on" /> : <Icon name="wifi-off" />

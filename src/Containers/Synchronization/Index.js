@@ -37,9 +37,12 @@ const IndexSynchronizationContainer = () => {
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
-  useEffect(async () => {
-    const result = await GetNonSynchronizedService()
-    setUnsynced(result)
+  useEffect(() => {
+    async function setNonSynchronized() {
+      const result = await GetNonSynchronizedService()
+      setUnsynced(result)
+    }
+    setNonSynchronized()
   }, [syncLoading])
 
   useEffect(() => {
