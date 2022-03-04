@@ -16,7 +16,7 @@ const SquareButton = ({
   filled,
   disabled,
   onPress,
-  onLongPress = null,
+  onLongPress = () => {},
   icon,
   big,
   iconAfter = false,
@@ -25,6 +25,7 @@ const SquareButton = ({
   iconSize = FontSize.huge,
   align = null,
   fullWidth = true,
+  ...rest
 }) => {
   // Theme and style elements deconstruction
   const {
@@ -38,16 +39,17 @@ const SquareButton = ({
   const iconColor =
     color !== null ? color : filled ? Colors.secondary : Colors.primary
 
+  // onLongPress doesn't work with chrome debugger open https://github.com/facebook/react-native/issues/4944
   return (
     <View style={squareButton.wrapper(fullWidth)}>
       <Pressable
         onPress={() => onPress()}
-        onLongPress={() => onLongPress()} // Doesn't work with chrome debugger open https://github.com/facebook/react-native/issues/4944
         style={({ pressed }) => [
           squareButton[type](disabled, bgColor, align, big),
           pressed ? { opacity: 0.9 } : {},
         ]}
         disabled={disabled}
+        {...rest}
       >
         <View style={Layout.rowCenter}>
           {!iconAfter && icon && (

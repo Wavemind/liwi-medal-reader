@@ -45,7 +45,6 @@ const database = new Database({
     PatientModel,
     PatientValueModel,
   ],
-  actionsEnabled: true,
 })
 
 export default function () {
@@ -223,7 +222,7 @@ export default function () {
       failSafe = true
     }
 
-    await database.action(async () => {
+    await database.write(async () => {
       activities.map(async activity => {
         await database.batch(
           database.get('activities').prepareCreate(record => {
@@ -258,7 +257,7 @@ export default function () {
       failSafe = true
     }
 
-    await database.action(async () => {
+    await database.write(async () => {
       await collection.create(record => {
         record._raw.id = medicalCaseData.id
         record.json = JSON.stringify({
@@ -298,7 +297,7 @@ export default function () {
       failSafe = true
     }
 
-    await database.action(async () => {
+    await database.write(async () => {
       patient = await collection.create(record => {
         record._raw.id = patientData.id
         record.first_name = patientData.first_name
@@ -357,7 +356,7 @@ export default function () {
       failSafe = true
     }
 
-    await database.action(async () => {
+    await database.write(async () => {
       await database.batch(
         patientValues.map(patientValue =>
           patientValuesCollection.prepareCreate(record => {
@@ -389,7 +388,7 @@ export default function () {
       fields = [...fields, { name: 'fail_safe', value: true }]
     }
 
-    await database.action(async () => {
+    await database.write(async () => {
       const object = await collection.find(id)
       await database.batch(
         object.prepareUpdate(record => {
@@ -412,7 +411,7 @@ export default function () {
    */
   const updatePatientValues = async (patientValues, patientId) => {
     const patientValuesCollection = database.get('patient_values')
-    await database.action(async () => {
+    await database.write(async () => {
       const existingPatientValues = await patientValuesCollection
         .query(Q.where('patient_id', patientId))
         .fetch()
@@ -475,7 +474,7 @@ export default function () {
    * @param { object } object - the object to delete
    */
   const destroy = async object => {
-    await database.action(async () => {
+    await database.write(async () => {
       if (object instanceof Array) {
         object.forEach(o => o.destroyPermanently())
       } else {
