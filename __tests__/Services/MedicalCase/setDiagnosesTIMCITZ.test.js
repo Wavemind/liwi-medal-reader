@@ -58,35 +58,69 @@ describe('Final diagnosis are included / excluded correctly in Timci Tanzania ',
   })
 
   // DOESN'T WORK
-  // it('Should propose Pathologic-severe jaundice final diagnostic', async () => {
-  //   await setBirthDate(store, 10, 'day')
-
-  //   await setAnswer(5385, 3764) // Yellow appearing skin or eyes (jaundice)
-  //   await setAnswer(6169, 5009) // High risk from prematurity
-
-  //   const result = SetDiagnosesService()
-  //   expect(result.diagnosis.proposed).toEqual(expect.arrayContaining([6458]))
-  // })
-
-  // DOESN'T WORK
-  // it('Should propose Mastoiditis', async () => {
+  // it('Should propose Ear infection final diagnostic', async () => {
   //   const algorithm = store.getState().algorithm.item
   //   const weightId = algorithm.config.basic_questions.weight_question_id
-  //   await setBirthDate(store, 25, 'month')
-  //   await setAnswer(weightId, '9') // Weight
 
-  //   await setAnswer(22727, 2685) // Type of consultation -> First visit
+  //   await setBirthDate(store, 25, 'month')
+  //   await setAnswer(22727, 26825) // Type of consultation -> First visit
   //   await setAnswer(10460, 8681) // Emergency question -> No
-  //   await setAnswer(5797, 4668) // CC ENT -> Yes
+  //   await setAnswer(5797, 4668) // CC Ear infection -> Yes
+  //   await setAnswer(weightId, '9') // Weight
   //   await setAnswer(5553, '39') // Ax temp (BM) -> 39
   //   await setAnswer(5140, 5274) // Height -> Not feasible
   //   await setAnswer(5136, 5273) // MUAC -> Default value
 
   //   await setAnswer(6083, 4835) // Convulsing now -> No
   //   await setAnswer(22730, 26835) // Unconscious -> No
-  //   await setAnswer(5602, 4217) // Lethargic -> No
+  //   await setAnswer(5602, 4217) // Unable to drink or BF -> No
   //   await setAnswer(5751, 4572) // Vomiting everything -> No
-  //   await setAnswer(5533, 4056) // Fever whithin the last 2 days -> Yes
+  //   await setAnswer(6082, 4833) // Convulsions in present illness => No
+  //   await setAnswer(5533, 4056) // Fever last 2 days => yes
+  //   await setAnswer(5545, '3') // Duration of fever -> 3
+  //   await setAnswer(5543, 4077) // Cough -> No
+
+  //   await setAnswer(5544, 4079) // Difficulty breathing -> No
+  //   await setAnswer(6108, 4874) // Ear problem -> Yes
+  //   await setAnswer(6104, 4866) // Ear discharge -> Yes
+  //   await setAnswer(5519, 4026) // Duration of ear discharge -> Less than 14 days
+  //   await setAnswer(5579, 4169) // Runny or blocked nose -> No
+  //   await setAnswer(5572, 4152) // Suspicion of foreign body in ear -> No
+  //   await setAnswer(5394, 3786) // Mouth or teeth problem -> No
+  //   await setAnswer(5515, 4016) // Sore throat -> No
+  //   await setAnswer(5580, 4171) // Neck mass/Lump -> No
+  //   await setAnswer(5668, 4372) // Cheek swelling -> No
+  //   await setAnswer(5402, 3802) // Loose or liquid stools -> No
+  //   await setAnswer(5601, 4215) // Vomiting -> No
+  //   await setAnswer(5546, 4085) // Recent close contact with sb with TB -> No
+  //   await setAnswer(5250, 3547) // HIV status of child -> Negative
+  //   await setAnswer(5174, 3428) // Chronic condition -> No
+
+  //   const result = SetDiagnosesService()
+  //   expect(result.diagnosis.proposed).toEqual(
+  //     expect.arrayContaining([6484, 6206, 8923]),
+  //   ) // Suspected uncomplicated malaria, Moderate malnutrition, Screening and Prevention
+  // })
+
+  // DOESN'T WORK
+  // it('Should propose Mastoiditis final diagnostic', async () => {
+  //   const algorithm = store.getState().algorithm.item
+  //   const weightId = algorithm.config.basic_questions.weight_question_id
+
+  //   await setBirthDate(store, 25, 'month')
+  //   await setAnswer(22727, 26825) // Type of consultation -> First visit
+  //   await setAnswer(10460, 8681) // Emergency question -> No
+  //   await setAnswer(6097, 4820) // CC General -> Yes
+  //   await setAnswer(weightId, '9') // Weight
+  //   await setAnswer(5140, 5274) // Height -> Not feasible
+  //   await setAnswer(5136, 5273) // MUAC -> Default value
+
+  //   await setAnswer(5553, '39') // Ax temp (BM) -> 39
+  //   await setAnswer(6083, 4835) // Convulsing now -> No
+  //   await setAnswer(22730, 26835) // Unconscious -> No
+  //   await setAnswer(5602, 4217) // Unable to drink or BF -> No
+  //   await setAnswer(5751, 4572) // Vomiting everything -> No
+
   //   await setAnswer(5545, '3') // Duration of fever -> 3
   //   await setAnswer(5543, 4077) // Cough -> No
   //   await setAnswer(5544, 4079) // Difficulty breathing -> No
@@ -106,16 +140,17 @@ describe('Final diagnosis are included / excluded correctly in Timci Tanzania ',
   //   await setAnswer(5472, 3950) // Conjunctival pallor -> Absent
   //   await setAnswer(5761, 4592) // Jaundice -> Absent
   //   await setAnswer(6113, 6885) // Oxygen saturation -> Not feasible
-  //   await setAnswer(5574, 455) // Tender swelling behind the ear -> Present
+  //   await setAnswer(5574, 4155) // Tender swelling behind the ear -> Present
   //   await setAnswer(6119, 4903) // Stiff neck -> Absent
-  //   await setAnswer(6128, 4922) // identifiable source of fever -> No
+  //   await setAnswer(6128, 4922) // Identifiable source of fever -> No
   //   await setAnswer(6134, 4936) // Hemoglobin -> Test not available
   //   await setAnswer(5564, 4126) // Malaria rapid diagnostic test -> Negative
-  //   await setAnswer(5822, 8711) // Additionnal test  -> None needed
+  //   await setAnswer(5563, 4124) // Microscopy for malarial -> Test not available
+  //   await setAnswer(5822, 8711) // Additional test -> None needed
 
   //   const result = SetDiagnosesService()
   //   expect(result.diagnosis.proposed).toEqual(
-  //     expect.arrayContaining([6206, 6259]),
+  //     expect.arrayContaining([6484, 6206, 6259]),
   //   ) // Moderate malnutrition, Mastoiditis
   // })
 
