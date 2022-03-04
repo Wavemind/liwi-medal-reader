@@ -36,11 +36,14 @@ const BottomNavbar = () => {
   const [syncRequired, setSyncRequired] = useState(false)
 
   // Checks whether the synchronization required warning is to be shown
-  useEffect(async () => {
-    const required = await CheckSynchronizationService(routeName)
-    if (required !== syncRequired) {
-      setSyncRequired(required)
+  useEffect(() => {
+    async function checkSynchronization() {
+      const required = await CheckSynchronizationService(routeName)
+      if (required !== syncRequired) {
+        setSyncRequired(required)
+      }
     }
+    checkSynchronization()
   }, [route])
 
   return (

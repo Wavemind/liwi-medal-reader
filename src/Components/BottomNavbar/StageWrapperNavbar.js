@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
-import { View, Text, BackHandler, Keyboard } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, Keyboard } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
@@ -24,12 +24,15 @@ import {
   CloseMedicalCaseService,
 } from '@/Services/MedicalCase'
 import { getStages } from '@/Utils/Navigation/GetStages'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
+import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 import { GenerateUpdatePatient } from '@/Utils'
+import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'
 import UpdatePatientValues from '@/Store/DatabasePatientValues/Update'
-import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertMedicalCase from '@/Store/DatabaseMedicalCase/Insert'
 import ResetAssessments from '@/Store/MedicalCase/ArmControl/ResetAssessments'
+import UnlockMedicalCase from '@/Store/DatabaseMedicalCase/Unlock'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -50,7 +53,10 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   const advancement = useSelector(state => state.medicalCase.item.advancement)
   const patient = useSelector(state => state.patient.item)
   const isArmControl = useSelector(state => state.algorithm.item.is_arm_control)
-
+  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
+  const stepIndex = useSelector(
+    state => state.medicalCase.item.advancement.step,
+  )
   const patientSavedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
   )
@@ -178,6 +184,31 @@ const StageWrapperNavbar = ({ stageIndex }) => {
       stageNavigation[NavigationConfig.ARM_CONTROL_ASSESSMENT_STAGE].steps
         .length - 1,
     )
+  }
+
+  /**
+   * Save in database current medical case and redirect user to home page and clear medical case store
+   */
+  const exitAndSave = async () => {
+    const patientUpdate = await dispatch(
+      UpdatePatient.action(GenerateUpdatePatient(patient)),
+    )
+
+    if (isFulfilled(patientUpdate)) {
+      const updatePatientValues = await dispatch(UpdatePatientValues.action())
+      if (isFulfilled(updatePatientValues)) {
+        const medicalCaseSaved = await SaveMedicalCaseService({
+          stageIndex,
+          stepIndex,
+        })
+        if (medicalCaseSaved) {
+          await dispatch(UnlockMedicalCase.action({ medicalCaseId }))
+          navigateAndSimpleReset('Home', {
+            destroyCurrentConsultation: true,
+          })
+        }
+      }
+    }
   }
 
   /**
@@ -362,6 +393,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               icon="save-quit"
               iconSize={FontSize.large}
               color={Colors.white}
+              onLongPress={exitAndSave}
               onPress={() =>
                 SaveMedicalCaseService({
                   stageIndex: advancement.stage,

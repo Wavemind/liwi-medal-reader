@@ -29,7 +29,6 @@ const SummaryWrapperMedicalCaseContainer = () => {
   const {
     Layout,
     Gutters,
-    Fonts,
     Containers: { summaryWrapper },
   } = useTheme()
   const isFocused = useIsFocused()
@@ -131,14 +130,19 @@ const SummaryWrapperMedicalCaseContainer = () => {
       >
         <Tab.Screen
           name="FinalDiagnoses"
-          component={SummaryFinalDiagnoses}
           options={{
             title: t('navigation.final_diagnoses'),
           }}
-        />
+        >
+          {props => <SummaryFinalDiagnoses {...props} />}
+        </Tab.Screen>
         <Tab.Screen
           name="Questions"
-          component={() => (
+          options={{
+            title: t('navigation.questions'),
+          }}
+        >
+          {props => (
             <ScrollView style={[Gutters.smallHMargin, Gutters.smallVMargin]}>
               <SummaryMetadata
                 label={t('containers.medical_case.summary.date_consultation')}
@@ -164,10 +168,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
               />
             </ScrollView>
           )}
-          options={{
-            title: t('navigation.questions'),
-          }}
-        />
+        </Tab.Screen>
       </Tab.Navigator>
     </View>
   )
