@@ -25,7 +25,12 @@ const FinalDiagnosesMedicalCaseContainer = () => {
   const { t } = useTranslation()
   const versionName = useSelector(state => state.algorithm.item.version_name)
 
-  useEffect(() => dispatch(SetDiagnoses.action({})), [])
+  useEffect(() => {
+    async function resetDiagnoses() {
+      await dispatch(SetDiagnoses.action({}))
+    }
+    resetDiagnoses()
+  }, [])
 
   return (
     <ScrollView style={Gutters.regularHPadding}>
