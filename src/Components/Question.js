@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useMemo } from 'react'
 import { View, Text } from 'react-native'
 import { useSelector } from 'react-redux'
 import find from 'lodash/find'
@@ -18,7 +18,6 @@ import {
   InputFactory,
 } from '@/Components'
 import { Config } from '@/Config'
-import { store } from '@/Store'
 
 const Question = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
@@ -28,7 +27,6 @@ const Question = ({ questionId, disabled = false }) => {
     Colors,
   } = useTheme()
 
-  // Get node from algorithm
   const validationType = useSelector(
     state => state.medicalCase.item.nodes[questionId].validationType,
   )
@@ -36,37 +34,38 @@ const Question = ({ questionId, disabled = false }) => {
     state => state.medicalCase.item.nodes[questionId].validationMessage,
   )
   const fieldError = useSelector(state => state.validation.item[questionId])
-
-  const [currentNode] = useState(
-    store.getState().algorithm.item.nodes[questionId],
+  const currentNode = useSelector(
+    state => state.algorithm.item.nodes[questionId],
   )
 
-  // Local state definition
-  const [isFullLength] = useState(
-    currentNode.display_format === Config.DISPLAY_FORMAT.autocomplete,
+  const isFullLength = useMemo(
+    () => currentNode.display_format === Config.DISPLAY_FORMAT.autocomplete,
+    [],
   )
-
-  const [descriptionAvailable] = useState(
-    translate(currentNode.description) !== '',
+  const descriptionAvailable = useMemo(
+    () => translate(currentNode.description) !== '',
+    [],
   )
-  const [mediaAvailable] = useState(currentNode.medias?.length > 0)
-
-  // Node can have an unavailable answer
-  const [additionalUnavailableAnswer] = useState(
-    find(currentNode.answers, a => a.value === 'not_available'),
+  const additionalUnavailableAnswer = useMemo(
+    () => find(currentNode.answers, a => a.value === 'not_available'),
+    [],
   )
+  const questionLabel = useMemo(() => translate(currentNode.label), [])
+  const mediaAvailable = useMemo(() => currentNode.medias?.length > 0, [])
 
   // Is an emergency question
-  const emergency =
-    currentNode.emergency_status === 'referral' ||
-    currentNode.emergency_status === 'emergency'
+  const emergency = useMemo(
+    () =>
+      currentNode.emergency_status === 'referral' ||
+      currentNode.emergency_status === 'emergency',
+    [currentNode],
+  )
 
   return (
-    <View style={[question.wrapper(emergency)]}>
+    <View style={question.wrapper(emergency)}>
       <View style={question.container}>
         <View style={question.questionWrapper(isFullLength)}>
           {emergency && <Icon name="alert" color={Colors.red} />}
-
           <Text
             style={
               emergency
@@ -74,7 +73,7 @@ const Question = ({ questionId, disabled = false }) => {
                 : question.text(fieldError ? 'error' : validationType)
             }
           >
-            {translate(currentNode.label)}&nbsp;
+            {questionLabel}&nbsp;
             {currentNode.is_mandatory && '*'}
           </Text>
 

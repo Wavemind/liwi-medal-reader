@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text } from 'react-native'
 import { useSelector } from 'react-redux'
 

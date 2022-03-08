@@ -1,12 +1,10 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { FlatList } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import isEqual from 'lodash/isEqual'
-import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -22,25 +20,16 @@ import { RegistrationQuestionsService } from '@/Services/Steps'
 
 const RegistrationMedicalCaseContainer = () => {
   const { t } = useTranslation()
-  const isFocused = useIsFocused()
 
-  const [questions, setQuestions] = useState(RegistrationQuestionsService())
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)
-
-  // Update questions list only if question array change
-  useEffect(() => {
-    const registrationQuestions = RegistrationQuestionsService()
-    if (!isEqual(registrationQuestions, questions)) {
-      setQuestions(registrationQuestions)
-    }
-  }, [isFocused, mcNodes])
+  const questions = useMemo(() => RegistrationQuestionsService(), [mcNodes])
 
   /**
    * Renders the correct question type
    * @param item
    * @returns {JSX.Element}
    */
-  const renderQuestion = item => {
+  const renderQuestion = useCallback(item => {
     if (typeof item === 'number') {
       return <Question questionId={item} />
     } else {
@@ -53,7 +42,7 @@ const RegistrationMedicalCaseContainer = () => {
           return <PatientBirthDate />
       }
     }
-  }
+  }, [])
 
   return (
     <FlatList
