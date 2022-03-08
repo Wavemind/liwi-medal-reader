@@ -39,13 +39,11 @@ const ProposedDiagnoses = () => {
    * Sorts the diagnoses by level_of_urgency
    * @returns {*}
    */
-  const sortDiagnosesByUrgency = () => {
-    return orderBy(
-      proposed,
-      diagnosisId => nodes[diagnosisId].level_of_urgency,
-      ['desc', 'asc'],
-    )
-  }
+  const sortDiagnosesByUrgency = () =>
+    orderBy(proposed, diagnosisId => nodes[diagnosisId].level_of_urgency, [
+      'desc',
+      'asc',
+    ])
 
   const [sortedDiagnoses, setSortedDiagnoses] = useState(
     sortDiagnosesByUrgency(),

@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -34,8 +34,8 @@ const Boolean = ({ questionId, disabled = false }) => {
   // Local state definition
   const [value, setValue] = useState(answer)
 
-  const [yesAnswer] = useState(getYesAnswer(currentNode))
-  const [noAnswer] = useState(getNoAnswer(currentNode))
+  const yesAnswer = useMemo(() => getYesAnswer(currentNode), [])
+  const noAnswer = useMemo(() => getNoAnswer(currentNode), [])
 
   /**
    * Set node answer and handle emergency action

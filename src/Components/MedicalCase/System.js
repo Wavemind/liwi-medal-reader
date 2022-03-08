@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useCallback } from 'react'
 import { View } from 'react-native'
 import { useSelector } from 'react-redux'
 
@@ -27,16 +27,19 @@ const System = ({ systemName, step, readOnly = false }) => {
     state => state.questionsPerSystem.item[step][systemName],
   )
 
+  const systemLabel = useCallback(
+    systemKey => translate(systemsTranslations[systemKey]),
+    [],
+  )
+
   return (
     systemData?.length > 0 && (
       <View key={systemName}>
         <View style={readOnly ? '' : Gutters.regularHMargin}>
           {readOnly ? (
-            <SectionSubHeader
-              label={translate(systemsTranslations[systemName])}
-            />
+            <SectionSubHeader label={systemLabel(systemName)} />
           ) : (
-            <SectionHeader label={translate(systemsTranslations[systemName])} />
+            <SectionHeader label={systemLabel(systemName)} />
           )}
         </View>
         {systemData.map(item =>
