@@ -1,36 +1,30 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { FlatList } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import isEqual from 'lodash/isEqual'
-import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
  */
-import { Question } from '@/Components'
+import { Question, EmptyList } from '@/Components'
 import { UniqueTriageQuestionsService } from '@/Services/Steps'
 
 const UniqueTriageQuestionsMedicalCaseContainer = () => {
-  const isFocused = useIsFocused()
+  const { t } = useTranslation()
 
-  const [questions, setQuestions] = useState(UniqueTriageQuestionsService())
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)
-
-  // Update questions list only if question array change
-  useEffect(() => {
-    const utqQuestions = UniqueTriageQuestionsService()
-    if (!isEqual(utqQuestions, questions)) {
-      setQuestions(utqQuestions)
-    }
-  }, [isFocused, mcNodes])
+  const questions = useMemo(() => UniqueTriageQuestionsService(), [mcNodes])
 
   return (
     <FlatList
       data={questions}
       renderItem={({ item }) => <Question questionId={item} />}
+      ListEmptyComponent={
+        <EmptyList text={t('containers.medical_case.no_questions')} />
+      }
       removeClippedSubviews={false}
       keyExtractor={item => item}
     />

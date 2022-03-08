@@ -4,6 +4,7 @@
 import React, { useMemo } from 'react'
 import { FlatList } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -13,7 +14,9 @@ import { BasicMeasurementQuestionsService } from '@/Services/Steps'
 
 const BasicMeasurementMedicalCaseContainer = () => {
   const { t } = useTranslation()
-  const questions = useMemo(() => BasicMeasurementQuestionsService(), [])
+
+  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
+  const questions = useMemo(() => BasicMeasurementQuestionsService(), [mcNodes])
 
   return (
     <FlatList
