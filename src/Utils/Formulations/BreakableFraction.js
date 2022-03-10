@@ -2,7 +2,7 @@ import toReadableFraction from '@/Utils/Formulations/ToReadableFraction'
 
 /**
  * Returns a string with the amount of breakable to give to the patient
- * @param drugDose - related drug informations
+ * @param drugDose - related drug information
  * @returns {string} - amount of breakable to give to the patient
  */
 export const breakableFraction = drugDose => {

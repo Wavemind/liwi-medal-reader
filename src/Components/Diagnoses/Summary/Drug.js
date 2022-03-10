@@ -21,13 +21,11 @@ import {
 import { Config } from '@/Config'
 import { DrugDosesService } from '@/Services/MedicalCase'
 
-const Drug = ({ drug, isLast, diagnosisId }) => {
-  // Theme and style elements deconstruction
+const Drug = ({ drug, isLast }) => {
+  const { t } = useTranslation()
   const {
     Containers: { finalDiagnoses, summary },
   } = useTheme()
-
-  const { t } = useTranslation()
 
   const currentDrug = useSelector(state => state.algorithm.item.nodes[drug.id])
 
@@ -38,7 +36,7 @@ const Drug = ({ drug, isLast, diagnosisId }) => {
     const formulations = currentDrug.formulations
     const formulationIndex = formulations
       .map(formulation => formulation.id)
-      .indexOf(drug.formulation_id)
+      .indexOf(drug.selectedFormulationId)
     const drugDose = DrugDosesService(formulationIndex, drug.id)
 
     if (formulations[formulationIndex] !== undefined) {
@@ -47,34 +45,14 @@ const Drug = ({ drug, isLast, diagnosisId }) => {
         case Config.MEDICATION_FORMS.suspension:
         case Config.MEDICATION_FORMS.powder_for_injection:
         case Config.MEDICATION_FORMS.solution:
-          return (
-            <Liquid diagnosisId={diagnosisId} drug={drug} drugDose={drugDose} />
-          )
+          return <Liquid drug={drug} drugDose={drugDose} />
         case Config.MEDICATION_FORMS.tablet:
         case Config.MEDICATION_FORMS.dispersible_tablet:
-          return (
-            <Breakable
-              diagnosisId={diagnosisId}
-              drug={drug}
-              drugDose={drugDose}
-            />
-          )
+          return <Breakable drug={drug} drugDose={drugDose} />
         case Config.MEDICATION_FORMS.capsule:
-          return (
-            <Capsule
-              diagnosisId={diagnosisId}
-              drug={drug}
-              drugDose={drugDose}
-            />
-          )
+          return <Capsule drug={drug} drugDose={drugDose} />
         default:
-          return (
-            <Default
-              diagnosisId={diagnosisId}
-              drug={drug}
-              drugDose={drugDose}
-            />
-          )
+          return <Default drug={drug} drugDose={drugDose} />
       }
     } else {
       return (
@@ -91,10 +69,7 @@ const Drug = ({ drug, isLast, diagnosisId }) => {
         <Text style={summary.drugTitle}>{translate(currentDrug.label)}</Text>
         {(translate(currentDrug.description) !== '' ||
           currentDrug.medias?.length > 0) && (
-          <QuestionInfoButton
-            nodeId={drug.id}
-            finalDiagnosticId={diagnosisId}
-          />
+          <QuestionInfoButton nodeId={drug.id} />
         )}
       </View>
       <View>{renderSwitchFormulation()}</View>

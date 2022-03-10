@@ -8,7 +8,13 @@ import orderBy from 'lodash/orderBy'
 /**
  * The internal imports
  */
-import { Diagnosis, Custom, Comment, Drug } from '@/Components'
+import {
+  Diagnosis,
+  Custom,
+  Comment,
+  Drug,
+  QuestionInfoButton,
+} from '@/Components'
 import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
@@ -19,7 +25,7 @@ const SummaryMedicalCaseContainer = () => {
     Gutters,
     Colors,
     Layout,
-    Containers: { formulations },
+    Containers: { formulations, summary },
   } = useTheme()
 
   const diagnosis = useSelector(state => state.medicalCase.item.diagnosis)
@@ -27,16 +33,15 @@ const SummaryMedicalCaseContainer = () => {
 
   const drugs = useMemo(TransformFormulationsService)
 
-  const getAgreedDiagnosis = useMemo(() => {
+  const getAgreedFinalDiagnosis = useMemo(() => {
     const diagnoseKeys = ['agreed', 'additional']
     let agreedDiagnosis = []
 
     // Get agreed and additional
     diagnoseKeys.forEach(diagnoseKey =>
-      Object.keys(diagnosis[diagnoseKey]).map(diagnoseId => {
-        console.log(diagnosis, diagnoseId)
-        agreedDiagnosis.push(nodes[diagnoseId])
-      }),
+      Object.keys(diagnosis[diagnoseKey]).map(diagnoseId =>
+        agreedDiagnosis.push(nodes[diagnoseId]),
+      ),
     )
 
     // Sort them by level of urgency
@@ -65,8 +70,6 @@ const SummaryMedicalCaseContainer = () => {
       'asc',
     ])
 
-  console.log(drugs)
-
   return (
     <ScrollView>
       <View style={formulations.wrapper}>
@@ -74,10 +77,19 @@ const SummaryMedicalCaseContainer = () => {
           <Text style={formulations.formulationsHeader}>Final diagnoses</Text>
         </View>
         <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-          {getAgreedDiagnosis.map(diagnose => (
-            <Text>
-              {'label' in diagnose ? translate(diagnose.label) : diagnose.name}
-            </Text>
+          {getAgreedFinalDiagnosis.map(finalDiagnose => (
+            <View style={summary.drugTitleWrapper}>
+              <Text style={summary.drugTitle}>
+                {'label' in finalDiagnose
+                  ? translate(finalDiagnose.label)
+                  : finalDiagnose.name}
+              </Text>
+              {'label' in finalDiagnose &&
+                (translate(finalDiagnose.description) !== '' ||
+                  finalDiagnose.medias?.length > 0) && (
+                  <QuestionInfoButton nodeId={finalDiagnose.id} />
+                )}
+            </View>
           ))}
         </View>
       </View>
@@ -91,8 +103,7 @@ const SummaryMedicalCaseContainer = () => {
             <Drug
               key={`summary_diagnosis_drugs-${drug.id}`}
               drug={drug}
-              diagnosisId={diagnosis.id}
-              isLast={false}
+              isLast={i === Object.values(drugs).length - 1}
             />
           ))}
         </View>

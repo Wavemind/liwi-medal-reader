@@ -14,7 +14,7 @@ import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
 import { useSelector } from 'react-redux'
 
-const Default = ({ drug, drugDose, diagnosisId }) => {
+const Default = ({ drug, drugDose }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -24,9 +24,13 @@ const Default = ({ drug, drugDose, diagnosisId }) => {
   const { t } = useTranslation()
 
   const drugInstance = useSelector(
-    state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
+    state =>
+      state.algorithm.item.nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[
+        drug.id
+      ],
   )
   let every = ''
+  console.log(drugInstance)
 
   const duration = drugInstance
     ? translate(drugInstance.duration)

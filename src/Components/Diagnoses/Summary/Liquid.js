@@ -15,7 +15,7 @@ import { translate } from '@/Translations/algorithm'
 import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
 
-const Liquid = ({ drug, drugDose, diagnosisId }) => {
+const Liquid = ({ drug, drugDose }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -26,10 +26,12 @@ const Liquid = ({ drug, drugDose, diagnosisId }) => {
 
   const ratio = drugDose.liquid_concentration / drugDose.dose_form
 
+  // Prendre la plus longue !
   const drugInstance = useSelector(
-    state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
+    state =>
+      state.algorithm.item.nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id],
   )
-
+  console.log(drug)
   const duration = drugInstance
     ? translate(drugInstance.duration)
     : drug.duration

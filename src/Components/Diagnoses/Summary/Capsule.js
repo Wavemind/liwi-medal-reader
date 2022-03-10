@@ -15,7 +15,7 @@ import { translate } from '@/Translations/algorithm'
 import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
 
-const Capsule = ({ drug, drugDose, diagnosisId }) => {
+const Capsule = ({ drug, drugDose }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -23,9 +23,12 @@ const Capsule = ({ drug, drugDose, diagnosisId }) => {
   } = useTheme()
 
   const { t } = useTranslation()
-
+  console.log(drug)
   const drugInstance = useSelector(
-    state => state.algorithm.item.nodes[diagnosisId].drugs[drug.id],
+    state =>
+      state.algorithm.item.nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[
+        drug.id
+      ],
   )
 
   const duration = drugInstance
