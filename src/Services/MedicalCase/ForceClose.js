@@ -11,13 +11,13 @@ import LocalInterface from '@/Services/Database/Local/useLocalInterface'
 export default async () => {
   const medicalCases = await LocalInterface().getMedicalCases()
 
-  const todayMinus72Hours = new Date()
-  todayMinus72Hours.setHours(todayMinus72Hours.getHours() - 72)
+  const todayMinus36Hours = new Date()
+  todayMinus36Hours.setHours(todayMinus36Hours.getHours() - 36)
 
   const medicalCaseToClose = medicalCases.filter(
     medicalCase =>
       medicalCase.closedAt === 0 &&
-      differenceInHours(todayMinus72Hours, new Date(medicalCase.updatedAt)) >=
+      differenceInHours(todayMinus36Hours, new Date(medicalCase.updatedAt)) >=
         0,
   )
 
