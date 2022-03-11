@@ -17,7 +17,6 @@ import FinalDiagnosesMedicalCaseContainer from '@/Containers/MedicalCase/Diagnos
 import DrugsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Drugs'
 import TreatmentConditionsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/TreatmentConditions'
 import ReferralMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Referral'
-import FormulationsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Formulations'
 import SummaryMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Summary'
 // Arm Control
 import ArmFinalDiagnosesMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/FinalDiagnoses'
@@ -44,10 +43,6 @@ const diagnosesStage = {
     {
       label: 'medicines',
       component: DrugsMedicalCaseContainer,
-    },
-    {
-      label: 'formulations',
-      component: FormulationsMedicalCaseContainer,
     },
     {
       label: 'summary',

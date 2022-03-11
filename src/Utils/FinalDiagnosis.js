@@ -136,6 +136,7 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
     })
 
     // management calculations
+    // TODO : Quentin you can get rid of this here too
     const managements = getAvailableHealthcare(
       nodes[finalDiagnosis.id],
       'managements',
@@ -149,6 +150,7 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
         agreed: agreedWithFormulations,
         additional: additionalWithFormulations,
       },
+      // TODO : Quentin you gotta fix this.
       ...managements,
     }
   })

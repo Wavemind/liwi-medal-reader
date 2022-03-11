@@ -15,13 +15,12 @@ export { default as RoundedButton } from './Buttons/RoundedButton'
 export { default as SquareButton } from './Buttons/SquareButton'
 
 // Diagnoses
-export { default as DiagnosisDrugs } from './Diagnoses/Drugs/DiagnosisDrugs'
+export { default as ProposedDrugs } from './Diagnoses/Drugs/ProposedDrugs'
 export { default as CustomDrugs } from './Diagnoses/Drugs/CustomDrugs'
 export { default as DrugBooleanButton } from './Diagnoses/Drugs/DrugBooleanButton'
 export { default as AdditionalDiagnoses } from './Diagnoses/FinalDiagnoses/AdditionalDiagnoses'
 export { default as CustomDiagnoses } from './Diagnoses/FinalDiagnoses/CustomDiagnoses'
 export { default as ProposedDiagnoses } from './Diagnoses/FinalDiagnoses/ProposedDiagnoses'
-export { default as FormulationDrugs } from './Diagnoses/Formulations/FormulationDrugs'
 export { default as FormulationsPicker } from './Diagnoses/Formulations/FormulationsPicker'
 export { default as Breakable } from './Diagnoses/Summary/Breakable'
 export { default as Capsule } from './Diagnoses/Summary/Capsule'
@@ -42,6 +41,7 @@ export { default as Icon } from './Icons/Icon'
 
 // Inputs
 export { default as Autocomplete } from './Inputs/Autocomplete'
+export { default as DrugsAutocomplete } from './Inputs/DrugsAutocomplete'
 export { default as Autosuggest } from './Inputs/Autosuggest'
 export { default as PatientBirthDate } from './Inputs/PatientBirthDate'
 export { default as Boolean } from './Inputs/Boolean'

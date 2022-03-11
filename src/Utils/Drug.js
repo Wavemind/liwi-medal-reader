@@ -1,3 +1,11 @@
+/**
+ * The external imports
+ */
+import orderBy from 'lodash/orderBy'
+
+/**
+ * The internal imports
+ */
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
@@ -145,4 +153,111 @@ export const displayDrugDescription = (drugId, finalDiagnosticId) => {
     }
   }
   return translate(nodes[drugId].description)
+}
+
+/**
+ * Checks if drug has been agreed or not
+ * @params {Object} drug
+ * @returns boolean
+ */
+export const drugIsAgreed = drug => {
+  const diagnoses = store.getState().medicalCase.item.diagnosis
+  const agreedIndex = drug.diagnoses.findIndex(diagnosis =>
+    Object.keys(diagnoses[diagnosis.key][diagnosis.id].drugs.agreed).includes(
+      drug.id.toString(),
+    ),
+  )
+  return agreedIndex > -1
+}
+
+/**
+ * Checks if drug has been refused of not
+ * @params {Object} drug
+ * @returns boolean
+ */
+export const drugIsRefused = drug => {
+  const diagnoses = store.getState().medicalCase.item.diagnosis
+  const refusedIndex = drug.diagnoses.findIndex(diagnosis =>
+    diagnoses[diagnosis.key][diagnosis.id].drugs.refused.includes(drug.id),
+  )
+  return refusedIndex > -1
+}
+
+/**
+ * Transforms the diagnoses to group diagnoses per drug and orders everything by drug level_of_urgency
+ * @returns array of drugs
+ */
+export const reworkAndOrderDrugs = () => {
+  const nodes = store.getState().algorithm.item.nodes
+  const diagnoses = store.getState().medicalCase.item.diagnosis
+
+  const allDrugs = []
+  for (const [diagnosisKey, diagnosisValue] of Object.entries(diagnoses)) {
+    if (['agreed', 'additional'].includes(diagnosisKey)) {
+      Object.keys(diagnosisValue).forEach(diagnosis => {
+        for (const [drugKey, drugValue] of Object.entries(
+          diagnosisValue[diagnosis].drugs,
+        )) {
+          if (['proposed', 'additional'].includes(drugKey)) {
+            if (Array.isArray(drugValue)) {
+              diagnosisValue[diagnosis].drugs[drugKey].forEach(drug => {
+                const foundIndex = allDrugs.findIndex(e => e.id === drug)
+                if (foundIndex > -1) {
+                  allDrugs[foundIndex] = {
+                    ...allDrugs[foundIndex],
+                    diagnoses: [
+                      ...allDrugs[foundIndex].diagnoses,
+                      { id: parseInt(diagnosis, 10), key: diagnosisKey },
+                    ],
+                  }
+                } else {
+                  allDrugs.push({
+                    id: drug,
+                    key: drugKey,
+                    levelOfUrgency: nodes[parseInt(drug, 10)].level_of_urgency,
+                    diagnoses: [
+                      { id: parseInt(diagnosis, 10), key: diagnosisKey },
+                    ],
+                    selectedFormulationId:
+                      diagnosisValue[diagnosis].drugs.agreed[drug]
+                        ?.formulation_id,
+                  })
+                }
+              })
+            } else {
+              Object.keys(diagnosisValue[diagnosis].drugs[drugKey]).forEach(
+                drug => {
+                  const foundIndex = allDrugs.findIndex(e => e.id === drug)
+                  if (foundIndex > -1) {
+                    allDrugs[foundIndex] = {
+                      ...allDrugs[foundIndex],
+                      diagnoses: [
+                        ...allDrugs[foundIndex].diagnoses,
+                        { id: parseInt(diagnosis, 10), key: diagnosisKey },
+                      ],
+                    }
+                  } else {
+                    allDrugs.push({
+                      id: drug,
+                      key: drugKey,
+                      levelOfUrgency:
+                        nodes[parseInt(drug, 10)].level_of_urgency,
+                      diagnoses: [
+                        { id: parseInt(diagnosis, 10), key: diagnosisKey },
+                      ],
+                      selectedFormulationId:
+                        diagnosisValue[diagnosis].drugs.agreed[drug]
+                          ?.formulation_id,
+                    })
+                  }
+                },
+              )
+            }
+          }
+        }
+      })
+    }
+  }
+
+  return orderBy(allDrugs, drug => drug.levelOfUrgency, ['desc'])
 }

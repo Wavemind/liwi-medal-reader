@@ -131,7 +131,7 @@ export default {
       /* al 20210912 removed from diagnoses: proposed_title: 'Diagnostics proposés par {{ version_name }}', */
       drugs: {
         drugs: 'Médicaments',
-        proposed: 'Proposés',
+        proposed: 'Médicaments proposés',
         additional: 'Supplémentaires',
         custom: 'Ajoutés manuellement',
         custom_placeholder: 'Ajouter des médicaments manuellement',
@@ -139,6 +139,7 @@ export default {
         no_additional: 'Aucun médicament supplémentaire sélectionné',
         no_custom: 'Aucun médicament ajouté manuellement',
         no_medicines: 'Aucun médicament disponible',
+        indication: 'Indication',
       },
       formulations: {
         title:
