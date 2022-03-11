@@ -29,7 +29,10 @@ const ProposedDrugs = () => {
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
 
-  const orderedDrugs = useMemo(() => reworkAndOrderDrugs(), [diagnoses])
+  const proposedDrugs = useMemo(
+    () => reworkAndOrderDrugs('proposed'),
+    [diagnoses],
+  )
 
   return (
     <View style={drugs.wrapper}>
@@ -39,10 +42,10 @@ const ProposedDrugs = () => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {orderedDrugs.map((drug, i) => (
+        {proposedDrugs.map((drug, i) => (
           <View
             style={drugs.innerWrapper(
-              i === Object.values(orderedDrugs).length - 1,
+              i === Object.values(proposedDrugs).length - 1,
             )}
           >
             <View style={drugs.drugTitleWrapper}>

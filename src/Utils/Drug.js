@@ -187,7 +187,7 @@ export const drugIsRefused = drug => {
  * Transforms the diagnoses to group diagnoses per drug and orders everything by drug level_of_urgency
  * @returns array of drugs
  */
-export const reworkAndOrderDrugs = () => {
+export const reworkAndOrderDrugs = key => {
   const nodes = store.getState().algorithm.item.nodes
   const diagnoses = store.getState().medicalCase.item.diagnosis
 
@@ -195,69 +195,37 @@ export const reworkAndOrderDrugs = () => {
   for (const [diagnosisKey, diagnosisValue] of Object.entries(diagnoses)) {
     if (['agreed', 'additional'].includes(diagnosisKey)) {
       Object.keys(diagnosisValue).forEach(diagnosis => {
-        for (const [drugKey, drugValue] of Object.entries(
-          diagnosisValue[diagnosis].drugs,
-        )) {
-          if (['proposed', 'additional'].includes(drugKey)) {
-            if (Array.isArray(drugValue)) {
-              diagnosisValue[diagnosis].drugs[drugKey].forEach(drug => {
-                const foundIndex = allDrugs.findIndex(e => e.id === drug)
-                if (foundIndex > -1) {
-                  allDrugs[foundIndex] = {
-                    ...allDrugs[foundIndex],
-                    diagnoses: [
-                      ...allDrugs[foundIndex].diagnoses,
-                      { id: parseInt(diagnosis, 10), key: diagnosisKey },
-                    ],
-                  }
-                } else {
-                  allDrugs.push({
-                    id: drug,
-                    key: drugKey,
-                    levelOfUrgency: nodes[parseInt(drug, 10)].level_of_urgency,
-                    diagnoses: [
-                      { id: parseInt(diagnosis, 10), key: diagnosisKey },
-                    ],
-                    selectedFormulationId:
-                      diagnosisValue[diagnosis].drugs.agreed[drug]
-                        ?.formulation_id,
-                  })
-                }
-              })
-            } else {
-              Object.keys(diagnosisValue[diagnosis].drugs[drugKey]).forEach(
-                drug => {
-                  const foundIndex = allDrugs.findIndex(e => e.id === drug)
-                  if (foundIndex > -1) {
-                    allDrugs[foundIndex] = {
-                      ...allDrugs[foundIndex],
-                      diagnoses: [
-                        ...allDrugs[foundIndex].diagnoses,
-                        { id: parseInt(diagnosis, 10), key: diagnosisKey },
-                      ],
-                    }
-                  } else {
-                    allDrugs.push({
-                      id: drug,
-                      key: drugKey,
-                      levelOfUrgency:
-                        nodes[parseInt(drug, 10)].level_of_urgency,
-                      diagnoses: [
-                        { id: parseInt(diagnosis, 10), key: diagnosisKey },
-                      ],
-                      selectedFormulationId:
-                        diagnosisValue[diagnosis].drugs.agreed[drug]
-                          ?.formulation_id,
-                    })
-                  }
-                },
-              )
+        const drugGroup = diagnosisValue[diagnosis].drugs[key]
+        const drugs = Array.isArray(drugGroup)
+          ? drugGroup
+          : Object.keys(drugGroup)
+
+        drugs.forEach(drug => {
+          const foundIndex = allDrugs.findIndex(e => e.id === drug)
+          if (foundIndex > -1) {
+            allDrugs[foundIndex] = {
+              ...allDrugs[foundIndex],
+              diagnoses: [
+                ...allDrugs[foundIndex].diagnoses,
+                { id: parseInt(diagnosis, 10), key: diagnosisKey },
+              ],
             }
+          } else {
+            allDrugs.push({
+              id: drug,
+              key: key,
+              levelOfUrgency: nodes[parseInt(drug, 10)].level_of_urgency,
+              diagnoses: [{ id: parseInt(diagnosis, 10), key: diagnosisKey }],
+              selectedFormulationId:
+                diagnosisValue[diagnosis].drugs.agreed[drug]?.formulation_id,
+            })
           }
-        }
+        })
       })
     }
   }
 
-  return orderBy(allDrugs, drug => drug.levelOfUrgency, ['desc'])
+  return key === 'proposed'
+    ? orderBy(allDrugs, drug => drug.levelOfUrgency, ['desc'])
+    : allDrugs
 }

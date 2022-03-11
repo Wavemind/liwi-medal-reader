@@ -16,6 +16,7 @@ export { default as SquareButton } from './Buttons/SquareButton'
 
 // Diagnoses
 export { default as ProposedDrugs } from './Diagnoses/Drugs/ProposedDrugs'
+export { default as AdditionalDrugs } from './Diagnoses/Drugs/AdditionalDrugs'
 export { default as CustomDrugs } from './Diagnoses/Drugs/CustomDrugs'
 export { default as DrugBooleanButton } from './Diagnoses/Drugs/DrugBooleanButton'
 export { default as AdditionalDiagnoses } from './Diagnoses/FinalDiagnoses/AdditionalDiagnoses'
