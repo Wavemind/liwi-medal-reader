@@ -10,16 +10,14 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
-import { roundSup } from '@/Utils/Formulations/RoundSup'
 import { translate } from '@/Translations/algorithm'
-import { Config } from '@/Config'
 import { breakableFraction } from '@/Utils/Formulations/BreakableFraction'
 import { useTheme } from '@/Theme'
 
 const Breakable = ({ drug, drugDose }) => {
   // Theme and style elements deconstruction
   const {
-    Gutters,
+    Fonts,
     Containers: { summary },
   } = useTheme()
 
@@ -30,8 +28,11 @@ const Breakable = ({ drug, drugDose }) => {
 
   const drugInstance =
     nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id]
-  console.log(drugDose)
 
+  /**
+   * Display frequency
+   * @returns jsx
+   */
   const frequencyDisplay = () => {
     if (drugInstance?.is_pre_referral) {
       return `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
@@ -46,137 +47,73 @@ const Breakable = ({ drug, drugDose }) => {
     }
   }
 
-  const formulationDisplay = () => {
-    if (drugDose.by_age) {
-      return `${roundSup(drugDose.unique_dose)} ${t(
-        'formulations.drug.tablets',
-      )} ${t('formulations.medication_form.per_administration')} `
-    } else if (drugDose.doseResult === null) {
-      return drugDose.no_possibility
-    } else {
-      return `${
-        drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)
-      }${t('formulations.drug.mg')} ${t('formulations.drug.tablets')}`
+  /**
+   * Display durations
+   * @returns jsx
+   */
+  const durationsDisplay = () => {
+    if (drugInstance) {
+      return `${translate(drugInstance.duration)} ${t(
+        'formulations.drug.days',
+      )}`
     }
+
+    return `${drug.duration} ${t('formulations.drug.days')}`
   }
 
-  const durationInDays = drugInstance
-    ? translate(drugInstance.duration)
-    : drug.duration
+  const indicationDisplay = () =>
+    drug.relatedDiagnoses
+      .map(finalDiagnose => translate(nodes[finalDiagnose.diagnosisId].label))
+      .join(', ')
 
   return (
-    <>
+    <View>
       <Text style={summary.drugText}>
-        Indication:{' '}
-        {drug.relatedDiagnoses
-          .map(finalDiagnose =>
-            translate(nodes[finalDiagnose.diagnosisId].label),
-          )
-          .join(', ')}
+        <Text style={Fonts.textBold}>Indication:</Text> {indicationDisplay()}
       </Text>
 
-      {/* TODO */}
-      <Text style={summary.drugText}>Dose calculation:</Text>
-
-      <Text style={summary.drugText}>Formulation: {formulationDisplay()}</Text>
+      {/* <Text style={summary.drugText}>
+        <Text style={Fonts.textBold}>Dose calculation:</Text>
+      </Text> */}
 
       <Text style={summary.drugText}>
-        Route: {drugDose.administration_route_name}
+        <Text style={Fonts.textBold}>Formulation:</Text>{' '}
+        {formulationLabel(drugDose)}
       </Text>
 
       <Text style={summary.drugText}>
-        Amount to be given: {fractionString} {t('formulations.drug.tablets')}
+        <Text style={Fonts.textBold}>Route:</Text>{' '}
+        {drugDose.administration_route_name}
+      </Text>
+
+      <Text style={summary.drugText}>
+        <Text style={Fonts.textBold}>Amount to be given:</Text> {fractionString}{' '}
+        {t('formulations.drug.tablets')}
       </Text>
 
       {translate(drugDose.injection_instructions) !== '' && (
         <Text style={summary.drugText}>
-          Preparation instruction: {translate(drugDose.injection_instructions)}
+          <Text style={Fonts.textBold}>Preparation instruction:</Text>{' '}
+          {translate(drugDose.injection_instructions)}
         </Text>
       )}
 
-      <Text style={summary.drugText}>Frequency: {frequencyDisplay()}</Text>
+      <Text style={summary.drugText}>
+        <Text style={Fonts.textBold}>Frequency:</Text> {frequencyDisplay()}
+      </Text>
 
       <Text style={summary.drugText}>
-        Duration: {durationInDays} {t('formulations.drug.days')}
+        <Text style={Fonts.textBold}>Duration:</Text> {durationsDisplay()}
       </Text>
 
       {translate(drugDose.dispensing_description) !== '' && (
         <Text style={summary.drugText}>
-          Administration instruction:{' '}
+          <Text style={Fonts.textBold}>Administration instruction:</Text>{' '}
           {translate(drugDose.dispensing_description)}
         </Text>
       )}
-    </>
+    </View>
   )
-
-  // const drugInstance = useSelector(
-  //   state =>
-  //     state.algorithm.item.nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[
-  //       drug.id
-  //     ],
-  // )
-
-  // const fractionString = breakableFraction(drugDose)
-  // console.log(drug)
-
-  // const duration = drugInstance
-  //   ? translate(drugInstance.duration)
-  //   : drug.duration
-
-  // const durationDisplay = drugInstance?.is_pre_referral
-  //   ? `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
-  //       'formulations.drug.hour',
-  //     )} ${t('formulations.drug.during')} ${t(
-  //       'formulations.drug.pre_referral',
-  //     )}`
-  //   : `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
-  //       'formulations.drug.h',
-  //     )} ${duration} ${t('formulations.drug.days')}`
-
-  // return (
-  //   <View>
-  //     <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
-  //     {drugDose.by_age ? (
-  //       <>
-  //         <Text style={summary.drugText}>{`${roundSup(
-  //           drugDose.unique_dose,
-  //         )} ${t('formulations.drug.tablets')} ${t(
-  //           'formulations.medication_form.per_administration',
-  //         )} ${durationDisplay}`}</Text>
-  //         <Text style={[Gutters.regularTMargin, summary.drugText]}>
-  //           {translate(drugDose.dispensing_description)}
-  //         </Text>
-  //       </>
-  //     ) : drugDose.doseResult === null ? (
-  //       <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
-  //     ) : (
-  //       <View>
-  //         <Text style={summary.drugText}>
-  //           {`${t('formulations.drug.give')} ${
-  //             drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)
-  //           } ${t('formulations.drug.mg')} : ${fractionString} ${t(
-  //             'formulations.drug.tablet',
-  //           )} ${drugDose.dose_form}`}
-  //           {t('formulations.drug.mg')} {drugDose.administration_route_name}
-  //         </Text>
-  //         <Text style={summary.drugText}>{durationDisplay}</Text>
-  //         <Text style={[Gutters.regularTMargin, summary.drugText]}>
-  //           {translate(drugDose.dispensing_description)}
-  //         </Text>
-  //       </View>
-  //     )}
-  //     {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
-  //       drugDose.administration_route_category,
-  //     ) && (
-  //       <Text
-  //         style={[Gutters.regularTMargin, summary.drugText]}
-  //         key={`text_${drug.id}`}
-  //       >
-  //         {translate(drugDose.injection_instructions)}
-  //       </Text>
-  //     )}
-  //   </View>
-  // )
 }
 
 export default Breakable
