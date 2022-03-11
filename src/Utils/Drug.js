@@ -133,15 +133,15 @@ export const handleDrugs = (
 export const displayDrugDescription = (drugId, finalDiagnosticId) => {
   const nodes = store.getState().algorithm.item.nodes
 
-  const drugInstanceDescription = translate(
-    nodes[finalDiagnosticId].drugs[drugId].description,
-    false,
-  )
-  const drugDescription = translate(nodes[drugId].description)
+  if (nodes[finalDiagnosticId].drugs[drugId]) {
+    const drugInstanceDescription = translate(
+      nodes[finalDiagnosticId].drugs[drugId].description,
+      false,
+    )
 
-  if (drugInstanceDescription !== '') {
-    return drugInstanceDescription
+    if (drugInstanceDescription !== '') {
+      return drugInstanceDescription
+    }
   }
-
-  return drugDescription
+  return translate(nodes[drugId].description)
 }
