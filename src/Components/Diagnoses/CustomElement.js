@@ -71,7 +71,11 @@ const CustomElement = ({
       {listValues.length === 0 ? (
         <View>
           <Text style={finalDiagnoses.noItemsText}>
-            {t(`containers.medical_case.${diagnosisId ? 'drugs' : 'diagnoses'}.no_custom`)}
+            {t(
+              `containers.medical_case.${
+                diagnosisId ? 'drugs' : 'diagnoses'
+              }.no_custom`,
+            )}
           </Text>
         </View>
       ) : (
