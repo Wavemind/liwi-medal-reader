@@ -30,7 +30,6 @@ export { default as MedicalHistoryMedicalCaseContainer } from './MedicalCase/Con
 export { default as PhysicalExamMedicalCaseContainer } from './MedicalCase/Consultation/PhysicalExam'
 export { default as DrugsMedicalCaseContainer } from './MedicalCase/Diagnoses/Drugs'
 export { default as FinalDiagnosesMedicalCaseContainer } from './MedicalCase/Diagnoses/FinalDiagnoses'
-export { default as FormulationsMedicalCaseContainer } from './MedicalCase/Diagnoses/Formulations'
 export { default as ReferralMedicalCaseContainer } from './MedicalCase/Diagnoses/Referral'
 export { default as SummaryMedicalCaseContainer } from './MedicalCase/Diagnoses/Summary'
 export { default as TreatmentConditionsMedicalCaseContainer } from './MedicalCase/Diagnoses/TreatmentConditions'
