@@ -133,6 +133,7 @@ export const handleDrugs = (
 export const displayDrugDescription = (drugId, finalDiagnosticId) => {
   const nodes = store.getState().algorithm.item.nodes
 
+  // Test if drug exist in final diagnostic (in case of additional drug for a final diagnostic)
   if (nodes[finalDiagnosticId].drugs[drugId]) {
     const drugInstanceDescription = translate(
       nodes[finalDiagnosticId].drugs[drugId].description,
