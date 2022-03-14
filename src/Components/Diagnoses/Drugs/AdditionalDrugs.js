@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Text, View, TouchableOpacity, TextInput } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -39,32 +39,19 @@ const AdditionalDrugs = () => {
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
 
+  const [tempDrugs, setTempDrugs] = useState([])
+
   const additionalDrugs = useMemo(
     () => reworkAndOrderDrugs('additional'),
     [diagnoses],
   )
 
-  const [tempDrugs, setTempDrugs] = useState([])
-
-  /**
-   * Sorts the diagnoses by level_of_urgency
-   * @returns {*}
-   */
-  // const sortDiagnosesByUrgency = () =>
-  //   orderBy(
-  //     Object.values(diagnoses),
-  //     finalDiagnosis => nodes[finalDiagnosis.id].level_of_urgency,
-  //     ['desc', 'asc'],
-  //   )
-
-  // const [sortedDiagnoses, setSortedDiagnoses] = useState(
-  //   sortDiagnosesByUrgency(),
-  // )
-
-  // useEffect(() => {
-  //   const newDiagnoses = sortDiagnosesByUrgency()
-  //   setSortedDiagnoses(newDiagnoses)
-  // }, [isFocused, diagnoses])
+  useEffect(() => {
+    const newTempDrugs = [...tempDrugs].filter(drug =>
+      additionalDrugs.map(d => d.id).includes(drug.id),
+    )
+    setTempDrugs(newTempDrugs)
+  }, [diagnoses])
 
   /**
    * Removes a single element from the additional diagnosis list
@@ -123,10 +110,6 @@ const AdditionalDrugs = () => {
     console.log(itemId, duration)
   }
 
-  const removeDiagnosisPress = () => {
-    console.log('this is all fucked')
-  }
-
   return (
     <View style={drugs.wrapper}>
       <View style={drugs.headerWrapper}>
@@ -156,6 +139,7 @@ const AdditionalDrugs = () => {
                 value=""
                 textAlign="center"
                 keyboardType="default"
+                editable={false}
               />
             </View>
             <TouchableOpacity onPress={() => onRemovePress(additionalDrug.id)}>
