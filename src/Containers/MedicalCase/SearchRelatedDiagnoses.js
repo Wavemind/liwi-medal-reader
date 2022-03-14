@@ -103,9 +103,11 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
    */
   const toggleAdditionalItems = item => {
     const tempAdditionalItems = [...selected]
-    const index = tempAdditionalItems.indexOf(item)
+    const index = tempAdditionalItems.findIndex(
+      element => element.id === item.id,
+    )
     if (index > -1) {
-      delete tempAdditionalItems[index]
+      tempAdditionalItems.splice(index, 1)
     } else {
       tempAdditionalItems.push(item)
     }
@@ -169,7 +171,7 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
           removeBadge={toggleAdditionalItems}
           selected={selected}
           clearBadges={() => setSelected([])}
-          badgeComponentLabel={item => translate(nodes[item].label)}
+          badgeComponentLabel={item => translate(nodes[item.id].label)}
         />
 
         <SectionHeader

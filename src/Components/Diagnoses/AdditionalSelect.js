@@ -85,9 +85,7 @@ const AdditionalSelect = ({
       ))}
       <TouchableOpacity
         style={additionalSelect.addAdditionalButton}
-        onPress={() =>
-          navigate('SearchAdditional', { diagnosisKey, diagnosisId })
-        }
+        onPress={() => navigate('SearchAdditional', { diagnosisId })}
       >
         <Text style={additionalSelect.addAdditionalButtonText}>
           {t('containers.medical_case.diagnoses.additional_placeholder', {

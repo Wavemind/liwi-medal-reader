@@ -112,7 +112,10 @@ const AdditionalDrugs = () => {
    * @param value
    */
   const updateAdditionalDrugs = value => {
-    setTempDrugs([...tempDrugs, value])
+    setTempDrugs([
+      ...tempDrugs,
+      { id: value, relatedDiagnoses: [], duration: '' },
+    ])
   }
 
   const onRemovePress = drugId => {
@@ -137,7 +140,7 @@ const AdditionalDrugs = () => {
       <View style={drugs.headerWrapper}>
         <Text style={drugs.header}>Additional medicines</Text>
       </View>
-      {tempDrugs.map((additionalDrugId, i) => (
+      {tempDrugs.map((additionalDrug, i) => (
         <View
           style={{
             ...Gutters.regularHPadding,
@@ -154,28 +157,28 @@ const AdditionalDrugs = () => {
             }}
           >
             <Text style={additionalSelect.itemLabel}>
-              {translate(nodes[additionalDrugId].label)}
+              {translate(nodes[additionalDrug.id].label)}
             </Text>
-            <QuestionInfoButton nodeId={additionalDrugId} />
+            <QuestionInfoButton nodeId={additionalDrug.id} />
             <View style={additionalSelect.durationWrapper}>
               <TextInput
                 style={additionalSelect.durationInput}
                 onChangeText={duration =>
-                  onUpdateDuration(additionalDrugId, duration)
+                  onUpdateDuration(additionalDrug.id, duration)
                 }
                 value={''}
                 textAlign="center"
                 keyboardType="default"
               />
             </View>
-            <TouchableOpacity onPress={() => onRemovePress(additionalDrugId)}>
+            <TouchableOpacity onPress={() => onRemovePress(additionalDrug.id)}>
               <Icon style={{}} name="delete" size={FontSize.large} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={additionalSelect.addAdditionalButton}
             onPress={() =>
-              navigate('SearchRelatedDiagnoses', { drugId: additionalDrugId })
+              navigate('SearchRelatedDiagnoses', { drugId: additionalDrug.id })
             }
           >
             <Text style={additionalSelect.addAdditionalButtonText}>

@@ -28,7 +28,7 @@ import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 const SearchAdditionalMedicalCaseContainer = ({
   navigation,
   route: {
-    params: { diagnosisKey, diagnosisId },
+    params: { diagnosisId },
   },
 }) => {
   // Theme and style elements deconstruction
@@ -48,49 +48,29 @@ const SearchAdditionalMedicalCaseContainer = ({
   // Get data from the store
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const birthDate = useSelector(state => state.patient.item.birth_date)
-  const proposed = useSelector(state => {
-    if (diagnosisKey) {
-      return state.medicalCase.item.diagnosis[diagnosisKey][diagnosisId].drugs
-        .proposed
-    } else {
-      return state.medicalCase.item.diagnosis.proposed
-    }
-  })
-  const additionalItems = useSelector(state => {
-    if (diagnosisKey) {
-      return state.medicalCase.item.diagnosis[diagnosisKey][diagnosisId].drugs
-        .additional
-    } else {
-      return state.medicalCase.item.diagnosis.additional
-    }
-  })
+  const proposed = useSelector(
+    state => state.medicalCase.item.diagnosis.proposed,
+  )
+  const additionalItems = useSelector(
+    state => state.medicalCase.item.diagnosis.additional,
+  )
 
   const days = birthDate ? differenceInDays(startOfToday(), birthDate) : 0
-  const itemList = diagnosisKey
-    ? filter(nodes, { category: 'drug' })
-        .filter(item => !proposed.includes(item.id))
-        .sort((a, b) => {
-          return translate(a.label) > translate(b.label)
-            ? 1
-            : translate(b.label) > translate(a.label)
-            ? -1
-            : 0
-        })
-    : filter(nodes, { type: 'FinalDiagnosis' })
-        .filter(item => {
-          const isNeoNat = nodes[item.cc].is_neonat
-          return (
-            !proposed.includes(item.id) &&
-            ((days <= 59 && isNeoNat) || (days > 59 && !isNeoNat))
-          )
-        })
-        .sort((a, b) => {
-          return translate(a.label) > translate(b.label)
-            ? 1
-            : translate(b.label) > translate(a.label)
-            ? -1
-            : 0
-        })
+  const itemList = filter(nodes, { type: 'FinalDiagnosis' })
+    .filter(item => {
+      const isNeoNat = nodes[item.cc].is_neonat
+      return (
+        !proposed.includes(item.id) &&
+        ((days <= 59 && isNeoNat) || (days > 59 && !isNeoNat))
+      )
+    })
+    .sort((a, b) => {
+      return translate(a.label) > translate(b.label)
+        ? 1
+        : translate(b.label) > translate(a.label)
+        ? -1
+        : 0
+    })
 
   // Local state definition
   const [numToAdd] = useState(20)
@@ -136,22 +116,18 @@ const SearchAdditionalMedicalCaseContainer = ({
     if (index > -1) {
       delete tempAdditionalItems[nodeId.toString()]
     } else {
-      if (diagnosisKey) {
-        tempAdditionalItems[nodeId] = { id: nodeId, duration: '' }
-      } else {
-        tempAdditionalItems[nodeId] = {
-          id: nodeId,
-          managements: Object.values(currentNode.managements).map(
-            management => management.id,
-          ),
-          drugs: {
-            proposed: Object.values(currentNode.drugs).map(drug => drug.id),
-            agreed: {},
-            refused: [],
-            additional: {},
-            custom: {},
-          },
-        }
+      tempAdditionalItems[nodeId] = {
+        id: nodeId,
+        managements: Object.values(currentNode.managements).map(
+          management => management.id,
+        ),
+        drugs: {
+          proposed: Object.values(currentNode.drugs).map(drug => drug.id),
+          agreed: {},
+          refused: [],
+          additional: {},
+          custom: {},
+        },
       }
     }
     setSelected(tempAdditionalItems)
@@ -161,21 +137,11 @@ const SearchAdditionalMedicalCaseContainer = ({
    * Updates the global store when the user is done selecting elements
    */
   const handleApply = () => {
-    if (diagnosisKey) {
-      dispatch(
-        AddAdditionalDrugs.action({
-          diagnosisKey,
-          diagnosisId,
-          newAdditionalDrugs: selected,
-        }),
-      )
-    } else {
-      dispatch(
-        AddAdditionalDiagnoses.action({
-          newAdditionalDiagnoses: selected,
-        }),
-      )
-    }
+    dispatch(
+      AddAdditionalDiagnoses.action({
+        newAdditionalDiagnoses: selected,
+      }),
+    )
     navigation.goBack()
   }
 
@@ -199,9 +165,7 @@ const SearchAdditionalMedicalCaseContainer = ({
     )
   }
 
-  const itemsTitle = diagnosisKey
-    ? t('containers.medical_case.drugs.drugs')
-    : t('containers.medical_case.diagnoses.diagnoses')
+  const itemsTitle = t('containers.medical_case.diagnoses.diagnoses')
 
   return (
     <View style={Layout.fullHeight}>

@@ -30,7 +30,7 @@ const BadgeBar = ({
 
   return (
     <View style={badgeBar.container}>
-      {showClearAll && selected.length > 0 && (
+      {showClearAll && Object.values(selected).length > 0 && (
         <TouchableOpacity
           onPress={onClearAll}
           style={searchAdditional.clearFiltersButton}
@@ -49,12 +49,12 @@ const BadgeBar = ({
         </TouchableOpacity>
       )}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {selected.map((selectedItem, i) => {
+        {Object.values(selected).map((selectedItem, i) => {
           return (
             <Badge
               key={`badge-${i}`}
               removeBadge={() => removeBadge(selectedItem)}
-              selectedItem={selectedItem}
+              selectedItem={selectedItem.id}
               label={() => badgeComponentLabel(selectedItem)}
             />
           )
