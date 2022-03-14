@@ -7,6 +7,7 @@ import { View, TouchableOpacity, TextInput, Text } from 'react-native'
 import { useSelector } from 'react-redux'
 import filter from 'lodash/filter'
 import debounce from 'lodash/debounce'
+import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -26,24 +27,30 @@ const Autocomplete = ({ updateAdditionalDrugs }) => {
   } = useTheme()
 
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
 
-  const proposedDrugs = useMemo(() => {
-    const diagnosesProposedDrugs = Object.values({
+  const alreadySelectedDrugs = useMemo(() => {
+    const diagnosesSelectedDrugs = Object.values({
       ...diagnoses.agreed,
       ...diagnoses.additional,
     })
-      .map(diagnosis => diagnosis.drugs.proposed)
+      .map(diagnosis => [
+        ...diagnosis.drugs.proposed,
+        ...Object.keys(diagnosis.drugs.additional).map(drug =>
+          parseInt(drug, 10),
+        ),
+      ])
       .flat(1)
-    return [...new Set(diagnosesProposedDrugs)]
-  }, [])
+    return [...new Set(diagnosesSelectedDrugs)]
+  }, [diagnoses, isFocused])
 
   const drugList = useMemo(
     () =>
       filter(nodes, { category: 'drug' })
-        .filter(item => !proposedDrugs.includes(item.id))
+        .filter(item => !alreadySelectedDrugs.includes(item.id))
         .sort((a, b) => {
           return translate(a.label) > translate(b.label)
             ? 1
@@ -51,7 +58,7 @@ const Autocomplete = ({ updateAdditionalDrugs }) => {
             ? -1
             : 0
         }),
-    [],
+    [diagnoses, isFocused],
   )
 
   const [searchTerm, setSearchTerm] = useState('')

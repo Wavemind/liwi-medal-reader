@@ -135,6 +135,7 @@ export default {
         additional: 'Supplémentaires',
         custom: 'Ajoutés manuellement',
         custom_placeholder: 'Ajouter des médicaments manuellement',
+        related_placeholder: 'Sélectionnez les diagnostiques',
         no_proposed: 'Aucun médicament proposé',
         no_additional: 'Aucun médicament supplémentaire sélectionné',
         no_custom: 'Aucun médicament ajouté manuellement',

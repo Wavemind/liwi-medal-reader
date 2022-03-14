@@ -1,12 +1,10 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Text, View, TouchableOpacity, TextInput } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useIsFocused } from '@react-navigation/native'
-import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -17,15 +15,11 @@ import {
   Icon,
   DrugsAutocomplete,
   QuestionInfoButton,
-  AdditionalSelect,
+  AdditionalDrug,
 } from '@/Components'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
-import {
-  reworkAndOrderDrugs,
-  drugIsAgreed,
-  displayDrugDescription,
-} from '@/Utils/Drug'
+import { reworkAndOrderDrugs } from '@/Utils/Drug'
 import { navigate } from '@/Navigators/Root'
 
 const AdditionalDrugs = () => {
@@ -49,8 +43,6 @@ const AdditionalDrugs = () => {
     () => reworkAndOrderDrugs('additional'),
     [diagnoses],
   )
-
-  console.log(additionalDrugs)
 
   const [tempDrugs, setTempDrugs] = useState([])
 
@@ -120,7 +112,7 @@ const AdditionalDrugs = () => {
 
   const onRemovePress = drugId => {
     const newDrugs = [...tempDrugs]
-    const indexToRemove = newDrugs.findIndex(drug => drug === drugId)
+    const indexToRemove = newDrugs.findIndex(drug => drug.id === drugId)
     if (indexToRemove > -1) {
       newDrugs.splice(indexToRemove, 1)
     }
@@ -140,23 +132,18 @@ const AdditionalDrugs = () => {
       <View style={drugs.headerWrapper}>
         <Text style={drugs.header}>Additional medicines</Text>
       </View>
+      <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
+        {additionalDrugs.map((drug, i) => (
+          <AdditionalDrug
+            drug={drug}
+            isLast={i === Object.keys(additionalDrugs).length - 1}
+          />
+        ))}
+      </View>
       {tempDrugs.map((additionalDrug, i) => (
-        <View
-          style={{
-            ...Gutters.regularHPadding,
-            ...Gutters.regularVPadding,
-            borderBottomColor: Colors.grey,
-            borderBottomWidth: 1,
-          }}
-        >
-          <View
-            style={{
-              ...Layout.rowHCenter,
-              ...Layout.justifyContentBetween,
-              ...Gutters.regularVMargin,
-            }}
-          >
-            <Text style={additionalSelect.itemLabel}>
+        <View style={additionalSelect.addAdditionalWrapper}>
+          <View style={drugs.drugTitleWrapper}>
+            <Text style={drugs.drugTitle}>
               {translate(nodes[additionalDrug.id].label)}
             </Text>
             <QuestionInfoButton nodeId={additionalDrug.id} />
@@ -166,7 +153,7 @@ const AdditionalDrugs = () => {
                 onChangeText={duration =>
                   onUpdateDuration(additionalDrug.id, duration)
                 }
-                value={''}
+                value=""
                 textAlign="center"
                 keyboardType="default"
               />
@@ -182,11 +169,11 @@ const AdditionalDrugs = () => {
             }
           >
             <Text style={additionalSelect.addAdditionalButtonText}>
-              Selected related diagnoses
+              {t('containers.medical_case.diagnoses.related_placeholder')}
             </Text>
             <View style={additionalSelect.addAdditionalButtonCountWrapper}>
               <Text style={additionalSelect.addAdditionalButtonCountText}>
-                0
+                {additionalDrug.relatedDiagnoses.length}
               </Text>
             </View>
             <Icon

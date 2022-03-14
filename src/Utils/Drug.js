@@ -198,7 +198,7 @@ export const reworkAndOrderDrugs = key => {
         const drugGroup = diagnosisValue[diagnosis].drugs[key]
         const drugs = Array.isArray(drugGroup)
           ? drugGroup
-          : Object.keys(drugGroup)
+          : Object.keys(drugGroup).map(drug => parseInt(drug, 10))
 
         drugs.forEach(drug => {
           const foundIndex = allDrugs.findIndex(e => e.id === drug)
@@ -216,8 +216,11 @@ export const reworkAndOrderDrugs = key => {
               key: key,
               levelOfUrgency: nodes[parseInt(drug, 10)].level_of_urgency,
               diagnoses: [{ id: parseInt(diagnosis, 10), key: diagnosisKey }],
+              duration: diagnosisValue[diagnosis].drugs[key][drug]?.duration,
               selectedFormulationId:
-                diagnosisValue[diagnosis].drugs.agreed[drug]?.formulation_id,
+                diagnosisValue[diagnosis].drugs[
+                  key === 'proposed' ? 'agreed' : key
+                ][drug]?.formulation_id,
             })
           }
         })

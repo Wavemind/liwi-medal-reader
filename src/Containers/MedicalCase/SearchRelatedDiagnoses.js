@@ -6,8 +6,6 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import filter from 'lodash/filter'
-import differenceInDays from 'date-fns/differenceInDays'
-import startOfToday from 'date-fns/startOfToday'
 
 /**
  * The internal imports
@@ -22,7 +20,6 @@ import {
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
 import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 
 const SearchRelatedDiagnosesMedicalCaseContainer = ({
@@ -51,24 +48,29 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
     state => state.medicalCase.item.diagnosis,
   )
 
-  const itemList = filter(nodes, { type: 'FinalDiagnosis' })
-    .filter(item => {
-      return Object.keys({ ...agreed, ...additional })
-        .map(diagId => parseInt(diagId, 10))
-        .includes(item.id)
+  const diagnosisList = []
+  for (const [key, value] of Object.entries({ agreed, additional })) {
+    Object.keys(value).forEach(diagnosis => {
+      const nodeId = parseInt(diagnosis, 10)
+      diagnosisList.push({
+        id: nodeId,
+        key,
+        ...nodes[nodeId],
+      })
     })
-    .sort((a, b) => {
-      return translate(a.label) > translate(b.label)
-        ? 1
-        : translate(b.label) > translate(a.label)
-        ? -1
-        : 0
-    })
+  }
+  const itemList = diagnosisList.sort((a, b) => {
+    return translate(a.label) > translate(b.label)
+      ? 1
+      : translate(b.label) > translate(a.label)
+      ? -1
+      : 0
+  })
 
   // Local state definition
   const [numToAdd] = useState(20)
   const [items, setItems] = useState([])
-  const [selected, setSelected] = useState([])
+  const [selected, setSelected] = useState({})
   const [searchTerm, setSearchTerm] = useState('')
   const [numToDisplay, setNumToDisplay] = useState(numToAdd)
 
@@ -101,15 +103,18 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
    * Toggles the additional diagnostic selection in the store
    * @param item
    */
-  const toggleAdditionalItems = item => {
-    const tempAdditionalItems = [...selected]
-    const index = tempAdditionalItems.findIndex(
-      element => element.id === item.id,
+  const toggleAdditionalItems = diagnosis => {
+    const tempAdditionalItems = { ...selected }
+    const index = Object.keys(tempAdditionalItems).indexOf(
+      diagnosis.id.toString(),
     )
     if (index > -1) {
-      tempAdditionalItems.splice(index, 1)
+      delete tempAdditionalItems[diagnosis.id.toString()]
     } else {
-      tempAdditionalItems.push(item)
+      tempAdditionalItems[diagnosis.id] = {
+        id: diagnosis.id,
+        key: diagnosis.key,
+      }
     }
     setSelected(tempAdditionalItems)
   }
@@ -118,11 +123,15 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
    * Updates the global store when the user is done selecting elements
    */
   const handleApply = () => {
-    dispatch(
-      AddAdditionalDiagnoses.action({
-        newAdditionalDiagnoses: selected,
-      }),
-    )
+    Object.values(selected).forEach(diagnosis => {
+      dispatch(
+        AddAdditionalDrugs.action({
+          diagnosisKey: diagnosis.key,
+          diagnosisId: diagnosis.id,
+          newAdditionalDrug: { id: drugId, formulation_id: null },
+        }),
+      )
+    })
     navigation.goBack()
   }
 

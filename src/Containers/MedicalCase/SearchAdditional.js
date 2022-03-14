@@ -23,7 +23,6 @@ import {
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
-import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 
 const SearchAdditionalMedicalCaseContainer = ({
   navigation,

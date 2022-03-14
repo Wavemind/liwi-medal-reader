@@ -49,9 +49,14 @@ export default function (props) {
       color: Colors.primary,
       width: wp(40),
     },
+    addAdditionalWrapper: {
+      ...Gutters.regularHPadding,
+      ...Gutters.regularVPadding,
+      borderBottomColor: Colors.grey,
+      borderBottomWidth: 1,
+    },
     addAdditionalButton: {
       ...Gutters.smallTMargin,
-      ...Gutters.regularBMargin,
       ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,
       ...Layout.row,

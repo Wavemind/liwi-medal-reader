@@ -29,6 +29,12 @@ export default function (props) {
       borderBottomWidth: isLast ? 0 : 1,
       borderBottomColor: Colors.grey,
     }),
+    additionalWrapper: {
+      ...Gutters.smallVMargin,
+      ...Gutters.smallVPadding,
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.grey,
+    },
     indication: {
       ...Fonts.textBold,
       ...Fonts.textSmall,
@@ -69,6 +75,7 @@ export default function (props) {
     drugTitle: {
       ...Fonts.textSmall,
       ...Fonts.textBold,
+      ...Gutters.smallRMargin,
       width: wp(40),
       color: Colors.primary,
     },

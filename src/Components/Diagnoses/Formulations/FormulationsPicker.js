@@ -37,7 +37,7 @@ const FormulationsPicker = ({ drug }) => {
         ChangeFormulations.action({
           diagnosisKey: diagnosis.key,
           diagnosisId: diagnosis.id,
-          drugKey: 'agreed',
+          drugKey: drug.key === 'proposed' ? 'agreed' : drug.key,
           drugId: drug.id,
           formulationId: value,
         }),
