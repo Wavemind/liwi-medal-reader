@@ -85,7 +85,10 @@ const AdditionalDrugs = ({ drug, isLast }) => {
           {t('containers.medical_case.drugs.indication')}
         </Text>
         {drug.diagnoses.map(diagnosis => (
-          <Text style={drugs.drugDescription}>
+          <Text
+            key={`diagnosisDrug_${diagnosis.id}`}
+            style={drugs.drugDescription}
+          >
             - {translate(nodes[diagnosis.id].label)}
           </Text>
         ))}
@@ -100,7 +103,7 @@ const AdditionalDrugs = ({ drug, isLast }) => {
         }
       >
         <Text style={additionalSelect.addAdditionalButtonText}>
-          {t('containers.medical_case.diagnoses.related_placeholder')}
+          {t('containers.medical_case.drugs.related_placeholder')}
         </Text>
         <View style={additionalSelect.addAdditionalButtonCountWrapper}>
           <Text style={additionalSelect.addAdditionalButtonCountText}>

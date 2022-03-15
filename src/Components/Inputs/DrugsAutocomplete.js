@@ -99,14 +99,6 @@ const Autocomplete = ({ updateAdditionalDrugs }) => {
   }
 
   /**
-   * Save value in store
-   */
-  const onEndEditing = event => {
-    const newValue = event.nativeEvent.text
-    console.log(newValue)
-  }
-
-  /**
    * Updates the search term
    * @param text
    */
@@ -151,7 +143,6 @@ const Autocomplete = ({ updateAdditionalDrugs }) => {
             style={autocomplete.inputText}
             keyboardType="default"
             onChangeText={handleChangeText}
-            onEndEditing={onEndEditing}
             value={searchTerm}
             placeholder={t('application.search')}
             placeholderTextColor={Colors.grey}

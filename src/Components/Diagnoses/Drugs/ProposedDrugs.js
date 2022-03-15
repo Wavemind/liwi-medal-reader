@@ -44,6 +44,7 @@ const ProposedDrugs = () => {
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
         {proposedDrugs.map((drug, i) => (
           <View
+            key={`proposedDrug_${drug.id}`}
             style={drugs.innerWrapper(
               i === Object.values(proposedDrugs).length - 1,
             )}
@@ -61,7 +62,10 @@ const ProposedDrugs = () => {
                 {t('containers.medical_case.drugs.indication')}
               </Text>
               {drug.diagnoses.map(diagnosis => (
-                <Text style={drugs.drugDescription}>
+                <Text
+                  key={`diagnosisDrug_${diagnosis.id}`}
+                  style={drugs.drugDescription}
+                >
                   - {translate(nodes[diagnosis.id].label)}
                 </Text>
               ))}

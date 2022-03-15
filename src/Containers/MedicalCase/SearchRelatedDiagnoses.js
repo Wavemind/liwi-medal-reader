@@ -128,7 +128,11 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
         AddAdditionalDrugs.action({
           diagnosisKey: diagnosis.key,
           diagnosisId: diagnosis.id,
-          newAdditionalDrug: { id: drugId, formulation_id: null },
+          newAdditionalDrug: {
+            id: drugId,
+            formulation_id: null,
+            addedAt: Math.floor(new Date().getTime() / 1000),
+          },
         }),
       )
     })

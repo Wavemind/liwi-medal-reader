@@ -56,7 +56,8 @@ export default {
         no_change_algorithm: 'No change. Keeping local algorithm',
         retrieving_emergency_content: 'Retrieving emergency content...',
         new_emergency_content: 'New emergency content loaded',
-        no_change_emergency_content: 'No change. Keeping local emergency content',
+        no_change_emergency_content:
+          'No change. Keeping local emergency content',
       },
     },
     additional_list: {
@@ -117,7 +118,6 @@ export default {
         proposed_title: 'Diagnoses proposed',
         additional_title: 'Additional diagnoses selected',
         additional_placeholder: 'Select additional {{ item }}',
-        related_placeholder: 'Select related diagnoses',
         multiple_diagnostics: 'diagnostics',
         multiple_drugs: 'drugs',
         custom_title: 'Manually added diagnoses',
@@ -133,6 +133,8 @@ export default {
         additional: 'Additional',
         custom: 'Added manually',
         custom_placeholder: 'Add your drugs',
+        related_placeholder: 'Select related diagnoses',
+        select_related: 'Select related diagnoses to continue',
         no_proposed: 'No drugs proposed',
         no_additional: 'No additional drugs selected',
         no_custom: 'No drugs added manually',

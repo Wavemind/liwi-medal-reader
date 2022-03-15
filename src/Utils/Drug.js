@@ -217,6 +217,7 @@ export const reworkAndOrderDrugs = key => {
               levelOfUrgency: nodes[parseInt(drug, 10)].level_of_urgency,
               diagnoses: [{ id: parseInt(diagnosis, 10), key: diagnosisKey }],
               duration: diagnosisValue[diagnosis].drugs[key][drug]?.duration,
+              addedAt: diagnosisValue[diagnosis].drugs[key][drug]?.addedAt,
               selectedFormulationId:
                 diagnosisValue[diagnosis].drugs[
                   key === 'proposed' ? 'agreed' : key
@@ -230,5 +231,5 @@ export const reworkAndOrderDrugs = key => {
 
   return key === 'proposed'
     ? orderBy(allDrugs, drug => drug.levelOfUrgency, ['desc'])
-    : allDrugs
+    : orderBy(allDrugs, drug => drug.addedAt, ['asc'])
 }

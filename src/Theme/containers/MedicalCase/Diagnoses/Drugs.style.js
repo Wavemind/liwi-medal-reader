@@ -79,6 +79,12 @@ export default function (props) {
       width: wp(40),
       color: Colors.primary,
     },
+    selectRelatedDiagnoses: {
+      ...Fonts.textTiny,
+      ...Fonts.textCenter,
+      width: wp(20),
+      color: Colors.red,
+    },
     drugDescription: {
       ...Fonts.textSmall,
       color: Colors.primary,
