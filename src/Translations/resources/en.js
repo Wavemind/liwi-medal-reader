@@ -130,8 +130,8 @@ export default {
       drugs: {
         drugs: 'Drugs',
         proposed: 'Proposed medicines',
-        additional: 'Additional',
-        custom: 'Added manually',
+        additional: 'Additional medicines',
+        custom: 'Custom medicines',
         custom_placeholder: 'Add your drugs',
         related_placeholder: 'Select related diagnoses',
         select_related: 'Select related diagnoses to continue',

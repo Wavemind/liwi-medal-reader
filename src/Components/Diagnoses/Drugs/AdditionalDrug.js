@@ -16,7 +16,7 @@ import { navigate } from '@/Navigators/Root'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 
-const AdditionalDrugs = ({ drug, isLast }) => {
+const AdditionalDrug = ({ drug, isLast }) => {
   // Theme and style elements deconstruction
   const {
     FontSize,
@@ -77,7 +77,7 @@ const AdditionalDrugs = ({ drug, isLast }) => {
           />
         </View>
         <TouchableOpacity onPress={() => onRemovePress(drug.id)}>
-          <Icon style={{}} name="delete" size={FontSize.large} />
+          <Icon name="delete" size={FontSize.large} />
         </TouchableOpacity>
       </View>
       <View>
@@ -123,4 +123,4 @@ const AdditionalDrugs = ({ drug, isLast }) => {
   )
 }
 
-export default AdditionalDrugs
+export default AdditionalDrug

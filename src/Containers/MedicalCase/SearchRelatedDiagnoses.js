@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
@@ -21,6 +21,7 @@ import {
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
+import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
 
 const SearchRelatedDiagnosesMedicalCaseContainer = ({
   navigation,
@@ -48,31 +49,53 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
     state => state.medicalCase.item.diagnosis,
   )
 
-  const diagnosisList = []
-  for (const [key, value] of Object.entries({ agreed, additional })) {
-    Object.keys(value).forEach(diagnosis => {
-      const nodeId = parseInt(diagnosis, 10)
-      diagnosisList.push({
-        id: nodeId,
-        key,
-        ...nodes[nodeId],
-      })
-    })
-  }
-  const itemList = diagnosisList.sort((a, b) => {
-    return translate(a.label) > translate(b.label)
-      ? 1
-      : translate(b.label) > translate(a.label)
-      ? -1
-      : 0
-  })
-
   // Local state definition
   const [numToAdd] = useState(20)
   const [items, setItems] = useState([])
   const [selected, setSelected] = useState({})
+  const [originalSelected, setOriginalSelected] = useState({})
   const [searchTerm, setSearchTerm] = useState('')
   const [numToDisplay, setNumToDisplay] = useState(numToAdd)
+
+  const itemList = useMemo(() => {
+    const diagnosisList = []
+    for (const [key, value] of Object.entries({ agreed, additional })) {
+      Object.keys(value).forEach(diagnosis => {
+        const nodeId = parseInt(diagnosis, 10)
+        diagnosisList.push({
+          id: nodeId,
+          key,
+          ...nodes[nodeId],
+        })
+      })
+    }
+    return diagnosisList.sort((a, b) => {
+      return translate(a.label) > translate(b.label)
+        ? 1
+        : translate(b.label) > translate(a.label)
+        ? -1
+        : 0
+    })
+  }, [additional, agreed])
+
+  useEffect(() => {
+    const tempSelected = {}
+    for (const [key, diagnoses] of Object.entries({ agreed, additional })) {
+      Object.values(diagnoses).forEach(diagnosis => {
+        const { agreed: agreedDrugs, additional: additionalDrugs } =
+          diagnosis.drugs
+        if (
+          Object.keys({ ...agreedDrugs, ...additionalDrugs })
+            .map(drug => parseInt(drug, 10))
+            .includes(drugId)
+        ) {
+          tempSelected[diagnosis.id] = { id: diagnosis.id, key }
+        }
+      })
+    }
+    setOriginalSelected(tempSelected)
+    setSelected(tempSelected)
+  }, [])
 
   /**
    * Displays the diagnoses corresponding to the searchTerm, or displays all diagnoses if the searchTerm is empty
@@ -123,18 +146,34 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
    * Updates the global store when the user is done selecting elements
    */
   const handleApply = () => {
+    const originalIds = Object.keys(originalSelected).map(s => parseInt(s, 10))
+    const selectedIds = Object.keys(selected).map(s => parseInt(s, 10))
+
     Object.values(selected).forEach(diagnosis => {
-      dispatch(
-        AddAdditionalDrugs.action({
-          diagnosisKey: diagnosis.key,
-          diagnosisId: diagnosis.id,
-          newAdditionalDrug: {
-            id: drugId,
-            formulation_id: null,
-            addedAt: Math.floor(new Date().getTime() / 1000),
-          },
-        }),
-      )
+      if (!originalIds.includes(diagnosis.id)) {
+        dispatch(
+          AddAdditionalDrugs.action({
+            diagnosisKey: diagnosis.key,
+            diagnosisId: diagnosis.id,
+            newAdditionalDrug: {
+              id: drugId,
+              formulation_id: null,
+              addedAt: Math.floor(new Date().getTime() / 1000),
+            },
+          }),
+        )
+      }
+    })
+    originalIds.forEach(diagnosisId => {
+      if (!selectedIds.includes(diagnosisId)) {
+        dispatch(
+          RemoveAdditionalDrugs.action({
+            diagnosisKey: originalSelected[diagnosisId].key,
+            diagnosisId: originalSelected[diagnosisId].id,
+            drugId,
+          }),
+        )
+      }
     })
     navigation.goBack()
   }

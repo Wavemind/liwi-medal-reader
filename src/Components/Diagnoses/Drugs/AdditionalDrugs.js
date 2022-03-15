@@ -73,7 +73,9 @@ const AdditionalDrugs = () => {
   return (
     <View style={drugs.wrapper}>
       <View style={drugs.headerWrapper}>
-        <Text style={drugs.header}>Additional medicines</Text>
+        <Text style={drugs.header}>
+          {t('containers.medical_case.drugs.additional')}
+        </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
         {additionalDrugs.map((drug, i) => (

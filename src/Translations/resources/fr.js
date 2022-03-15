@@ -132,7 +132,7 @@ export default {
       drugs: {
         drugs: 'Médicaments',
         proposed: 'Médicaments proposés',
-        additional: 'Supplémentaires',
+        additional: 'Médicaments supplémentaires',
         custom: 'Ajoutés manuellement',
         custom_placeholder: 'Ajouter des médicaments manuellement',
         related_placeholder: 'Sélectionnez les diagnostiques',

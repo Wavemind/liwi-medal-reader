@@ -80,29 +80,25 @@ const CustomDrugs = () => {
     )
   }
 
-  return Object.values(customDiagnoses).map(diagnosis => (
+  return (
     <View style={drugs.wrapper}>
-      <View style={drugs.diagnosisHeaderWrapper}>
-        <Text style={drugs.diagnosisHeader}>{diagnosis.name}</Text>
-        <Text style={drugs.diagnosisType}>
+      <View style={drugs.headerWrapper}>
+        <Text style={drugs.header}>
           {t('containers.medical_case.drugs.custom')}
         </Text>
       </View>
-      <View style={Gutters.regularHPadding}>
-        <Text style={drugs.drugsHeader}>
-          {t('containers.medical_case.drugs.drugs')}
-        </Text>
+      <View style={[Gutters.regularHPadding, Gutters.regularVPadding]}>
         <CustomElement
-          listObject={diagnosis.drugs}
+          listObject={[]}
           handleAdd={addCustomDrug}
           handleRemove={removeCustomDrug}
-          diagnosisId={diagnosis.id}
+          diagnosisId={null}
           withDuration
           onUpdateDuration={updateCustomDrugDuration}
         />
       </View>
     </View>
-  ))
+  )
 }
 
 export default CustomDrugs
