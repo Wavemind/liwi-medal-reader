@@ -83,6 +83,72 @@ Please refer to [TheCodingMachine React Native boilerplate](https://github.com/t
 | version_id      | `integer`                    | Medal-Creator's id of the version used                                       |
 | json_version    | `integer`                    | Medal-Creator's incremental of the version used                              |
 
+### Diagnosis
+
+`{
+	"proposed": [(array of node id)],
+	"excluded": [(array of node id)],
+	"refused": [(array of node id)],
+	"additional": {
+		"1" : {
+			"id": "1",
+			"managements": [(array of node id)]
+			"drugs": {
+				"agreed": {
+					"14" : {
+						"id": 14
+						"formulation_id" : 4
+          }
+				},
+				"refused": [(array of node id)],
+				"additional": {
+					"15" : {
+						"formulation_id" : 4
+            "duration": 5 # in days
+            "addedAt": 1689546123 # unix timestamp
+          }
+				}
+			}
+		}
+	},
+	"agreed": {
+		"1" : {
+			"id": "1",
+			"managements": [(array of node id)]
+			"drugs": {
+				"agreed": {
+					"14" : {
+						"id": 14
+						"formulation_id" : 4
+          }
+				},
+				"refused": [(array of node id)],
+				"additional": {
+					"15" : {
+						"formulation_id" : 4
+            "duration": 5 # in days
+            "addedAt": 1689546123 # unix timestamp
+          }
+				}
+			}
+		}
+	},
+	"custom": {
+		"uid" :	{	
+			"id": uid,
+			"name": "My name",
+			"drugs": {
+				"uid" : {
+					"id": uid
+					"name": "my custom drug",
+					"duration": 5 # in days
+				}
+			}
+		}
+	}
+}`
+
+
 ## Icons available
 
 A list of icons is available with [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons).
