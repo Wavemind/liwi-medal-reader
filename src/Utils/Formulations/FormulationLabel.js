@@ -1,6 +1,5 @@
 import { translate } from '@/Translations/algorithm'
 import i18n from '@/Translations'
-import { breakableFraction } from '@/Utils/Formulations/BreakableFraction'
 import { roundSup } from '@/Utils/Formulations/RoundSup'
 import { Config } from '@/Config'
 
@@ -32,40 +31,6 @@ export const formulationLabel = drugDose => {
         drugDose.unique_dose,
       )} ml ${i18n.t('formulations.medication_form.per_administration')}`
     }
-    case Config.MEDICATION_FORMS.tablet: {
-      if (drugDose.by_age) {
-        return `${translate(drugDose.description)}: ${roundSup(
-          drugDose.unique_dose,
-        )} ${i18n.t('formulations.drug.tablets')}`
-      }
-      return `${translate(drugDose.description)}: ${roundSup(
-        drugDose.dose_form,
-      )}mg ${i18n
-        .t(`formulations.medication_form.${drugDose.medication_form}`)
-        .toLowerCase()}: ${
-        drugDose.doseResult !== null
-          ? `${breakableFraction(drugDose)} ${i18n.t(
-              'formulations.drug.tablets',
-            )}`
-          : i18n.t('formulations.drug.no_options')
-      }`
-    }
-    case Config.MEDICATION_FORMS.dispersible_tablet: {
-      if (drugDose.by_age) {
-        return `${translate(drugDose.description)}: ${roundSup(
-          drugDose.unique_dose,
-        )} ${i18n.t('formulations.drug.tablets')}`
-      }
-      return `${roundSup(drugDose.dose_form)}mg ${i18n
-        .t(`formulations.medication_form.${drugDose.medication_form}`)
-        .toLowerCase()}: ${
-        drugDose.doseResult !== null
-          ? `${breakableFraction(drugDose)} ${i18n.t(
-              'formulations.drug.tablets',
-            )}`
-          : i18n.t('formulations.drug.no_options')
-      }`
-    }
     case Config.MEDICATION_FORMS.capsule: {
       if (drugDose.by_age) {
         return `${translate(drugDose.description)}: ${roundSup(
@@ -76,6 +41,9 @@ export const formulationLabel = drugDose => {
         drugDose.doseResult
       } ${i18n.t('formulations.drug.capsules')}`
     }
+    // Asked -> https://github.com/Wavemind/liwi-medal-reader/issues/450
+    case Config.MEDICATION_FORMS.dispersible_tablet:
+    case Config.MEDICATION_FORMS.tablet:
     case Config.MEDICATION_FORMS.lotion:
     case Config.MEDICATION_FORMS.ointment:
     case Config.MEDICATION_FORMS.gel:

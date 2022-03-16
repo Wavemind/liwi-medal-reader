@@ -23,7 +23,7 @@ const Capsule = ({ drug, drugDose }) => {
   } = useTheme()
 
   const { t } = useTranslation()
-  console.log(drug)
+  console.log('capsule', drug)
   const drugInstance = useSelector(
     state =>
       state.algorithm.item.nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[

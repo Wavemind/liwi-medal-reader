@@ -26,6 +26,9 @@ const Breakable = ({ drug, drugDose }) => {
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const fractionString = breakableFraction(drugDose)
 
+  console.log('breakable', drug, drugDose)
+
+  // TODO: Waiting clinical team
   const drugInstance =
     nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id]
 
@@ -61,6 +64,10 @@ const Breakable = ({ drug, drugDose }) => {
     return `${drug.duration} ${t('formulations.drug.days')}`
   }
 
+  /**
+   * Display indication
+   * @returns jsx
+   */
   const indicationDisplay = () =>
     drug.relatedDiagnoses
       .map(finalDiagnose => translate(nodes[finalDiagnose.diagnosisId].label))
@@ -69,46 +76,60 @@ const Breakable = ({ drug, drugDose }) => {
   return (
     <View>
       <Text style={summary.drugText}>
-        <Text style={Fonts.textBold}>Indication:</Text> {indicationDisplay()}
+        <Text style={Fonts.textBold}>{t('formulations.drug.indication')}:</Text>{' '}
+        {indicationDisplay()}
       </Text>
 
+      {/* TODO: Waiting clinical team */}
       {/* <Text style={summary.drugText}>
         <Text style={Fonts.textBold}>Dose calculation:</Text>
       </Text> */}
 
       <Text style={summary.drugText}>
-        <Text style={Fonts.textBold}>Formulation:</Text>{' '}
+        <Text style={Fonts.textBold}>
+          {t('formulations.drug.formulation')}:
+        </Text>{' '}
         {formulationLabel(drugDose)}
       </Text>
 
       <Text style={summary.drugText}>
-        <Text style={Fonts.textBold}>Route:</Text>{' '}
-        {drugDose.administration_route_name}
+        <Text style={Fonts.textBold}>{t('formulations.drug.route')}:</Text>{' '}
+        {t(
+          `formulations.administration_routes.${drugDose.administration_route_name.toLowerCase()}`,
+        )}
       </Text>
 
       <Text style={summary.drugText}>
-        <Text style={Fonts.textBold}>Amount to be given:</Text> {fractionString}{' '}
-        {t('formulations.drug.tablets')}
+        <Text style={Fonts.textBold}>
+          {t('formulations.drug.amount_to_be_given')}:
+        </Text>{' '}
+        {fractionString} {t('formulations.drug.tablets')}
       </Text>
 
       {translate(drugDose.injection_instructions) !== '' && (
         <Text style={summary.drugText}>
-          <Text style={Fonts.textBold}>Preparation instruction:</Text>{' '}
+          <Text style={Fonts.textBold}>
+            {t('formulations.drug.preparation_instruction')}:
+          </Text>{' '}
           {translate(drugDose.injection_instructions)}
         </Text>
       )}
 
       <Text style={summary.drugText}>
-        <Text style={Fonts.textBold}>Frequency:</Text> {frequencyDisplay()}
+        <Text style={Fonts.textBold}>{t('formulations.drug.frequency')}:</Text>{' '}
+        {frequencyDisplay()}
       </Text>
 
       <Text style={summary.drugText}>
-        <Text style={Fonts.textBold}>Duration:</Text> {durationsDisplay()}
+        <Text style={Fonts.textBold}>{t('formulations.drug.duration')}:</Text>{' '}
+        {durationsDisplay()}
       </Text>
 
       {translate(drugDose.dispensing_description) !== '' && (
         <Text style={summary.drugText}>
-          <Text style={Fonts.textBold}>Administration instruction:</Text>{' '}
+          <Text style={Fonts.textBold}>
+            {t('formulations.drug.administration_instruction')}:
+          </Text>{' '}
           {translate(drugDose.dispensing_description)}
         </Text>
       )}
