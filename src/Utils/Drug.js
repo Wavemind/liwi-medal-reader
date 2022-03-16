@@ -192,8 +192,6 @@ export const reworkAndOrderDrugs = key => {
   const nodes = store.getState().algorithm.item.nodes
   const diagnoses = store.getState().medicalCase.item.diagnosis
 
-  console.log(diagnoses)
-
   const allDrugs = []
   for (const [diagnosisKey, diagnosisValue] of Object.entries(diagnoses)) {
     if (['agreed', 'additional'].includes(diagnosisKey)) {
