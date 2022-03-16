@@ -23,6 +23,8 @@ import {
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
+import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
+import { _keys } from '@/Utils/Object'
 
 const SearchAdditionalMedicalCaseContainer = ({
   navigation,
@@ -50,7 +52,8 @@ const SearchAdditionalMedicalCaseContainer = ({
   const proposed = useSelector(
     state => state.medicalCase.item.diagnosis.proposed,
   )
-  const additionalItems = useSelector(
+  const agreed = useSelector(state => state.medicalCase.item.diagnosis.agreed)
+  const additional = useSelector(
     state => state.medicalCase.item.diagnosis.additional,
   )
 
@@ -74,7 +77,7 @@ const SearchAdditionalMedicalCaseContainer = ({
   // Local state definition
   const [numToAdd] = useState(20)
   const [items, setItems] = useState([])
-  const [selected, setSelected] = useState(additionalItems)
+  const [selected, setSelected] = useState(additional)
   const [searchTerm, setSearchTerm] = useState('')
   const [numToDisplay, setNumToDisplay] = useState(numToAdd)
 
@@ -127,6 +130,7 @@ const SearchAdditionalMedicalCaseContainer = ({
           additional: {},
           custom: {},
         },
+        new: true,
       }
     }
     setSelected(tempAdditionalItems)
@@ -136,9 +140,46 @@ const SearchAdditionalMedicalCaseContainer = ({
    * Updates the global store when the user is done selecting elements
    */
   const handleApply = () => {
+    const newDiagnoses = Object.values(selected)
+      .filter(diag => diag.new)
+      .map(diag => diag.id)
+    const oldAdditional = Object.values(selected)
+      .filter(diag => !diag.new)
+      .map(diag => diag.id)
+    const oldAgreed = Object.values(agreed).map(diag => diag.id)
+
+    const tempAgreed = JSON.parse(JSON.stringify(agreed))
+    const tempAdditional = JSON.parse(JSON.stringify(selected))
+
+    newDiagnoses.forEach(newDiagnosis => {
+      delete tempAdditional[newDiagnosis].new
+      selected[newDiagnosis].drugs.proposed.forEach(proposedDrug => {
+        oldAdditional.forEach(oldDiagnosis => {
+          const oldAgreedDrugs = selected[oldDiagnosis].drugs.agreed
+          if (_keys(oldAgreedDrugs).includes(proposedDrug)) {
+            delete tempAdditional[oldDiagnosis].drugs.agreed[proposedDrug]
+          }
+        })
+        oldAgreed.forEach(oldDiagnosis => {
+          const oldAgreedDrugs = agreed[oldDiagnosis].drugs.agreed
+          if (_keys(oldAgreedDrugs).includes(proposedDrug)) {
+            delete tempAgreed[oldDiagnosis].drugs.agreed[proposedDrug]
+          }
+        })
+      })
+    })
+
+    Object.values(tempAgreed).forEach(diagnosis => {
+      dispatch(
+        AddAgreedDiagnoses.action({
+          diagnosisId: diagnosis.id,
+          diagnosisContent: diagnosis,
+        }),
+      )
+    })
     dispatch(
       AddAdditionalDiagnoses.action({
-        newAdditionalDiagnoses: selected,
+        newAdditionalDiagnoses: tempAdditional,
       }),
     )
     navigation.goBack()

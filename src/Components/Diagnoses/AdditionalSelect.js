@@ -49,6 +49,8 @@ const AdditionalSelect = ({
     }
   }
 
+  // TODO clean this
+
   return (
     <View>
       {listValues.length === 0 && (

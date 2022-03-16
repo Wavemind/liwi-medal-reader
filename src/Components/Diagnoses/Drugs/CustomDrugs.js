@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Text, View, TextInput, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -13,7 +13,12 @@ import uuid from 'react-native-uuid'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import { navigate } from '@/Navigators/Root'
-import { RoundedButton, QuestionInfoButton, Icon } from '@/Components'
+import {
+  RoundedButton,
+  QuestionInfoButton,
+  Icon,
+  AdditionalDrug,
+} from '@/Components'
 import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
 import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
 import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
@@ -38,6 +43,10 @@ const CustomDrugs = () => {
   const customDiagnoses = useSelector(
     state => state.medicalCase.item.diagnosis.custom,
   )
+
+  const customDrugs = useMemo(() => {
+    return []
+  }, [])
 
   /**
    * Handles the addition of a new custom drug
@@ -117,6 +126,21 @@ const CustomDrugs = () => {
         <Text style={drugs.header}>
           {t('containers.medical_case.drugs.custom')}
         </Text>
+      </View>
+      <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
+        {customDrugs.length === 0 && tempDrugs.length === 0 ? (
+          <Text style={finalDiagnoses.noItemsText}>
+            {t('containers.medical_case.drugs.no_custom')}
+          </Text>
+        ) : (
+          customDrugs.map((drug, i) => (
+            <AdditionalDrug
+              key={`additionalDrug_${drug.id}`}
+              drug={drug}
+              isLast={i === Object.keys(customDrugs).length - 1}
+            />
+          ))
+        )}
       </View>
       {tempDrugs.map((tempDrug, i) => (
         <View
