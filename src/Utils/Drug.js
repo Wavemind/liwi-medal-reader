@@ -10,6 +10,7 @@ import { store } from '@/Store'
 import { Config } from '@/Config'
 import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
 import { translate } from '@/Translations/algorithm'
+import { _keys } from '@/Utils/Object'
 
 /**
  * Returns all available drugs for a specific final diagnosis
@@ -198,9 +199,7 @@ export const reworkAndOrderDrugs = key => {
     if (['agreed', 'additional'].includes(diagnosisKey)) {
       Object.keys(diagnosisValue).forEach(diagnosis => {
         const drugGroup = diagnosisValue[diagnosis].drugs[key]
-        const drugs = Array.isArray(drugGroup)
-          ? drugGroup
-          : Object.keys(drugGroup).map(drug => parseInt(drug, 10))
+        const drugs = Array.isArray(drugGroup) ? drugGroup : _keys(drugGroup)
 
         drugs.forEach(drug => {
           const foundIndex = allDrugs.findIndex(e => e.id === drug)

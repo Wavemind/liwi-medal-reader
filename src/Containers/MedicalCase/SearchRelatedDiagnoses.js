@@ -22,6 +22,7 @@ import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
+import { _keys } from '@/Utils/Object'
 
 const SearchRelatedDiagnosesMedicalCaseContainer = ({
   navigation,
@@ -60,12 +61,11 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
   const itemList = useMemo(() => {
     const diagnosisList = []
     for (const [key, value] of Object.entries({ agreed, additional })) {
-      Object.keys(value).forEach(diagnosis => {
-        const nodeId = parseInt(diagnosis, 10)
+      _keys(value).forEach(diagnosis => {
         diagnosisList.push({
-          id: nodeId,
+          id: diagnosis,
           key,
-          ...nodes[nodeId],
+          ...nodes[diagnosis],
         })
       })
     }
@@ -84,11 +84,7 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
       Object.values(diagnoses).forEach(diagnosis => {
         const { agreed: agreedDrugs, additional: additionalDrugs } =
           diagnosis.drugs
-        if (
-          Object.keys({ ...agreedDrugs, ...additionalDrugs })
-            .map(drug => parseInt(drug, 10))
-            .includes(drugId)
-        ) {
+        if (_keys({ ...agreedDrugs, ...additionalDrugs }).includes(drugId)) {
           tempSelected[diagnosis.id] = { id: diagnosis.id, key }
         }
       })
@@ -146,8 +142,7 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
    * Updates the global store when the user is done selecting elements
    */
   const handleApply = () => {
-    const originalIds = Object.keys(originalSelected).map(s => parseInt(s, 10))
-    const selectedIds = Object.keys(selected).map(s => parseInt(s, 10))
+    const originalIds = _keys(originalSelected)
 
     Object.values(selected).forEach(diagnosis => {
       if (!originalIds.includes(diagnosis.id)) {
@@ -165,7 +160,7 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
       }
     })
     originalIds.forEach(diagnosisId => {
-      if (!selectedIds.includes(diagnosisId)) {
+      if (!_keys(selected).includes(diagnosisId)) {
         dispatch(
           RemoveAdditionalDrugs.action({
             diagnosisKey: originalSelected[diagnosisId].key,

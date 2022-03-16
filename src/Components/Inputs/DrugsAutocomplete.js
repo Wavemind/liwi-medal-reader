@@ -15,6 +15,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import { translate } from '@/Translations/algorithm'
+import { _keys } from '@/Utils/Object'
 
 const Autocomplete = ({ updateAdditionalDrugs }) => {
   // Theme and style elements deconstruction
@@ -39,9 +40,7 @@ const Autocomplete = ({ updateAdditionalDrugs }) => {
     })
       .map(diagnosis => [
         ...diagnosis.drugs.proposed,
-        ...Object.keys(diagnosis.drugs.additional).map(drug =>
-          parseInt(drug, 10),
-        ),
+        ..._keys(diagnosis.drugs.additional),
       ])
       .flat(1)
     return [...new Set(diagnosesSelectedDrugs)]
