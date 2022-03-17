@@ -200,6 +200,7 @@ export default {
         languages: {
           en: 'English',
           fr: 'Français',
+          it: 'Italian',
         },
       },
       algorithm: {
