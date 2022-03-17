@@ -10,7 +10,7 @@ Below you'll find information about performing common tasks.
 
 ## Table of contents
 
-- [MedAl-reader ![CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)](#medal-reader-)
+- [MedAl-reader](#medal-reader-) [CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)
   - [Setup](#setup)
   - [Table of contents](#table-of-contents)
   - [Available scripts](#available-scripts)
@@ -26,7 +26,7 @@ Below you'll find information about performing common tasks.
   - [Icons available](#icons-available)
   - [Date](#date)
     - [ColoredIcon](#coloredicon)
-    - [Icon](#i
+    - [Icon](#icon)
     - [API](#api)
   - [Writing and running tests](#writing-and-running-tests)
   - [Publishing](#publishing)
