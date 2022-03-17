@@ -10,73 +10,126 @@ import { useTranslation } from 'react-i18next'
  */
 import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 import { translate } from '@/Translations/algorithm'
-import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
 import { useSelector } from 'react-redux'
 
 const Default = ({ drug, drugDose }) => {
   // Theme and style elements deconstruction
   const {
-    Gutters,
+    Fonts,
     Containers: { summary },
   } = useTheme()
 
   const { t } = useTranslation()
 
-  const drugInstance = useSelector(
-    state =>
-      state.algorithm.item.nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[
-        drug.id
-      ],
-  )
-  let every = ''
-  console.log(drugInstance)
+  const nodes = useSelector(state => state.algorithm.item.nodes)
 
-  const duration = drugInstance
-    ? translate(drugInstance.duration)
-    : drug.duration
+  // TODO: Waiting clinical team
+  const drugInstance =
+    nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id]
 
-  if (drug.formulationSelected !== null) {
-    every = drugInstance?.is_pre_referral
-      ? `
-    ${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t(
-          'formulations.drug.hour',
-        )} ${t('formulations.drug.during')} ${t(
-          'formulations.drug.pre_referral',
-        )}`
-      : `${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t(
-          'formulations.drug.h',
-        )} ${duration} ${t('formulations.drug.days')}`
+  console.log('Default', drug, drugDose)
+
+  /**
+   * Display indication
+   * @returns jsx
+   */
+  const indicationDisplay = () =>
+    drug.relatedDiagnoses
+      .map(finalDiagnose => translate(nodes[finalDiagnose.diagnosisId].label))
+      .join(', ')
+
+  /**
+   * Display durations
+   * @returns jsx
+   */
+  const durationsDisplay = () => {
+    if (drugInstance) {
+      return `${translate(drugInstance.duration)} ${t(
+        'formulations.drug.days',
+      )}`
+    }
+
+    return `${drug.duration} ${t('formulations.drug.days')}`
+  }
+
+  /**
+   * Display frequency
+   * @returns jsx
+   */
+  const frequencyDisplay = () => {
+    if (drugInstance?.is_pre_referral) {
+      return `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+        'formulations.drug.hour',
+      )} ${t('formulations.drug.during')} ${t(
+        'formulations.drug.pre_referral',
+      )}`
+    } else {
+      return `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+        'formulations.drug.hour',
+      )}`
+    }
   }
 
   return (
     <View>
-      <Text>{formulationLabel(drugDose)}</Text>
       <Text style={summary.drugText}>
-        {t('formulations.drug.d')}:{' '}
-        {drugInstance?.is_pre_referral
-          ? `${t('formulations.drug.during')} ${t(
-              'formulations.drug.pre_referral',
-            )}`
-          : duration}
+        <Text style={Fonts.textBold}>{t('formulations.drug.indication')}:</Text>{' '}
+        {indicationDisplay()}
       </Text>
-      {drug.formulationSelected !== null && (
+
+      {/* TODO: Waiting clinical team */}
+      {/* <Text style={summary.drugText}>
+        <Text style={Fonts.textBold}>Dose calculation:</Text>
+      </Text> */}
+
+      <Text style={summary.drugText}>
+        <Text style={Fonts.textBold}>
+          {t('formulations.drug.formulation')}:
+        </Text>{' '}
+        {formulationLabel(drugDose)}
+      </Text>
+
+      <Text style={summary.drugText}>
+        <Text style={Fonts.textBold}>{t('formulations.drug.route')}:</Text>{' '}
+        {t(
+          `formulations.administration_routes.${drugDose.administration_route_name.toLowerCase()}`,
+        )}
+      </Text>
+
+      {/* TODO: Ask clinical team */}
+      <Text style={summary.drugText}>
+        <Text style={Fonts.textBold}>
+          {t('formulations.drug.amount_to_be_given')}:
+        </Text>{' '}
+        {/* {displayAmountGiven()} */}
+      </Text>
+
+      {translate(drugDose.injection_instructions) !== '' && (
         <Text style={summary.drugText}>
-          {t('formulations.drug.admin')}: {drugDose.administration_route_name}
+          <Text style={Fonts.textBold}>
+            {t('formulations.drug.preparation_instruction')}:
+          </Text>{' '}
+          {translate(drugDose.injection_instructions)}
         </Text>
       )}
-      {drug.formulationSelected !== null && <Text>{every}</Text>}
-      <Text style={[Gutters.regularTMargin, summary.drugText]}>
-        {translate(drugDose.dispensing_description)}
+
+      <Text style={summary.drugText}>
+        <Text style={Fonts.textBold}>{t('formulations.drug.frequency')}:</Text>{' '}
+        {frequencyDisplay()}
       </Text>
-      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
-        drugDose.administration_route_category,
-      ) && (
-        <Text
-          style={[Gutters.regularTMargin, summary.drugText]}
-          key={`text_${drug.id}`}
-        >
-          {translate(drugDose.injection_instructions)}
+
+      <Text style={summary.drugText}>
+        <Text style={Fonts.textBold}>{t('formulations.drug.duration')}:</Text>{' '}
+        {durationsDisplay()}
+      </Text>
+
+      {translate(drugDose.dispensing_description) !== '' && (
+        <Text style={summary.drugText}>
+          <Text style={Fonts.textBold}>
+            {t('formulations.drug.administration_instruction')}:
+          </Text>{' '}
+          {translate(drugDose.dispensing_description)}
         </Text>
       )}
     </View>

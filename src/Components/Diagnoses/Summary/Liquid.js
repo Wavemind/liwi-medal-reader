@@ -12,7 +12,6 @@ import { useSelector } from 'react-redux'
 import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 import { roundSup } from '@/Utils/Formulations/RoundSup'
 import { translate } from '@/Translations/algorithm'
-import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
 
 const Liquid = ({ drug, drugDose }) => {
@@ -25,13 +24,14 @@ const Liquid = ({ drug, drugDose }) => {
   const { t } = useTranslation()
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
+
   const ratio = drugDose.liquid_concentration / drugDose.dose_form
 
   // TODO: Waiting clinical team
   const drugInstance =
     nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id]
 
-  console.log('liquid', drug)
+  console.log('liquid', drug, drugDose)
 
   /**
    * Display frequency
@@ -150,48 +150,6 @@ const Liquid = ({ drug, drugDose }) => {
         </Text>
       )}
     </View>
-    // <View>
-    //   <Text style={summary.drugText}>{formulationLabel(drugDose)}</Text>
-    //   {!drugDose.medication_form.includes([
-    //     Config.MEDICATION_FORMS.solution,
-    //     Config.MEDICATION_FORMS.powder_for_injection,
-    //   ]) && drugDose.by_age ? (
-    //     <Text style={summary.drugText}>{`${roundSup(
-    //       drugDose.unique_dose,
-    //     )}ml ${t(
-    //       'formulations.medication_form.per_administration',
-    //     )} ${durationDisplay}`}</Text>
-    //   ) : drugDose.doseResult === null ? (
-    //     <Text style={summary.drugText}>{drugDose.no_possibility}</Text>
-    //   ) : (
-    //     <View>
-    //       <Text style={summary.drugText}>
-    //         {t('formulations.drug.give')}{' '}
-    //         {roundSup(ratio * drugDose.doseResult)}
-    //         {t('formulations.drug.mg')}: {roundSup(drugDose.doseResult)}
-    //         {t('formulations.drug.ml')} {t('formulations.drug.of')}{' '}
-    //         {roundSup(drugDose.liquid_concentration)}
-    //         {t('formulations.drug.mg')}/{drugDose.dose_form}
-    //         {t('formulations.drug.ml')}
-    //       </Text>
-    //       <Text style={summary.drugText}>{durationDisplay}</Text>
-    //     </View>
-    //   )}
-
-    //   {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(
-    //     drugDose.administration_route_category,
-    //   ) && (
-    //     <Text
-    //       style={[Gutters.regularTMargin, summary.drugText]}
-    //       key={`text_${drug.id}`}
-    //     >
-    //       {translate(drugDose.injection_instructions)}
-    //     </Text>
-    //   )}
-    //   <Text style={[Gutters.regularTMargin, summary.drugText]}>
-    //     {translate(drugDose.dispensing_description)}
-    //   </Text>
-    // </View>
   )
 }
 
