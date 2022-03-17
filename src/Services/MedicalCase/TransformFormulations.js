@@ -19,6 +19,7 @@ const transformFormulations = () => {
     Object.values(localDiagnoses[diagnosisKey]).forEach(diagnosis => {
       keys.forEach(drugKey => {
         Object.values(diagnosis.drugs[drugKey]).forEach(drug => {
+          console.log(drug)
           const relatedDiagnosis = {
             diagnosisId: diagnosis.id,
             diagnosisKey,
@@ -28,9 +29,11 @@ const transformFormulations = () => {
             newDrugs[drug.id].relatedDiagnoses.push(relatedDiagnosis)
           } else {
             const drugFormulations = nodes[drug.id].formulations
+
             newDrugs[drug.id] = {
               id: drug.id,
               relatedDiagnoses: [relatedDiagnosis],
+              duration: drug?.duration, // TODO: NEED THIS SINAN
               selectedFormulationId:
                 drugFormulations.length === 1
                   ? drugFormulations[0].id

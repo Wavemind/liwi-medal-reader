@@ -143,6 +143,9 @@ export default {
           'Which drug formulation is available and suited for your patient?',
       },
       summary: {
+        final_diagnoses: 'Final diagnoses', // Added
+        treatments: 'Treatments', // Added
+        managements: 'Managements', // Added
         date_consultation: 'Date of consultation',
         age_date_consultation: 'Age at time of consultation',
         type_of_consultation: 'Type of consultation',
@@ -370,7 +373,7 @@ export default {
       give: 'Give',
       mg: 'mg',
       caps: 'capsule(s) of',
-      every: 'every',
+      every: 'Every', // Updated
       h: 'hour(s) for',
       hour: 'hour(s)',
       days: 'day(s)',
@@ -392,15 +395,24 @@ export default {
       missing_medicine_formulation: 'Please select a medicine formulation',
       no_options: 'No compatible option',
       medication_form_not_handled: 'Medication form not managed',
-      indication: 'Indication',
-      formulation: 'Formulation',
-      route: 'Route',
-      amount_to_be_given: 'Amount to be given',
-      preparation_instruction: 'Preparation instruction',
-      frequency: 'Frequency',
-      duration: 'Duration',
-      administration_instruction: 'Administration instruction',
+      indication: 'Indication', // Added
+      dose_calculation: 'Dose calculation', // Added
+      formulation: 'Formulation', // Added
+      route: 'Route', // Added
+      amount_to_be_given: 'Amount to be given', // Added
+      preparation_instruction: 'Preparation instruction', // Added
+      frequency: 'Frequency', // Added
+      duration: 'Duration', // Added
+      administration_instruction: 'Administration instruction', // Added
+      pre_referral_duration: 'While arranging referral', // Added
+      per_administration: 'per administration', // Updated
+      per_application: 'application(s) per administration', // Updated
+      fixe_dose: 'Fixe dose', // Added
+      fixe_dose_breakable: 'Fixe dose - {{ uniqueDose }} per administration',
+      dose_indication_breakable:
+        'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg',
     },
+    // Added
     administration_routes: {
       orally: 'Orally',
       sublingually: 'Sublingually',
@@ -433,9 +445,6 @@ export default {
       gel: 'Gel',
       spray: 'Spray',
       inhaler: 'Inhaler',
-      per: 'per',
-      per_administration: 'per administration',
-      per_application: 'application(s) per administration',
     },
   },
   reference_table: {

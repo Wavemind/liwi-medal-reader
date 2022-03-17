@@ -4,27 +4,21 @@
 import React, { useMemo } from 'react'
 import { ScrollView, View, Text } from 'react-native'
 import orderBy from 'lodash/orderBy'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
-import {
-  Diagnosis,
-  Custom,
-  Comment,
-  Drug,
-  QuestionInfoButton,
-} from '@/Components'
+import { Comment, Drug, QuestionInfoButton } from '@/Components'
 import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { TransformFormulationsService } from '@/Services/MedicalCase'
 
 const SummaryMedicalCaseContainer = () => {
+  const { t } = useTranslation()
   const {
     Gutters,
-    Colors,
-    Layout,
     Containers: { formulations, summary },
   } = useTheme()
 
@@ -74,7 +68,9 @@ const SummaryMedicalCaseContainer = () => {
     <ScrollView>
       <View style={formulations.wrapper}>
         <View style={formulations.formulationsHeaderWrapper}>
-          <Text style={formulations.formulationsHeader}>Final diagnoses</Text>
+          <Text style={formulations.formulationsHeader}>
+            {t('containers.medical_case.summary.final_diagnoses')}
+          </Text>
         </View>
         <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
           {getAgreedFinalDiagnosis.map(finalDiagnose => (
@@ -96,7 +92,9 @@ const SummaryMedicalCaseContainer = () => {
 
       <View style={formulations.wrapper}>
         <View style={formulations.formulationsHeaderWrapper}>
-          <Text style={formulations.formulationsHeader}>Treatments</Text>
+          <Text style={formulations.formulationsHeader}>
+            {t('containers.medical_case.summary.treatments')}
+          </Text>
         </View>
         <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
           {sortDrugsByUrgency().map((drug, i) => (
@@ -111,8 +109,11 @@ const SummaryMedicalCaseContainer = () => {
 
       <View style={formulations.wrapper}>
         <View style={formulations.formulationsHeaderWrapper}>
-          <Text style={formulations.formulationsHeader}>Managements</Text>
+          <Text style={formulations.formulationsHeader}>
+            {t('containers.medical_case.summary.managements')}
+          </Text>
         </View>
+        {/* TODO: ADD MANAGEMENT */}
         <View style={[Gutters.regularHMargin, Gutters.regularVMargin]} />
       </View>
       <Comment />

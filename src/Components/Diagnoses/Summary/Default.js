@@ -28,7 +28,7 @@ const Default = ({ drug, drugDose }) => {
   const drugInstance =
     nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id]
 
-  console.log('Default', drug, drugDose)
+  // console.log('Default', drug, drugDose)
 
   /**
    * Display indication
@@ -44,12 +44,19 @@ const Default = ({ drug, drugDose }) => {
    * @returns jsx
    */
   const durationsDisplay = () => {
+    // Pre-referral
+    if (drugInstance?.is_pre_referral) {
+      return t('formulations.drugs.pre_referral_duration')
+    }
+
+    // Normal behavior, take instance drug duration
     if (drugInstance) {
       return `${translate(drugInstance.duration)} ${t(
         'formulations.drug.days',
       )}`
     }
 
+    // For additional and custom
     return `${drug.duration} ${t('formulations.drug.days')}`
   }
 
@@ -57,19 +64,10 @@ const Default = ({ drug, drugDose }) => {
    * Display frequency
    * @returns jsx
    */
-  const frequencyDisplay = () => {
-    if (drugInstance?.is_pre_referral) {
-      return `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
-        'formulations.drug.hour',
-      )} ${t('formulations.drug.during')} ${t(
-        'formulations.drug.pre_referral',
-      )}`
-    } else {
-      return `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
-        'formulations.drug.hour',
-      )}`
-    }
-  }
+  const frequencyDisplay = () =>
+    `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+      'formulations.drug.hour',
+    )}`
 
   return (
     <View>

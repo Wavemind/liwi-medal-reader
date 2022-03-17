@@ -24,7 +24,7 @@ const Capsule = ({ drug, drugDose }) => {
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
 
-  console.log('capsule', drug, drugDose)
+  // console.log('capsule', drug, drugDose)
 
   // TODO: Waiting clinical team
   const drugInstance =
@@ -34,39 +34,39 @@ const Capsule = ({ drug, drugDose }) => {
    * Display frequency
    * @returns jsx
    */
-  const frequencyDisplay = () => {
-    if (drugInstance?.is_pre_referral) {
-      return `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
-        'formulations.drug.hour',
-      )} ${t('formulations.drug.during')} ${t(
-        'formulations.drug.pre_referral',
-      )}`
-    } else {
-      return `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
-        'formulations.drug.hour',
-      )}`
-    }
-  }
+  const frequencyDisplay = () =>
+    `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
+      'formulations.drug.hour',
+    )}`
 
   /**
    * Display durations
    * @returns jsx
    */
   const durationsDisplay = () => {
+    // Pre-referral
+    if (drugInstance?.is_pre_referral) {
+      return t('formulations.drugs.pre_referral_duration')
+    }
+
+    // Normal behavior, take instance drug duration
     if (drugInstance) {
       return `${translate(drugInstance.duration)} ${t(
         'formulations.drug.days',
       )}`
     }
 
+    // For additional and custom
     return `${drug.duration} ${t('formulations.drug.days')}`
   }
 
   /**
    * Display the amount should be given
+   *
    * @returns jsx
    */
   const displayAmountGiven = () => (
+    // TODO CHANGE DISPLAY
     <Text>
       {t('formulations.drug.give')} {drugDose.doseResult * drugDose.dose_form}{' '}
       {t('formulations.drug.mg')} : {drugDose.doseResult}{' '}

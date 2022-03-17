@@ -78,6 +78,7 @@ const Diagnosis = ({ diagnosisKey }) => {
             )}
           </View>
           <Text style={summary.diagnosisKey}>
+            COuCOU
             {t(
               `containers.medical_case.drugs.${
                 diagnosisKey === 'agreed' ? 'proposed' : 'additional'
