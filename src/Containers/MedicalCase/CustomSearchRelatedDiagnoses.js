@@ -20,14 +20,13 @@ import {
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
-import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
-import { _keys } from '@/Utils/Object'
+import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
+import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
 
-const SearchRelatedDiagnosesMedicalCaseContainer = ({
+const CustomSearchRelatedDiagnosesMedicalCaseContainer = ({
   navigation,
   route: {
-    params: { drugId },
+    params: { drugId, drugName },
   },
 }) => {
   // Theme and style elements deconstruction
@@ -46,7 +45,7 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
 
   // Get data from the store
   const nodes = useSelector(state => state.algorithm.item.nodes)
-  const { agreed, additional } = useSelector(
+  const { custom, additional } = useSelector(
     state => state.medicalCase.item.diagnosis,
   )
 
@@ -60,12 +59,16 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
 
   const itemList = useMemo(() => {
     const diagnosisList = []
-    for (const [key, value] of Object.entries({ agreed, additional })) {
-      _keys(value).forEach(diagnosis => {
+    for (const [key, diagnoses] of Object.entries({ custom, additional })) {
+      Object.values(diagnoses).forEach(diagnosis => {
+        const itemId =
+          key === 'custom' ? diagnosis.id : parseInt(diagnosis.id, 10)
         diagnosisList.push({
-          id: diagnosis,
+          id: itemId,
           key,
-          ...nodes[diagnosis],
+          label: key === 'custom' ? diagnosis.name : nodes[itemId].label,
+          description: key === 'custom' ? '' : nodes[itemId].description,
+          medias: key === 'custom' ? [] : nodes[itemId].medias,
         })
       })
     }
@@ -76,16 +79,20 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
         ? -1
         : 0
     })
-  }, [additional, agreed])
+  }, [additional, custom])
 
   useEffect(() => {
     const tempSelected = {}
-    for (const [key, diagnoses] of Object.entries({ agreed, additional })) {
+    for (const [key, diagnoses] of Object.entries({ custom, additional })) {
       Object.values(diagnoses).forEach(diagnosis => {
-        const { agreed: agreedDrugs, additional: additionalDrugs } =
-          diagnosis.drugs
-        if (_keys({ ...agreedDrugs, ...additionalDrugs }).includes(drugId)) {
-          tempSelected[diagnosis.id] = { id: diagnosis.id, key }
+        if (key === 'custom') {
+          if (Object.keys(diagnosis.drugs).includes(drugId)) {
+            tempSelected[diagnosis.id] = { id: diagnosis.id, key }
+          }
+        } else {
+          if (Object.keys(diagnosis.drugs.custom).includes(drugId)) {
+            tempSelected[diagnosis.id] = { id: diagnosis.id, key }
+          }
         }
       })
     }
@@ -142,17 +149,19 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
    * Updates the global store when the user is done selecting elements
    */
   const handleApply = () => {
-    const originalIds = _keys(originalSelected)
+    const originalIds = Object.keys(originalSelected)
 
-    Object.values(selected).forEach(diagnosis => {
-      if (!originalIds.includes(diagnosis.id)) {
+    Object.keys(selected).forEach(diagnosis => {
+      if (!originalIds.includes(selected[diagnosis].id)) {
         dispatch(
-          AddAdditionalDrugs.action({
-            diagnosisKey: diagnosis.key,
-            diagnosisId: diagnosis.id,
-            newAdditionalDrug: {
+          AddCustomDrugs.action({
+            diagnosisKey: selected[diagnosis].key,
+            diagnosisId: selected[diagnosis].id,
+            drugId,
+            drugContent: {
               id: drugId,
-              formulation_id: null,
+              name: drugName,
+              duration: null,
               addedAt: Math.floor(new Date().getTime() / 1000),
             },
           }),
@@ -160,9 +169,9 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
       }
     })
     originalIds.forEach(diagnosisId => {
-      if (!_keys(selected).includes(diagnosisId)) {
+      if (!Object.keys(selected).includes(diagnosisId)) {
         dispatch(
-          RemoveAdditionalDrugs.action({
+          RemoveCustomDrugs.action({
             diagnosisKey: originalSelected[diagnosisId].key,
             diagnosisId: originalSelected[diagnosisId].id,
             drugId,
@@ -218,7 +227,11 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
           removeBadge={toggleAdditionalItems}
           selected={selected}
           clearBadges={() => setSelected([])}
-          badgeComponentLabel={item => translate(nodes[item.id].label)}
+          badgeComponentLabel={item =>
+            item.key === 'custom'
+              ? itemList.find(object => object.id === item.id).label
+              : translate(nodes[item.id].label)
+          }
         />
 
         <SectionHeader
@@ -272,4 +285,4 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
   )
 }
 
-export default SearchRelatedDiagnosesMedicalCaseContainer
+export default CustomSearchRelatedDiagnosesMedicalCaseContainer

@@ -40,7 +40,8 @@ export { default as RegistrationMedicalCaseContainer } from './MedicalCase/Regis
 export { default as SummaryWrapperMedicalCaseContainer } from './MedicalCase/Summary/SummaryWrapper'
 export { default as ListMedicalCaseContainer } from './MedicalCase/List'
 export { default as SearchAdditionalMedicalCaseContainer } from './MedicalCase/SearchAdditional'
-export { default as SearchRelatedDiagnosesMedicalCaseContainer } from './MedicalCase/SearchRelatedDiagnoses'
+export { default as AdditionalSearchRelatedDiagnosesMedicalCaseContainer } from './MedicalCase/AdditionalSearchRelatedDiagnoses'
+export { default as CustomSearchRelatedDiagnosesMedicalCaseContainer } from './MedicalCase/CustomSearchRelatedDiagnoses'
 export { default as StageWrapperMedicalCaseContainer } from './MedicalCase/StageWrapper'
 
 // Patient

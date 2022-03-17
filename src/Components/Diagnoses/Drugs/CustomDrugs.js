@@ -13,11 +13,12 @@ import uuid from 'react-native-uuid'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import { navigate } from '@/Navigators/Root'
+import { reworkAndOrderDrugs } from '@/Utils/Drug'
 import {
   RoundedButton,
   QuestionInfoButton,
   Icon,
-  AdditionalDrug,
+  CustomDrug,
 } from '@/Components'
 import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
 import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
@@ -39,48 +40,10 @@ const CustomDrugs = () => {
   const [value, setValue] = useState('')
   const [tempDrugs, setTempDrugs] = useState([])
 
-  const nodes = useSelector(state => state.algorithm.item.nodes)
-  const customDiagnoses = useSelector(
-    state => state.medicalCase.item.diagnosis.custom,
-  )
+  const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
 
-  const customDrugs = useMemo(() => {
-    return []
-  }, [])
-
-  /**
-   * Handles the addition of a new custom drug
-   * @param diagnosisId
-   * @param value
-   */
-  const addCustomDrug = (diagnosisId, value) => {
-    const drugId = uuid.v4()
-    dispatch(
-      AddCustomDrugs.action({
-        diagnosisId,
-        drugId,
-        drugContent: {
-          id: drugId,
-          name: value,
-          duration: '',
-        },
-      }),
-    )
-  }
-
-  /**
-   * Handles the removal of a custom diagnosis
-   * @param diagnosisId
-   * @param drugId
-   */
-  const removeCustomDrug = (diagnosisId, drugId) => {
-    dispatch(
-      RemoveCustomDrugs.action({
-        diagnosisId,
-        drugId,
-      }),
-    )
-  }
+  const customDrugs = useMemo(() => reworkAndOrderDrugs('custom'), [diagnoses])
+  console.log(customDrugs)
 
   /**
    * Updates the selected custom drug duration
@@ -134,8 +97,8 @@ const CustomDrugs = () => {
           </Text>
         ) : (
           customDrugs.map((drug, i) => (
-            <AdditionalDrug
-              key={`additionalDrug_${drug.id}`}
+            <CustomDrug
+              key={`customDrug_${drug.id}`}
               drug={drug}
               isLast={i === Object.keys(customDrugs).length - 1}
             />
@@ -159,7 +122,10 @@ const CustomDrugs = () => {
           <TouchableOpacity
             style={additionalSelect.addAdditionalButton}
             onPress={() =>
-              navigate('SearchRelatedDiagnoses', { drugId: tempDrug.id })
+              navigate('CustomSearchRelatedDiagnoses', {
+                drugId: tempDrug.id,
+                drugName: tempDrug.label,
+              })
             }
           >
             <Text style={additionalSelect.addAdditionalButtonText}>

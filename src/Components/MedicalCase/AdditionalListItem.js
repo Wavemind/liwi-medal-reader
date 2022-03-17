@@ -26,7 +26,7 @@ const AdditionalListItem = ({ item, handlePress, selected }) => {
       <View style={Layout.fill}>
         <Checkbox
           nodeId={item.id}
-          label={translate(item.label)}
+          label={item.key === 'custom' ? item.label : translate(item.label)}
           onPress={() => handlePress(item)}
           defaultValue={Object.keys(selected).includes(item.id.toString())}
         />

@@ -193,38 +193,90 @@ export const reworkAndOrderDrugs = key => {
   const diagnoses = store.getState().medicalCase.item.diagnosis
 
   const allDrugs = []
-  for (const [diagnosisKey, diagnosisValue] of Object.entries(diagnoses)) {
-    if (['agreed', 'additional'].includes(diagnosisKey)) {
-      Object.keys(diagnosisValue).forEach(diagnosis => {
-        const drugGroup = diagnosisValue[diagnosis].drugs[key]
-        const drugs = Array.isArray(drugGroup) ? drugGroup : _keys(drugGroup)
-
-        drugs.forEach(drug => {
-          const foundIndex = allDrugs.findIndex(e => e.id === drug)
-          if (foundIndex > -1) {
-            allDrugs[foundIndex] = {
-              ...allDrugs[foundIndex],
-              diagnoses: [
-                ...allDrugs[foundIndex].diagnoses,
-                { id: parseInt(diagnosis, 10), key: diagnosisKey },
-              ],
+  if (key === 'custom') {
+    for (const [diagnosisKey, diagnosisValue] of Object.entries(diagnoses)) {
+      if (['additional', 'custom'].includes(diagnosisKey)) {
+        Object.keys(diagnosisValue).forEach(diagnosis => {
+          const drugs =
+            diagnosisKey === 'custom'
+              ? diagnosisValue[diagnosis].drugs
+              : diagnosisValue[diagnosis].drugs.custom
+          Object.keys(drugs).forEach(drug => {
+            const foundIndex = allDrugs.findIndex(e => e.id === drug)
+            const diagnosisId =
+              diagnosisKey === 'custom' ? diagnosis : parseInt(diagnosis, 10)
+            if (foundIndex > -1) {
+              allDrugs[foundIndex] = {
+                ...allDrugs[foundIndex],
+                diagnoses: [
+                  ...allDrugs[foundIndex].diagnoses,
+                  {
+                    id: diagnosisId,
+                    key: diagnosisKey,
+                    label:
+                      diagnosisKey === 'custom'
+                        ? diagnosisValue[diagnosis].name
+                        : translate(nodes[diagnosisValue[diagnosis].id].label),
+                  },
+                ],
+              }
+            } else {
+              allDrugs.push({
+                id: drug,
+                key: key,
+                label: drugs[drug].name,
+                diagnoses: [
+                  {
+                    id: diagnosisId,
+                    key: diagnosisKey,
+                    label:
+                      diagnosisKey === 'custom'
+                        ? diagnosisValue[diagnosis].name
+                        : translate(nodes[diagnosisValue[diagnosis].id].label),
+                  },
+                ],
+                duration: drugs[drug]?.duration,
+                addedAt: drugs[drug]?.addedAt,
+              })
             }
-          } else {
-            allDrugs.push({
-              id: drug,
-              key: key,
-              levelOfUrgency: nodes[parseInt(drug, 10)].level_of_urgency,
-              diagnoses: [{ id: parseInt(diagnosis, 10), key: diagnosisKey }],
-              duration: diagnosisValue[diagnosis].drugs[key][drug]?.duration,
-              addedAt: diagnosisValue[diagnosis].drugs[key][drug]?.addedAt,
-              selectedFormulationId:
-                diagnosisValue[diagnosis].drugs[
-                  key === 'proposed' ? 'agreed' : key
-                ][drug]?.formulation_id,
-            })
-          }
+          })
         })
-      })
+      }
+    }
+  } else {
+    for (const [diagnosisKey, diagnosisValue] of Object.entries(diagnoses)) {
+      if (['agreed', 'additional'].includes(diagnosisKey)) {
+        Object.keys(diagnosisValue).forEach(diagnosis => {
+          const drugGroup = diagnosisValue[diagnosis].drugs[key]
+          const drugs = Array.isArray(drugGroup) ? drugGroup : _keys(drugGroup)
+
+          drugs.forEach(drug => {
+            const foundIndex = allDrugs.findIndex(e => e.id === drug)
+            if (foundIndex > -1) {
+              allDrugs[foundIndex] = {
+                ...allDrugs[foundIndex],
+                diagnoses: [
+                  ...allDrugs[foundIndex].diagnoses,
+                  { id: parseInt(diagnosis, 10), key: diagnosisKey },
+                ],
+              }
+            } else {
+              allDrugs.push({
+                id: drug,
+                key: key,
+                levelOfUrgency: nodes[parseInt(drug, 10)].level_of_urgency,
+                diagnoses: [{ id: parseInt(diagnosis, 10), key: diagnosisKey }],
+                duration: diagnosisValue[diagnosis].drugs[key][drug]?.duration,
+                addedAt: diagnosisValue[diagnosis].drugs[key][drug]?.addedAt,
+                selectedFormulationId:
+                  diagnosisValue[diagnosis].drugs[
+                    key === 'proposed' ? 'agreed' : key
+                  ][drug]?.formulation_id,
+              })
+            }
+          })
+        })
+      }
     }
   }
 

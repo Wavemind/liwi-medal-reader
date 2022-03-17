@@ -23,7 +23,8 @@ import {
   IndexStudyContainer,
   IndexQuestionInfoContainer,
   SearchAdditionalMedicalCaseContainer,
-  SearchRelatedDiagnosesMedicalCaseContainer
+  AdditionalSearchRelatedDiagnosesMedicalCaseContainer,
+  CustomSearchRelatedDiagnosesMedicalCaseContainer,
 } from '@/Containers'
 import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
@@ -94,8 +95,12 @@ const ApplicationNavigator = () => {
               component={SearchAdditionalMedicalCaseContainer}
             />
             <Stack.Screen
-              name="SearchRelatedDiagnoses"
-              component={SearchRelatedDiagnosesMedicalCaseContainer}
+              name="AdditionalSearchRelatedDiagnoses"
+              component={AdditionalSearchRelatedDiagnosesMedicalCaseContainer}
+            />
+            <Stack.Screen
+              name="CustomSearchRelatedDiagnoses"
+              component={CustomSearchRelatedDiagnosesMedicalCaseContainer}
             />
             <Stack.Screen name="Camera" component={CameraConsentContainer} />
             <Stack.Screen name="Preview" component={PreviewConsentContainer} />
