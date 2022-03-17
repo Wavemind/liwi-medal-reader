@@ -10,10 +10,11 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Icon, QuestionInfoButton } from '@/Components'
+import { Icon } from '@/Components'
 import { navigate } from '@/Navigators/Root'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
+import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
 
 const CustomDrug = ({ drug, isLast }) => {
   // Theme and style elements deconstruction
@@ -49,7 +50,7 @@ const CustomDrug = ({ drug, isLast }) => {
   const onUpdateDuration = duration => {
     drug.diagnoses.forEach(diagnosis => {
       dispatch(
-        ChangeAdditionalDrugDuration.action({
+        ChangeCustomDrugDuration.action({
           diagnosisKey: diagnosis.key,
           diagnosisId: diagnosis.id,
           drugId: drug.id,
@@ -63,7 +64,6 @@ const CustomDrug = ({ drug, isLast }) => {
     <View style={drugs.additionalWrapper}>
       <View style={drugs.drugTitleWrapper}>
         <Text style={drugs.drugTitle}>{drug.label}</Text>
-        <QuestionInfoButton nodeId={drug.id} />
         <View style={additionalSelect.durationWrapper}>
           <TextInput
             style={additionalSelect.durationInput}

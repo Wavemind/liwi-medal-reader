@@ -43,23 +43,6 @@ const CustomDrugs = () => {
   const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
 
   const customDrugs = useMemo(() => reworkAndOrderDrugs('custom'), [diagnoses])
-  console.log(customDrugs)
-
-  /**
-   * Updates the selected custom drug duration
-   * @param diagnosisId
-   * @param drugId
-   * @param duration
-   */
-  const updateCustomDrugDuration = (diagnosisId, drugId, duration) => {
-    dispatch(
-      ChangeCustomDrugDuration.action({
-        diagnosisId,
-        drugId,
-        duration,
-      }),
-    )
-  }
 
   /**
    * Updates the customDrug in the local state
