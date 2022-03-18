@@ -3,14 +3,13 @@
  */
 import React, { useState, useMemo } from 'react'
 import { Text, View, TextInput, TouchableOpacity } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
 
 /**
  * The internal imports
  */
-import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import { navigate } from '@/Navigators/Root'
 import { reworkAndOrderDrugs } from '@/Utils/Drug'
