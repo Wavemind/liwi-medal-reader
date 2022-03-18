@@ -92,20 +92,22 @@ const AdditionalDrugs = () => {
             isLast={i === Object.keys(additionalDrugs).length - 1}
           />
         ))}
-        {unassignedDrugs.map((tempDrug, i) => (
+        {unassignedDrugs.map((unassignedDrug, i) => (
           <View
-            key={`tempDrug_${tempDrug.id}`}
+            key={`unassignedDrug_${unassignedDrug.id}`}
             style={additionalSelect.addAdditionalWrapper}
           >
             <View style={drugs.drugTitleWrapper}>
               <Text style={drugs.drugTitle}>
-                {translate(nodes[tempDrug.id].label)}
+                {translate(nodes[unassignedDrug.id].label)}
               </Text>
-              <QuestionInfoButton nodeId={tempDrug.id} />
+              <QuestionInfoButton nodeId={unassignedDrug.id} />
               <Text style={drugs.selectRelatedDiagnoses}>
                 {t('containers.medical_case.drugs.select_related')}
               </Text>
-              <TouchableOpacity onPress={() => onRemovePress(tempDrug.id)}>
+              <TouchableOpacity
+                onPress={() => onRemovePress(unassignedDrug.id)}
+              >
                 <Icon style={{}} name="delete" size={FontSize.large} />
               </TouchableOpacity>
             </View>
@@ -113,7 +115,7 @@ const AdditionalDrugs = () => {
               style={additionalSelect.addAdditionalButton}
               onPress={() =>
                 navigate('AdditionalSearchRelatedDiagnoses', {
-                  drugId: tempDrug.id,
+                  drugId: unassignedDrug.id,
                 })
               }
             >
@@ -122,7 +124,7 @@ const AdditionalDrugs = () => {
               </Text>
               <View style={additionalSelect.addAdditionalButtonCountWrapper}>
                 <Text style={additionalSelect.addAdditionalButtonCountText}>
-                  {tempDrug.diagnoses.length}
+                  {unassignedDrug.diagnoses.length}
                 </Text>
               </View>
               <Icon

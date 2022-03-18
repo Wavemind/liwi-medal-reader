@@ -63,7 +63,7 @@ export default {
       },
     },
     additional_list: {
-      title: 'Veuillez choisir vos {{ items }}',
+      title: 'Veuillez choisir vos diagnostics',
     },
     filters: {
       title: 'Filtres',
