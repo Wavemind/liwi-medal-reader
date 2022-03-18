@@ -34,7 +34,7 @@ const AdditionalDrugs = () => {
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
 
-  const [tempDrugs, setTempDrugs] = useState([])
+  const [unassignedDrugs, setUnassignedDrugs] = useState([])
 
   const additionalDrugs = useMemo(
     () => reworkAndOrderDrugs('additional'),
@@ -42,10 +42,10 @@ const AdditionalDrugs = () => {
   )
 
   useEffect(() => {
-    const newTempDrugs = [...tempDrugs].filter(drug =>
-      additionalDrugs.map(d => d.id).includes(drug.id),
-    )
-    setTempDrugs(newTempDrugs)
+    const newUnassignedDrugs = [...unassignedDrugs].filter(drug => {
+      return !additionalDrugs.map(d => d.id).includes(drug.id)
+    })
+    setUnassignedDrugs(newUnassignedDrugs)
   }, [diagnoses])
 
   /**
@@ -54,20 +54,22 @@ const AdditionalDrugs = () => {
    * @param selectedId
    */
   const updateAdditionalDrugs = selectedId => {
-    setTempDrugs([...tempDrugs, { id: selectedId, diagnoses: [] }])
+    setUnassignedDrugs([...unassignedDrugs, { id: selectedId, diagnoses: [] }])
   }
 
   /**
-   * Removes the drug from the tempDrugs state
+   * Removes the drug from the unassignedDrugs state
    * @param drugId
    */
   const onRemovePress = drugId => {
-    const newDrugs = [...tempDrugs]
-    const indexToRemove = newDrugs.findIndex(drug => drug.id === drugId)
+    const newUnassignedDrugs = [...unassignedDrugs]
+    const indexToRemove = newUnassignedDrugs.findIndex(
+      drug => drug.id === drugId,
+    )
     if (indexToRemove > -1) {
-      newDrugs.splice(indexToRemove, 1)
+      newUnassignedDrugs.splice(indexToRemove, 1)
     }
-    setTempDrugs(newDrugs)
+    setUnassignedDrugs(newUnassignedDrugs)
   }
 
   return (
@@ -78,7 +80,7 @@ const AdditionalDrugs = () => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {additionalDrugs.length === 0 && tempDrugs.length === 0 && (
+        {additionalDrugs.length === 0 && unassignedDrugs.length === 0 && (
           <Text style={finalDiagnoses.noItemsText}>
             {t('containers.medical_case.drugs.no_additional')}
           </Text>
@@ -90,7 +92,7 @@ const AdditionalDrugs = () => {
             isLast={i === Object.keys(additionalDrugs).length - 1}
           />
         ))}
-        {tempDrugs.map((tempDrug, i) => (
+        {unassignedDrugs.map((tempDrug, i) => (
           <View
             key={`tempDrug_${tempDrug.id}`}
             style={additionalSelect.addAdditionalWrapper}

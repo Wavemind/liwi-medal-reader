@@ -21,7 +21,7 @@ const DrugsMedicalCaseContainer = () => {
   }, [isFocused])
 
   return (
-    <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={200}>
+    <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={200}>
       <ScrollView>
         <ProposedDrugs />
         <AdditionalDrugs />

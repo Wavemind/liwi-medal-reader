@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Text, View, TextInput, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -28,32 +28,42 @@ const CustomDrugs = () => {
   const { t } = useTranslation()
 
   const [value, setValue] = useState('')
-  const [tempDrugs, setTempDrugs] = useState([])
+  const [unassignedDrugs, setUnassignedDrugs] = useState([])
 
   const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
 
   const customDrugs = useMemo(() => reworkAndOrderDrugs('custom'), [diagnoses])
+
+  useEffect(() => {
+    const newUnassignedDrugs = [...unassignedDrugs].filter(drug => {
+      return !customDrugs.map(d => d.id).includes(drug.id)
+    })
+    setUnassignedDrugs(newUnassignedDrugs)
+  }, [diagnoses])
 
   /**
    * Updates the customDrug in the local state
    */
   const updateCustomDrugs = () => {
     const drugId = uuid.v4()
-    setTempDrugs([...tempDrugs, { id: drugId, label: value, diagnoses: [] }])
+    setUnassignedDrugs([
+      ...unassignedDrugs,
+      { id: drugId, label: value, diagnoses: [] },
+    ])
     setValue('')
   }
 
   /**
-   * Removes the drug from the tempDrugs state
+   * Removes the drug from the unassignedDrugs state
    * @param drugId
    */
   const onRemovePress = drugId => {
-    const newDrugs = [...tempDrugs]
+    const newDrugs = [...unassignedDrugs]
     const indexToRemove = newDrugs.findIndex(drug => drug.id === drugId)
     if (indexToRemove > -1) {
       newDrugs.splice(indexToRemove, 1)
     }
-    setTempDrugs(newDrugs)
+    setUnassignedDrugs(newDrugs)
   }
 
   return (
@@ -64,7 +74,7 @@ const CustomDrugs = () => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {customDrugs.length === 0 && tempDrugs.length === 0 ? (
+        {customDrugs.length === 0 && unassignedDrugs.length === 0 ? (
           <Text style={finalDiagnoses.noItemsText}>
             {t('containers.medical_case.drugs.no_custom')}
           </Text>
@@ -78,7 +88,7 @@ const CustomDrugs = () => {
           ))
         )}
       </View>
-      {tempDrugs.map((tempDrug, i) => (
+      {unassignedDrugs.map((tempDrug, i) => (
         <View
           key={`tempDrug_${tempDrug.id}`}
           style={additionalSelect.addAdditionalWrapper}

@@ -97,7 +97,7 @@ const AdditionalDrug = ({ drug, isLast }) => {
       <TouchableOpacity
         style={additionalSelect.addAdditionalButton}
         onPress={() =>
-          navigate('SearchRelatedDiagnoses', {
+          navigate('AdditionalSearchRelatedDiagnoses', {
             drugId: drug.id,
           })
         }
