@@ -70,7 +70,7 @@ const Drug = ({ drug, isLast }) => {
   }
 
   if (!drugDose) {
-    return <Text>Loading</Text>
+    return <Text>{t('actions.loading')}</Text>
   }
 
   return (

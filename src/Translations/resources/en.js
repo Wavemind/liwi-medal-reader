@@ -370,44 +370,33 @@ export default {
   },
   formulations: {
     drug: {
-      give: 'Give',
-      mg: 'mg',
-      caps: 'capsule(s) of',
-      every: 'Every', // Updated
-      h: 'hour(s) for',
-      mode: 'Mode',
-      tablet: 'tablet of',
-      d: 'duration',
-      during: 'during',
-      pre_referral: 'pre-referral',
-      admin: 'Administration',
-      ml: 'ml',
-      of: 'of',
-      no_formulation: ' No formulation selected',
       missing_medicine_formulation: 'Please select a medicine formulation',
       no_options: 'No compatible option',
       medication_form_not_handled: 'Medication form not managed',
-      indication: 'Indication', // Added
-      dose_calculation: 'Dose calculation', // Added
-      formulation: 'Formulation', // Added
-      route: 'Route', // Added
-      amount_to_be_given: 'Amount to be given', // Added
-      preparation_instruction: 'Preparation instruction', // Added
-      frequency: 'Frequency', // Added
-      duration: 'Duration', // Added
-      administration_instruction: 'Administration instruction', // Added
-      pre_referral_duration: 'While arranging referral', // Added
-      per_administration: 'per administration', // Updated
-      per_application: 'application(s) per administration', // Updated
-      fixe_dose: 'Fixe dose', // Added
+      indication: 'Indication',
+      dose_calculation: 'Dose calculation',
+      formulation: 'Formulation',
+      route: 'Route',
+      amount_to_be_given: 'Amount to be given',
+      preparation_instruction: 'Preparation instruction',
+      frequency: 'Frequency',
+      duration: 'Duration',
+      administration_instruction: 'Administration instruction',
+      pre_referral_duration: 'While arranging referral',
+      per_administration: 'per administration',
+      per_application: 'application(s) per administration',
+      fixe_dose: 'Fixe dose',
+      medication_form_given: 'Give {{ medicationForm }}',
+      amount_given_indication:
+        'Give {{ doseResult }}ml of {{ liquidConcentration }}mg/{{ doseForm }}ml',
       frequency_indiction: 'Every {{ count }} hour',
       frequency_indiction_plural: 'Every {{ count }} hours',
-      duration_in_days: '{{ count }} day', // Added
-      duration_in_days_plural: '{{ count }} days', // Added
+      duration_in_days: '{{ count }} day',
+      duration_in_days_plural: '{{ count }} days',
       fixe_dose_indication:
-        'Fixe dose - {{ medicationForm }} per administration', // Added
+        'Fixe dose - {{ medicationForm }} per administration',
       dose_indication:
-        'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg', // Added
+        'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg',
     },
     // Added
     administration_routes: {

@@ -56,8 +56,9 @@ const Custom = () => {
                 >
                   <Text style={summary.drugTitle}>{drug.name}</Text>
                   <Text style={Fonts.textSmall}>
-                    {t('formulations.drug.d')} : {drug.duration}{' '}
-                    {t('formulations.drug.days')}
+                    {t('formulations.drug.duration_in_days', {
+                      count: drug.duration,
+                    })}
                   </Text>
                 </View>
               ))

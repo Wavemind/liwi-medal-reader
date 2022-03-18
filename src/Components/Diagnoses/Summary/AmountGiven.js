@@ -24,25 +24,24 @@ const AmountGiven = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.suspension:
     case Config.MEDICATION_FORMS.powder_for_injection:
     case Config.MEDICATION_FORMS.solution:
-      return (
-        <Text>
-          {t('formulations.drug.give')}: {roundSup(drugDose.doseResult)}
-          {t('formulations.drug.ml')} {t('formulations.drug.of')}{' '}
-          {roundSup(drugDose.liquid_concentration)}
-          {t('formulations.drug.mg')}/{drugDose.dose_form}
-          {t('formulations.drug.ml')}
-        </Text>
-      )
-
+      return t('formulations.drug.amount_given_indication', {
+        doseResult: roundSup(drugDose.doseResult),
+        liquidConcentration: roundSup(drugDose.liquid_concentration),
+        doseForm: parseInt(drugDose.dose_form, 10),
+      })
     case Config.MEDICATION_FORMS.tablet:
     case Config.MEDICATION_FORMS.dispersible_tablet:
       const fractionString = breakableFraction(drugDose)
       return (
         <Text>
-          {t('formulations.drug.give')}{' '}
-          {t(`formulations.medication_form.${drugDose.medication_form}`, {
-            count: parseInt(fractionString, 10),
-            fraction: fractionString,
+          {t('formulations.drug.medication_form_given', {
+            medicationForm: t(
+              `formulations.medication_form.${drugDose.medication_form}`,
+              {
+                count: parseInt(fractionString, 10),
+                fraction: fractionString,
+              },
+            ),
           })}
         </Text>
       )
@@ -59,9 +58,13 @@ const AmountGiven = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.inhaler:
       return (
         <Text>
-          {t('formulations.drug.give')}{' '}
-          {t(`formulations.medication_form.${drugDose.medication_form}`, {
-            count: parseInt(drugDose.unique_dose, 10),
+          {t('formulations.drug.medication_form_given', {
+            medicationForm: t(
+              `formulations.medication_form.${drugDose.medication_form}`,
+              {
+                count: parseInt(drugDose.unique_dose, 10),
+              },
+            ),
           })}
         </Text>
       )
