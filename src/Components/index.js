@@ -34,7 +34,6 @@ export { default as Drug } from './Diagnoses/Summary/Drug'
 export { default as Drugs } from './Diagnoses/Summary/Drugs'
 export { default as Liquid } from './Diagnoses/Summary/Liquid'
 export { default as Managements } from './Diagnoses/Summary/Managements'
-export { default as AdditionalSelect } from './Diagnoses/AdditionalSelect'
 export { default as SelectedItem } from './Diagnoses/SelectedItem'
 
 // Icons

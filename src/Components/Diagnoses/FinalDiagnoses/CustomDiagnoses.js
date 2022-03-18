@@ -21,7 +21,6 @@ const CustomDiagnoses = () => {
     Gutters,
     FontSize,
     Colors,
-    Components: { additionalSelect },
     Containers: { finalDiagnoses },
   } = useTheme()
 
@@ -67,14 +66,6 @@ const CustomDiagnoses = () => {
 
   return (
     <View>
-      {listValues.length > 0 && (
-        <View style={additionalSelect.headerWrapper}>
-          <View style={additionalSelect.headerSpacer} />
-          <Text style={additionalSelect.durationLabel}>
-            {t('containers.medical_case.duration_title')}
-          </Text>
-        </View>
-      )}
       {listValues.length === 0 ? (
         <View>
           <Text style={finalDiagnoses.noItemsText}>
@@ -86,7 +77,6 @@ const CustomDiagnoses = () => {
           <SelectedItem
             key={`custom-${listItem.id}`}
             listItem={listItem}
-            listObject={custom}
             isLast={i === listValues.length - 1}
             onRemovePress={removeCustomDiagnosis}
             labelMethod={() => listItem.name}

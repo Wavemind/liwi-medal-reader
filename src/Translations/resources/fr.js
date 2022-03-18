@@ -119,7 +119,7 @@ export default {
         diagnoses: 'Diagnostics',
         proposed_title: 'Diagnostics proposés',
         additional_title: 'Diagnostics supplémentaires',
-        additional_placeholder: 'Choisir {{ item }} supplémentaires',
+        additional_placeholder: 'Choisir diagnostics supplémentaires',
         multiple_diagnostics: 'des diagnostics',
         multiple_drugs: 'des médicaments',
         custom_title: 'Diagnostics manuels',

@@ -8,20 +8,6 @@ export default function (props) {
   const inputWidth = wp(18)
 
   return StyleSheet.create({
-    headerWrapper: {
-      ...Layout.row,
-      ...Gutters.regularHPadding,
-    },
-    headerSpacer: {
-      ...Gutters.regularRMargin,
-      width: labelWidth,
-    },
-    durationLabel: {
-      ...Fonts.textTiny,
-      ...Fonts.textCenter,
-      color: Colors.grey,
-      width: inputWidth,
-    },
     durationWrapper: {
       height: hp(5),
     },

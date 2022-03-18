@@ -26,12 +26,7 @@ import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalD
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import { _keys } from '@/Utils/Object'
 
-const SearchAdditionalMedicalCaseContainer = ({
-  navigation,
-  route: {
-    params: { diagnosisId },
-  },
-}) => {
+const SearchAdditionalMedicalCaseContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
