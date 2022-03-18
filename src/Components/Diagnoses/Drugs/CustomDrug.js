@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import { navigate } from '@/Navigators/Root'
-import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
 import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
 

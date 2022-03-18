@@ -14,15 +14,7 @@ import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import { navigate } from '@/Navigators/Root'
 import { reworkAndOrderDrugs } from '@/Utils/Drug'
-import {
-  RoundedButton,
-  QuestionInfoButton,
-  Icon,
-  CustomDrug,
-} from '@/Components'
-import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
-import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
-import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
+import { RoundedButton, Icon, CustomDrug } from '@/Components'
 
 const CustomDrugs = () => {
   // Theme and style elements deconstruction
@@ -34,7 +26,6 @@ const CustomDrugs = () => {
     Components: { additionalSelect },
   } = useTheme()
 
-  const dispatch = useDispatch()
   const { t } = useTranslation()
 
   const [value, setValue] = useState('')
