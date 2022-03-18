@@ -375,8 +375,6 @@ export default {
       caps: 'capsule(s) of',
       every: 'Every', // Updated
       h: 'hour(s) for',
-      hour: 'hour(s)',
-      days: 'day(s)',
       mode: 'Mode',
       tablet: 'tablet of',
       d: 'duration',
@@ -385,12 +383,6 @@ export default {
       admin: 'Administration',
       ml: 'ml',
       of: 'of',
-      tablets: 'tablet(s)',
-      capsules: 'capsule(s)',
-      inhaler: 'inhalation(s)',
-      patch: 'patch(es)',
-      spray: 'spray(s)',
-      pessary: 'pessary(ies)',
       no_formulation: ' No formulation selected',
       missing_medicine_formulation: 'Please select a medicine formulation',
       no_options: 'No compatible option',
@@ -408,11 +400,13 @@ export default {
       per_administration: 'per administration', // Updated
       per_application: 'application(s) per administration', // Updated
       fixe_dose: 'Fixe dose', // Added
-      recurrence: 'Every {{ recurrence }} hour(s)',
-      duration_in_days: '{{days}} day(s)', // Added
-      fixe_dose_breakable:
-        'Fixe dose - {{ uniqueDose }} {{ medicationForm }} per administration', // Added
-      dose_indication_breakable:
+      frequency_indiction: 'Every {{ count }} hour',
+      frequency_indiction_plural: 'Every {{ count }} hours',
+      duration_in_days: '{{ count }} day', // Added
+      duration_in_days_plural: '{{ count }} days', // Added
+      fixe_dose_indication:
+        'Fixe dose - {{ medicationForm }} per administration', // Added
+      dose_indication:
         'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg', // Added
     },
     // Added
@@ -431,23 +425,39 @@ export default {
       ocular: 'Ocular',
     },
     medication_form: {
-      tablet: 'Tablet',
-      dispersible_tablet: 'Dispersible tablet',
-      capsule: 'Capsule',
-      syrup: 'Syrup',
-      suspension: 'Suspension',
-      suppository: 'Suppository',
-      drops: 'Drops',
-      solution: 'Solution',
-      powder_for_injection: 'Powder for injection',
-      patch: 'Patch',
-      cream: 'Cream',
-      lotion: 'Lotion',
-      pessary: 'Pessary',
-      ointment: 'Ointment',
-      gel: 'Gel',
-      spray: 'Spray',
-      inhaler: 'Inhaler',
+      tablet: '{{ fraction }} tablet',
+      tablet_plural: '{{ fraction }} tablets',
+      dispersible_tablet: '{{ fraction }} dispersible tablet',
+      dispersible_tablet_plural: '{{ fraction }} dispersible tablets',
+      capsule: '{{ count }} capsule',
+      capsule_plural: '{{ count }} capsules',
+      syrup: 'syrup',
+      suspension: '{{ count }} suspension',
+      suspension_plural: '{{ count }} suspensions',
+      suppository: '{{ count }} suppository',
+      suppository_plural: '{{ count }} suppositories',
+      drops: '{{ count }} drop',
+      drops_plural: '{{ count }} drops',
+      solution: '{{ count }} solution',
+      solution_plural: '{{ count }} solutions',
+      powder_for_injection: '{{ count }} powder for injection',
+      powder_for_injection_plural: '{{ count }} powder for injection',
+      patch: '{{ count }} patch',
+      patch_plural: '{{ count }} patches',
+      cream: '{{ count }} cream',
+      cream_plural: '{{ count }} creams',
+      lotion: '{{ count }} lotion',
+      lotion_plural: '{{ count }} lotions',
+      pessary: '{{ count }} pessary',
+      pessary_plural: '{{ count }} pessaries',
+      ointment: '{{ count }} ointment',
+      ointment_plural: '{{ count }} ointments',
+      gel: '{{ count }} gel',
+      gel_plural: '{{ count }} gels',
+      spray: '{{ count }} spray',
+      spray_plural: '{{ count }} sprays',
+      inhaler: '{{ count }} inhalation',
+      inhaler_plural: '{{ count }} inhalations',
     },
   },
   reference_table: {

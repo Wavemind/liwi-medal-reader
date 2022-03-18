@@ -17,23 +17,25 @@ export const formulationLabel = drugDose => {
     case Config.MEDICATION_FORMS.patch: {
       return `${translate(drugDose.description)}: ${roundSup(
         drugDose.unique_dose,
-      )} ${i18n
-        .t(`formulations.medication_form.${drugDose.medication_form}`)
-        .toLowerCase()}`
+      )} ${i18n.t(`formulations.medication_form.${drugDose.medication_form}`, {
+        count: parseInt(drugDose.unique_dose, 10),
+      })}`
     }
     case Config.MEDICATION_FORMS.inhaler: {
       if (drugDose.by_age) {
         return `${translate(drugDose.description)}: ${roundSup(
           drugDose.unique_dose,
-        )} ${i18n
-          .t(`formulations.drug.${drugDose.medication_form}`)
-          .toLowerCase()}`
+        )} ${i18n.t(
+          `formulations.medication_form.${drugDose.medication_form}`,
+          {
+            count: parseInt(drugDose.unique_dose, 10),
+          },
+        )}`
       }
       return `${translate(drugDose.description)}: ${roundSup(
         drugDose.unique_dose,
       )} ml ${i18n.t('formulations.drug.per_administration')}`
     }
-    // Asked -> https://github.com/Wavemind/liwi-medal-reader/issues/450
     case Config.MEDICATION_FORMS.syrup:
     case Config.MEDICATION_FORMS.suspension:
     case Config.MEDICATION_FORMS.capsule:

@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -11,56 +11,66 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import {
-  QuestionInfoButton,
-  Liquid,
-  Breakable,
-  Capsule,
-  Default,
-} from '@/Components'
-import { Config } from '@/Config'
+import { QuestionInfoButton, DoseIndication, AmountGiven } from '@/Components'
 import { DrugDosesService } from '@/Services/MedicalCase'
+// TODO: CHANGE IT TO A COMPONENT
+import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 
 const Drug = ({ drug, isLast }) => {
   const { t } = useTranslation()
   const {
-    Containers: { finalDiagnoses, summary },
+    Fonts,
+    Containers: { summary },
   } = useTheme()
 
   const currentDrug = useSelector(state => state.algorithm.item.nodes[drug.id])
+  const nodes = useSelector(state => state.algorithm.item.nodes)
+  const [drugDose, setDrugDose] = useState(null)
 
-  /**
-   * Display drug formulation based on medication form selected
-   */
-  const renderSwitchFormulation = () => {
+  useEffect(() => {
     const formulations = currentDrug.formulations
     const formulationIndex = formulations
       .map(formulation => formulation.id)
       .indexOf(drug.selectedFormulationId)
-    const drugDose = DrugDosesService(formulationIndex, drug.id)
 
-    if (formulations[formulationIndex] !== undefined) {
-      switch (formulations[formulationIndex].medication_form) {
-        case Config.MEDICATION_FORMS.syrup:
-        case Config.MEDICATION_FORMS.suspension:
-        case Config.MEDICATION_FORMS.powder_for_injection:
-        case Config.MEDICATION_FORMS.solution:
-          return <Liquid drug={drug} drugDose={drugDose} />
-        case Config.MEDICATION_FORMS.tablet:
-        case Config.MEDICATION_FORMS.dispersible_tablet:
-          return <Breakable drug={drug} drugDose={drugDose} />
-        case Config.MEDICATION_FORMS.capsule:
-          return <Capsule drug={drug} drugDose={drugDose} />
-        default:
-          return <Default drug={drug} drugDose={drugDose} />
-      }
-    } else {
-      return (
-        <Text style={finalDiagnoses.noItemsText}>
-          {t('formulations.drug.missing_medicine_formulation')}
-        </Text>
-      )
+    setDrugDose(DrugDosesService(formulationIndex, drug.id))
+  }, [drug])
+
+  /**
+   * Display indication
+   * @returns jsx
+   */
+  const indicationDisplay = () =>
+    drug.relatedDiagnoses
+      .map(finalDiagnose => translate(nodes[finalDiagnose.diagnosisId].label))
+      .join(', ')
+
+  /**
+   * Display durations
+   * @returns jsx
+   */
+  const durationsDisplay = () => {
+    // TODO: Waiting MedAL-C (forcing duration in integer. Should take the longest duration. BUT if one of theses is pre-referral Take it (don't care, display is the same))
+    const drugInstance =
+      nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id]
+
+    // Pre-referral
+    if (drugInstance?.is_pre_referral) {
+      return t('formulations.drug.pre_referral_duration')
     }
+
+    // Take instance drug duration or if custom or additional, take duration
+    const duration = drugInstance
+      ? translate(drugInstance.duration)
+      : drug.duration
+
+    return t('formulations.drug.duration_in_days', {
+      count: parseInt(duration, 10),
+    })
+  }
+
+  if (!drugDose) {
+    return <Text>Loading</Text>
   }
 
   return (
@@ -72,7 +82,74 @@ const Drug = ({ drug, isLast }) => {
           <QuestionInfoButton nodeId={drug.id} />
         )}
       </View>
-      <View>{renderSwitchFormulation()}</View>
+      <View>
+        <Text style={summary.drugText}>
+          <Text style={Fonts.textBold}>
+            {t('formulations.drug.indication')}:
+          </Text>{' '}
+          {indicationDisplay()}
+        </Text>
+
+        <Text style={summary.drugText}>
+          <Text style={Fonts.textBold}>
+            {t('formulations.drug.dose_calculation')}:
+          </Text>{' '}
+          <DoseIndication drugDose={drugDose} />
+        </Text>
+
+        <Text style={summary.drugText}>
+          <Text style={Fonts.textBold}>{t('formulations.drug.route')}:</Text>{' '}
+          {t(
+            `formulations.administration_routes.${drugDose.administration_route_name.toLowerCase()}`,
+          )}
+        </Text>
+
+        <Text style={summary.drugText}>
+          <Text style={Fonts.textBold}>
+            {t('formulations.drug.formulation')}:
+          </Text>{' '}
+          {formulationLabel(drugDose)}
+        </Text>
+
+        <Text style={summary.drugText}>
+          <Text style={Fonts.textBold}>
+            {t('formulations.drug.amount_to_be_given')}:
+          </Text>{' '}
+          <AmountGiven drugDose={drugDose} />
+        </Text>
+
+        {translate(drugDose.injection_instructions) !== '' && (
+          <Text style={summary.drugText}>
+            <Text style={Fonts.textBold}>
+              {t('formulations.drug.preparation_instruction')}:
+            </Text>{' '}
+            {translate(drugDose.injection_instructions)}
+          </Text>
+        )}
+
+        <Text style={summary.drugText}>
+          <Text style={Fonts.textBold}>
+            {t('formulations.drug.frequency')}:
+          </Text>{' '}
+          {t('formulations.drug.frequency_indiction', {
+            count: drugDose.recurrence,
+          })}
+        </Text>
+
+        <Text style={summary.drugText}>
+          <Text style={Fonts.textBold}>{t('formulations.drug.duration')}:</Text>{' '}
+          {durationsDisplay()}
+        </Text>
+
+        {translate(drugDose.dispensing_description) !== '' && (
+          <Text style={summary.drugText}>
+            <Text style={Fonts.textBold}>
+              {t('formulations.drug.administration_instruction')}:
+            </Text>{' '}
+            {translate(drugDose.dispensing_description)}
+          </Text>
+        )}
+      </View>
     </View>
   )
 }
