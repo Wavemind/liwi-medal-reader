@@ -8,6 +8,8 @@ import { Config } from '@/Config'
  * @param drugDose
  * @returns {string}
  */
+
+// TODO: USED ONLY FOR SUMMARY
 export const formulationLabel = drugDose => {
   switch (drugDose.medication_form) {
     case Config.MEDICATION_FORMS.pessary:
@@ -32,6 +34,8 @@ export const formulationLabel = drugDose => {
       )} ml ${i18n.t('formulations.drug.per_administration')}`
     }
     // Asked -> https://github.com/Wavemind/liwi-medal-reader/issues/450
+    case Config.MEDICATION_FORMS.syrup:
+    case Config.MEDICATION_FORMS.suspension:
     case Config.MEDICATION_FORMS.capsule:
     case Config.MEDICATION_FORMS.dispersible_tablet:
     case Config.MEDICATION_FORMS.tablet:
@@ -48,19 +52,6 @@ export const formulationLabel = drugDose => {
         drugDose.unique_dose,
       )} ml ${i18n.t('formulations.drug.per_application')}`
     }
-    // WAITING CLINICAL TEAM
-    case Config.MEDICATION_FORMS.syrup:
-    case Config.MEDICATION_FORMS.suspension: {
-      if (drugDose.by_age) {
-        return `${translate(drugDose.description)}: ${roundSup(
-          drugDose.unique_dose,
-        )}ml`
-      }
-      return `${translate(drugDose.description)}: ${roundSup(
-        drugDose.doseResult,
-      )}ml ${i18n.t('formulations.drug.per_administration')}`
-    }
-    ////////////////////////////////////////////
     case Config.MEDICATION_FORMS.suppository: {
       return `${i18n.t('formulations.medication_form.suppository')} ${i18n.t(
         'formulations.drug.per_administration',

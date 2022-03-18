@@ -13,6 +13,7 @@ import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 import { translate } from '@/Translations/algorithm'
 import { breakableFraction } from '@/Utils/Formulations/BreakableFraction'
 import { useTheme } from '@/Theme'
+import { roundSup } from '@/Utils/Formulations/RoundSup'
 
 const Breakable = ({ drug, drugDose }) => {
   // Theme and style elements deconstruction
@@ -31,7 +32,7 @@ const Breakable = ({ drug, drugDose }) => {
     state => state.medicalCase.item.nodes[weight_question_id],
   )
 
-  // TODO: Waiting clinical team
+  // TODO: Waiting MedAL-C (forcing duration in integer. Should take the longest duration. BUT if one of theses is pre-referral Take it (don't care, display is the same))
   const drugInstance =
     nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id]
 
@@ -40,34 +41,21 @@ const Breakable = ({ drug, drugDose }) => {
   const fractionString = breakableFraction(drugDose)
 
   /**
-   * Display frequency
-   * @returns jsx
-   */
-  // TODO CHANGE IT TO A UNIQUE TRANSLATION
-  const frequencyDisplay = () =>
-    `${t('formulations.drug.every')} ${drugDose.recurrence} ${t(
-      'formulations.drug.hour',
-    )}`
-
-  /**
    * Display durations
    * @returns jsx
    */
   const durationsDisplay = () => {
     // Pre-referral
     if (drugInstance?.is_pre_referral) {
-      return t('formulations.drugs.pre_referral_duration')
+      return t('formulations.drug.pre_referral_duration')
     }
 
-    // Normal behavior, take instance drug duration
-    if (drugInstance) {
-      return `${translate(drugInstance.duration)} ${t(
-        'formulations.drug.days',
-      )}`
-    }
+    // Take instance drug duration or if custom or additional, take duration
+    const duration = drugInstance
+      ? translate(drugInstance.duration)
+      : drug.duration
 
-    // For additional and custom
-    return `${drug.duration} ${t('formulations.drug.days')}`
+    return t('formulations.drug.duration_in_days', { days: duration })
   }
 
   /**
@@ -80,20 +68,22 @@ const Breakable = ({ drug, drugDose }) => {
         <Text>
           {t('formulations.drug.fixe_dose_breakable', {
             uniqueDose: drugDose.unique_dose,
+            medicationForm: drugDose.medication_form,
           })}
         </Text>
       )
     } else {
-      const dosage =
-        drugDose.minimal_dose_per_kg +
-        drugDose.maximal_dose_per_kg / 2 / drugDose.breakable
+      const currentDosage = roundSup(
+        (drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)) /
+          mcWeight.value,
+      )
 
       return (
         <Text>
           {t('formulations.drug.dose_indication_breakable', {
-            dosage: dosage,
+            dosage: currentDosage,
             patientWeight: mcWeight.value,
-            total: dosage * mcWeight.value,
+            total: currentDosage * mcWeight.value,
           })}
         </Text>
       )
@@ -149,7 +139,7 @@ const Breakable = ({ drug, drugDose }) => {
       )}
       <Text style={summary.drugText}>
         <Text style={Fonts.textBold}>{t('formulations.drug.frequency')}:</Text>{' '}
-        {frequencyDisplay()}
+        {t('formulations.drug.recurrence', { recurrence: drugDose.recurrence })}
       </Text>
       <Text style={summary.drugText}>
         <Text style={Fonts.textBold}>{t('formulations.drug.duration')}:</Text>{' '}

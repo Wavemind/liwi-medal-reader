@@ -76,7 +76,7 @@ const Default = ({ drug, drugDose }) => {
         {indicationDisplay()}
       </Text>
 
-      {/* TODO: Waiting clinical team */}
+      {/* TODO: Waiting clinical team FIXE DOSE -> SPRAY, PESSARY, PATCH application per administration | INHALER -> inhalations per administration  */}
       {/* <Text style={summary.drugText}>
         <Text style={Fonts.textBold}>Dose calculation:</Text>
       </Text> */}

@@ -94,7 +94,7 @@ const Liquid = ({ drug, drugDose }) => {
         {indicationDisplay()}
       </Text>
 
-      {/* TODO: Waiting clinical team */}
+      {/* TODO: Waiting clinical team WARNING -> FIXE DOSE DISPLAY WITH ML */}
       {/* <Text style={summary.drugText}>
         <Text style={Fonts.textBold}>Dose calculation:</Text>
       </Text> */}

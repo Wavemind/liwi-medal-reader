@@ -408,9 +408,12 @@ export default {
       per_administration: 'per administration', // Updated
       per_application: 'application(s) per administration', // Updated
       fixe_dose: 'Fixe dose', // Added
-      fixe_dose_breakable: 'Fixe dose - {{ uniqueDose }} per administration',
+      recurrence: 'Every {{ recurrence }} hour(s)',
+      duration_in_days: '{{days}} day(s)', // Added
+      fixe_dose_breakable:
+        'Fixe dose - {{ uniqueDose }} {{ medicationForm }} per administration', // Added
       dose_indication_breakable:
-        'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg',
+        'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg', // Added
     },
     // Added
     administration_routes: {

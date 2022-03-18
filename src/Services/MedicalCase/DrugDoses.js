@@ -105,6 +105,7 @@ const drugDoses = (formulationIndex, drugId) => {
           (mcWeight.value * formulation.minimal_dose_per_kg) /
             formulation.doses_per_day,
         )
+
         maxDoseMg = roundSup(
           (mcWeight.value * formulation.maximal_dose_per_kg) /
             formulation.doses_per_day,
@@ -121,6 +122,7 @@ const drugDoses = (formulationIndex, drugId) => {
 
         // Define Dose Result
         doseResult = (minDoseCap + maxDoseCap) / 2
+
         if (maxDoseCap < 1) {
           return {
             ...formulation,
@@ -129,16 +131,16 @@ const drugDoses = (formulationIndex, drugId) => {
           }
         }
 
-        if (Math.ceil(doseResult) <= maxDoseCap) {
+        if (doseResult <= maxDoseCap) {
           // Viable Solution
-          doseResult = Math.ceil(doseResult)
-        } else if (Math.floor(doseResult) >= minDoseCap) {
+          doseResult = doseResult
+        } else if (doseResult >= minDoseCap) {
           // Other viable solution
-          doseResult = Math.floor(doseResult)
+          doseResult = doseResult
         } else {
           // Out of possibility
           // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
-          doseResult = Math.floor(minDoseCap)
+          doseResult = minDoseCap
         }
 
         return {
