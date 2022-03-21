@@ -383,8 +383,12 @@ export default {
       duration: 'Duration',
       administration_instruction: 'Administration instruction',
       pre_referral_duration: 'While arranging referral',
-      per_administration: 'per administration',
-      per_application: 'application(s) per administration',
+      per_administration: '{{ count }} per administration',
+      per_administration_plural: '{{ count }} per administrations',
+      per_application: '{{ count }} application per administration',
+      per_application_plural: '{{count}} applications per administration',
+      per_inhalation: '{{ count }} inhalation per administration',
+      per_inhalation_plural: '{{ count }} inhalations per administration',
       fixe_dose: 'Fixe dose',
       medication_form_given: 'Give {{ medicationForm }}',
       amount_given_indication:
@@ -393,8 +397,12 @@ export default {
       frequency_indiction_plural: 'Every {{ count }} hours',
       duration_in_days: '{{ count }} day',
       duration_in_days_plural: '{{ count }} days',
-      fixe_dose_indication:
+      fixe_dose_indication_administration:
         'Fixe dose - {{ medicationForm }} per administration',
+      fixe_dose_indication_application:
+        'Fixe dose - {{ medicationForm }} per application',
+      fixe_dose_indication_inhalation:
+        'Fixe dose - {{ medicationForm }} per inhalation',
       dose_indication:
         'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg',
     },

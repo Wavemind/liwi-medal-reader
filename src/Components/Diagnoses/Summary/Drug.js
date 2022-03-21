@@ -11,10 +11,13 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import { QuestionInfoButton, DoseIndication, AmountGiven } from '@/Components'
+import {
+  QuestionInfoButton,
+  DoseIndication,
+  AmountGiven,
+  Formulation,
+} from '@/Components'
 import { DrugDosesService } from '@/Services/MedicalCase'
-// TODO: CHANGE IT TO A COMPONENT
-import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 
 const Drug = ({ drug, isLast }) => {
   const { t } = useTranslation()
@@ -72,7 +75,7 @@ const Drug = ({ drug, isLast }) => {
   if (!drugDose) {
     return <Text>{t('actions.loading')}</Text>
   }
-
+  console.log(drugDose)
   return (
     <View style={summary.drugWrapper(isLast)}>
       <View style={summary.drugTitleWrapper}>
@@ -108,7 +111,7 @@ const Drug = ({ drug, isLast }) => {
           <Text style={Fonts.textBold}>
             {t('formulations.drug.formulation')}:
           </Text>{' '}
-          {formulationLabel(drugDose)}
+          <Formulation drugDose={drugDose} />
         </Text>
 
         <Text style={summary.drugText}>
