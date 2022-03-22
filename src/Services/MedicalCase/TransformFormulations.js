@@ -1,15 +1,24 @@
+/**
+ * The external imports
+ */
+import orderBy from 'lodash/orderBy'
+
+/**
+ * The internal imports
+ */
 import { store } from '@/Store'
 
 /**
  * Transforms the diagnosis structure in the store to a usable format for the formulations container
  * @returns {{}}
  */
-const transformFormulations = () => {
+const transformFormulations = (addCustom = false) => {
   const newDrugs = {}
 
   const nodes = store.getState().algorithm.item.nodes
   const additional = store.getState().medicalCase.item.diagnosis.additional
   const agreed = store.getState().medicalCase.item.diagnosis.agreed
+  const customDiagnosis = store.getState().medicalCase.item.diagnosis.custom
   const diagnoses = store.getState().medicalCase.item.diagnosis
 
   const localDiagnoses = { additional, agreed }
@@ -19,7 +28,6 @@ const transformFormulations = () => {
     Object.values(localDiagnoses[diagnosisKey]).forEach(diagnosis => {
       keys.forEach(drugKey => {
         Object.values(diagnosis.drugs[drugKey]).forEach(drug => {
-          console.log(drug)
           const relatedDiagnosis = {
             diagnosisId: diagnosis.id,
             diagnosisKey,
@@ -34,6 +42,7 @@ const transformFormulations = () => {
               id: drug.id,
               relatedDiagnoses: [relatedDiagnosis],
               duration: drug?.duration, // TODO: NEED THIS SINAN
+              custom: false,
               selectedFormulationId:
                 drugFormulations.length === 1
                   ? drugFormulations[0].id
@@ -46,6 +55,33 @@ const transformFormulations = () => {
       })
     })
   })
+
+  // Custom
+  orderBy(Object.values(newDrugs), drug => nodes[drug.id].level_of_urgency, [
+    'desc',
+    'asc',
+  ])
+
+  if (addCustom) {
+    // TODO: Probably better from SINAN
+    Object.values(customDiagnosis).forEach(diagnosis => {
+      Object.values(diagnosis.drugs).forEach(drug => {
+        const relatedDiagnosis = {
+          diagnosisId: diagnosis.id,
+          diagnosisKey: 'custom',
+          drugKey: 'custom',
+          name: diagnosis.name,
+        }
+
+        newDrugs[drug.id] = {
+          relatedDiagnoses: [relatedDiagnosis],
+          selectedFormulationId: null,
+          custom: true,
+          ...drug,
+        }
+      })
+    })
+  }
 
   return newDrugs
 }

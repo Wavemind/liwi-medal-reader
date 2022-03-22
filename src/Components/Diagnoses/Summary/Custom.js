@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
+// TODO: NOT USED ANYMORE
 const Custom = () => {
   // Theme and style elements deconstruction
   const {

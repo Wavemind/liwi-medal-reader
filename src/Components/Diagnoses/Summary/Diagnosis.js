@@ -16,6 +16,7 @@ import { Drugs, Managements, QuestionInfoButton } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 
+// TODO: NOT USED ANYMORE
 const Diagnosis = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
   const {

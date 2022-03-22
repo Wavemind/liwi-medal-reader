@@ -1,68 +1,39 @@
 /**
  * The external imports
  */
-import React from 'react'
-import { Text, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import React, { useMemo } from 'react'
+import { View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
  */
+import { Management } from '@/Components'
 import { useTheme } from '@/Theme'
-import { translate } from '@/Translations/algorithm'
-import { getAvailableHealthcare } from '@/Utils/Drug'
-import { QuestionInfoButton } from '@/Components'
+import ExtractManagement from '@/Utils/ExtractManagement'
 
-const Managements = ({ diagnosis }) => {
-  // Theme and style elements deconstruction
+const Managements = () => {
+  const { t } = useTranslation()
   const {
-    Layout,
-    Containers: { finalDiagnoses, summary },
+    Containers: { formulations },
   } = useTheme()
 
-  const { t } = useTranslation()
-  const managements = getAvailableHealthcare(diagnosis, 'managements')
-
-  const nodes = useSelector(state => state.algorithm.item.nodes)
-
-  const managementsCount = managements.length
+  const managements = useMemo(() => ExtractManagement)
 
   return (
-    <View>
-      <View style={[Layout.rowHCenter, Layout.justifyContentBetween]}>
-        <Text style={summary.drugsHeader}>
-          {t('containers.medical_case.summary.management_consulting')}
+    <View style={formulations.wrapper}>
+      <View style={formulations.formulationsHeaderWrapper}>
+        <Text style={formulations.formulationsHeader}>
+          {t('containers.medical_case.summary.managements')}
         </Text>
       </View>
-      {managementsCount === 0 ? (
-        <Text style={finalDiagnoses.noItemsText}>
-          {t('containers.medical_case.summary.no_managements')}
-        </Text>
-      ) : (
-        orderBy(
-          managements,
-          managementId => nodes[managementId].level_of_urgency,
-          ['desc', 'asc'],
-        ).map((managementId, i) => (
-          <View
-            key={`management-${managementId}`}
-            style={summary.managementWrapper(
-              i === managementsCount - 1,
-              nodes[managementId].is_referral,
-            )}
-          >
-            <Text style={summary.drugTitle}>
-              {translate(nodes[managementId].label)}
-            </Text>
-            {(translate(nodes[managementId].description) !== '' ||
-              nodes[managementId].medias?.length > 0) && (
-              <QuestionInfoButton nodeId={managementId} />
-            )}
-          </View>
-        ))
-      )}
+      {Object.values(managements).map((management, i) => (
+        <Management
+          key={`summary_diagnosis_managements-${management.id}`}
+          management={management}
+          isLast={i === Object.values(management).length - 1}
+        />
+      ))}
     </View>
   )
 }

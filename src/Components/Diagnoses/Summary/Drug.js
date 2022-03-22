@@ -41,6 +41,7 @@ const Drug = ({ drug, isLast }) => {
 
   /**
    * Display indication
+   * TODO: HANDLE CUSTOM DIAGNOSIS
    * @returns jsx
    */
   const indicationDisplay = () =>
@@ -75,7 +76,7 @@ const Drug = ({ drug, isLast }) => {
   if (!drugDose) {
     return <Text>{t('actions.loading')}</Text>
   }
-  console.log(drugDose)
+
   return (
     <View style={summary.drugWrapper(isLast)}>
       <View style={summary.drugTitleWrapper}>
@@ -85,7 +86,7 @@ const Drug = ({ drug, isLast }) => {
           <QuestionInfoButton nodeId={drug.id} />
         )}
       </View>
-      <View>
+      <>
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>
             {t('formulations.drug.indication')}:
@@ -152,7 +153,7 @@ const Drug = ({ drug, isLast }) => {
             {translate(drugDose.dispensing_description)}
           </Text>
         )}
-      </View>
+      </>
     </View>
   )
 }

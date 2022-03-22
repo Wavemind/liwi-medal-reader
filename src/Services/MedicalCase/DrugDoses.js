@@ -110,7 +110,7 @@ const drugDoses = (formulationIndex, drugId) => {
         if (formulation.breakable !== null) {
           pillSize /= formulation.breakable
         }
-        console.log('AVANT', pillSize, minDoseMg)
+
         // Second calculate min and max dose (cap)
         const minDoseCap = roundSup((1 / pillSize) * minDoseMg)
         const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg)
