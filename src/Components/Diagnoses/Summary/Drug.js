@@ -13,7 +13,7 @@ import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import {
   QuestionInfoButton,
-  DoseIndication,
+  DoseCalculation,
   AmountGiven,
   Formulation,
 } from '@/Components'
@@ -89,16 +89,15 @@ const Drug = ({ drug, isLast }) => {
       <>
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>
-            {t('formulations.drug.indication')}:
-          </Text>{' '}
-          {indicationDisplay()}
+            {t('formulations.drug.indication')}: {indicationDisplay()}
+          </Text>
         </Text>
 
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>
             {t('formulations.drug.dose_calculation')}:
           </Text>{' '}
-          <DoseIndication drugDose={drugDose} />
+          <DoseCalculation drugDose={drugDose} />
         </Text>
 
         <Text style={summary.drugText}>
@@ -136,6 +135,7 @@ const Drug = ({ drug, isLast }) => {
             {t('formulations.drug.frequency')}:
           </Text>{' '}
           {t('formulations.drug.frequency_indiction', {
+            doses_per_day: drugDose.doses_per_day,
             count: drugDose.recurrence,
           })}
         </Text>

@@ -13,7 +13,7 @@ import { roundSup } from '@/Utils/Formulations/RoundSup'
 import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
 
-const DoseIndication = ({ drugDose }) => {
+const DoseCalculation = ({ drugDose }) => {
   const { t } = useTranslation()
   const {
     Containers: { finalDiagnoses },
@@ -95,4 +95,4 @@ const DoseIndication = ({ drugDose }) => {
   }
 }
 
-export default DoseIndication
+export default DoseCalculation

@@ -389,20 +389,22 @@ export default {
       per_application_plural: '{{count}} applications per administration',
       per_inhalation: '{{ count }} inhalation per administration',
       per_inhalation_plural: '{{ count }} inhalations per administration',
-      fixe_dose: 'Fixe dose',
+      fixe_dose: 'Fixed dose',
       medication_form_given: 'Give {{ medicationForm }}',
       amount_given_indication:
         'Give {{ doseResult }}ml of {{ liquidConcentration }}mg/{{ doseForm }}ml',
-      frequency_indiction: 'Every {{ count }} hour',
-      frequency_indiction_plural: 'Every {{ count }} hours',
+      frequency_indiction:
+        '{{doses_per_day}} time per day (every {{ count }} hours)',
+      frequency_indiction_plural:
+        '{{doses_per_day}} times per day (every {{ count }} hours)',
       duration_in_days: '{{ count }} day',
       duration_in_days_plural: '{{ count }} days',
       fixe_dose_indication_administration:
-        'Fixe dose - {{ medicationForm }} per administration',
+        'Fixed dose - {{ medicationForm }} per administration',
       fixe_dose_indication_application:
-        'Fixe dose - {{ medicationForm }} per application',
+        'Fixed dose - {{ medicationForm }} per application',
       fixe_dose_indication_inhalation:
-        'Fixe dose - {{ medicationForm }} per inhalation',
+        'Fixed dose - {{ medicationForm }} per inhalation',
       dose_indication:
         'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg',
     },
