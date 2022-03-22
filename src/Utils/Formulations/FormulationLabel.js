@@ -12,12 +12,14 @@ import { breakableFraction } from '@/Utils/Formulations/BreakableFraction'
  * @returns {string}
  */
 export const formulationLabel = drugDose => {
+  // Early return if there is no options available
   if (drugDose.doseResult === null && !drugDose.uniqDose) {
     return `${translate(drugDose.description)}: ${i18n.t(
       'formulations.drug.no_options',
     )}`
   }
 
+  // Normal behavior
   switch (drugDose.medication_form) {
     case Config.MEDICATION_FORMS.syrup:
     case Config.MEDICATION_FORMS.suspension:
@@ -51,6 +53,15 @@ export const formulationLabel = drugDose => {
       )}`
     }
     case Config.MEDICATION_FORMS.tablet: {
+      if (drugDose.by_age) {
+        return `${translate(drugDose.description)}: ${i18n.t(
+          'formulations.drug.per_administration',
+          {
+            count: parseInt(drugDose.unique_dose, 10),
+          },
+        )}`
+      }
+
       const fractionString = breakableFraction(drugDose)
       const fractionTranslated = i18n.t('formulations.medication_form.tablet', {
         count: parseInt(fractionString, 10),

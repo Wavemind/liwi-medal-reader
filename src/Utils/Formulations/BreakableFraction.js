@@ -15,9 +15,10 @@ export const breakableFraction = drugDose => {
   if (num > 0 && num !== Infinity) {
     result = num
   }
+
   if (drugDose.doseResult !== null) {
     const rest = drugDose.doseResult % drugDose.breakable
-
+    console.log('rest', rest, drugDose.doseResult, drugDose.breakable)
     if (rest !== 0) {
       const readableFraction = toReadableFraction(rest / drugDose.breakable)
       result += fractionUnicode(

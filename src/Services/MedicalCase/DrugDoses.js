@@ -36,116 +36,124 @@ const drugDoses = (formulationIndex, drugId) => {
 
   const recurrence = 24 / formulation.doses_per_day
 
-  switch (formulation.medication_form) {
-    case Config.MEDICATION_FORMS.syrup:
-    case Config.MEDICATION_FORMS.suspension:
-    case Config.MEDICATION_FORMS.powder_for_injection:
-    case Config.MEDICATION_FORMS.ointment:
-    case Config.MEDICATION_FORMS.solution:
-      minDoseMg = roundSup(
-        (mcWeight.value * formulation.minimal_dose_per_kg) /
-          formulation.doses_per_day,
-      )
-      maxDoseMg = roundSup(
-        (mcWeight.value * formulation.maximal_dose_per_kg) /
-          formulation.doses_per_day,
-      )
+  if (!formulation.by_age) {
+    switch (formulation.medication_form) {
+      case Config.MEDICATION_FORMS.syrup:
+      case Config.MEDICATION_FORMS.suspension:
+      case Config.MEDICATION_FORMS.powder_for_injection:
+      case Config.MEDICATION_FORMS.ointment:
+      case Config.MEDICATION_FORMS.solution:
+        minDoseMg = roundSup(
+          (mcWeight.value * formulation.minimal_dose_per_kg) /
+            formulation.doses_per_day,
+        )
+        maxDoseMg = roundSup(
+          (mcWeight.value * formulation.maximal_dose_per_kg) /
+            formulation.doses_per_day,
+        )
 
-      // Second calculate min and max dose (cap)
-      const minDoseMl =
-        (minDoseMg * formulation.dose_form) / formulation.liquid_concentration
-      const maxDoseMl =
-        (maxDoseMg * formulation.dose_form) / formulation.liquid_concentration
+        // Second calculate min and max dose (cap)
+        const minDoseMl =
+          (minDoseMg * formulation.dose_form) / formulation.liquid_concentration
+        const maxDoseMl =
+          (maxDoseMg * formulation.dose_form) / formulation.liquid_concentration
 
-      // Round
-      doseResult = (minDoseMl + maxDoseMl) / 2
+        // Round
+        doseResult = (minDoseMl + maxDoseMl) / 2
 
-      if (doseResult > maxDoseMl) {
-        doseResult -= 1
-      }
-
-      doseResultMg =
-        (doseResult * formulation.liquid_concentration) / formulation.dose_form
-
-      // If we reach the limit / day
-      if (doseResultMg * formulation.doses_per_day > formulation.maximal_dose) {
-        doseResultMg = formulation.maximal_dose / formulation.doses_per_day
-        doseResult =
-          (doseResultMg * formulation.dose_form) /
-          formulation.liquid_concentration
-      }
-
-      return {
-        minDoseMg,
-        maxDoseMg,
-        minDoseMl,
-        maxDoseMl,
-        doseResult,
-        doseResultMg,
-        recurrence,
-        uniqDose,
-        ...formulation,
-      }
-
-    case Config.MEDICATION_FORMS.capsule:
-    case Config.MEDICATION_FORMS.dispersible_tablet:
-    case Config.MEDICATION_FORMS.tablet:
-      // First calculate min and max dose (mg/Kg)
-      minDoseMg = roundSup(
-        (mcWeight.value * formulation.minimal_dose_per_kg) /
-          formulation.doses_per_day,
-      )
-
-      maxDoseMg = roundSup(
-        (mcWeight.value * formulation.maximal_dose_per_kg) /
-          formulation.doses_per_day,
-      )
-
-      pillSize = formulation.dose_form
-      if (formulation.breakable !== null) {
-        pillSize /= formulation.breakable
-      }
-
-      // Second calculate min and max dose (cap)
-      const minDoseCap = roundSup((1 / pillSize) * minDoseMg)
-      const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg)
-
-      // Define Dose Result
-      doseResult = (minDoseCap + maxDoseCap) / 2
-
-      if (maxDoseCap < 1) {
-        return {
-          ...formulation,
-          uniqDose,
-          doseResult: null,
+        if (doseResult > maxDoseMl) {
+          doseResult -= 1
         }
-      }
 
-      if (doseResult <= maxDoseCap) {
-        // Viable Solution
-        doseResult = doseResult
-      } else if (doseResult >= minDoseCap) {
-        // Other viable solution
-        doseResult = doseResult
-      } else {
-        // Out of possibility
-        // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
-        doseResult = minDoseCap
-      }
+        doseResultMg =
+          (doseResult * formulation.liquid_concentration) /
+          formulation.dose_form
 
-      return {
-        minDoseMg,
-        maxDoseMg,
-        minDoseCap,
-        maxDoseCap,
-        doseResult,
-        recurrence,
-        uniqDose,
-        ...formulation,
-      }
-    default:
-      return { doseResult: null, uniqDose: true, recurrence, ...formulation }
+        // If we reach the limit / day
+        if (
+          doseResultMg * formulation.doses_per_day >
+          formulation.maximal_dose
+        ) {
+          doseResultMg = formulation.maximal_dose / formulation.doses_per_day
+          doseResult =
+            (doseResultMg * formulation.dose_form) /
+            formulation.liquid_concentration
+        }
+
+        return {
+          minDoseMg,
+          maxDoseMg,
+          minDoseMl,
+          maxDoseMl,
+          doseResult,
+          doseResultMg,
+          recurrence,
+          uniqDose,
+          ...formulation,
+        }
+
+      case Config.MEDICATION_FORMS.capsule:
+      case Config.MEDICATION_FORMS.dispersible_tablet:
+      case Config.MEDICATION_FORMS.tablet:
+        // First calculate min and max dose (mg/Kg)
+        minDoseMg = roundSup(
+          (mcWeight.value * formulation.minimal_dose_per_kg) /
+            formulation.doses_per_day,
+        )
+
+        maxDoseMg = roundSup(
+          (mcWeight.value * formulation.maximal_dose_per_kg) /
+            formulation.doses_per_day,
+        )
+
+        pillSize = formulation.dose_form
+        if (formulation.breakable !== null) {
+          pillSize /= formulation.breakable
+        }
+        console.log('AVANT', pillSize, minDoseMg)
+        // Second calculate min and max dose (cap)
+        const minDoseCap = roundSup((1 / pillSize) * minDoseMg)
+        const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg)
+
+        // Define Dose Result
+        doseResult = (minDoseCap + maxDoseCap) / 2
+
+        if (maxDoseCap < 1) {
+          return {
+            ...formulation,
+            uniqDose,
+            doseResult: null,
+          }
+        }
+
+        if (doseResult <= maxDoseCap) {
+          // Viable Solution
+          doseResult = doseResult
+        } else if (doseResult >= minDoseCap) {
+          // Other viable solution
+          doseResult = doseResult
+        } else {
+          // Out of possibility
+          // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
+          doseResult = minDoseCap
+        }
+
+        return {
+          minDoseMg,
+          maxDoseMg,
+          minDoseCap,
+          maxDoseCap,
+          doseResult,
+          recurrence,
+          uniqDose,
+          ...formulation,
+        }
+      default:
+        return { doseResult: null, uniqDose: true, recurrence, ...formulation }
+    }
   }
+
+  return { doseResult: null, uniqDose: true, recurrence, ...formulation }
 }
 
 export default drugDoses
