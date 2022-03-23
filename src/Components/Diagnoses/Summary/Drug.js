@@ -37,7 +37,9 @@ const Drug = ({ drug, isLast }) => {
       .indexOf(drug.selectedFormulationId)
 
     setDrugDose(DrugDosesService(formulationIndex, drug.id))
-  }, [drug])
+  }, [drug.selectedFormulationId])
+
+  console.log(translate(currentDrug.label), drug.selectedFormulationId)
 
   /**
    * Display indication
@@ -134,7 +136,7 @@ const Drug = ({ drug, isLast }) => {
           <Text style={Fonts.textBold}>
             {t('formulations.drug.frequency')}:
           </Text>{' '}
-          {t('formulations.drug.frequency_indiction', {
+          {t('formulations.drug.frequency_indication', {
             doses_per_day: drugDose.doses_per_day,
             count: drugDose.recurrence,
           })}

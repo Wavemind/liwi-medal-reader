@@ -4,6 +4,7 @@
 import React, { useMemo } from 'react'
 import { View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -14,11 +15,12 @@ import ExtractManagement from '@/Utils/ExtractManagement'
 
 const Managements = () => {
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
   const {
     Containers: { formulations },
   } = useTheme()
 
-  const managements = useMemo(() => ExtractManagement)
+  const managements = useMemo(() => ExtractManagement, [isFocused])
 
   return (
     <View style={formulations.wrapper}>

@@ -33,9 +33,8 @@ const CustomDrug = ({ drug, isLast }) => {
       <View>
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>
-            {t('formulations.drug.indication')}:
-          </Text>{' '}
-          {indicationDisplay()}
+            {t('formulations.drug.indication')}: {indicationDisplay()}
+          </Text>
         </Text>
 
         <Text style={summary.drugText}>

@@ -4,6 +4,7 @@
 import React, { useMemo } from 'react'
 import { View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -14,12 +15,13 @@ import { TransformFormulationsService } from '@/Services/MedicalCase'
 
 const Drugs = () => {
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
   const {
     Gutters,
     Containers: { formulations },
   } = useTheme()
 
-  const drugs = useMemo(() => TransformFormulationsService(true))
+  const drugs = useMemo(() => TransformFormulationsService(true), [isFocused])
 
   return (
     <View style={formulations.wrapper}>
