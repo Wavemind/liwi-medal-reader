@@ -33,7 +33,6 @@ const Management = ({ management, isLast }) => {
       .map(finalDiagnose => translate(nodes[finalDiagnose.diagnosisId].label))
       .join(', ')
 
-  console.log(management)
   return (
     <View
       style={summary.managementWrapper(

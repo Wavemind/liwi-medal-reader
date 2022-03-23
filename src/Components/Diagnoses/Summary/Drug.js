@@ -39,8 +39,6 @@ const Drug = ({ drug, isLast }) => {
     setDrugDose(DrugDosesService(formulationIndex, drug.id))
   }, [drug.selectedFormulationId])
 
-  console.log(translate(currentDrug.label), drug.selectedFormulationId)
-
   /**
    * Display indication
    * TODO: HANDLE CUSTOM DIAGNOSIS
