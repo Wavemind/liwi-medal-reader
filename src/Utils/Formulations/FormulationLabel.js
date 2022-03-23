@@ -25,6 +25,7 @@ export const formulationLabel = drugDose => {
     case Config.MEDICATION_FORMS.gel:
     case Config.MEDICATION_FORMS.ointment:
     case Config.MEDICATION_FORMS.cream:
+    case Config.MEDICATION_FORMS.lotion:
     case Config.MEDICATION_FORMS.spray:
     case Config.MEDICATION_FORMS.drops:
     case Config.MEDICATION_FORMS.patch: {
@@ -50,17 +51,8 @@ export const formulationLabel = drugDose => {
         },
       )}`
     }
-    case Config.MEDICATION_FORMS.lotion: // TODO: DONT KNOW WHAT TO DISPLAY
     case Config.MEDICATION_FORMS.solution:
     case Config.MEDICATION_FORMS.suspension: {
-      if (
-        ['im, iv, sc'].includes(
-          drugDose.administration_route_name.toLowerCase(),
-        )
-      ) {
-        return translate(drugDose.description)
-      }
-
       if (drugDose.uniqDose) {
         return `${translate(drugDose.description)}: ${i18n.t(
           'formulations.drug.per_administration',
@@ -69,6 +61,14 @@ export const formulationLabel = drugDose => {
             suffix: 'ml',
           },
         )}`
+      }
+
+      if (
+        ['im', 'iv', 'sc'].includes(
+          drugDose.administration_route_name.toLowerCase(),
+        )
+      ) {
+        return translate(drugDose.description)
       }
 
       return `${translate(drugDose.description)}: ${roundSup(

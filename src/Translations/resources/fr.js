@@ -392,17 +392,19 @@ export default {
       duration_in_days: '{{ count }} jour',
       duration_in_days_plural: '{{ count }} jours',
       fixe_dose: 'Dose fixe',
-      medication_form_given: 'Donner {{- medicationForm }}',
-      amount_given_indication:
-        'Donner {{ doseResult }}ml à {{ liquidConcentration }}mg/{{ doseForm }}ml',
+      amount_give: 'Donner {{- medicationForm }}',
+      amount_given_per_application:
+        '{{ count }} application par administration',
+      amount_given_per_application_plural:
+        '{{ count }} applications par administration',
+      amount_given_medication_form:
+        'Donner {{- medicationForm }} par administration',
+      amount_given_im_iv_sc:
+        'Donner {{ doseResult }}ml à {{ liquidConcentration }}mg/{{ doseForm }}ml {{ medicationForm}}',
       frequency_indication:
         '{{doses_per_day}} fois par jour (toutes les {{ count }} heures)',
       fixe_dose_indication_administration:
         'Dose fixe - {{ medicationForm }} par administration',
-      fixe_dose_indication_application:
-        'Dose fixe - {{ medicationForm }} par application',
-      fixe_dose_indication_inhalation:
-        'Dose fixe - {{ medicationForm }} par inhalation',
       dose_indication:
         'Dose adaptée ({{ dosage }}mg/kg) x poids ({{ patientWeight }}kg) = {{ total }}mg',
     },

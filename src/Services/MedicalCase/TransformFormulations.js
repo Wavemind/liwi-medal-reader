@@ -14,7 +14,7 @@ import { store } from '@/Store'
  */
 const transformFormulations = (addCustom = false) => {
   const newDrugs = {}
-  console.log('Je rentre')
+
   const nodes = store.getState().algorithm.item.nodes
   const additional = store.getState().medicalCase.item.diagnosis.additional
   const agreed = store.getState().medicalCase.item.diagnosis.agreed

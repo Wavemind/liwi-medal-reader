@@ -2,9 +2,10 @@
  * The external imports
  */
 import React, { useEffect } from 'react'
-import { ScrollView, View } from 'react-native'
+import { View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 /**
  * The internal imports
@@ -23,13 +24,13 @@ const DrugsMedicalCaseContainer = () => {
   }, [isFocused])
 
   return (
-    <ScrollView>
+    <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200}>
       <View style={Gutters.regularBMargin}>
         <DiagnosisDrugs diagnosisKey="agreed" />
         <DiagnosisDrugs diagnosisKey="additional" />
         <CustomDrugs />
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   )
 }
 

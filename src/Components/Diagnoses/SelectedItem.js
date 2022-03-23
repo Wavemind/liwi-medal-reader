@@ -2,7 +2,13 @@
  * The external imports
  */
 import React from 'react'
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  KeyboardAvoidingView,
+} from 'react-native'
 import { useSelector } from 'react-redux'
 
 /**
