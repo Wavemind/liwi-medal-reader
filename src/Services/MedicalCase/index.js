@@ -20,3 +20,4 @@ export { default as UpdateQuestionSequenceService } from './UpdateQuestionSequen
 export { default as UpdateRelatedQuestionService } from './UpdateRelatedQuestion'
 export { default as HandleDateFormulasService } from './HandleDateFormulas'
 export { default as ForceCloseMedicalCaseService } from './ForceClose'
+export { default as SynchronizeFailSafeMedicalCaseService } from './SynchronizeFailSafe'

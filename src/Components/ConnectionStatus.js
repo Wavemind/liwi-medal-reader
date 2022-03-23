@@ -3,16 +3,17 @@
  */
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { Icon } from '@/Components'
-import LocalInterface from '@/Services/Database/Local/useLocalInterface'
-import RemoteInterface from '@/Services/Database/Remote/useRemoteInterface'
+import SynchronizeFailSafe from '@/Store/MedicalCase/SynchronizeFailSafe'
 
 const ConnectionStatus = () => {
   // Get values from the store
+  const dispatch = useDispatch()
   const isConnected = useSelector(state => state.network.isConnected)
   const architecture = useSelector(
     state => state.healthFacility.item.architecture,
@@ -21,10 +22,7 @@ const ConnectionStatus = () => {
   useEffect(() => {
     async function synchronizePatients() {
       if (isConnected && architecture === 'client_server') {
-        const patients = await LocalInterface().getAll('Patient')
-        if (patients.length > 0) {
-          await RemoteInterface().synchronizePatients(patients)
-        }
+        dispatch(SynchronizeFailSafe.action())
       }
     }
     synchronizePatients()
