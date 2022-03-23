@@ -383,12 +383,12 @@ export default {
       duration: 'Duration',
       administration_instruction: 'Administration instruction',
       pre_referral_duration: 'While arranging referral',
-      per_administration: '{{ count }} per administration',
-      per_administration_plural: '{{ count }} per administrations',
+      per_administration: '{{ count }} {{ suffix }} per administration',
+      per_administration_plural: '{{ count }} {{ suffix }} per administrations',
       per_application: '{{ count }} application per administration',
       per_application_plural: '{{count}} applications per administration',
-      per_inhalation: '{{ count }} inhalation per administration',
-      per_inhalation_plural: '{{ count }} inhalations per administration',
+      duration_in_days: '{{ count }} day',
+      duration_in_days_plural: '{{ count }} days',
       fixe_dose: 'Fixed dose',
       medication_form_given: 'Give {{ medicationForm }}',
       amount_given_indication:
@@ -397,8 +397,6 @@ export default {
         '{{doses_per_day}} time per day (every {{ count }} hours)',
       frequency_indiction_plural:
         '{{doses_per_day}} times per day (every {{ count }} hours)',
-      duration_in_days: '{{ count }} day',
-      duration_in_days_plural: '{{ count }} days',
       fixe_dose_indication_administration:
         'Fixed dose - {{ medicationForm }} per administration',
       fixe_dose_indication_application:
@@ -424,10 +422,10 @@ export default {
       ocular: 'Ocular',
     },
     medication_form: {
-      tablet: '{{ fraction }} tablet',
-      tablet_plural: '{{ fraction }} tablets',
-      dispersible_tablet: '{{ fraction }} dispersible tablet',
-      dispersible_tablet_plural: '{{ fraction }} dispersible tablets',
+      tablet: '{{- fraction }} tablet',
+      tablet_plural: '{{- fraction }} tablets',
+      dispersible_tablet: '{{- fraction }} dispersible tablet',
+      dispersible_tablet_plural: '{{- fraction }} dispersible tablets',
       capsule: '{{ count }} capsule',
       capsule_plural: '{{ count }} capsules',
       syrup: 'syrup',
