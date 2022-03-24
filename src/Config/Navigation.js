@@ -14,7 +14,7 @@ import MedicalHistoryMedicalCaseContainer from '@/Containers/MedicalCase/Consult
 import AssessmentMedicalCaseContainer from '@/Containers/MedicalCase/Assessment/Assessment'
 // Diagnosis
 import FinalDiagnosesMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/FinalDiagnoses'
-import DrugsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Drugs'
+import MedicinesMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Medicines'
 import TreatmentConditionsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/TreatmentConditions'
 import ReferralMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Referral'
 import SummaryMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Summary'
@@ -42,7 +42,7 @@ const diagnosesStage = {
     },
     {
       label: 'medicines',
-      component: DrugsMedicalCaseContainer,
+      component: MedicinesMedicalCaseContainer,
     },
     {
       label: 'summary',

@@ -12,7 +12,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { ProposedDrugs, AdditionalDrugs, CustomDrugs } from '@/Components'
 import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
 
-const DrugsMedicalCaseContainer = () => {
+const MedicinesMedicalCaseContainer = () => {
   const dispatch = useDispatch()
   const isFocused = useIsFocused()
 
@@ -20,6 +20,7 @@ const DrugsMedicalCaseContainer = () => {
     dispatch(SetDrugs.action())
   }, [isFocused])
 
+  // TODO: CHANGE WITH KeyboardAvoidingScrollView IN SUMMARY
   return (
     <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={200}>
       <ScrollView>
@@ -31,4 +32,4 @@ const DrugsMedicalCaseContainer = () => {
   )
 }
 
-export default DrugsMedicalCaseContainer
+export default MedicinesMedicalCaseContainer
