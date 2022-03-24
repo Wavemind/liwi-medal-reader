@@ -1,24 +1,23 @@
 /**
  * The external imports
  */
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Text, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
  */
-import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import { reworkAndOrderDrugs, drugIsAgreed } from '@/Utils/Drug'
+import { drugIsAgreed } from '@/Utils/Drug'
 import {
   FormulationsPicker,
   DrugBooleanButton,
   QuestionInfoButton,
 } from '@/Components'
 
-const ProposedDrugs = () => {
+const ProposedDrugs = ({ proposedDrugs }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -26,13 +25,9 @@ const ProposedDrugs = () => {
   } = useTheme()
   const { t } = useTranslation()
 
-  const nodes = useSelector(state => state.algorithm.item.nodes)
-  const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
-
-  const proposedDrugs = useMemo(
-    () => reworkAndOrderDrugs('proposed'),
-    [diagnoses],
-  )
+  const orderedDrug = orderBy(proposedDrugs, drug => drug.levelOfUrgency, [
+    'desc',
+  ])
 
   return (
     <View style={drugs.wrapper}>
@@ -42,7 +37,7 @@ const ProposedDrugs = () => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {proposedDrugs.map((drug, i) => (
+        {orderedDrug.map((drug, i) => (
           <View
             key={`proposedDrug_${drug.id}`}
             style={drugs.innerWrapper(
@@ -50,26 +45,22 @@ const ProposedDrugs = () => {
             )}
           >
             <View style={drugs.drugTitleWrapper}>
-              <Text style={drugs.drugTitle}>
-                {translate(nodes[drug.id].label)}
-              </Text>
+              <Text style={drugs.drugTitle}>{drug.label}</Text>
               <QuestionInfoButton nodeId={drug.id} />
               <DrugBooleanButton drug={drug} />
             </View>
 
-            <View>
-              <Text style={drugs.indication}>
-                {t('containers.medical_case.drugs.indication')}
+            <Text style={drugs.indication}>
+              {t('containers.medical_case.drugs.indication')}
+            </Text>
+            {drug.diagnoses.map(diagnosis => (
+              <Text
+                key={`diagnosisDrug_${diagnosis.id}`}
+                style={drugs.drugDescription}
+              >
+                - {diagnosis.label}
               </Text>
-              {drug.diagnoses.map(diagnosis => (
-                <Text
-                  key={`diagnosisDrug_${diagnosis.id}`}
-                  style={drugs.drugDescription}
-                >
-                  - {translate(nodes[diagnosis.id].label)}
-                </Text>
-              ))}
-            </View>
+            ))}
             {drugIsAgreed(drug) && (
               <View style={formulations.pickerWrapper}>
                 <FormulationsPicker drug={drug} />

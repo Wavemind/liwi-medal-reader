@@ -52,6 +52,7 @@ const ProposedDiagnoses = () => {
   /**
    * Transforms stored diagnoses/drugs into a usable local format
    */
+  // TODO: USE MEMEO
   useEffect(() => {
     const newDiagnoses = sortDiagnosesByUrgency()
     if (!isEqual(newDiagnoses, sortedDiagnoses)) {

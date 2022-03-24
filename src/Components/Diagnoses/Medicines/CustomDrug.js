@@ -13,9 +13,9 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import { navigate } from '@/Navigators/Root'
 import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
-import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
+import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
 
-const CustomDrug = ({ drug, isLast }) => {
+const CustomDrug = ({ drug }) => {
   // Theme and style elements deconstruction
   const {
     FontSize,
@@ -47,9 +47,25 @@ const CustomDrug = ({ drug, isLast }) => {
    * @param {*} duration string
    */
   const onUpdateDuration = duration => {
+    const regWithComma = /^[0-9,]+$/
+
+    // Replace comma with dot
+    if (regWithComma.test(duration)) {
+      duration = duration.replace(',', '.')
+    }
+
+    // Remove char that are not number or dot
+    duration = duration.replace(/[^0-9.]/g, '')
+
+    // Parse to float if value is not empty and last char is not dot
+    if (duration !== '' && duration.charAt(duration.length - 1) !== '.') {
+      duration = parseFloat(duration)
+    }
+
     drug.diagnoses.forEach(diagnosis => {
       dispatch(
-        ChangeCustomDrugDuration.action({
+        ChangeDrugDuration.action({
+          drugKey: 'custom',
           diagnosisKey: diagnosis.key,
           diagnosisId: diagnosis.id,
           drugId: drug.id,
@@ -67,9 +83,9 @@ const CustomDrug = ({ drug, isLast }) => {
           <TextInput
             style={additionalSelect.durationInput}
             onChangeText={duration => onUpdateDuration(duration)}
-            value={drug.duration}
+            value={drug.duration ? String(drug.duration) : ''}
             textAlign="center"
-            keyboardType="default"
+            keyboardType="decimal-pad"
           />
         </View>
         <TouchableOpacity onPress={() => onRemovePress(drug.id)}>
@@ -89,13 +105,13 @@ const CustomDrug = ({ drug, isLast }) => {
           </Text>
         ))}
       </View>
-
       <TouchableOpacity
         style={additionalSelect.addAdditionalButton}
         onPress={() =>
-          navigate('CustomSearchRelatedDiagnoses', {
+          navigate('SearchRelatedDiagnoses', {
             drugId: drug.id,
             drugName: drug.label,
+            drugType: 'custom',
           })
         }
       >

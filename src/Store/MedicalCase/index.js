@@ -35,8 +35,7 @@ import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
 import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
 import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
-import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
-import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
+import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
 import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
 
 // Formulations
@@ -88,8 +87,7 @@ export default buildSlice(
     RemoveRefusedDrugs,
     AddCustomDrugs,
     RemoveCustomDrugs,
-    ChangeAdditionalDrugDuration,
-    ChangeCustomDrugDuration,
+    ChangeDrugDuration,
     SetDrugs,
     // Formulations
     ChangeFormulations,

@@ -44,7 +44,10 @@ const CustomDiagnoses = () => {
         diagnosisId,
         diagnosisContent: {
           id: diagnosisId,
-          drugs: {},
+          drugs: {
+            additional: {},
+            custom: {},
+          },
           name: value,
         },
       }),

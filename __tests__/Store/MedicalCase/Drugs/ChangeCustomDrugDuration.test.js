@@ -3,7 +3,7 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses'
 import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
-import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
+import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
 
 beforeAll(async () => {
   const algorithmFile = require('../../../version_1.json')
@@ -63,7 +63,8 @@ describe('Handle custom drugs duration change', () => {
 
   it('should modify the duration for a custom drug', async () => {
     store.dispatch(
-      ChangeCustomDrugDuration.action({
+      ChangeDrugDuration.action({
+        drugKey: 'custom',
         diagnosisId,
         drugId,
         duration,

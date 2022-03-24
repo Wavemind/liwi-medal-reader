@@ -3,20 +3,19 @@
  */
 import React from 'react'
 import { Text, View, TouchableOpacity, TextInput } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
-import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import { Icon, QuestionInfoButton, FormulationsPicker } from '@/Components'
 import { navigate } from '@/Navigators/Root'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
-import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
+import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
 
-const AdditionalDrug = ({ drug, isLast }) => {
+const AdditionalDrug = ({ drug }) => {
   // Theme and style elements deconstruction
   const {
     FontSize,
@@ -27,8 +26,6 @@ const AdditionalDrug = ({ drug, isLast }) => {
 
   const dispatch = useDispatch()
   const { t } = useTranslation()
-
-  const nodes = useSelector(state => state.algorithm.item.nodes)
 
   /**
    * Removes the additional drug from all of the related diagnoses
@@ -50,9 +47,25 @@ const AdditionalDrug = ({ drug, isLast }) => {
    * @param {*} duration string
    */
   const onUpdateDuration = duration => {
+    const regWithComma = /^[0-9,]+$/
+
+    // Replace comma with dot
+    if (regWithComma.test(duration)) {
+      duration = duration.replace(',', '.')
+    }
+
+    // Remove char that are not number or dot
+    duration = duration.replace(/[^0-9.]/g, '')
+
+    // Parse to float if value is not empty and last char is not dot
+    if (duration !== '' && duration.charAt(duration.length - 1) !== '.') {
+      duration = parseFloat(duration)
+    }
+
     drug.diagnoses.forEach(diagnosis => {
       dispatch(
-        ChangeAdditionalDrugDuration.action({
+        ChangeDrugDuration.action({
+          drugKey: 'additional',
           diagnosisKey: diagnosis.key,
           diagnosisId: diagnosis.id,
           drugId: drug.id,
@@ -65,15 +78,15 @@ const AdditionalDrug = ({ drug, isLast }) => {
   return (
     <View style={drugs.additionalWrapper}>
       <View style={drugs.drugTitleWrapper}>
-        <Text style={drugs.drugTitle}>{translate(nodes[drug.id].label)}</Text>
+        <Text style={drugs.drugTitle}>{drug.label}</Text>
         <QuestionInfoButton nodeId={drug.id} />
         <View style={additionalSelect.durationWrapper}>
           <TextInput
             style={additionalSelect.durationInput}
             onChangeText={duration => onUpdateDuration(duration)}
-            value={drug.duration}
+            value={drug.duration ? String(drug.duration) : ''}
             textAlign="center"
-            keyboardType="default"
+            keyboardType="decimal-pad"
           />
         </View>
         <TouchableOpacity onPress={() => onRemovePress(drug.id)}>
@@ -89,7 +102,7 @@ const AdditionalDrug = ({ drug, isLast }) => {
             key={`diagnosisDrug_${diagnosis.id}`}
             style={drugs.drugDescription}
           >
-            - {translate(nodes[diagnosis.id].label)}
+            - {diagnosis.label}
           </Text>
         ))}
       </View>
@@ -97,8 +110,9 @@ const AdditionalDrug = ({ drug, isLast }) => {
       <TouchableOpacity
         style={additionalSelect.addAdditionalButton}
         onPress={() =>
-          navigate('AdditionalSearchRelatedDiagnoses', {
+          navigate('SearchRelatedDiagnoses', {
             drugId: drug.id,
+            drugType: 'additional',
           })
         }
       >

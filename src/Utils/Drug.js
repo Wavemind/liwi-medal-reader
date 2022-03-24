@@ -188,99 +188,102 @@ export const drugIsRefused = drug => {
  * Transforms the diagnoses to group diagnoses per drug and orders everything by drug level_of_urgency
  * @returns array of drugs
  */
-export const reworkAndOrderDrugs = key => {
+export const reworkAndOrderDrugs = () => {
   const nodes = store.getState().algorithm.item.nodes
   const diagnoses = store.getState().medicalCase.item.diagnosis
+  console.log(
+    '########################################################################################################',
+  )
+  // const drugs = {
+  //   agreed: [{
+  //     addedAt: 1648133772,
+  //     diagnoses: [
+  //       { id: 12009, key: 'additional' },
+  //       { id: 11465, key: 'agreed' },
+  //     ],
+  //     duration: 5,
+  //     id: 10631,
+  //     levelOfUrgency: 5,
+  //     selectedFormulationId: 1046,
+  //   }],
+  //   additional: [{}],
+  //   custom: [{}],
+  // }
 
-  const allDrugs = []
-  if (key === 'custom') {
-    for (const [diagnosisKey, diagnosisValue] of Object.entries(diagnoses)) {
-      if (['additional', 'custom'].includes(diagnosisKey)) {
-        Object.keys(diagnosisValue).forEach(diagnosis => {
-          const drugs =
-            diagnosisKey === 'custom'
-              ? diagnosisValue[diagnosis].drugs
-              : diagnosisValue[diagnosis].drugs.custom
-          Object.keys(drugs).forEach(drug => {
-            const foundIndex = allDrugs.findIndex(e => e.id === drug)
-            const diagnosisId =
-              diagnosisKey === 'custom' ? diagnosis : parseInt(diagnosis, 10)
-            if (foundIndex > -1) {
-              allDrugs[foundIndex] = {
-                ...allDrugs[foundIndex],
-                diagnoses: [
-                  ...allDrugs[foundIndex].diagnoses,
-                  {
-                    id: diagnosisId,
-                    key: diagnosisKey,
-                    label:
-                      diagnosisKey === 'custom'
-                        ? diagnosisValue[diagnosis].name
-                        : translate(nodes[diagnosisValue[diagnosis].id].label),
-                  },
-                ],
-              }
-            } else {
-              allDrugs.push({
-                id: drug,
-                key: key,
-                label: drugs[drug].name,
-                diagnoses: [
-                  {
-                    id: diagnosisId,
-                    key: diagnosisKey,
-                    label:
-                      diagnosisKey === 'custom'
-                        ? diagnosisValue[diagnosis].name
-                        : translate(nodes[diagnosisValue[diagnosis].id].label),
-                  },
-                ],
-                duration: drugs[drug]?.duration,
-                addedAt: drugs[drug]?.addedAt,
-              })
-            }
-          })
-        })
-      }
-    }
-  } else {
-    for (const [diagnosisKey, diagnosisValue] of Object.entries(diagnoses)) {
-      if (['agreed', 'additional'].includes(diagnosisKey)) {
-        Object.keys(diagnosisValue).forEach(diagnosis => {
-          const drugGroup = diagnosisValue[diagnosis].drugs[key]
-          const drugs = Array.isArray(drugGroup) ? drugGroup : _keys(drugGroup)
+  const drugTypes = ['agreed', 'proposed', 'additional', 'custom']
 
-          drugs.forEach(drug => {
-            const foundIndex = allDrugs.findIndex(e => e.id === drug)
-            if (foundIndex > -1) {
-              allDrugs[foundIndex] = {
-                ...allDrugs[foundIndex],
-                diagnoses: [
-                  ...allDrugs[foundIndex].diagnoses,
-                  { id: parseInt(diagnosis, 10), key: diagnosisKey },
-                ],
-              }
-            } else {
-              allDrugs.push({
-                id: drug,
-                key: key,
-                levelOfUrgency: nodes[parseInt(drug, 10)].level_of_urgency,
-                diagnoses: [{ id: parseInt(diagnosis, 10), key: diagnosisKey }],
-                duration: diagnosisValue[diagnosis].drugs[key][drug]?.duration,
-                addedAt: diagnosisValue[diagnosis].drugs[key][drug]?.addedAt,
-                selectedFormulationId:
-                  diagnosisValue[diagnosis].drugs[
-                    key === 'proposed' ? 'agreed' : key
-                  ][drug]?.formulation_id,
-              })
-            }
-          })
-        })
-      }
-    }
+  const newDrugs = {
+    agreed: [],
+    additional: [],
+    custom: [],
   }
 
-  return key === 'proposed'
-    ? orderBy(allDrugs, drug => drug.levelOfUrgency, ['desc'])
-    : orderBy(allDrugs, drug => drug.addedAt, ['asc'])
+  Object.keys(newDrugs).forEach(diagnosisType => {
+    Object.values(diagnoses[diagnosisType]).forEach(diagnosis => {
+      console.log('diagnosis', diagnosis)
+      drugTypes.forEach(drugType => {
+        // Test if key ['agreed', 'additional', 'custom'] exist (used for custom diagnose)
+
+        if (drugType in diagnosis.drugs) {
+          Object.values(diagnosis.drugs[drugType]).forEach(drug => {
+            console.log('drug', drug)
+            const drugIndex = getDrugIndex(newDrugs, drug.id)
+            const diagnosisLabel =
+              diagnosisType === 'custom'
+                ? diagnosis.name
+                : translate(nodes[diagnosis.id].label)
+
+            console.log('drugIndex', drugIndex)
+            // Drug already exist
+            if (drugIndex > -1) {
+              newDrugs[drugType][drugIndex].diagnoses.push({
+                id: diagnosis.id,
+                key: diagnosisType,
+                label: diagnosisLabel,
+              })
+            } else {
+              // Drug doesn't exist
+              const drugLabel =
+                drugType === 'custom'
+                  ? drug.name
+                  : translate(nodes[drug.id].label)
+
+              newDrugs[drugType].push({
+                id: drug.id,
+                label: drugLabel,
+                levelOfUrgency: nodes[drug.id]?.level_of_urgency,
+                diagnoses: [
+                  {
+                    id: diagnosis.id,
+                    key: diagnosisType,
+                    label: diagnosisLabel,
+                  },
+                ],
+                duration:
+                  drugType === 'agreed'
+                    ? translate(nodes[diagnosis.id].drugs[drug.id].duration)
+                    : drug.duration,
+                addedAt: drug.addedAt,
+                selectedFormulationId: drug.formulation_id,
+              })
+            }
+          })
+        }
+      })
+    })
+  })
+
+  console.log('AFTER', newDrugs)
+
+  return newDrugs
+}
+
+const getDrugIndex = (drugs, drugId) => {
+  for (const drugType of Object.values(drugs)) {
+    const foundIndex = drugType.findIndex(drug => drug.id === drugId)
+    if (foundIndex > -1) {
+      return foundIndex
+    }
+  }
+  return -1
 }

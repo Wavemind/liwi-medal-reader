@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, View, TextInput, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -12,10 +12,9 @@ import uuid from 'react-native-uuid'
  */
 import { useTheme } from '@/Theme'
 import { navigate } from '@/Navigators/Root'
-import { reworkAndOrderDrugs } from '@/Utils/Drug'
 import { RoundedButton, Icon, CustomDrug } from '@/Components'
 
-const CustomDrugs = () => {
+const CustomDrugs = ({ customDrugs }) => {
   // Theme and style elements deconstruction
   const {
     FontSize,
@@ -31,8 +30,6 @@ const CustomDrugs = () => {
   const [unassignedDrugs, setUnassignedDrugs] = useState([])
 
   const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
-
-  const customDrugs = useMemo(() => reworkAndOrderDrugs('custom'), [diagnoses])
 
   useEffect(() => {
     const newUnassignedDrugs = [...unassignedDrugs].filter(drug => {
@@ -79,12 +76,8 @@ const CustomDrugs = () => {
             {t('containers.medical_case.drugs.no_custom')}
           </Text>
         ) : (
-          customDrugs.map((drug, i) => (
-            <CustomDrug
-              key={`customDrug_${drug.id}`}
-              drug={drug}
-              isLast={i === Object.keys(customDrugs).length - 1}
-            />
+          customDrugs.map(drug => (
+            <CustomDrug key={`customDrug_${drug.id}`} drug={drug} />
           ))
         )}
       </View>
@@ -99,15 +92,16 @@ const CustomDrugs = () => {
               {t('containers.medical_case.drugs.select_related')}
             </Text>
             <TouchableOpacity onPress={() => onRemovePress(tempDrug.id)}>
-              <Icon style={{}} name="delete" size={FontSize.large} />
+              <Icon name="delete" size={FontSize.large} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={additionalSelect.addAdditionalButton}
             onPress={() =>
-              navigate('CustomSearchRelatedDiagnoses', {
+              navigate('SearchRelatedDiagnoses', {
                 drugId: tempDrug.id,
                 drugName: tempDrug.label,
+                drugType: 'custom',
               })
             }
           >

@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import { reworkAndOrderDrugs } from '@/Utils/Drug'
 import { navigate } from '@/Navigators/Root'
 import {
   Icon,
@@ -20,7 +19,7 @@ import {
   AdditionalDrug,
 } from '@/Components'
 
-const AdditionalDrugs = () => {
+const AdditionalDrugs = ({ additionalDrugs }) => {
   // Theme and style elements deconstruction
   const {
     FontSize,
@@ -33,13 +32,7 @@ const AdditionalDrugs = () => {
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
   const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
-
   const [unassignedDrugs, setUnassignedDrugs] = useState([])
-
-  const additionalDrugs = useMemo(
-    () => reworkAndOrderDrugs('additional'),
-    [diagnoses],
-  )
 
   useEffect(() => {
     const newUnassignedDrugs = [...unassignedDrugs].filter(drug => {
@@ -80,19 +73,16 @@ const AdditionalDrugs = () => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {additionalDrugs.length === 0 && unassignedDrugs.length === 0 && (
+        {additionalDrugs.length === 0 && unassignedDrugs.length === 0 ? (
           <Text style={finalDiagnoses.noItemsText}>
             {t('containers.medical_case.drugs.no_additional')}
           </Text>
+        ) : (
+          additionalDrugs.map((drug, i) => (
+            <AdditionalDrug key={`additionalDrug_${drug.id}`} drug={drug} />
+          ))
         )}
-        {additionalDrugs.map((drug, i) => (
-          <AdditionalDrug
-            key={`additionalDrug_${drug.id}`}
-            drug={drug}
-            isLast={i === Object.keys(additionalDrugs).length - 1}
-          />
-        ))}
-        {unassignedDrugs.map((unassignedDrug, i) => (
+        {unassignedDrugs.map(unassignedDrug => (
           <View
             key={`unassignedDrug_${unassignedDrug.id}`}
             style={additionalSelect.addAdditionalWrapper}
@@ -114,8 +104,9 @@ const AdditionalDrugs = () => {
             <TouchableOpacity
               style={additionalSelect.addAdditionalButton}
               onPress={() =>
-                navigate('AdditionalSearchRelatedDiagnoses', {
+                navigate('SearchRelatedDiagnoses', {
                   drugId: unassignedDrug.id,
+                  drugType: 'additional',
                 })
               }
             >
