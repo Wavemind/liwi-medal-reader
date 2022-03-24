@@ -10,7 +10,7 @@ Below you'll find information about performing common tasks.
 
 ## Table of contents
 
-- [MedAl-reader ![CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)](#medal-reader-)
+- [MedAl-reader](#medal-reader-) [CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)
   - [Setup](#setup)
   - [Table of contents](#table-of-contents)
   - [Available scripts](#available-scripts)
@@ -23,10 +23,11 @@ Below you'll find information about performing common tasks.
   - [Customizing app display name and icons](#customizing-app-display-name-and-icon)
   - [Data structure](#data-structure)
     - [Medical case](#medical-case)
+    - [Diagnoses](#diagnosis)
   - [Icons available](#icons-available)
   - [Date](#date)
     - [ColoredIcon](#coloredicon)
-    - [Icon](#i
+    - [Icon](#icon)
     - [API](#api)
   - [Writing and running tests](#writing-and-running-tests)
   - [Publishing](#publishing)
@@ -67,7 +68,6 @@ Please refer to [TheCodingMachine React Native boilerplate](https://github.com/t
 ## Data structure
 
 ### Medical case
-
 | Field           | type                         | Description                                                                  |
 | --------------- | ---------------------------- | ---------------------------------------------------------------------------- |
 | activities      | Array<[Activity](#activity)> | Array of all activities related                                              |
@@ -83,8 +83,7 @@ Please refer to [TheCodingMachine React Native boilerplate](https://github.com/t
 | version_id      | `integer`                    | Medal-Creator's id of the version used                                       |
 | json_version    | `integer`                    | Medal-Creator's incremental of the version used                              |
 
-### Diagnosis
-
+### Diagnoses
 `{
 	"proposed": [(array of node id)],
 	"excluded": [(array of node id)],
