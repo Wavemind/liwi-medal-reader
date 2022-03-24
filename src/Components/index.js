@@ -15,7 +15,7 @@ export { default as RoundedButton } from './Buttons/RoundedButton'
 export { default as SquareButton } from './Buttons/SquareButton'
 
 // Diagnoses
-export { default as ProposedDrugs } from './Diagnoses/Medicines/ProposedDrugs'
+export { default as CalculatedDrugs } from './Diagnoses/Medicines/CalculatedDrugs'
 export { default as AdditionalDrug } from './Diagnoses/Medicines/AdditionalDrug'
 export { default as AdditionalDrugs } from './Diagnoses/Medicines/AdditionalDrugs'
 export { default as CustomDrugs } from './Diagnoses/Medicines/CustomDrugs'

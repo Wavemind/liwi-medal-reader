@@ -194,6 +194,7 @@ export const reworkAndOrderDrugs = () => {
   console.log(
     '########################################################################################################',
   )
+  console.log(diagnoses)
   // const drugs = {
   //   agreed: [{
   //     addedAt: 1648133772,
@@ -210,15 +211,16 @@ export const reworkAndOrderDrugs = () => {
   //   custom: [{}],
   // }
 
+  const diagnosisTypes = ['agreed', 'additional', 'custom']
   const drugTypes = ['agreed', 'proposed', 'additional', 'custom']
 
   const newDrugs = {
-    agreed: [],
+    calculated: [],
     additional: [],
     custom: [],
   }
 
-  Object.keys(newDrugs).forEach(diagnosisType => {
+  diagnosisTypes.forEach(diagnosisType => {
     Object.values(diagnoses[diagnosisType]).forEach(diagnosis => {
       console.log('diagnosis', diagnosis)
       drugTypes.forEach(drugType => {
@@ -226,8 +228,19 @@ export const reworkAndOrderDrugs = () => {
 
         if (drugType in diagnosis.drugs) {
           Object.values(diagnosis.drugs[drugType]).forEach(drug => {
+            let drugId
+            let drugKey = drugType
+
+            // Proposed key in store give an array of ids
+            drugId = drugType === 'proposed' ? drug : drug.id
+
+            // Merge proposed and agreed keys into calculated for display
+            if (['proposed', 'agreed'].includes(drugType)) {
+              drugKey = 'calculated'
+            }
+
             console.log('drug', drug)
-            const drugIndex = getDrugIndex(newDrugs, drug.id)
+            const drugIndex = getDrugIndex(newDrugs, drugId)
             const diagnosisLabel =
               diagnosisType === 'custom'
                 ? diagnosis.name
@@ -236,22 +249,25 @@ export const reworkAndOrderDrugs = () => {
             console.log('drugIndex', drugIndex)
             // Drug already exist
             if (drugIndex > -1) {
-              newDrugs[drugType][drugIndex].diagnoses.push({
-                id: diagnosis.id,
-                key: diagnosisType,
-                label: diagnosisLabel,
-              })
+              if (drugType !== 'proposed') {
+                newDrugs[drugKey][drugIndex].diagnoses.push({
+                  id: diagnosis.id,
+                  key: diagnosisType,
+                  label: diagnosisLabel,
+                })
+              }
             } else {
               // Drug doesn't exist
               const drugLabel =
                 drugType === 'custom'
                   ? drug.name
-                  : translate(nodes[drug.id].label)
+                  : translate(nodes[drugId].label)
 
-              newDrugs[drugType].push({
-                id: drug.id,
+              newDrugs[drugKey].push({
+                id: drugId,
+                key: drugType,
                 label: drugLabel,
-                levelOfUrgency: nodes[drug.id]?.level_of_urgency,
+                levelOfUrgency: nodes[drugId]?.level_of_urgency,
                 diagnoses: [
                   {
                     id: diagnosis.id,
@@ -261,7 +277,7 @@ export const reworkAndOrderDrugs = () => {
                 ],
                 duration:
                   drugType === 'agreed'
-                    ? translate(nodes[diagnosis.id].drugs[drug.id].duration)
+                    ? translate(nodes[diagnosis.id].drugs[drugId].duration)
                     : drug.duration,
                 addedAt: drug.addedAt,
                 selectedFormulationId: drug.formulation_id,

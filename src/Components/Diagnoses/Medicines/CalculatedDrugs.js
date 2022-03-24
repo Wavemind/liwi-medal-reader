@@ -17,7 +17,7 @@ import {
   QuestionInfoButton,
 } from '@/Components'
 
-const ProposedDrugs = ({ proposedDrugs }) => {
+const CalculatedDrugs = ({ calculatedDrugs }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -25,7 +25,7 @@ const ProposedDrugs = ({ proposedDrugs }) => {
   } = useTheme()
   const { t } = useTranslation()
 
-  const orderedDrug = orderBy(proposedDrugs, drug => drug.levelOfUrgency, [
+  const orderedDrug = orderBy(calculatedDrugs, drug => drug.levelOfUrgency, [
     'desc',
   ])
 
@@ -39,9 +39,9 @@ const ProposedDrugs = ({ proposedDrugs }) => {
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
         {orderedDrug.map((drug, i) => (
           <View
-            key={`proposedDrug_${drug.id}`}
+            key={`calculatedDrugs-${drug.id}`}
             style={drugs.innerWrapper(
-              i === Object.values(proposedDrugs).length - 1,
+              i === Object.values(calculatedDrugs).length - 1,
             )}
           >
             <View style={drugs.drugTitleWrapper}>
@@ -73,4 +73,4 @@ const ProposedDrugs = ({ proposedDrugs }) => {
   )
 }
 
-export default ProposedDrugs
+export default CalculatedDrugs

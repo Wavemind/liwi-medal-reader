@@ -78,29 +78,22 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
       custom,
     })) {
       Object.values(diagnoses).forEach(diagnosis => {
-        // Custom diagnoses
-        if (diagnosisKey === 'custom') {
-          if (Object.keys(diagnosis.drugs).includes(drugId)) {
-            tempSelected[diagnosis.id] = { id: diagnosis.id, key: diagnosisKey }
-          }
-        } else {
-          const {
-            agreed: agreedDrugs,
-            additional: additionalDrugs,
-            custom: customDrugs,
-          } = diagnosis.drugs
-          if (
-            _keys({
-              ...agreedDrugs,
-              ...additionalDrugs,
-            }).includes(drugId)
-          ) {
-            tempSelected[diagnosis.id] = { id: diagnosis.id, key: diagnosisKey }
-          }
-          // Custom drug in additional or agreed diagnosis
-          if (Object.keys(customDrugs).includes(drugId)) {
-            tempSelected[diagnosis.id] = { id: diagnosis.id, key: diagnosisKey }
-          }
+        const {
+          agreed: agreedDrugs,
+          additional: additionalDrugs,
+          custom: customDrugs,
+        } = diagnosis.drugs
+        if (
+          _keys({
+            ...agreedDrugs,
+            ...additionalDrugs,
+          }).includes(drugId)
+        ) {
+          tempSelected[diagnosis.id] = { id: diagnosis.id, key: diagnosisKey }
+        }
+        // Custom drug in additional or agreed diagnosis
+        if (Object.keys(customDrugs).includes(drugId)) {
+          tempSelected[diagnosis.id] = { id: diagnosis.id, key: diagnosisKey }
         }
       })
     }

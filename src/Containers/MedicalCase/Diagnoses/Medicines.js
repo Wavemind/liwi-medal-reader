@@ -9,7 +9,7 @@ import { useIsFocused } from '@react-navigation/native'
 /**
  * The internal imports
  */
-import { ProposedDrugs, AdditionalDrugs, CustomDrugs } from '@/Components'
+import { CalculatedDrugs, AdditionalDrugs, CustomDrugs } from '@/Components'
 import { reworkAndOrderDrugs } from '@/Utils/Drug'
 import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
 
@@ -28,7 +28,7 @@ const MedicinesMedicalCaseContainer = () => {
   return (
     <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={200}>
       <ScrollView>
-        <ProposedDrugs proposedDrugs={drugs.agreed} />
+        <CalculatedDrugs calculatedDrugs={drugs.calculated} />
         <AdditionalDrugs additionalDrugs={drugs.additional} />
         <CustomDrugs customDrugs={drugs.custom} />
       </ScrollView>
