@@ -186,27 +186,11 @@ export const drugIsRefused = drug => {
 
 /**
  * Transforms the diagnoses to group diagnoses per drug and orders everything by drug level_of_urgency
- * @returns array of drugs
+ * @returns object of drugs
  */
 export const reworkAndOrderDrugs = () => {
   const nodes = store.getState().algorithm.item.nodes
   const diagnoses = store.getState().medicalCase.item.diagnosis
-
-  // const drugs = {
-  //   agreed: [{
-  //     addedAt: 1648133772,
-  //     diagnoses: [
-  //       { id: 12009, key: 'additional' },
-  //       { id: 11465, key: 'agreed' },
-  //     ],
-  //     duration: 5,
-  //     id: 10631,
-  //     levelOfUrgency: 5,
-  //     selectedFormulationId: 1046,
-  //   }],
-  //   additional: [{}],
-  //   custom: [{}],
-  // }
 
   const diagnosisTypes = ['agreed', 'additional', 'custom']
   const drugTypes = ['agreed', 'proposed', 'additional', 'custom']
@@ -286,6 +270,12 @@ export const reworkAndOrderDrugs = () => {
   return newDrugs
 }
 
+/**
+ * Returns the index of the drug in drugs object
+ * @param {*} drugs object
+ * @param {*} drugId integer
+ * @returns integer
+ */
 const getDrugIndex = (drugs, drugId) => {
   for (const drugType of Object.values(drugs)) {
     const foundIndex = drugType.findIndex(drug => drug.id === drugId)
@@ -294,4 +284,28 @@ const getDrugIndex = (drugs, drugId) => {
     }
   }
   return -1
+}
+
+/**
+ * Formats the duration string to remove undesired characters
+ * @param {*} duration string
+ * @returns string of float
+ */
+export const formatDuration = duration => {
+  const regWithComma = /^[0-9,]+$/
+
+  // Replace comma with dot
+  if (regWithComma.test(duration)) {
+    duration = duration.replace(',', '.')
+  }
+
+  // Remove char that are not number or dot
+  duration = duration.replace(/[^0-9.]/g, '')
+
+  // Parse to float if value is not empty and last char is not dot
+  if (duration !== '' && duration.charAt(duration.length - 1) !== '.') {
+    duration = parseFloat(duration)
+  }
+
+  return duration
 }

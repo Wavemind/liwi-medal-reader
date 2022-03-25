@@ -56,11 +56,12 @@ export default {
         no_change_algorithm: 'No change. Keeping local algorithm',
         retrieving_emergency_content: 'Retrieving emergency content...',
         new_emergency_content: 'New emergency content loaded',
-        no_change_emergency_content: 'No change. Keeping local emergency content',
+        no_change_emergency_content:
+          'No change. Keeping local emergency content',
       },
     },
     additional_list: {
-      title: 'Select your {{ items }}',
+      title: 'Select your diagnoses',
     },
     filters: {
       title: 'Filters',

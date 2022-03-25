@@ -78,7 +78,7 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
             {t('containers.medical_case.drugs.no_additional')}
           </Text>
         ) : (
-          additionalDrugs.map((drug, i) => (
+          additionalDrugs.map(drug => (
             <AdditionalDrug key={`additionalDrug_${drug.id}`} drug={drug} />
           ))
         )}

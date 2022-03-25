@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
@@ -52,24 +52,31 @@ const SearchAdditionalMedicalCaseContainer = ({ navigation }) => {
     state => state.medicalCase.item.diagnosis.additional,
   )
 
-  const days = birthDate ? differenceInDays(startOfToday(), birthDate) : 0
-  const itemList = filter(nodes, { type: 'FinalDiagnosis' })
-    .filter(item => {
-      const isNeoNat = nodes[item.cc].is_neonat
-      return (
-        !proposed.includes(item.id) &&
-        ((days <= 59 && isNeoNat) || (days > 59 && !isNeoNat))
-      )
-    })
-    .sort((a, b) => {
-      return translate(a.label) > translate(b.label)
-        ? 1
-        : translate(b.label) > translate(a.label)
-        ? -1
-        : 0
-    })
+  const days = useMemo(
+    () => (birthDate ? differenceInDays(startOfToday(), birthDate) : 0),
+    [birthDate],
+  )
+  const itemList = useMemo(
+    () =>
+      filter(nodes, { type: 'FinalDiagnosis' })
+        .filter(item => {
+          const isNeoNat = nodes[item.cc].is_neonat
+          return (
+            !proposed.includes(item.id) &&
+            ((days <= 59 && isNeoNat) || (days > 59 && !isNeoNat))
+          )
+        })
+        .sort((a, b) => {
+          return translate(a.label) > translate(b.label)
+            ? 1
+            : translate(b.label) > translate(a.label)
+            ? -1
+            : 0
+        }),
+    [birthDate],
+  )
 
-  // Local state definition
+  // Local state definitions
   const [numToAdd] = useState(20)
   const [items, setItems] = useState([])
   const [selected, setSelected] = useState(additional)
@@ -200,16 +207,12 @@ const SearchAdditionalMedicalCaseContainer = ({ navigation }) => {
     )
   }
 
-  const itemsTitle = t('containers.medical_case.diagnoses.diagnoses')
-
   return (
     <View style={Layout.fullHeight}>
       <View style={searchAdditional.wrapper}>
         <View style={searchAdditional.headerWrapper}>
           <Text style={searchAdditional.header}>
-            {t('containers.additional_list.title', {
-              items: itemsTitle,
-            })}
+            {t('containers.additional_list.title')}
           </Text>
           <TouchableOpacity
             style={searchAdditional.closeButton}
@@ -230,7 +233,9 @@ const SearchAdditionalMedicalCaseContainer = ({ navigation }) => {
           badgeComponentLabel={item => translate(nodes[item.id].label)}
         />
 
-        <SectionHeader label={itemsTitle} />
+        <SectionHeader
+          label={t('containers.medical_case.diagnoses.diagnoses')}
+        />
 
         <FlatList
           data={items}

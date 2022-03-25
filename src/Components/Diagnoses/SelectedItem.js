@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
@@ -21,7 +21,7 @@ const SelectedItem = ({ listItem, isLast, onRemovePress, labelMethod }) => {
   } = useTheme()
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
-  const currentNode = nodes[listItem.id]
+  const currentNode = useMemo(() => nodes[listItem.id], [listItem])
 
   return (
     <View style={finalDiagnoses.newItemWrapper(isLast)}>

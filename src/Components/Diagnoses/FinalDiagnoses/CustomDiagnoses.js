@@ -34,7 +34,7 @@ const CustomDiagnoses = () => {
   const listValues = useMemo(() => Object.values(custom), [custom])
 
   /**
-   * Calls the handleAdd method from the props before resetting the input value
+   * Adds a new custom diagnosis to the store
    */
   const addCustomDiagnosis = () => {
     const diagnosisId = uuid.v4()
@@ -56,7 +56,7 @@ const CustomDiagnoses = () => {
   }
 
   /**
-   * Defines the correct handler for the remove item action
+   * Removes the custom diagnosis from the store
    * @param idToRemove
    */
   const removeCustomDiagnosis = idToRemove => {

@@ -81,7 +81,7 @@ const CustomDrugs = ({ customDrugs }) => {
           ))
         )}
       </View>
-      {unassignedDrugs.map((tempDrug, i) => (
+      {unassignedDrugs.map(tempDrug => (
         <View
           key={`tempDrug_${tempDrug.id}`}
           style={additionalSelect.addAdditionalWrapper}

@@ -21,7 +21,6 @@ export { default as AdditionalDrugs } from './Diagnoses/Medicines/AdditionalDrug
 export { default as CustomDrugs } from './Diagnoses/Medicines/CustomDrugs'
 export { default as CustomDrug } from './Diagnoses/Medicines/CustomDrug'
 export { default as SearchRelatedDiagnoses } from './Diagnoses/Medicines/SearchRelatedDiagnoses'
-export { default as SearchRelatedDiagnosesFooter } from './Diagnoses/Medicines/SearchRelatedDiagnosesFooter'
 export { default as DrugBooleanButton } from './Diagnoses/Medicines/DrugBooleanButton'
 export { default as AdditionalDiagnoses } from './Diagnoses/FinalDiagnoses/AdditionalDiagnoses'
 export { default as CustomDiagnoses } from './Diagnoses/FinalDiagnoses/CustomDiagnoses'

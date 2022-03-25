@@ -94,8 +94,7 @@ const ListItem = ({ item }) => {
               ? t('containers.medical_case.stages.closed')
               : t(
                   `containers.medical_case.stages.${
-                    // TODO remove the - 1 before PR
-                    stages[item.advancement.stage - 1].label
+                    stages[item.advancement.stage].label
                   }`,
                 )}
           </Text>

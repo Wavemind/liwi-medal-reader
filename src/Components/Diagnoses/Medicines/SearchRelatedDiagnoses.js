@@ -16,7 +16,7 @@ import {
   Autosuggest,
   BadgeBar,
   AdditionalListItem,
-  SearchRelatedDiagnosesFooter,
+  SquareButton,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
@@ -33,6 +33,8 @@ const SearchRelatedDiagnoses = ({
     Colors,
     Layout,
     Fonts,
+    FontSize,
+    Gutters,
     Containers: { searchAdditional },
   } = useTheme()
 
@@ -163,11 +165,33 @@ const SearchRelatedDiagnoses = ({
           onEndReachedThreshold={0.1}
         />
       </View>
-      <SearchRelatedDiagnosesFooter
-        handleApply={handleApply}
-        showClearAll={Object.keys(selected).length > 0}
-        setSelected={setSelected}
-      />
+      <View style={searchAdditional.footerWrapper}>
+        {Object.keys(selected).length > 0 && (
+          <TouchableOpacity
+            onPress={() => setSelected([])}
+            style={searchAdditional.clearFiltersButton}
+          >
+            <View style={searchAdditional.clearFiltersButtonWrapper}>
+              <Icon
+                name="refresh"
+                color={Colors.red}
+                size={FontSize.regular}
+                style={Gutters.regularRMargin}
+              />
+              <Text style={searchAdditional.clearFiltersButtonText}>
+                {t('actions.clear_selection')}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        <SquareButton
+          label={t('actions.apply')}
+          bgColor={Colors.primary}
+          color={Colors.secondary}
+          fullWidth={false}
+          onPress={handleApply}
+        />
+      </View>
     </View>
   )
 }

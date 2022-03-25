@@ -109,11 +109,11 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
 
     let originalDuration = ''
     let originalFormulation = null
-    const firstOriginalSelectedDiagnosis = Object.values(
-      originalSelectedDiagnoses,
-    )[0]
 
-    if (firstOriginalSelectedDiagnosis) {
+    if (Object.values(originalSelectedDiagnoses).length > 0) {
+      const firstOriginalSelectedDiagnosis = Object.values(
+        originalSelectedDiagnoses,
+      )[0]
       const mcDiagnosis =
         mcDiagnoses[firstOriginalSelectedDiagnosis.key][
           firstOriginalSelectedDiagnosis.id

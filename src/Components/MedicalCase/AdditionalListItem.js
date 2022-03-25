@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useMemo } from 'react'
 import { View } from 'react-native'
 
 /**
@@ -18,8 +18,11 @@ const AdditionalListItem = ({ item, handlePress, selected }) => {
     Layout,
   } = useTheme()
 
-  const [descriptionAvailable] = useState(translate(item.description) !== '')
-  const [mediaAvailable] = useState(item.medias?.length > 0)
+  const descriptionAvailable = useMemo(
+    () => translate(item.description) !== '',
+    [item],
+  )
+  const mediaAvailable = useMemo(() => item.medias?.length > 0, [item])
 
   return (
     <View style={diagnosisItem.wrapper}>

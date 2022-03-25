@@ -25,10 +25,10 @@ const DrugBooleanButton = ({ drug }) => {
   const isRefused = useMemo(() => drugIsRefused(drug), [drug])
 
   /**
-   * Updates the state for each diagnosis
+   * Updates the store for each diagnosis
    * @param {*} value boolean
    */
-  const updateState = value => {
+  const updateStore = value => {
     drug.diagnoses.forEach(diagnosis =>
       UpdateDrugService(diagnosis.id, drug.id, value, diagnosis.key),
     )
@@ -39,7 +39,7 @@ const DrugBooleanButton = ({ drug }) => {
       <View style={booleanButton.buttonWrapper('left', isAgreed, false)}>
         <TouchableOpacity
           style={Layout.center}
-          onPress={() => updateState(true)}
+          onPress={() => updateStore(true)}
         >
           <Text style={booleanButton.buttonText(isAgreed)}>
             {t('containers.medical_case.common.agree')}
@@ -49,7 +49,7 @@ const DrugBooleanButton = ({ drug }) => {
       <View style={booleanButton.buttonWrapper('right', isRefused, false)}>
         <TouchableOpacity
           style={Layout.center}
-          onPress={() => updateState(false)}
+          onPress={() => updateStore(false)}
         >
           <Text style={booleanButton.buttonText(isRefused)}>
             {t('containers.medical_case.common.disagree')}

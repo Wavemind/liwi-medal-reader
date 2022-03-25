@@ -114,25 +114,23 @@ const Autocomplete = ({ updateAdditionalDrugs }) => {
    * @param index
    * @returns {JSX.Element}
    */
-  const renderResult = (result, index) => {
-    const resultString = translate(result.label)
-
-    return (
-      <View
-        key={`drug-${result.id}`}
-        style={autocomplete.dropdownItemWrapper(
-          index === searchResults.length - 1,
-        )}
+  const renderResult = (result, index) => (
+    <View
+      key={`drug-${result.id}`}
+      style={autocomplete.dropdownItemWrapper(
+        index === searchResults.length - 1,
+      )}
+    >
+      <TouchableOpacity
+        style={[Gutters.regularVPadding, Gutters.smallHPadding]}
+        onPress={() => handleOptionSelect(result)}
       >
-        <TouchableOpacity
-          style={[Gutters.regularVPadding, Gutters.smallHPadding]}
-          onPress={() => handleOptionSelect(result)}
-        >
-          <Text style={autocomplete.dropdownItemText}>{resultString}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
+        <Text style={autocomplete.dropdownItemText}>
+          {translate(result.label)}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  )
 
   return (
     <View style={[Gutters.smallTMargin, Layout.fullWidth]}>

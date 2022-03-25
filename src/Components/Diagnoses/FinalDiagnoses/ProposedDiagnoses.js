@@ -53,6 +53,7 @@ const ProposedDiagnoses = () => {
    * Transforms stored diagnoses/drugs into a usable local format
    */
   // TODO: USE MEMEO
+  // pas sur qu'on puisse utiliser un useMemo ici vu qu'on set un local state
   useEffect(() => {
     const newDiagnoses = sortDiagnosesByUrgency()
     if (!isEqual(newDiagnoses, sortedDiagnoses)) {

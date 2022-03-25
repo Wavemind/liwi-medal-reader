@@ -14,6 +14,7 @@ import { Icon, QuestionInfoButton, FormulationsPicker } from '@/Components'
 import { navigate } from '@/Navigators/Root'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
 import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
+import { formatDuration } from '@/Utils/Drug'
 
 const AdditionalDrug = ({ drug }) => {
   // Theme and style elements deconstruction
@@ -47,21 +48,6 @@ const AdditionalDrug = ({ drug }) => {
    * @param {*} duration string
    */
   const onUpdateDuration = duration => {
-    const regWithComma = /^[0-9,]+$/
-
-    // Replace comma with dot
-    if (regWithComma.test(duration)) {
-      duration = duration.replace(',', '.')
-    }
-
-    // Remove char that are not number or dot
-    duration = duration.replace(/[^0-9.]/g, '')
-
-    // Parse to float if value is not empty and last char is not dot
-    if (duration !== '' && duration.charAt(duration.length - 1) !== '.') {
-      duration = parseFloat(duration)
-    }
-
     drug.diagnoses.forEach(diagnosis => {
       dispatch(
         ChangeDrugDuration.action({
@@ -69,7 +55,7 @@ const AdditionalDrug = ({ drug }) => {
           diagnosisKey: diagnosis.key,
           diagnosisId: diagnosis.id,
           drugId: drug.id,
-          duration,
+          duration: formatDuration(duration),
         }),
       )
     })
