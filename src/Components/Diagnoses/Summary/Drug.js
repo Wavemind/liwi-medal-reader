@@ -46,7 +46,7 @@ const Drug = ({ drug, isLast }) => {
    */
   const indicationDisplay = () =>
     drug.relatedDiagnoses
-      .map(finalDiagnose => translate(nodes[finalDiagnose.diagnosisId].label))
+      .map(diagnose => translate(nodes[diagnose.diagnosisId].label))
       .join(', ')
 
   /**
@@ -55,9 +55,18 @@ const Drug = ({ drug, isLast }) => {
    */
   const durationsDisplay = () => {
     // TODO: Waiting MedAL-C (forcing duration in integer. Should take the longest duration. BUT if one of theses is pre-referral Take it (don't care, display is the same))
+    // LIWI-1704
     const drugInstance =
       nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id]
 
+    drug.relatedDiagnoses.forEach(diagnose => {
+      var reg = new RegExp('^[0-9]$')
+      // Test if contains number
+      // Test if we translated, we contains number
+      // console.log('HERE', reg.test(nodes[diagnose.diagnosisId].drugs[drug.id]))
+    })
+
+    console.log(drugInstance)
     // Pre-referral
     if (drugInstance?.is_pre_referral) {
       return t('formulations.drug.pre_referral_duration')

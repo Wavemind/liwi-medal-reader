@@ -39,6 +39,7 @@
     "axios": "^0.21.4",
     "date-fns": "^2.22.1",
     "faker": "^5.5.3",
+    "fraction-unicode": "^1.0.1",
     "i18next": "^19.9.2",
     "lodash": "^4.17.21",
     "lottie-react-native": "^5.0.1",

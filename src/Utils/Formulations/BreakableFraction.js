@@ -1,4 +1,5 @@
 import toReadableFraction from '@/Utils/Formulations/ToReadableFraction'
+import fractionUnicode from 'fraction-unicode'
 
 /**
  * Returns a string with the amount of breakable to give to the patient
@@ -6,37 +7,48 @@ import toReadableFraction from '@/Utils/Formulations/ToReadableFraction'
  * @returns {string} - amount of breakable to give to the patient
  */
 export const breakableFraction = drugDose => {
-  const unit = drugDose.doseResult / drugDose.breakable
-  const num = Math.floor(unit)
   let result = ''
-
-  if (num > 0 && num !== Infinity) {
-    result = num
-  }
-
   if (drugDose.doseResult !== null) {
-    const rest = drugDose.doseResult % drugDose.breakable
-    if (rest !== 0) {
-      const readableFraction = toReadableFraction(rest / drugDose.breakable)
-      if (
-        readableFraction.numerator === 1 &&
-        readableFraction.denominator === 2
-      ) {
-        result += ' ½'
-      } else if (
-        readableFraction.numerator === 1 &&
-        readableFraction.denominator === 4
-      ) {
-        result += ' ¼'
-      } else if (
-        readableFraction.numerator === 3 &&
-        readableFraction.denominator === 4
-      ) {
-        result += ' ¾'
+    const flooredDoseResult = Math.floor(drugDose.doseResult)
+
+    // Avoid zero division
+    if (flooredDoseResult > 0 && flooredDoseResult !== Infinity) {
+      result = flooredDoseResult
+    }
+
+    const numberOfFullSolid = Math.floor(flooredDoseResult / drugDose.breakable)
+
+    // Less than one solid
+    if (numberOfFullSolid === 0) {
+      const readableFraction = toReadableFraction(
+        flooredDoseResult / drugDose.breakable,
+      )
+
+      const humanReadableFraction = fractionUnicode(
+        readableFraction.numerator,
+        readableFraction.denominator,
+      )
+
+      if (readableFraction.denominator === 1) {
+        result = readableFraction.numerator
       } else {
-        // other fraction
-        result = `${result} ${readableFraction.numerator} / ${readableFraction.denominator}`
+        result = humanReadableFraction
       }
+    } else {
+      // More than one solid
+      result = numberOfFullSolid
+
+      const readableRestFraction = toReadableFraction(
+        (flooredDoseResult - numberOfFullSolid * drugDose.breakable) /
+          drugDose.breakable,
+      )
+
+      const humanReadableRestFraction = fractionUnicode(
+        readableRestFraction.numerator,
+        readableRestFraction.denominator,
+      )
+
+      result += humanReadableRestFraction
     }
   }
   return result

@@ -4849,6 +4849,11 @@ form-data@^3.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
+fraction-unicode@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/fraction-unicode/-/fraction-unicode-1.0.1.tgz#7050a370b3a447a3fc2daa7650706798bc5622df"
+  integrity sha512-ApZkIHoL4S/ipdH863xEzPzIsd38PPhh72IaZnEPFM4kbXEhtdbSjREnlIikdWOCKRH7+04FRRKximeLb1RKSA==
+
 fragment-cache@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/fragment-cache/-/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
