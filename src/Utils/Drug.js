@@ -191,10 +191,7 @@ export const drugIsRefused = drug => {
 export const reworkAndOrderDrugs = () => {
   const nodes = store.getState().algorithm.item.nodes
   const diagnoses = store.getState().medicalCase.item.diagnosis
-  console.log(
-    '########################################################################################################',
-  )
-  console.log(diagnoses)
+
   // const drugs = {
   //   agreed: [{
   //     addedAt: 1648133772,
@@ -222,7 +219,6 @@ export const reworkAndOrderDrugs = () => {
 
   diagnosisTypes.forEach(diagnosisType => {
     Object.values(diagnoses[diagnosisType]).forEach(diagnosis => {
-      console.log('diagnosis', diagnosis)
       drugTypes.forEach(drugType => {
         // Test if key ['agreed', 'additional', 'custom'] exist (used for custom diagnose)
 
@@ -239,14 +235,12 @@ export const reworkAndOrderDrugs = () => {
               drugKey = 'calculated'
             }
 
-            console.log('drug', drug)
             const drugIndex = getDrugIndex(newDrugs, drugId)
             const diagnosisLabel =
               diagnosisType === 'custom'
                 ? diagnosis.name
                 : translate(nodes[diagnosis.id].label)
 
-            console.log('drugIndex', drugIndex)
             // Drug already exist
             if (drugIndex > -1) {
               if (drugType !== 'proposed') {
@@ -288,8 +282,6 @@ export const reworkAndOrderDrugs = () => {
       })
     })
   })
-
-  console.log('AFTER', newDrugs)
 
   return newDrugs
 }

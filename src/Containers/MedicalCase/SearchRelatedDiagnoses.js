@@ -107,20 +107,21 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
   const handleApply = () => {
     const originalIds = Object.keys(originalSelectedDiagnoses)
 
-    // Get existing duration
-    // TODO FINISH DAD SHIT
-    // Object.values(originalSelectedDiagnoses).forEach(diagnosis => {
-    //   const drugsForCurrentDiagnosis =
-    //     diagnoses[diagnosis.key][diagnosis.id].drugs
+    let originalDuration = ''
+    let originalFormulation = null
+    const firstOriginalSelectedDiagnosis = Object.values(
+      originalSelectedDiagnoses,
+    )[0]
 
-    //     const {} = drugsForCurrentDiagnosis
+    if (firstOriginalSelectedDiagnosis) {
+      const mcDiagnosis =
+        mcDiagnoses[firstOriginalSelectedDiagnosis.key][
+          firstOriginalSelectedDiagnosis.id
+        ].drugs[drugType][drugId]
 
-    //     for (const [diagnosisKey, diagnosis] of Object.entries({
-    //       agreed,
-    //       additional,
-    //       custom,
-    //     }))
-    // })
+      originalDuration = mcDiagnosis.duration
+      originalFormulation = mcDiagnosis.formulation_id
+    }
 
     // Add new drugs
     Object.keys(selectedDiagnoses).forEach(diagnosisId => {
@@ -134,7 +135,7 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
               drugContent: {
                 id: drugId,
                 name: drugName,
-                duration: null,
+                duration: originalDuration,
                 addedAt: Math.floor(new Date().getTime() / 1000),
               },
             }),
@@ -146,8 +147,8 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
               diagnosisId: diagnosisId,
               newAdditionalDrug: {
                 id: drugId,
-                formulation_id: null,
-                duration: null,
+                formulation_id: originalFormulation,
+                duration: originalDuration,
                 addedAt: Math.floor(new Date().getTime() / 1000),
               },
             }),
