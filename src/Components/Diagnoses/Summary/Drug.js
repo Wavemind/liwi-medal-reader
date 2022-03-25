@@ -66,7 +66,6 @@ const Drug = ({ drug, isLast }) => {
       // console.log('HERE', reg.test(nodes[diagnose.diagnosisId].drugs[drug.id]))
     })
 
-    console.log(drugInstance)
     // Pre-referral
     if (drugInstance?.is_pre_referral) {
       return t('formulations.drug.pre_referral_duration')
@@ -144,8 +143,8 @@ const Drug = ({ drug, isLast }) => {
             {t('formulations.drug.frequency')}:
           </Text>{' '}
           {t('formulations.drug.frequency_indication', {
-            doses_per_day: drugDose.doses_per_day,
-            count: drugDose.recurrence,
+            count: drugDose.doses_per_day,
+            recurrence: drugDose.recurrence,
           })}
         </Text>
 

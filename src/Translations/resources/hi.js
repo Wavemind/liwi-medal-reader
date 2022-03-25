@@ -388,7 +388,7 @@ export default {
       per_application_plural: '{{count}} applications per administration',
       duration_in_days: '{{ count }} day',
       duration_in_days_plural: '{{ count }} days',
-      fixe_dose: 'Fixed dose',
+      fixed_dose: 'Fixed dose',
       amount_give: 'Give {{- medicationForm }}',
       amount_given_per_application:
         'Give {{ count }} application per administration',
@@ -399,11 +399,15 @@ export default {
       amount_given_im_iv_sc:
         'Give {{ doseResult }}ml of {{ liquidConcentration }}mg/{{ doseForm }}ml {{ medicationForm }}',
       frequency_indication:
-        '{{doses_per_day}} time per day (every {{ count }} hours)',
+        '{{ count }} time per day (every {{ recurrence }} hours)',
       frequency_indication_plural:
-        '{{doses_per_day}} times per day (every {{ count }} hours)',
-      fixe_dose_indication_administration:
+        '{{ count }} times per day (every {{ recurrence }} hours)',
+      fixed_dose_indication_administration:
         'Fixed dose - {{ medicationForm }} per administration',
+      fixed_dose_indication_application:
+        'Fixed dose - {{ count }} application per administration',
+      fixed_dose_indication_application_plural:
+        'Fixed dose - {{ count }} applications per administration',
       dose_indication:
         'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg',
     },

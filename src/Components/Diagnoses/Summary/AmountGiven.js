@@ -79,6 +79,7 @@ const AmountGiven = ({ drugDose }) => {
             `formulations.medication_form.${drugDose.medication_form}`,
             {
               count: parseInt(drugDose.unique_dose, 10),
+              fraction: parseInt(drugDose.unique_dose, 10),
             },
           ),
         })

@@ -1,5 +1,13 @@
-import toReadableFraction from '@/Utils/Formulations/ToReadableFraction'
+/**
+ * The external imports
+ */
 import fractionUnicode from 'fraction-unicode'
+
+/**
+ * The internal imports
+ */
+import toReadableFraction from '@/Utils/Formulations/ToReadableFraction'
+import { Config } from '@/Config'
 
 /**
  * Returns a string with the amount of breakable to give to the patient
@@ -9,13 +17,11 @@ import fractionUnicode from 'fraction-unicode'
 export const breakableFraction = drugDose => {
   let result = ''
   if (drugDose.doseResult !== null) {
-    const flooredDoseResult = Math.floor(drugDose.doseResult)
-
-    // Avoid zero division
-    if (flooredDoseResult > 0 && flooredDoseResult !== Infinity) {
-      result = flooredDoseResult
+    // Avoid everything for capsule
+    if (drugDose.medication_form === Config.MEDICATION_FORMS.capsule) {
+      return drugDose.doseResult
     }
-
+    const flooredDoseResult = Math.floor(drugDose.doseResult)
     const numberOfFullSolid = Math.floor(flooredDoseResult / drugDose.breakable)
 
     // Less than one solid

@@ -82,15 +82,24 @@ export const formulationLabel = drugDose => {
         return `${translate(drugDose.description)}: ${i18n.t(
           'formulations.drug.per_administration',
           {
-            count: parseInt(drugDose.unique_dose, 10),
+            suffix: i18n.t(
+              `formulations.medication_form.${drugDose.medication_form}`,
+              {
+                count: parseInt(drugDose.unique_dose, 10),
+                fraction: parseInt(drugDose.unique_dose, 10),
+              },
+            ),
           },
         )}`
       }
       const fractionString = breakableFraction(drugDose)
-      const fractionTranslated = i18n.t('formulations.medication_form.tablet', {
-        count: parseInt(fractionString, 10),
-        fraction: fractionString,
-      })
+      const fractionTranslated = i18n.t(
+        `formulations.medication_form.${drugDose.medication_form}`,
+        {
+          count: parseInt(fractionString, 10),
+          fraction: fractionString,
+        },
+      )
       return `${translate(drugDose.description)}: ${fractionTranslated}`
     }
     case Config.MEDICATION_FORMS.powder_for_injection: {

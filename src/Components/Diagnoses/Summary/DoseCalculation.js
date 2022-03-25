@@ -32,7 +32,7 @@ const DoseCalculation = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.syrup:
     case Config.MEDICATION_FORMS.powder_for_injection:
       if (drugDose.uniqDose) {
-        return t('formulations.drug.fixe_dose_indication_administration', {
+        return t('formulations.drug.fixe_dosed_indication_administration', {
           medicationForm: `${parseInt(drugDose.unique_dose, 10)}ml`,
         })
       }
@@ -45,13 +45,16 @@ const DoseCalculation = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.ointment:
     case Config.MEDICATION_FORMS.cream:
     case Config.MEDICATION_FORMS.lotion:
-    case Config.MEDICATION_FORMS.drops:
     case Config.MEDICATION_FORMS.patch:
+      return t('formulations.drug.fixe_dosed_indication_application', {
+        count: parseInt(drugDose.unique_dose, 10),
+      })
+    case Config.MEDICATION_FORMS.drops:
     case Config.MEDICATION_FORMS.spray:
     case Config.MEDICATION_FORMS.suppository:
     case Config.MEDICATION_FORMS.pessary:
     case Config.MEDICATION_FORMS.inhaler:
-      return t('formulations.drug.fixe_dose_indication_administration', {
+      return t('formulations.drug.fixe_dosed_indication_administration', {
         medicationForm: t(
           `formulations.medication_form.${drugDose.medication_form}`,
           { count: parseInt(drugDose.unique_dose, 10) },
@@ -61,17 +64,29 @@ const DoseCalculation = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.tablet:
     case Config.MEDICATION_FORMS.dispersible_tablet:
       if (drugDose.uniqDose) {
-        return t('formulations.drug.fixe_dose_indication_administration', {
+        return t('formulations.drug.fixe_dosed_indication_administration', {
           medicationForm: t(
             `formulations.medication_form.${drugDose.medication_form}`,
-            { count: parseInt(drugDose.unique_dose, 10) },
+            {
+              count: parseInt(drugDose.unique_dose, 10),
+              fraction: parseInt(drugDose.unique_dose, 10),
+            },
           ),
         })
       }
-      const currentDosage = roundSup(
-        (drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)) /
-          mcWeight.value,
-      )
+
+      let currentDosage = ''
+
+      if (drugDose.medication_form === Config.MEDICATION_FORMS.capsule) {
+        currentDosage = roundSup(
+          (drugDose.doseResult * drugDose.dose_form) / mcWeight.value,
+        )
+      } else {
+        currentDosage = roundSup(
+          (drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)) /
+            mcWeight.value,
+        )
+      }
 
       return t('formulations.drug.dose_indication', {
         dosage: currentDosage,
