@@ -68,13 +68,11 @@ const CustomDiagnoses = () => {
   }
 
   return (
-    <View>
+    <>
       {listValues.length === 0 ? (
-        <View>
-          <Text style={finalDiagnoses.noItemsText}>
-            {t('containers.medical_case.diagnoses.no_custom')}
-          </Text>
-        </View>
+        <Text style={finalDiagnoses.noItemsText}>
+          {t('containers.medical_case.diagnoses.no_custom')}
+        </Text>
       ) : (
         listValues.map((listItem, i) => (
           <SelectedItem
@@ -107,7 +105,7 @@ const CustomDiagnoses = () => {
           disabled={value === ''}
         />
       </View>
-    </View>
+    </>
   )
 }
 

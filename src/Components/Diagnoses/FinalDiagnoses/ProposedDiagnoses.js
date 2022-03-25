@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -45,28 +45,15 @@ const ProposedDiagnoses = () => {
       'asc',
     ])
 
-  const [sortedDiagnoses, setSortedDiagnoses] = useState(
-    sortDiagnosesByUrgency(),
+  const sortedDiagnoses = useMemo(
+    () => sortDiagnosesByUrgency(),
+    [isFocused, proposed],
   )
 
-  /**
-   * Transforms stored diagnoses/drugs into a usable local format
-   */
-  // TODO: USE MEMEO
-  // pas sur qu'on puisse utiliser un useMemo ici vu qu'on set un local state
-  useEffect(() => {
-    const newDiagnoses = sortDiagnosesByUrgency()
-    if (!isEqual(newDiagnoses, sortedDiagnoses)) {
-      setSortedDiagnoses(newDiagnoses)
-    }
-  }, [isFocused, proposed])
-
   return sortedDiagnoses.length === 0 ? (
-    <View>
-      <Text style={finalDiagnoses.noItemsText}>
-        {t('containers.medical_case.diagnoses.no_proposed')}
-      </Text>
-    </View>
+    <Text style={finalDiagnoses.noItemsText}>
+      {t('containers.medical_case.diagnoses.no_proposed')}
+    </Text>
   ) : (
     sortedDiagnoses.map((diagnosisId, i) => {
       const isAgreed = Object.keys(agreed).includes(diagnosisId.toString())

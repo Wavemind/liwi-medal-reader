@@ -36,7 +36,7 @@ const SelectedItem = ({ listItem, isLast, onRemovePress, labelMethod }) => {
           )}
       </View>
       <TouchableOpacity onPress={() => onRemovePress(listItem.id)}>
-        <Icon style={{}} name="delete" size={FontSize.large} />
+        <Icon name="delete" size={FontSize.large} />
       </TouchableOpacity>
     </View>
   )
