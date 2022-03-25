@@ -63,7 +63,7 @@ export default {
       },
     },
     additional_list: {
-      title: 'Veuillez choisir vos {{ items }}',
+      title: 'Veuillez choisir vos diagnostics',
     },
     filters: {
       title: 'Filtres',
@@ -119,7 +119,7 @@ export default {
         diagnoses: 'Diagnostics',
         proposed_title: 'Diagnostics proposés',
         additional_title: 'Diagnostics supplémentaires',
-        additional_placeholder: 'Choisir {{ item }} supplémentaires',
+        additional_placeholder: 'Choisir diagnostics supplémentaires',
         multiple_diagnostics: 'des diagnostics',
         multiple_drugs: 'des médicaments',
         custom_title: 'Diagnostics manuels',
@@ -131,14 +131,17 @@ export default {
       /* al 20210912 removed from diagnoses: proposed_title: 'Diagnostics proposés par {{ version_name }}', */
       drugs: {
         drugs: 'Médicaments',
-        proposed: 'Proposés',
-        additional: 'Supplémentaires',
+        proposed: 'Médicaments proposés',
+        additional: 'Médicaments supplémentaires',
         custom: 'Ajoutés manuellement',
         custom_placeholder: 'Ajouter des médicaments manuellement',
+        related_placeholder: 'Sélectionnez les diagnostiques',
+        select_related: 'Sélectionnez les diagnostiques pour continuer',
         no_proposed: 'Aucun médicament proposé',
         no_additional: 'Aucun médicament supplémentaire sélectionné',
         no_custom: 'Aucun médicament ajouté manuellement',
         no_medicines: 'Aucun médicament disponible',
+        indication: 'Indication',
       },
       formulations: {
         title:

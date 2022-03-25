@@ -42,6 +42,7 @@ describe('Handle custom drugs addition', () => {
   it('should add custom drugs to a custom diagnostic', async () => {
     store.dispatch(
       AddCustomDrugs.action({
+        diagnosisKey: 'custom',
         diagnosisId,
         drugId,
         drugContent: {
@@ -53,7 +54,8 @@ describe('Handle custom drugs addition', () => {
     )
 
     expect(
-      store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs,
+      store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs
+        .custom,
     ).toStrictEqual({
       1679: {
         id: '1679',

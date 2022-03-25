@@ -56,11 +56,12 @@ export default {
         no_change_algorithm: 'No change. Keeping local algorithm',
         retrieving_emergency_content: 'Retrieving emergency content...',
         new_emergency_content: 'New emergency content loaded',
-        no_change_emergency_content: 'No change. Keeping local emergency content',
+        no_change_emergency_content:
+          'No change. Keeping local emergency content',
       },
     },
     additional_list: {
-      title: 'Select your {{ items }}',
+      title: 'Select your diagnoses',
     },
     filters: {
       title: 'Filters',
@@ -116,7 +117,7 @@ export default {
         diagnoses: 'Diagnoses',
         proposed_title: 'Diagnoses proposed',
         additional_title: 'Additional diagnoses selected',
-        additional_placeholder: 'Select additional {{ item }}',
+        additional_placeholder: 'Select additional diagnoses',
         multiple_diagnostics: 'diagnostics',
         multiple_drugs: 'drugs',
         custom_title: 'Manually added diagnoses',
@@ -128,14 +129,17 @@ export default {
       /* al 20210912 removed from diagnoses: proposed_title: 'Diagnoses proposed by {{ version_name }}', */
       drugs: {
         drugs: 'Drugs',
-        proposed: 'Proposed',
-        additional: 'Additional',
-        custom: 'Added manually',
+        proposed: 'Proposed medicines',
+        additional: 'Additional medicines',
+        custom: 'Custom medicines',
         custom_placeholder: 'Add your drugs',
+        related_placeholder: 'Select related diagnoses',
+        select_related: 'Select related diagnoses to continue',
         no_proposed: 'No drugs proposed',
         no_additional: 'No additional drugs selected',
         no_custom: 'No drugs added manually',
         no_medicines: 'No medicines available',
+        indication: 'Indication',
       },
       formulations: {
         title:

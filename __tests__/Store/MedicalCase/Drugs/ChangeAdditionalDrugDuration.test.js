@@ -4,7 +4,7 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
 import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
-import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
+import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
 
 beforeAll(async () => {
   const algorithmFile = require('../../../version_1.json')
@@ -43,11 +43,9 @@ beforeAll(async () => {
     AddAdditionalDrugs.action({
       diagnosisKey: 'agreed',
       diagnosisId,
-      newAdditionalDrugs: {
-        [drugId]: {
-          id: drugId,
-          duration: '',
-        },
+      newAdditionalDrug: {
+        id: drugId,
+        duration: '',
       },
     }),
   )
@@ -55,11 +53,9 @@ beforeAll(async () => {
     AddAdditionalDrugs.action({
       diagnosisKey: 'additional',
       diagnosisId,
-      newAdditionalDrugs: {
-        [drugId]: {
-          id: drugId,
-          duration: '',
-        },
+      newAdditionalDrug: {
+        id: drugId,
+        duration: '',
       },
     }),
   )
@@ -92,7 +88,8 @@ describe('Handle additional drugs removal', () => {
 
   it('should remove an additional drug from an agreed diagnostic', async () => {
     store.dispatch(
-      ChangeAdditionalDrugDuration.action({
+      ChangeDrugDuration.action({
+        drugKey: 'additional',
         diagnosisKey: 'agreed',
         diagnosisId,
         drugId,
@@ -128,7 +125,8 @@ describe('Handle additional drugs removal', () => {
 
   it('should remove an additional drug from an additional diagnostic', async () => {
     store.dispatch(
-      ChangeAdditionalDrugDuration.action({
+      ChangeDrugDuration.action({
+        drugKey: 'additional',
         diagnosisKey: 'additional',
         diagnosisId,
         drugId,

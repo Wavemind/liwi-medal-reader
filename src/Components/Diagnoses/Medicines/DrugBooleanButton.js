@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
@@ -10,30 +10,36 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { UpdateDrugService } from '@/Services/MedicalCase'
+import { drugIsAgreed, drugIsRefused } from '@/Utils/Drug'
 
-const DrugBooleanButton = ({ diagnosis, drugId, diagnosisKey }) => {
+const DrugBooleanButton = ({ drug }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
-    Containers: { drugs },
     Components: { booleanButton },
   } = useTheme()
 
   const { t } = useTranslation()
 
-  const isAgreed = Object.keys(diagnosis.drugs.agreed).includes(
-    drugId.toString(),
-  )
-  const isRefused = diagnosis.drugs.refused.includes(drugId)
+  const isAgreed = useMemo(() => drugIsAgreed(drug), [drug])
+  const isRefused = useMemo(() => drugIsRefused(drug), [drug])
+
+  /**
+   * Updates the store for each diagnosis
+   * @param {*} value boolean
+   */
+  const updateStore = value => {
+    drug.diagnoses.forEach(diagnosis =>
+      UpdateDrugService(diagnosis.id, drug.id, value, diagnosis.key),
+    )
+  }
 
   return (
-    <View style={drugs.booleanButtonWrapper}>
+    <View style={booleanButton.outerWrapper}>
       <View style={booleanButton.buttonWrapper('left', isAgreed, false)}>
         <TouchableOpacity
           style={Layout.center}
-          onPress={() =>
-            UpdateDrugService(diagnosis.id, drugId, true, diagnosisKey)
-          }
+          onPress={() => updateStore(true)}
         >
           <Text style={booleanButton.buttonText(isAgreed)}>
             {t('containers.medical_case.common.agree')}
@@ -43,9 +49,7 @@ const DrugBooleanButton = ({ diagnosis, drugId, diagnosisKey }) => {
       <View style={booleanButton.buttonWrapper('right', isRefused, false)}>
         <TouchableOpacity
           style={Layout.center}
-          onPress={() =>
-            UpdateDrugService(diagnosis.id, drugId, false, diagnosisKey)
-          }
+          onPress={() => updateStore(false)}
         >
           <Text style={booleanButton.buttonText(isRefused)}>
             {t('containers.medical_case.common.disagree')}

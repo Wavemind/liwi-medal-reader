@@ -29,6 +29,7 @@ beforeAll(async () => {
   )
   await store.dispatch(
     AddCustomDrugs.action({
+      diagnosisKey: 'custom',
       diagnosisId,
       drugId,
       drugContent: {
@@ -55,7 +56,8 @@ describe('Handle custom drugs removal', () => {
   it('should start with a custom drug', () => {
     expect(
       Object.keys(
-        store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs,
+        store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs
+          .custom,
       ).includes(drugId),
     ).toBe(true)
   })
@@ -63,6 +65,7 @@ describe('Handle custom drugs removal', () => {
   it('should remove custom drugs from a custom diagnostic', async () => {
     store.dispatch(
       RemoveCustomDrugs.action({
+        diagnosisKey: 'custom',
         diagnosisId,
         drugId,
       }),
@@ -70,7 +73,8 @@ describe('Handle custom drugs removal', () => {
 
     expect(
       Object.keys(
-        store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs,
+        store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs
+          .custom,
       ).includes(drugId.toString()),
     ).toBe(false)
   })

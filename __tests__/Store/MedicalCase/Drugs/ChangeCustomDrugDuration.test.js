@@ -3,7 +3,7 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses'
 import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
-import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
+import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
 
 beforeAll(async () => {
   const algorithmFile = require('../../../version_1.json')
@@ -29,6 +29,7 @@ beforeAll(async () => {
   )
   await store.dispatch(
     AddCustomDrugs.action({
+      diagnosisKey: 'custom',
       diagnosisId,
       drugId,
       drugContent: {
@@ -56,14 +57,17 @@ describe('Handle custom drugs duration change', () => {
   it('should start with a custom drug', () => {
     expect(
       Object.keys(
-        store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs,
+        store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs
+          .custom,
       ).includes(drugId),
     ).toBe(true)
   })
 
   it('should modify the duration for a custom drug', async () => {
     store.dispatch(
-      ChangeCustomDrugDuration.action({
+      ChangeDrugDuration.action({
+        diagnosisKey: 'custom',
+        drugKey: 'custom',
         diagnosisId,
         drugId,
         duration,
@@ -71,9 +75,8 @@ describe('Handle custom drugs duration change', () => {
     )
 
     expect(
-      store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs[
-        drugId
-      ].duration,
+      store.getState().medicalCase.item.diagnosis.custom[diagnosisId].drugs
+        .custom[drugId].duration,
     ).toBe(duration)
   })
 })

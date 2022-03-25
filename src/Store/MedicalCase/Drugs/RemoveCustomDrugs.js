@@ -4,6 +4,7 @@ export default {
   initialState: {},
   action: createAction('medicalCase/removeCustomDrugs'),
   reducers(state, { payload }) {
-    delete state.item.diagnosis.custom[payload.diagnosisId].drugs[payload.drugId]
+    delete state.item.diagnosis[payload.diagnosisKey][payload.diagnosisId].drugs
+      .custom[payload.drugId]
   },
 }

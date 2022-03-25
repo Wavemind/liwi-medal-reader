@@ -56,11 +56,9 @@ describe('Handle additional drugs addition', () => {
       AddAdditionalDrugs.action({
         diagnosisKey: 'agreed',
         diagnosisId,
-        newAdditionalDrugs: {
-          [drugId]: {
-            id: drugId,
-            duration: '',
-          },
+        newAdditionalDrug: {
+          id: drugId,
+          duration: '',
         },
       }),
     )
@@ -89,13 +87,16 @@ describe('Handle additional drugs addition', () => {
       AddAdditionalDrugs.action({
         diagnosisKey: 'additional',
         diagnosisId,
-        newAdditionalDrugs: {
-          [drugId]: {
-            id: drugId,
-            duration: '',
-          },
+        newAdditionalDrug: {
+          id: drugId,
+          duration: '',
         },
       }),
+    )
+
+    console.log(
+      store.getState().medicalCase.item.diagnosis.additional[diagnosisId].drugs
+        .additional,
     )
 
     expect(
