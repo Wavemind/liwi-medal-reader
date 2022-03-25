@@ -4,7 +4,12 @@ export default {
   initialState: {},
   action: createAction('medicalCase/addAdditionalDrugs'),
   reducers(state, { payload }) {
-    state.item.diagnosis[payload.diagnosisKey][payload.diagnosisId].drugs.additional =
-      payload.newAdditionalDrugs
+    state.item.diagnosis[payload.diagnosisKey][
+      payload.diagnosisId
+    ].drugs.additional = {
+      ...state.item.diagnosis[payload.diagnosisKey][payload.diagnosisId].drugs
+        .additional,
+      [payload.newAdditionalDrug.id]: payload.newAdditionalDrug,
+    }
   },
 }

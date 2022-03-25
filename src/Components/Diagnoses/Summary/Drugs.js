@@ -9,7 +9,7 @@ import { useIsFocused } from '@react-navigation/native'
 /**
  * The internal imports
  */
-import { Drug, CustomDrug } from '@/Components'
+import { Drug, SummaryCustomDrug } from '@/Components'
 import { useTheme } from '@/Theme'
 import { TransformFormulationsService } from '@/Services/MedicalCase'
 
@@ -33,7 +33,7 @@ const Drugs = () => {
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
         {Object.values(drugs).map((drug, i) =>
           drug.custom ? (
-            <CustomDrug
+            <SummaryCustomDrug
               key={`summary_diagnosis_drugs-${drug.id}`}
               drug={drug}
               isLast={i === Object.values(drugs).length - 1}

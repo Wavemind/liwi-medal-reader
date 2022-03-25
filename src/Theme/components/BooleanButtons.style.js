@@ -1,9 +1,14 @@
 import { StyleSheet } from 'react-native'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Gutters, Layout, Fonts } = props
 
   return StyleSheet.create({
+    outerWrapper: {
+      ...Layout.row,
+      width: wp(33.3),
+    },
     buttonWrapper: (
       side,
       active,

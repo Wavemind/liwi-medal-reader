@@ -149,7 +149,7 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
         agreed: agreedWithFormulations,
         additional: additionalWithFormulations,
       },
-      ...managements,
+      managements,
     }
   })
   return newFinalDiagnoses

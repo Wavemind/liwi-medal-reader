@@ -4,10 +4,8 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import filter from 'lodash/filter'
-import differenceInDays from 'date-fns/differenceInDays'
-import startOfToday from 'date-fns/startOfToday'
 
 /**
  * The internal imports
@@ -17,85 +15,38 @@ import {
   SectionHeader,
   Autosuggest,
   BadgeBar,
-  SquareButton,
   AdditionalListItem,
+  SquareButton,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
-import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 
-const SearchAdditionalMedicalCaseContainer = ({
+const SearchRelatedDiagnoses = ({
   navigation,
-  route: {
-    params: { diagnosisKey, diagnosisId },
-  },
+  handleApply,
+  selected,
+  setSelected,
+  itemList,
 }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
     Layout,
     Fonts,
-    Gutters,
     FontSize,
+    Gutters,
     Containers: { searchAdditional },
   } = useTheme()
 
   // Define store and translation hooks
   const { t } = useTranslation()
-  const dispatch = useDispatch()
 
   // Get data from the store
   const nodes = useSelector(state => state.algorithm.item.nodes)
-  const birthDate = useSelector(state => state.patient.item.birth_date)
-  const proposed = useSelector(state => {
-    if (diagnosisKey) {
-      return state.medicalCase.item.diagnosis[diagnosisKey][diagnosisId].drugs
-        .proposed
-    } else {
-      return state.medicalCase.item.diagnosis.proposed
-    }
-  })
-  const additionalItems = useSelector(state => {
-    if (diagnosisKey) {
-      return state.medicalCase.item.diagnosis[diagnosisKey][diagnosisId].drugs
-        .additional
-    } else {
-      return state.medicalCase.item.diagnosis.additional
-    }
-  })
-
-  const days = birthDate ? differenceInDays(startOfToday(), birthDate) : 0
-  const itemList = diagnosisKey
-    ? filter(nodes, { category: 'drug' })
-        .filter(item => !proposed.includes(item.id))
-        .sort((a, b) => {
-          return translate(a.label) > translate(b.label)
-            ? 1
-            : translate(b.label) > translate(a.label)
-            ? -1
-            : 0
-        })
-    : filter(nodes, { type: 'FinalDiagnosis' })
-        .filter(item => {
-          const isNeoNat = nodes[item.cc].is_neonat
-          return (
-            !proposed.includes(item.id) &&
-            ((days <= 59 && isNeoNat) || (days > 59 && !isNeoNat))
-          )
-        })
-        .sort((a, b) => {
-          return translate(a.label) > translate(b.label)
-            ? 1
-            : translate(b.label) > translate(a.label)
-            ? -1
-            : 0
-        })
 
   // Local state definition
   const [numToAdd] = useState(20)
   const [items, setItems] = useState([])
-  const [selected, setSelected] = useState(additionalItems)
   const [searchTerm, setSearchTerm] = useState('')
   const [numToDisplay, setNumToDisplay] = useState(numToAdd)
 
@@ -128,55 +79,20 @@ const SearchAdditionalMedicalCaseContainer = ({
    * Toggles the additional diagnostic selection in the store
    * @param item
    */
-  const toggleAdditionalItems = item => {
-    const nodeId = item.id
+  const toggleAdditionalItems = diagnosis => {
     const tempAdditionalItems = { ...selected }
-    const index = Object.keys(tempAdditionalItems).indexOf(nodeId.toString())
-    const currentNode = nodes[nodeId]
+    const index = Object.keys(tempAdditionalItems).indexOf(
+      diagnosis.id.toString(),
+    )
     if (index > -1) {
-      delete tempAdditionalItems[nodeId.toString()]
+      delete tempAdditionalItems[diagnosis.id.toString()]
     } else {
-      if (diagnosisKey) {
-        tempAdditionalItems[nodeId] = { id: nodeId, duration: '' }
-      } else {
-        tempAdditionalItems[nodeId] = {
-          id: nodeId,
-          managements: Object.values(currentNode.managements).map(
-            management => management.id,
-          ),
-          drugs: {
-            proposed: Object.values(currentNode.drugs).map(drug => drug.id),
-            agreed: {},
-            refused: [],
-            additional: {},
-            custom: {},
-          },
-        }
+      tempAdditionalItems[diagnosis.id] = {
+        id: diagnosis.id,
+        key: diagnosis.key,
       }
     }
     setSelected(tempAdditionalItems)
-  }
-
-  /**
-   * Updates the global store when the user is done selecting elements
-   */
-  const handleApply = () => {
-    if (diagnosisKey) {
-      dispatch(
-        AddAdditionalDrugs.action({
-          diagnosisKey,
-          diagnosisId,
-          newAdditionalDrugs: selected,
-        }),
-      )
-    } else {
-      dispatch(
-        AddAdditionalDiagnoses.action({
-          newAdditionalDiagnoses: selected,
-        }),
-      )
-    }
-    navigation.goBack()
   }
 
   /**
@@ -199,18 +115,12 @@ const SearchAdditionalMedicalCaseContainer = ({
     )
   }
 
-  const itemsTitle = diagnosisKey
-    ? t('containers.medical_case.drugs.drugs')
-    : t('containers.medical_case.diagnoses.diagnoses')
-
   return (
     <View style={Layout.fullHeight}>
       <View style={searchAdditional.wrapper}>
         <View style={searchAdditional.headerWrapper}>
           <Text style={searchAdditional.header}>
-            {t('containers.additional_list.title', {
-              items: itemsTitle,
-            })}
+            {t('containers.additional_list.title')}
           </Text>
           <TouchableOpacity
             style={searchAdditional.closeButton}
@@ -228,10 +138,16 @@ const SearchAdditionalMedicalCaseContainer = ({
           removeBadge={toggleAdditionalItems}
           selected={selected}
           clearBadges={() => setSelected([])}
-          badgeComponentLabel={item => translate(nodes[item.id].label)}
+          badgeComponentLabel={item =>
+            item.key === 'custom'
+              ? itemList.find(object => object.id === item.id).label
+              : translate(nodes[item.id].label)
+          }
         />
 
-        <SectionHeader label={itemsTitle} />
+        <SectionHeader
+          label={t('containers.medical_case.diagnoses.diagnoses')}
+        />
 
         <FlatList
           data={items}
@@ -280,4 +196,4 @@ const SearchAdditionalMedicalCaseContainer = ({
   )
 }
 
-export default SearchAdditionalMedicalCaseContainer
+export default SearchRelatedDiagnoses

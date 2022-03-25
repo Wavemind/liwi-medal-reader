@@ -5,14 +5,40 @@ export default function (props) {
   const { Colors, Fonts, Gutters, Layout } = props
 
   return StyleSheet.create({
-    booleanButtonWrapper: {
-      ...Layout.row,
-      width: wp(33.3),
-    },
     wrapper: {
       ...Gutters.regularHMargin,
-      ...Gutters.regularTMargin,
+      ...Gutters.regularVMargin,
       backgroundColor: Colors.whiteToLightBlack,
+    },
+    headerWrapper: {
+      ...Gutters.regularHPadding,
+      ...Gutters.regularVPadding,
+      ...Layout.rowHCenter,
+      ...Layout.justifyContentBetween,
+      backgroundColor: Colors.primary,
+    },
+    header: {
+      ...Fonts.textSmall,
+      ...Fonts.textUppercase,
+      ...Fonts.textBold,
+      color: Colors.secondary,
+    },
+    innerWrapper: isLast => ({
+      ...Gutters.smallVMargin,
+      ...Gutters.smallVPadding,
+      borderBottomWidth: isLast ? 0 : 1,
+      borderBottomColor: Colors.grey,
+    }),
+    additionalWrapper: {
+      ...Gutters.smallVMargin,
+      ...Gutters.smallVPadding,
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.grey,
+    },
+    indication: {
+      ...Fonts.textBold,
+      ...Fonts.textSmall,
+      color: Colors.grey,
     },
     diagnosisHeaderWrapper: {
       ...Gutters.regularHPadding,
@@ -41,11 +67,6 @@ export default function (props) {
       ...Gutters.regularTMargin,
       color: Colors.grey,
     },
-    drugWrapper: isLast => ({
-      ...Gutters.regularVPadding,
-      borderBottomColor: Colors.grey,
-      borderBottomWidth: isLast ? 0 : 1,
-    }),
     drugTitleWrapper: {
       ...Layout.rowHCenter,
       ...Layout.justifyContentBetween,
@@ -54,8 +75,15 @@ export default function (props) {
     drugTitle: {
       ...Fonts.textSmall,
       ...Fonts.textBold,
-      width: wp(45),
+      ...Gutters.smallRMargin,
+      width: wp(40),
       color: Colors.primary,
+    },
+    selectRelatedDiagnoses: {
+      ...Fonts.textTiny,
+      ...Fonts.textCenter,
+      width: wp(20),
+      color: Colors.red,
     },
     drugDescription: {
       ...Fonts.textSmall,
