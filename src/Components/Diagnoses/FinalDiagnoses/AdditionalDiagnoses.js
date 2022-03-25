@@ -48,7 +48,7 @@ const AdditionalDiagnoses = () => {
   }
 
   return (
-    <View>
+    <>
       {listValues.length === 0 && (
         <View>
           <Text style={finalDiagnoses.noItemsText}>
@@ -67,7 +67,7 @@ const AdditionalDiagnoses = () => {
       ))}
       <TouchableOpacity
         style={additionalSelect.addAdditionalButton}
-        onPress={() => navigate('SearchAdditional')}
+        onPress={() => navigate('SearchAdditionalDiagnoses')}
       >
         <Text style={additionalSelect.addAdditionalButtonText}>
           {t('containers.medical_case.diagnoses.additional_placeholder')}
@@ -83,7 +83,7 @@ const AdditionalDiagnoses = () => {
           size={FontSize.large}
         />
       </TouchableOpacity>
-    </View>
+    </>
   )
 }
 

@@ -26,7 +26,7 @@ import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalD
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import { _keys } from '@/Utils/Object'
 
-const SearchAdditionalMedicalCaseContainer = ({ navigation }) => {
+const SearchAdditionalDiagnosesMedicalCaseContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
@@ -56,6 +56,8 @@ const SearchAdditionalMedicalCaseContainer = ({ navigation }) => {
     () => (birthDate ? differenceInDays(startOfToday(), birthDate) : 0),
     [birthDate],
   )
+
+  // Filters nodes by FinalDiagnosis and then again by NeoNat questions. Then sorts by label
   const itemList = useMemo(
     () =>
       filter(nodes, { type: 'FinalDiagnosis' })
@@ -284,4 +286,4 @@ const SearchAdditionalMedicalCaseContainer = ({ navigation }) => {
   )
 }
 
-export default SearchAdditionalMedicalCaseContainer
+export default SearchAdditionalDiagnosesMedicalCaseContainer

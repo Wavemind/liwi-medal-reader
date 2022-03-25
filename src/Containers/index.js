@@ -1,5 +1,5 @@
 // Arm Control
-export { default as DrugsArmControlContainer } from './ArmControl/Diagnoses/Drugs'
+export { default as MedicinesArmControlContainer } from './ArmControl/Diagnoses/Medicines'
 export { default as FinalDiagnosesArmControlContainer } from './ArmControl/Diagnoses/FinalDiagnoses'
 export { default as ReferralArmControlContainer } from './ArmControl/Diagnoses/Referral'
 export { default as AssessmentArmControlContainer } from './ArmControl/Assessment'
@@ -33,13 +33,13 @@ export { default as FinalDiagnosesMedicalCaseContainer } from './MedicalCase/Dia
 export { default as ReferralMedicalCaseContainer } from './MedicalCase/Diagnoses/Referral'
 export { default as SummaryMedicalCaseContainer } from './MedicalCase/Diagnoses/Summary'
 export { default as TreatmentConditionsMedicalCaseContainer } from './MedicalCase/Diagnoses/TreatmentConditions'
+export { default as SearchAdditionalDiagnosesMedicalCaseContainer } from './MedicalCase/Diagnoses/SearchAdditional'
 export { default as BasicMeasurementMedicalCaseContainer } from './MedicalCase/FirstAssessment/BasicMeasurement'
 export { default as ComplaintCategoryMedicalCaseContainer } from './MedicalCase/FirstAssessment/ComplaintCategory'
 export { default as UniqueTriageQuestionsMedicalCaseContainer } from './MedicalCase/FirstAssessment/UniqueTriageQuestions'
 export { default as RegistrationMedicalCaseContainer } from './MedicalCase/Registration/Registration'
 export { default as SummaryWrapperMedicalCaseContainer } from './MedicalCase/Summary/SummaryWrapper'
 export { default as ListMedicalCaseContainer } from './MedicalCase/List'
-export { default as SearchAdditionalMedicalCaseContainer } from './MedicalCase/SearchAdditional'
 export { default as SearchRelatedDiagnosesMedicalCaseContainer } from './MedicalCase/SearchRelatedDiagnoses'
 export { default as StageWrapperMedicalCaseContainer } from './MedicalCase/StageWrapper'
 

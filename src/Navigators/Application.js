@@ -22,7 +22,7 @@ import {
   IndexEmergencyContainer,
   IndexStudyContainer,
   IndexQuestionInfoContainer,
-  SearchAdditionalMedicalCaseContainer,
+  SearchAdditionalDiagnosesMedicalCaseContainer,
   SearchRelatedDiagnosesMedicalCaseContainer,
 } from '@/Containers'
 import { navigationRef } from '@/Navigators/Root'
@@ -90,8 +90,8 @@ const ApplicationNavigator = () => {
             <Stack.Screen name="Scan" component={IndexScanContainer} />
             <Stack.Screen name="Filters" component={IndexFiltersContainer} />
             <Stack.Screen
-              name="SearchAdditional"
-              component={SearchAdditionalMedicalCaseContainer}
+              name="SearchAdditionalDiagnoses"
+              component={SearchAdditionalDiagnosesMedicalCaseContainer}
             />
             <Stack.Screen
               name="SearchRelatedDiagnoses"

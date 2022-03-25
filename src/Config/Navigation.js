@@ -20,7 +20,7 @@ import ReferralMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Ref
 import SummaryMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Summary'
 // Arm Control
 import ArmFinalDiagnosesMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/FinalDiagnoses'
-import ArmDrugsMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/Drugs'
+import ArmMedicinesMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/Medicines'
 import AssessmentArmControlMedicalCaseContainer from '@/Containers/ArmControl/Assessment'
 
 //
@@ -126,7 +126,7 @@ const armControlDiagnosesStage = {
     },
     {
       label: 'medicines',
-      component: ArmDrugsMedicalCaseContainer,
+      component: ArmMedicinesMedicalCaseContainer,
     },
   ],
 }
