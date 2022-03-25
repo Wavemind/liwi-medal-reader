@@ -50,11 +50,9 @@ const AdditionalDiagnoses = () => {
   return (
     <>
       {listValues.length === 0 && (
-        <View>
-          <Text style={finalDiagnoses.noItemsText}>
-            {t('containers.medical_case.diagnoses.no_additional')}
-          </Text>
-        </View>
+        <Text style={finalDiagnoses.noItemsText}>
+          {t('containers.medical_case.diagnoses.no_additional')}
+        </Text>
       )}
       {listValues.map((listItem, i) => (
         <SelectedItem
