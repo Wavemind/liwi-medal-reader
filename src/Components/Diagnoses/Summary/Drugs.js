@@ -11,41 +11,50 @@ import { useIsFocused } from '@react-navigation/native'
  */
 import { Drug, SummaryCustomDrug } from '@/Components'
 import { useTheme } from '@/Theme'
-import { TransformFormulationsService } from '@/Services/MedicalCase'
+import { reworkAndOrderDrugs } from '@/Utils/Drug'
 
 const Drugs = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
   const {
     Gutters,
-    Containers: { formulations },
+    Containers: { medicines },
   } = useTheme()
 
-  const drugs = useMemo(() => TransformFormulationsService(true), [isFocused])
+  const drugPerCategories = useMemo(reworkAndOrderDrugs, [isFocused])
+  const agreedDrugs = drugPerCategories.calculated.filter(
+    drug => drug.key === 'agreed',
+  )
 
   return (
-    <View style={formulations.wrapper}>
-      <View style={formulations.formulationsHeaderWrapper}>
-        <Text style={formulations.formulationsHeader}>
+    <View style={medicines.wrapper}>
+      <View style={medicines.headerWrapper}>
+        <Text style={medicines.header}>
           {t('containers.medical_case.summary.treatments')}
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {Object.values(drugs).map((drug, i) =>
-          drug.custom ? (
-            <SummaryCustomDrug
-              key={`summary_diagnosis_drugs-${drug.id}`}
-              drug={drug}
-              isLast={i === Object.values(drugs).length - 1}
-            />
-          ) : (
-            <Drug
-              key={`summary_diagnosis_drugs-${drug.id}`}
-              drug={drug}
-              isLast={i === Object.values(drugs).length - 1}
-            />
-          ),
-        )}
+        {agreedDrugs.map((drug, i) => (
+          <Drug
+            key={`summary_diagnosis_drugs-${drug.id}`}
+            drug={drug}
+            isLast={i === agreedDrugs.length - 1}
+          />
+        ))}
+        {drugPerCategories.additional.map((drug, i) => (
+          <Drug
+            key={`summary_diagnosis_drugs-${drug.id}`}
+            drug={drug}
+            isLast={i === drugPerCategories.additional.length - 1}
+          />
+        ))}
+        {drugPerCategories.custom.map((drug, i) => (
+          <SummaryCustomDrug
+            key={`summary_diagnosis_drugs-${drug.id}`}
+            drug={drug}
+            isLast={i === drugPerCategories.custom.length - 1}
+          />
+        ))}
       </View>
     </View>
   )

@@ -20,7 +20,7 @@ const CustomDrugs = ({ customDrugs }) => {
     FontSize,
     Gutters,
     Colors,
-    Containers: { finalDiagnoses, drugs },
+    Containers: { finalDiagnoses, medicines },
     Components: { additionalSelect },
   } = useTheme()
 
@@ -64,9 +64,9 @@ const CustomDrugs = ({ customDrugs }) => {
   }
 
   return (
-    <View style={drugs.wrapper}>
-      <View style={drugs.headerWrapper}>
-        <Text style={drugs.header}>
+    <View style={medicines.wrapper}>
+      <View style={medicines.headerWrapper}>
+        <Text style={medicines.header}>
           {t('containers.medical_case.drugs.custom')}
         </Text>
       </View>
@@ -86,9 +86,9 @@ const CustomDrugs = ({ customDrugs }) => {
           key={`tempDrug_${tempDrug.id}`}
           style={additionalSelect.addAdditionalWrapper}
         >
-          <View style={drugs.drugTitleWrapper}>
-            <Text style={drugs.drugTitle}>{tempDrug.label}</Text>
-            <Text style={drugs.selectRelatedDiagnoses}>
+          <View style={medicines.drugTitleWrapper}>
+            <Text style={medicines.drugTitle}>{tempDrug.label}</Text>
+            <Text style={medicines.selectRelatedDiagnoses}>
               {t('containers.medical_case.drugs.select_related')}
             </Text>
             <TouchableOpacity onPress={() => onRemovePress(tempDrug.id)}>

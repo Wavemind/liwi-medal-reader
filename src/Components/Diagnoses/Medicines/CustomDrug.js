@@ -21,7 +21,7 @@ const CustomDrug = ({ drug }) => {
   const {
     FontSize,
     Gutters,
-    Containers: { drugs },
+    Containers: { medicines },
     Components: { additionalSelect },
   } = useTheme()
 
@@ -62,9 +62,9 @@ const CustomDrug = ({ drug }) => {
   }
 
   return (
-    <View style={drugs.additionalWrapper}>
-      <View style={drugs.drugTitleWrapper}>
-        <Text style={drugs.drugTitle}>{drug.label}</Text>
+    <View style={medicines.additionalWrapper}>
+      <View style={medicines.drugTitleWrapper}>
+        <Text style={medicines.drugTitle}>{drug.label}</Text>
         <View style={additionalSelect.durationWrapper}>
           <TextInput
             style={additionalSelect.durationInput}
@@ -79,13 +79,13 @@ const CustomDrug = ({ drug }) => {
         </TouchableOpacity>
       </View>
       <View>
-        <Text style={drugs.indication}>
+        <Text style={medicines.indication}>
           {t('containers.medical_case.drugs.indication')}
         </Text>
         {drug.diagnoses.map(diagnosis => (
           <Text
             key={`diagnosisDrug_${diagnosis.id}`}
-            style={drugs.drugDescription}
+            style={medicines.drugDescription}
           >
             - {diagnosis.label}
           </Text>

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { wp } from '@/Theme/Responsive'
+import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Fonts, Gutters, Layout } = props
@@ -88,6 +88,14 @@ export default function (props) {
     drugDescription: {
       ...Fonts.textSmall,
       color: Colors.primary,
+    },
+    pickerWrapper: {
+      ...Layout.justifyContentCenter,
+      backgroundColor: Colors.secondary,
+      height: hp(4.4),
+      borderRadius: 20,
+      borderColor: Colors.grey,
+      borderWidth: 1,
     },
   })
 }

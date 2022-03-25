@@ -17,15 +17,15 @@ const Managements = () => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
   const {
-    Containers: { formulations },
+    Containers: { medicines },
   } = useTheme()
 
   const managements = useMemo(() => ExtractManagement, [isFocused])
 
   return (
-    <View style={formulations.wrapper}>
-      <View style={formulations.formulationsHeaderWrapper}>
-        <Text style={formulations.formulationsHeader}>
+    <View style={medicines.wrapper}>
+      <View style={medicines.headerWrapper}>
+        <Text style={medicines.header}>
           {t('containers.medical_case.summary.managements')}
         </Text>
       </View>

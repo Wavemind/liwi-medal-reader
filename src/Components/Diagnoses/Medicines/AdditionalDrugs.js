@@ -24,7 +24,7 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
   const {
     FontSize,
     Gutters,
-    Containers: { drugs, finalDiagnoses },
+    Containers: { medicines, finalDiagnoses },
     Components: { additionalSelect },
   } = useTheme()
 
@@ -66,9 +66,9 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
   }
 
   return (
-    <View style={drugs.wrapper}>
-      <View style={drugs.headerWrapper}>
-        <Text style={drugs.header}>
+    <View style={medicines.wrapper}>
+      <View style={medicines.headerWrapper}>
+        <Text style={medicines.header}>
           {t('containers.medical_case.drugs.additional')}
         </Text>
       </View>
@@ -87,12 +87,12 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
             key={`unassignedDrug_${unassignedDrug.id}`}
             style={additionalSelect.addAdditionalWrapper}
           >
-            <View style={drugs.drugTitleWrapper}>
-              <Text style={drugs.drugTitle}>
+            <View style={medicines.drugTitleWrapper}>
+              <Text style={medicines.drugTitle}>
                 {translate(nodes[unassignedDrug.id].label)}
               </Text>
               <QuestionInfoButton nodeId={unassignedDrug.id} />
-              <Text style={drugs.selectRelatedDiagnoses}>
+              <Text style={medicines.selectRelatedDiagnoses}>
                 {t('containers.medical_case.drugs.select_related')}
               </Text>
               <TouchableOpacity

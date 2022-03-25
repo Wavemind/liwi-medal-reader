@@ -37,8 +37,6 @@ export { default as DoseCalculation } from './Diagnoses/Summary/DoseCalculation'
 export { default as AmountGiven } from './Diagnoses/Summary/AmountGiven'
 export { default as Formulation } from './Diagnoses/Summary/Formulation'
 export { default as FinalDiagnoses } from './Diagnoses/Summary/FinalDiagnoses'
-export { default as AdditionalSelect } from './Diagnoses/AdditionalSelect'
-export { default as CustomElement } from './Diagnoses/CustomElement'
 export { default as SelectedItem } from './Diagnoses/SelectedItem'
 
 // Icons

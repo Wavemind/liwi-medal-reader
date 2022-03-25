@@ -32,7 +32,7 @@ const DoseCalculation = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.syrup:
     case Config.MEDICATION_FORMS.powder_for_injection:
       if (drugDose.uniqDose) {
-        return t('formulations.drug.fixe_dosed_indication_administration', {
+        return t('formulations.drug.fixed_dose_indication_administration', {
           medicationForm: `${parseInt(drugDose.unique_dose, 10)}ml`,
         })
       }
@@ -46,7 +46,7 @@ const DoseCalculation = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.cream:
     case Config.MEDICATION_FORMS.lotion:
     case Config.MEDICATION_FORMS.patch:
-      return t('formulations.drug.fixe_dosed_indication_application', {
+      return t('formulations.drug.fixed_dose_indication_application', {
         count: parseInt(drugDose.unique_dose, 10),
       })
     case Config.MEDICATION_FORMS.drops:
@@ -54,7 +54,7 @@ const DoseCalculation = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.suppository:
     case Config.MEDICATION_FORMS.pessary:
     case Config.MEDICATION_FORMS.inhaler:
-      return t('formulations.drug.fixe_dosed_indication_administration', {
+      return t('formulations.drug.fixed_dose_indication_administration', {
         medicationForm: t(
           `formulations.medication_form.${drugDose.medication_form}`,
           { count: parseInt(drugDose.unique_dose, 10) },
@@ -64,7 +64,7 @@ const DoseCalculation = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.tablet:
     case Config.MEDICATION_FORMS.dispersible_tablet:
       if (drugDose.uniqDose) {
-        return t('formulations.drug.fixe_dosed_indication_administration', {
+        return t('formulations.drug.fixed_dose_indication_administration', {
           medicationForm: t(
             `formulations.medication_form.${drugDose.medication_form}`,
             {

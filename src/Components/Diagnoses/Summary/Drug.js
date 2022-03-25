@@ -27,7 +27,6 @@ const Drug = ({ drug, isLast }) => {
   } = useTheme()
 
   const currentDrug = useSelector(state => state.algorithm.item.nodes[drug.id])
-  const nodes = useSelector(state => state.algorithm.item.nodes)
   const [drugDose, setDrugDose] = useState(null)
 
   useEffect(() => {
@@ -41,45 +40,43 @@ const Drug = ({ drug, isLast }) => {
 
   /**
    * Display indication
-   * TODO: HANDLE CUSTOM DIAGNOSIS
    * @returns jsx
    */
   const indicationDisplay = () =>
-    drug.relatedDiagnoses
-      .map(diagnose => translate(nodes[diagnose.diagnosisId].label))
-      .join(', ')
+    drug.diagnoses.map(diagnose => diagnose.label).join(', ')
 
+  console.log(drug)
   /**
    * Display durations
    * @returns jsx
    */
-  const durationsDisplay = () => {
-    // TODO: Waiting MedAL-C (forcing duration in integer. Should take the longest duration. BUT if one of theses is pre-referral Take it (don't care, display is the same))
-    // LIWI-1704
-    const drugInstance =
-      nodes[drug.relatedDiagnoses[0].diagnosisId].drugs[drug.id]
+  // const durationsDisplay = () => {
+  //   // TODO: Waiting MedAL-C (forcing duration in integer. Should take the longest duration. BUT if one of theses is pre-referral Take it (don't care, display is the same))
+  //   // LIWI-1704
+  //   console.log(drug.diagnoses[0].id)
+  //   const drugInstance = nodes[drug.diagnoses[0].id].drugs[drug.id]
 
-    drug.relatedDiagnoses.forEach(diagnose => {
-      var reg = new RegExp('^[0-9]$')
-      // Test if contains number
-      // Test if we translated, we contains number
-      // console.log('HERE', reg.test(nodes[diagnose.diagnosisId].drugs[drug.id]))
-    })
+  //   drug.diagnoses.forEach(diagnose => {
+  //     var reg = new RegExp('^[0-9]$')
+  //     // Test if contains number
+  //     // Test if we translated, we contains number
+  //     // console.log('HERE', reg.test(nodes[diagnose.diagnosisId].drugs[drug.id]))
+  //   })
 
-    // Pre-referral
-    if (drugInstance?.is_pre_referral) {
-      return t('formulations.drug.pre_referral_duration')
-    }
+  //   // Pre-referral
+  //   if (drugInstance?.is_pre_referral) {
+  //     return t('formulations.drug.pre_referral_duration')
+  //   }
 
-    // Take instance drug duration or if custom or additional, take duration
-    const duration = drugInstance
-      ? translate(drugInstance.duration)
-      : drug.duration
+  //   // Take instance drug duration or if custom or additional, take duration
+  //   const duration = drugInstance
+  //     ? translate(drugInstance.duration)
+  //     : drug.duration
 
-    return t('formulations.drug.duration_in_days', {
-      count: parseInt(duration, 10),
-    })
-  }
+  //   return t('formulations.drug.duration_in_days', {
+  //     count: parseInt(duration, 10),
+  //   })
+  // }
 
   if (!drugDose) {
     return <Text>{t('actions.loading')}</Text>
@@ -88,7 +85,7 @@ const Drug = ({ drug, isLast }) => {
   return (
     <View style={summary.drugWrapper(isLast)}>
       <View style={summary.drugTitleWrapper}>
-        <Text style={summary.drugTitle}>{translate(currentDrug.label)}</Text>
+        <Text style={summary.drugTitle}>{drug.label}</Text>
         {(translate(currentDrug.description) !== '' ||
           currentDrug.medias?.length > 0) && (
           <QuestionInfoButton nodeId={drug.id} />
@@ -150,7 +147,9 @@ const Drug = ({ drug, isLast }) => {
 
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>{t('formulations.drug.duration')}:</Text>{' '}
-          {durationsDisplay()}
+          {t('formulations.drug.duration_in_days', {
+            count: parseInt(drug.duration, 10),
+          })}
         </Text>
 
         {translate(drugDose.dispensing_description) !== '' && (

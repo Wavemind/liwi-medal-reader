@@ -44,7 +44,6 @@ const FormulationsPicker = ({ drug }) => {
       )
     })
   }
-
   return (
     <Picker
       style={formulations.picker}
