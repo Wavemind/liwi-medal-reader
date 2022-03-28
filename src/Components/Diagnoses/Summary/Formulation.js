@@ -86,7 +86,6 @@ const Formulation = ({ drugDose }) => {
           suffix: t(
             `formulations.medication_form.${drugDose.medication_form}`,
             {
-            {
               count: parseFloat(drugDose.unique_dose),
             },
           ),
