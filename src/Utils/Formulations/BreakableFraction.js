@@ -16,45 +16,43 @@ import { Config } from '@/Config'
  */
 export const breakableFraction = drugDose => {
   let result = ''
+  let readableFraction = ''
+  let humanReadableFraction = ''
+
   if (drugDose.doseResult !== null) {
     // Avoid everything for capsule
     if (drugDose.medication_form === Config.MEDICATION_FORMS.capsule) {
       return drugDose.doseResult
     }
-    const flooredDoseResult = Math.floor(drugDose.doseResult)
-    const numberOfFullSolid = Math.floor(flooredDoseResult / drugDose.breakable)
+    const numberOfFullSolid = Math.floor(
+      drugDose.doseResult / drugDose.breakable,
+    )
 
     // Less than one solid
     if (numberOfFullSolid === 0) {
-      const readableFraction = toReadableFraction(
-        flooredDoseResult / drugDose.breakable,
+      readableFraction = toReadableFraction(
+        drugDose.doseResult / drugDose.breakable,
       )
-
-      const humanReadableFraction = fractionUnicode(
-        readableFraction.numerator,
-        readableFraction.denominator,
-      )
-
-      if (readableFraction.denominator === 1) {
-        result = readableFraction.numerator
-      } else {
-        result = humanReadableFraction
-      }
     } else {
-      // More than one solid
       result = numberOfFullSolid
 
-      const readableRestFraction = toReadableFraction(
-        (flooredDoseResult - numberOfFullSolid * drugDose.breakable) /
+      // More than one solid
+      readableFraction = toReadableFraction(
+        (drugDose.doseResult - numberOfFullSolid * drugDose.breakable) /
           drugDose.breakable,
       )
+    }
 
-      const humanReadableRestFraction = fractionUnicode(
-        readableRestFraction.numerator,
-        readableRestFraction.denominator,
-      )
+    // Generate human readable fraction
+    humanReadableFraction = fractionUnicode(
+      readableFraction.numerator,
+      readableFraction.denominator,
+    )
 
-      result += humanReadableRestFraction
+    if (readableFraction.denominator === 1) {
+      result += readableFraction.numerator
+    } else {
+      result += humanReadableFraction
     }
   }
   return result

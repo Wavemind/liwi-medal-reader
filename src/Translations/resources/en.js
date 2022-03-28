@@ -146,9 +146,9 @@ export default {
           'Which drug formulation is available and suited for your patient?',
       },
       summary: {
-        final_diagnoses: 'Final diagnoses', // Added
-        treatments: 'Treatments', // Added
-        managements: 'Managements', // Added
+        final_diagnoses: 'Final diagnoses',
+        treatments: 'Treatments',
+        managements: 'Managements',
         date_consultation: 'Date of consultation',
         age_date_consultation: 'Age at time of consultation',
         type_of_consultation: 'Type of consultation',

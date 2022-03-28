@@ -42,7 +42,7 @@ const Formulation = ({ drugDose }) => {
 
       const fractionString = breakableFraction(drugDose)
       const fractionTranslated = t('formulations.medication_form.tablet', {
-        count: parseInt(fractionString, 10),
+        count: parseFloat(fractionString),
         fraction: fractionString,
       })
       return `${translate(drugDose.description)}: ${fractionTranslated}`
@@ -53,7 +53,7 @@ const Formulation = ({ drugDose }) => {
         return `${translate(drugDose.description)}: ${t(
           'formulations.drug.per_administration',
           {
-            count: parseInt(drugDose.unique_dose, 10),
+            count: parseFloat(drugDose.unique_dose),
             suffix: 'ml',
           },
         )}`
@@ -86,7 +86,8 @@ const Formulation = ({ drugDose }) => {
           suffix: t(
             `formulations.medication_form.${drugDose.medication_form}`,
             {
-              count: parseInt(drugDose.unique_dose, 10),
+            {
+              count: parseFloat(drugDose.unique_dose),
             },
           ),
         },

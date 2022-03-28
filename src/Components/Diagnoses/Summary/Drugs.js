@@ -34,20 +34,20 @@ const Drugs = () => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {agreedDrugs.map((drug, i) => (
+        {/* {agreedDrugs.map((drug, i) => (
           <Drug
             key={`summary_diagnosis_drugs-${drug.id}`}
             drug={drug}
             isLast={i === agreedDrugs.length - 1}
           />
-        ))}
-        {drugPerCategories.additional.map((drug, i) => (
+        ))} */}
+        {/* {drugPerCategories.additional.map((drug, i) => (
           <Drug
             key={`summary_diagnosis_drugs-${drug.id}`}
             drug={drug}
             isLast={i === drugPerCategories.additional.length - 1}
           />
-        ))}
+        ))} */}
         {drugPerCategories.custom.map((drug, i) => (
           <SummaryCustomDrug
             key={`summary_diagnosis_drugs-${drug.id}`}

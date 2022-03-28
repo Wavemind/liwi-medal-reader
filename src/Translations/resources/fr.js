@@ -148,6 +148,9 @@ export default {
           'Choisir une formulation disponible et appropriée pour votre patient·e',
       },
       summary: {
+        final_diagnoses: 'Diagnostics',
+        treatments: 'Traitements',
+        managements: 'Prise en charges',
         date_consultation: 'Date de la consultation',
         age_date_consultation: 'Age lors de la consultation',
         management_consulting: 'Prise en charge et conseils',

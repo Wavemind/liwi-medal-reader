@@ -33,7 +33,7 @@ const DoseCalculation = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.powder_for_injection:
       if (drugDose.uniqDose) {
         return t('formulations.drug.fixed_dose_indication_administration', {
-          medicationForm: `${parseInt(drugDose.unique_dose, 10)}ml`,
+          medicationForm: `${parseFloat(drugDose.unique_dose)}ml`,
         })
       }
       return t('formulations.drug.dose_indication', {
@@ -47,7 +47,7 @@ const DoseCalculation = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.lotion:
     case Config.MEDICATION_FORMS.patch:
       return t('formulations.drug.fixed_dose_indication_application', {
-        count: parseInt(drugDose.unique_dose, 10),
+        count: parseFloat(drugDose.unique_dose),
       })
     case Config.MEDICATION_FORMS.drops:
     case Config.MEDICATION_FORMS.spray:
@@ -57,7 +57,7 @@ const DoseCalculation = ({ drugDose }) => {
       return t('formulations.drug.fixed_dose_indication_administration', {
         medicationForm: t(
           `formulations.medication_form.${drugDose.medication_form}`,
-          { count: parseInt(drugDose.unique_dose, 10) },
+          { count: parseFloat(drugDose.unique_dose) },
         ),
       })
     case Config.MEDICATION_FORMS.capsule:
@@ -68,8 +68,8 @@ const DoseCalculation = ({ drugDose }) => {
           medicationForm: t(
             `formulations.medication_form.${drugDose.medication_form}`,
             {
-              count: parseInt(drugDose.unique_dose, 10),
-              fraction: parseInt(drugDose.unique_dose, 10),
+              count: parseFloat(drugDose.unique_dose),
+              fraction: parseFloat(drugDose.unique_dose),
             },
           ),
         })
@@ -79,11 +79,12 @@ const DoseCalculation = ({ drugDose }) => {
 
       if (drugDose.medication_form === Config.MEDICATION_FORMS.capsule) {
         currentDosage = roundSup(
-          (drugDose.doseResult * drugDose.dose_form) / mcWeight.value,
+          (drugDose.doseResultNotRounded * drugDose.dose_form) / mcWeight.value,
         )
       } else {
         currentDosage = roundSup(
-          (drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)) /
+          (drugDose.doseResultNotRounded *
+            (drugDose.dose_form / drugDose.breakable)) /
             mcWeight.value,
         )
       }

@@ -40,7 +40,7 @@ const CustomDrug = ({ drug, isLast }) => {
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>{t('formulations.drug.duration')}:</Text>{' '}
           {t('formulations.drug.duration_in_days', {
-            count: parseInt(drug.duration, 10),
+            count: parseFloat(drug.duration),
           })}
         </Text>
       </View>

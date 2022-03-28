@@ -45,7 +45,6 @@ const Drug = ({ drug, isLast }) => {
   const indicationDisplay = () =>
     drug.diagnoses.map(diagnose => diagnose.label).join(', ')
 
-  console.log(drug)
   /**
    * Display durations
    * @returns jsx
@@ -148,7 +147,7 @@ const Drug = ({ drug, isLast }) => {
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>{t('formulations.drug.duration')}:</Text>{' '}
           {t('formulations.drug.duration_in_days', {
-            count: parseInt(drug.duration, 10),
+            count: parseFloat(drug.duration),
           })}
         </Text>
 
