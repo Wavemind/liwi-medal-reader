@@ -126,14 +126,8 @@ const drugDoses = (formulationIndex, drugId) => {
           }
         }
 
-        if (doseResult <= maxDoseCap) {
-          // Viable Solution
-          doseResult = doseResult
-        } else if (doseResult >= minDoseCap) {
-          // Other viable solution
-          doseResult = doseResult
-        } else {
-          // Out of possibility
+        // Out of range
+        if (!(doseResult >= minDoseCap && doseResult <= maxDoseCap)) {
           // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
           doseResult = minDoseCap
         }
