@@ -258,7 +258,7 @@ export const reworkAndOrderDrugs = () => {
                 ],
                 duration:
                   drugType === 'agreed'
-                    ? translate(nodes[diagnosis.id].drugs[drugId].duration)
+                    ? extractDuration(diagnosis.id, drugId)
                     : drug.duration,
                 addedAt: drug.addedAt,
                 selectedFormulationId: drug.formulation_id,
@@ -287,6 +287,15 @@ const getDrugIndex = (drugs, drugId) => {
     }
   }
   return -1
+}
+
+const extractDuration = (diagnosisId, drugId) => {
+  const nodes = store.getState().algorithm.item.nodes
+  const duration = translate(nodes[diagnosisId].drugs[drugId].duration)
+
+  console.log('in here', diagnosisId)
+  console.log(duration)
+  var reg = new RegExp('^d{1,2}$')
 }
 
 /**

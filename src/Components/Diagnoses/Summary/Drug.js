@@ -57,7 +57,7 @@ const Drug = ({ drug, isLast }) => {
   //   const drugInstance = nodes[drug.diagnoses[0].id].drugs[drug.id]
 
   //   drug.diagnoses.forEach(diagnose => {
-  //     var reg = new RegExp('^[0-9]$')
+  //     var reg = new RegExp('^\d{1,2}$')
   //     // Test if contains number
   //     // Test if we translated, we contains number
   //     // console.log('HERE', reg.test(nodes[diagnose.diagnosisId].drugs[drug.id]))
