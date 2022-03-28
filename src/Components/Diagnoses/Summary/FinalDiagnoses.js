@@ -43,7 +43,7 @@ const FinalDiagnoses = () => {
     )
 
     // Add custom diagnoses
-    Object.keys(diagnosis.custom).map(diagnoseId =>
+    Object.keys(diagnosis.custom).forEach(diagnoseId =>
       agreedDiagnosis.push(diagnosis.custom[diagnoseId]),
     )
 
