@@ -437,6 +437,8 @@ export default {
       'Veuillez accepter ou refuser chacun des diagnostics proposés',
     medicines_required:
       'Veuillez accepter ou refuser chacun des médicaments proposés',
-    formulation_required: 'Please choose a formulation for each medicine',
+    formulation_required:
+      'Veuillez sélectionner une formulation pour chaque médicament',
+    duration_required: 'Veuillez fournir une durée pour chaque médicament', // Added
   },
 }

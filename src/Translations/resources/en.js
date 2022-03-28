@@ -430,5 +430,6 @@ export default {
     final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
     medicines_required: 'Please agree or refuse all medicines',
     formulation_required: 'Please choose a formulation for each medicine',
+    duration_required: 'Please provide a duration for each medicine', // Added
   },
 }
