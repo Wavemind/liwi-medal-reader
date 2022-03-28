@@ -27,7 +27,7 @@ const AmountGiven = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.drops:
     case Config.MEDICATION_FORMS.patch:
       return t('formulations.drug.amount_given_per_application', {
-        count: parseInt(drugDose.unique_dose, 10),
+        count: parseFloat(drugDose.unique_dose),
       })
 
     case Config.MEDICATION_FORMS.suppository:
@@ -38,7 +38,7 @@ const AmountGiven = ({ drugDose }) => {
         medicationForm: t(
           `formulations.medication_form.${drugDose.medication_form}`,
           {
-            count: parseInt(drugDose.unique_dose, 10),
+            count: parseFloat(drugDose.unique_dose),
           },
         ),
       })
@@ -48,7 +48,7 @@ const AmountGiven = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.solution:
       if (drugDose.uniqDose) {
         return t('formulations.drug.amount_given_medication_form', {
-          medicationForm: `${parseInt(drugDose.unique_dose, 10)}ml`,
+          medicationForm: `${parseFloat(drugDose.unique_dose)}ml`,
         })
       }
 
@@ -60,7 +60,7 @@ const AmountGiven = ({ drugDose }) => {
         return t('formulations.drug.amount_given_im_iv_sc', {
           doseResult: roundSup(drugDose.doseResult),
           liquidConcentration: roundSup(drugDose.liquid_concentration),
-          doseForm: parseInt(drugDose.dose_form, 10),
+          doseForm: parseFloat(drugDose.dose_form),
           medicationForm: t(
             `formulations.medication_form.${drugDose.medication_form}`,
           ),
@@ -78,8 +78,8 @@ const AmountGiven = ({ drugDose }) => {
           medicationForm: t(
             `formulations.medication_form.${drugDose.medication_form}`,
             {
-              count: parseInt(drugDose.unique_dose, 10),
-              fraction: parseInt(drugDose.unique_dose, 10),
+              count: parseFloat(drugDose.unique_dose),
+              fraction: parseFloat(drugDose.unique_dose),
             },
           ),
         })
@@ -90,7 +90,7 @@ const AmountGiven = ({ drugDose }) => {
         medicationForm: t(
           `formulations.medication_form.${drugDose.medication_form}`,
           {
-            count: parseInt(fractionString, 10),
+            count: parseFloat(fractionString),
             fraction: fractionString,
           },
         ),
@@ -98,7 +98,7 @@ const AmountGiven = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.syrup:
       if (drugDose.uniqDose) {
         return t('formulations.drug.amount_given_medication_form', {
-          medicationForm: `${parseInt(drugDose.unique_dose, 10)}ml`,
+          medicationForm: `${parseFloat(drugDose.unique_dose)}ml`,
         })
       }
 

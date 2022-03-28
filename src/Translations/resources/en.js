@@ -146,9 +146,9 @@ export default {
           'Which drug formulation is available and suited for your patient?',
       },
       summary: {
-        final_diagnoses: 'Final diagnoses', // Added
-        treatments: 'Treatments', // Added
-        managements: 'Managements', // Added
+        final_diagnoses: 'Final diagnoses',
+        treatments: 'Treatments',
+        managements: 'Managements',
         date_consultation: 'Date of consultation',
         age_date_consultation: 'Age at time of consultation',
         type_of_consultation: 'Type of consultation',
@@ -467,5 +467,6 @@ export default {
     final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
     medicines_required: 'Please agree or refuse all medicines',
     formulation_required: 'Please choose a formulation for each medicine',
+    duration_required: 'Please provide a duration for each medicine', // Added
   },
 }

@@ -94,11 +94,6 @@ describe('Handle additional drugs addition', () => {
       }),
     )
 
-    console.log(
-      store.getState().medicalCase.item.diagnosis.additional[diagnosisId].drugs
-        .additional,
-    )
-
     expect(
       store.getState().medicalCase.item.diagnosis.additional[diagnosisId].drugs
         .additional,

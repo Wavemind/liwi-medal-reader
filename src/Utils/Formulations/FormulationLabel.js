@@ -32,7 +32,7 @@ export const formulationLabel = drugDose => {
       return `${translate(drugDose.description)}: ${i18n.t(
         'formulations.drug.per_application',
         {
-          count: parseInt(drugDose.unique_dose, 10),
+          count: parseFloat(drugDose.unique_dose),
         },
       )}`
     }
@@ -45,7 +45,7 @@ export const formulationLabel = drugDose => {
           suffix: i18n.t(
             `formulations.medication_form.${drugDose.medication_form}`,
             {
-              count: parseInt(drugDose.unique_dose, 10),
+              count: parseFloat(drugDose.unique_dose),
             },
           ),
         },
@@ -57,7 +57,7 @@ export const formulationLabel = drugDose => {
         return `${translate(drugDose.description)}: ${i18n.t(
           'formulations.drug.per_administration',
           {
-            count: parseInt(drugDose.unique_dose, 10),
+            count: parseFloat(drugDose.unique_dose),
             suffix: 'ml',
           },
         )}`
@@ -85,8 +85,8 @@ export const formulationLabel = drugDose => {
             suffix: i18n.t(
               `formulations.medication_form.${drugDose.medication_form}`,
               {
-                count: parseInt(drugDose.unique_dose, 10),
-                fraction: parseInt(drugDose.unique_dose, 10),
+                count: parseFloat(drugDose.unique_dose),
+                fraction: parseFloat(drugDose.unique_dose),
               },
             ),
           },
@@ -96,7 +96,7 @@ export const formulationLabel = drugDose => {
       const fractionTranslated = i18n.t(
         `formulations.medication_form.${drugDose.medication_form}`,
         {
-          count: parseInt(fractionString, 10),
+          count: parseFloat(fractionString),
           fraction: fractionString,
         },
       )
@@ -110,7 +110,7 @@ export const formulationLabel = drugDose => {
         return `${translate(drugDose.description)}: ${i18n.t(
           'formulations.drug.per_administration',
           {
-            count: parseInt(drugDose.unique_dose, 10),
+            count: parseFloat(drugDose.unique_dose),
             suffix: 'ml',
           },
         )}`

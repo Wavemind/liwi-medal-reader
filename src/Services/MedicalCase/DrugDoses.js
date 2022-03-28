@@ -117,6 +117,7 @@ const drugDoses = (formulationIndex, drugId) => {
 
         // Define Dose Result
         doseResult = (minDoseCap + maxDoseCap) / 2
+        const doseResultNotRounded = doseResult
 
         if (maxDoseCap < 1) {
           return {
@@ -127,9 +128,16 @@ const drugDoses = (formulationIndex, drugId) => {
         }
 
         // Out of range
-        if (!(doseResult >= minDoseCap && doseResult <= maxDoseCap)) {
+        if (Math.ceil(doseResult) <= maxDoseCap) {
+          // Viable Solution
+          doseResult = Math.ceil(doseResult)
+        } else if (Math.floor(doseResult) >= minDoseCap) {
+          // Other viable solution
+          doseResult = Math.floor(doseResult)
+        } else {
+          // Out of possibility
           // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
-          doseResult = minDoseCap
+          doseResult = Math.floor(minDoseCap)
         }
 
         return {
@@ -138,6 +146,7 @@ const drugDoses = (formulationIndex, drugId) => {
           minDoseCap,
           maxDoseCap,
           doseResult,
+          doseResultNotRounded,
           recurrence,
           uniqDose,
           ...formulation,
