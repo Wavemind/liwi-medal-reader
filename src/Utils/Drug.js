@@ -227,7 +227,10 @@ export const reworkAndOrderDrugs = () => {
 
             // Drug already exist
             if (drugIndex > -1) {
-              if (drugType !== 'proposed') {
+              const diagnosisExists = newDrugs[drugKey][
+                drugIndex
+              ].diagnoses.some(diag => diag.id === diagnosis.id)
+              if (!diagnosisExists) {
                 newDrugs[drugKey][drugIndex].diagnoses.push({
                   id: diagnosis.id,
                   key: diagnosisType,
