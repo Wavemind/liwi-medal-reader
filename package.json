@@ -1,5 +1,5 @@
 {
-  "name": "medAL-reader",
+  "name": "medAL-Reader",
   "version": "1.0.122",
   "private": true,
   "scripts": {
@@ -67,7 +67,7 @@
     "react-native-orientation-locker": "^1.4.0",
     "react-native-pager-view": "^5.1.9",
     "react-native-qrcode-scanner": "^1.5.4",
-    "react-native-reanimated": "^2.1.0",
+    "react-native-reanimated": "^1.13.4",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.2.0",
