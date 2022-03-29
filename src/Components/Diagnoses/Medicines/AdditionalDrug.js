@@ -16,6 +16,7 @@ import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDru
 import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
 import { formatDuration } from '@/Utils/Drug'
 
+// TODO : If validated by docs, merge with CustomDrug
 const AdditionalDrug = ({ drug }) => {
   // Theme and style elements deconstruction
   const {
