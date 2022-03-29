@@ -22,7 +22,7 @@ const AdditionalDrug = ({ drug }) => {
   const {
     FontSize,
     Gutters,
-    Containers: { formulations, medicines },
+    Containers: { medicines },
     Components: { additionalSelect },
   } = useTheme()
 
@@ -117,7 +117,7 @@ const AdditionalDrug = ({ drug }) => {
           size={FontSize.large}
         />
       </TouchableOpacity>
-      <View style={formulations.pickerWrapper}>
+      <View style={medicines.pickerWrapper}>
         <FormulationsPicker drug={drug} />
       </View>
     </View>

@@ -20,7 +20,7 @@ const Managements = () => {
     Containers: { medicines },
   } = useTheme()
 
-  const managements = useMemo(() => ExtractManagement, [isFocused])
+  const managements = useMemo(ExtractManagement, [isFocused])
 
   return (
     <View style={medicines.wrapper}>

@@ -142,7 +142,7 @@ export default {
         no_custom: 'Aucun médicament ajouté manuellement',
         no_medicines: 'Aucun médicament disponible',
         indication: 'Indication',
-        duration_invalid: "Ne peut pas être déterminée par l'algorithme (NaN)", // Added
+        duration_invalid: "Ne peut pas être déterminée par l'algorithme (NaN)",
       },
       formulations: {
         title:
@@ -476,6 +476,6 @@ export default {
       'Veuillez accepter ou refuser chacun des médicaments proposés',
     formulation_required:
       'Veuillez sélectionner une formulation pour chaque médicament',
-    duration_required: 'Veuillez fournir une durée pour chaque médicament', // Added
+    duration_required: 'Veuillez fournir une durée pour chaque médicament',
   },
 }

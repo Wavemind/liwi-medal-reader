@@ -56,7 +56,7 @@ const LoginAuthContainer = () => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
-  // Fixe dad shit
+  // TODO: Fix it
   const isHermes = () => !!global.HermesInternal
   console.log('HERMES', isHermes())
 

@@ -28,8 +28,8 @@ const Management = ({ management, isLast }) => {
    * @returns jsx
    */
   const indicationDisplay = () =>
-    management.relatedDiagnoses
-      .map(finalDiagnose => translate(nodes[finalDiagnose.diagnosisId].label))
+    management.diagnoses
+      .map(finalDiagnosis => translate(nodes[finalDiagnosis.id].label))
       .join(', ')
 
   return (

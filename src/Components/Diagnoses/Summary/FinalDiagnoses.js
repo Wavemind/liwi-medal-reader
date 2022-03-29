@@ -24,30 +24,30 @@ const FinalDiagnoses = () => {
   const diagnosis = useSelector(state => state.medicalCase.item.diagnosis)
   const nodes = useSelector(state => state.algorithm.item.nodes)
 
-  const getAgreedFinalDiagnosis = useMemo(() => {
-    const diagnoseKeys = ['agreed', 'additional']
-    let agreedDiagnosis = []
+  const agreedFinalDiagnoses = useMemo(() => {
+    const diagnosisKeys = ['agreed', 'additional']
+    let agreedDiagnoses = []
 
     // Get agreed and additional
-    diagnoseKeys.forEach(diagnoseKey =>
-      Object.keys(diagnosis[diagnoseKey]).map(diagnoseId =>
-        agreedDiagnosis.push(nodes[diagnoseId]),
+    diagnosisKeys.forEach(diagnosisKey =>
+      Object.keys(diagnosis[diagnosisKey]).map(diagnosisId =>
+        agreedDiagnoses.push(nodes[diagnosisId]),
       ),
     )
 
     // Sort them by level of urgency
-    agreedDiagnosis = orderBy(
-      agreedDiagnosis,
+    agreedDiagnoses = orderBy(
+      agreedDiagnoses,
       finalDiagnosis => nodes[finalDiagnosis.id]?.level_of_urgency,
       ['desc', 'asc'],
     )
 
     // Add custom diagnoses
-    Object.keys(diagnosis.custom).forEach(diagnoseId =>
-      agreedDiagnosis.push(diagnosis.custom[diagnoseId]),
+    Object.keys(diagnosis.custom).forEach(diagnosisId =>
+      agreedDiagnoses.push(diagnosis.custom[diagnosisId]),
     )
 
-    return agreedDiagnosis
+    return agreedDiagnoses
   }, [diagnosis])
 
   return (
@@ -58,17 +58,17 @@ const FinalDiagnoses = () => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {getAgreedFinalDiagnosis.map(finalDiagnose => (
-          <View style={summary.drugTitleWrapper} key={finalDiagnose.id}>
+        {agreedFinalDiagnoses.map(finalDiagnosis => (
+          <View style={summary.drugTitleWrapper} key={finalDiagnosis.id}>
             <Text style={summary.drugTitle}>
-              {'label' in finalDiagnose
-                ? translate(finalDiagnose.label)
-                : finalDiagnose.name}
+              {'label' in finalDiagnosis
+                ? translate(finalDiagnosis.label)
+                : finalDiagnosis.name}
             </Text>
-            {'label' in finalDiagnose &&
-              (translate(finalDiagnose.description) !== '' ||
-                finalDiagnose.medias?.length > 0) && (
-                <QuestionInfoButton nodeId={finalDiagnose.id} />
+            {'label' in finalDiagnosis &&
+              (translate(finalDiagnosis.description) !== '' ||
+                finalDiagnosis.medias?.length > 0) && (
+                <QuestionInfoButton nodeId={finalDiagnosis.id} />
               )}
           </View>
         ))}

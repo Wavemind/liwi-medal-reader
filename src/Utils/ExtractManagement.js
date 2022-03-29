@@ -22,15 +22,15 @@ export default () => {
     Object.values(localDiagnoses[diagnosisKey]).forEach(diagnosis => {
       diagnosis.managements.forEach(managementId => {
         const relatedDiagnosis = {
-          diagnosisId: diagnosis.id,
+          id: diagnosis.id,
           diagnosisKey,
         }
         if (Object.keys(managements).indexOf(managementId.toString()) > -1) {
-          managements[managementId].relatedDiagnoses.push(relatedDiagnosis)
+          managements[managementId].diagnoses.push(relatedDiagnosis)
         } else {
           managements[managementId] = {
             id: managementId,
-            relatedDiagnoses: [relatedDiagnosis],
+            diagnoses: [relatedDiagnosis],
           }
         }
       })
