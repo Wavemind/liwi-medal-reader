@@ -26,7 +26,6 @@ export { default as AdditionalDiagnoses } from './Diagnoses/FinalDiagnoses/Addit
 export { default as CustomDiagnoses } from './Diagnoses/FinalDiagnoses/CustomDiagnoses'
 export { default as ProposedDiagnoses } from './Diagnoses/FinalDiagnoses/ProposedDiagnoses'
 export { default as FormulationsPicker } from './Diagnoses/Formulations/FormulationsPicker'
-export { default as Custom } from './Diagnoses/Summary/Custom'
 export { default as Diagnosis } from './Diagnoses/Summary/Diagnosis'
 export { default as Drug } from './Diagnoses/Summary/Drug'
 export { default as Drugs } from './Diagnoses/Summary/Drugs'

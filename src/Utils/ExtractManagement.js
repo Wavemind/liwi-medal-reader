@@ -8,7 +8,6 @@ import orderBy from 'lodash/orderBy'
  */
 import { store } from '@/Store'
 
-// TODO: RENAME FILE SAME AS SINAN FOR DRUGS
 export default () => {
   const managements = {}
 
