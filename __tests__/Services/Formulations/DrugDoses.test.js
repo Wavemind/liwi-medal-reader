@@ -56,7 +56,7 @@ describe('Drug dose calculation', () => {
   })
   it('should calculate doseResult of 1 for drugId = 1681 (amoxicilin po), formulation is capsule and weight is 10kg', () => {
     const result = DrugDosesService(1, 1681)
-    expect(result.doseResult).toEqual(0.75)
+    expect(result.doseResult).toEqual(1)
   })
   it('should calculate minDoseCap of 0.6 for drugId = 1681 (amoxicilin po), formulation is capsule and weight is 10kg', () => {
     const result = DrugDosesService(1, 1681)
