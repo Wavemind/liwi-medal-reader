@@ -22,7 +22,7 @@ const CustomDrug = ({ drug, isLast }) => {
    * @returns jsx
    */
   const indicationDisplay = () =>
-    drug.relatedDiagnoses.map(finalDiagnose => finalDiagnose.name).join(', ')
+    drug.diagnoses.map(finalDiagnose => finalDiagnose.name).join(', ')
 
   return (
     <View style={summary.drugWrapper(isLast)}>
