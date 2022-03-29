@@ -12,6 +12,7 @@ assignees: ''
 Server : [dev/staging/prod]
 Version ID or URL : 
 Health facility ID or URL : 
+Device ID : 
 Architecture : [standalone/client-server]
 App version : 
 
