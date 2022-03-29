@@ -41,6 +41,13 @@ export default function Movie(movie) {
     }
   }, [])
 
+  const renderFullscreen = () => {
+    if (state.fullscreen) {
+      return <Feather name="minimize" style={movieController.icon} />
+    }
+    return <Feather name="maximize" style={movieController.icon} />
+  }
+
   return (
     <View style={movieController.container}>
       <TouchableWithoutFeedback onPress={showControls}>
@@ -70,11 +77,7 @@ export default function Movie(movie) {
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   style={movieController.fullscreenButton}
                 >
-                  {state.fullscreen ? (
-                    <Feather name="minimize" style={movieController.icon} />
-                  ) : (
-                    <Feather name="maximize" style={movieController.icon} />
-                  )}
+                  {renderFullscreen()}
                 </TouchableOpacity>
               ) : null}
 

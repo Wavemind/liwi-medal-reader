@@ -19,9 +19,8 @@ import setAnswer from '@/Utils/SetAnswer'
 const ToggleComplaintCategory = ({ questionId }) => {
   // Theme and style elements deconstruction
   const {
-    Components: { toggleComplaintCategory },
     Colors,
-    Layout,
+    Components: { toggleComplaintCategory },
   } = useTheme()
 
   const { t } = useTranslation()

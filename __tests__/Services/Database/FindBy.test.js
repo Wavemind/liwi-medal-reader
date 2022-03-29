@@ -52,6 +52,7 @@ describe('findBy should find an object based on a query', () => {
       'patientValues',
       'savedInDatabase',
     ]
+    const sortedKeys = expectedKeys.sort()
     const uid = uuid.v4()
     await store.dispatch(
       CreatePatient.action({
@@ -67,7 +68,7 @@ describe('findBy should find an object based on a query', () => {
     await store.dispatch(InsertPatient.action({}))
     const patient = await findBy('Patient', id)
     expect(patient.id).toBe(id)
-    expect(Object.keys(patient).sort()).toEqual(expectedKeys.sort())
+    expect(Object.keys(patient).sort()).toEqual(sortedKeys)
   })
   it('should return a medical case that has the same id + same keys as the one we are looking for ', async () => {
     const { findBy } = useDatabase()
@@ -90,10 +91,11 @@ describe('findBy should find an object based on a query', () => {
       'updatedAt',
       'version_id',
     ]
+    const sortedKeys = expectedKeys.sort()
     const id = store.getState().medicalCase.item.id
     const medicalCase = await findBy('MedicalCase', id)
     expect(medicalCase.id).toBe(id)
-    expect(Object.keys(medicalCase).sort()).toEqual(expectedKeys.sort())
+    expect(Object.keys(medicalCase).sort()).toEqual(sortedKeys)
   })
   it("should return a null if if can't find an object ", async () => {
     const { findBy } = useDatabase()

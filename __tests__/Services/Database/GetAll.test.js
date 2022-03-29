@@ -82,25 +82,25 @@ describe('getAll should return all elements of a specific object', () => {
 })
 
 describe('getConsentsFile should return all consent Files', () => {
-  it('', async () => {})
+  it('', async () => jest.fn())
 })
 
 describe('insert should insert an object in the database', () => {
-  it('', async () => {})
+  it('', async () => jest.fn())
 })
 
 describe('lockMedicalCase should lock a medical case', () => {
-  it('', async () => {})
+  it('', async () => jest.fn())
 })
 
 describe('push should add an object to another object', () => {
-  it('', async () => {})
+  it('', async () => jest.fn())
 })
 
 describe('unlockMedicalCase should unlock a medical case', () => {
-  it('', async () => {})
+  it('', async () => jest.fn())
 })
 
 describe('update should update an object ', () => {
-  it('', async () => {})
+  it('', async () => jest.fn())
 })

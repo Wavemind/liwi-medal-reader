@@ -62,7 +62,7 @@ const SynchronizationNavbar = () => {
         subMedicalCases = []
       }
     })
-    await groupedMedicalCases.forEach((medicalCases, index) => {
+    groupedMedicalCases.forEach((medicalCases, index) => {
       setTimeout(() => {
         dispatch(Synchronize.action(medicalCases))
       }, 2000 * index)

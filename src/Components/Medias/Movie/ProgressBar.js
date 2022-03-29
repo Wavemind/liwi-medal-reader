@@ -54,10 +54,10 @@ const ProgressBar = ({
   function getMinutesFromSeconds(time) {
     const minutes = time >= 60 ? Math.floor(time / 60) : 0
     const seconds = Math.floor(time - minutes * 60)
+    const min = `0${minutes}`
+    const sec = `0${seconds}`
 
-    return `${minutes >= 10 ? minutes : `0${minutes}`}:${
-      seconds >= 10 ? seconds : `0${seconds}`
-    }`
+    return `${minutes >= 10 ? minutes : min}:${seconds >= 10 ? seconds : sec}`
   }
 
   /**
