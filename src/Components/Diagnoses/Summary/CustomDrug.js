@@ -19,7 +19,6 @@ const CustomDrug = ({ drug, isLast }) => {
 
   /**
    * Display indication
-   * TODO: HANDLE CUSTOM DIAGNOSIS
    * @returns jsx
    */
   const indicationDisplay = () =>
