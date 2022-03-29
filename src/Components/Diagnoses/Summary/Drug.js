@@ -49,33 +49,12 @@ const Drug = ({ drug, isLast }) => {
    * Display durations
    * @returns jsx
    */
-  // const durationsDisplay = () => {
-  //   // TODO: Waiting MedAL-C (forcing duration in integer. Should take the longest duration. BUT if one of theses is pre-referral Take it (don't care, display is the same))
-  //   // LIWI-1704
-  //   console.log(drug.diagnoses[0].id)
-  //   const drugInstance = nodes[drug.diagnoses[0].id].drugs[drug.id]
-
-  //   drug.diagnoses.forEach(diagnose => {
-  //     var reg = new RegExp('^\d{1,2}$')
-  //     // Test if contains number
-  //     // Test if we translated, we contains number
-  //     // console.log('HERE', reg.test(nodes[diagnose.diagnosisId].drugs[drug.id]))
-  //   })
-
-  //   // Pre-referral
-  //   if (drugInstance?.is_pre_referral) {
-  //     return t('formulations.drug.pre_referral_duration')
-  //   }
-
-  //   // Take instance drug duration or if custom or additional, take duration
-  //   const duration = drugInstance
-  //     ? translate(drugInstance.duration)
-  //     : drug.duration
-
-  //   return t('formulations.drug.duration_in_days', {
-  //     count: parseInt(duration, 10),
-  //   })
-  // }
+  const durationsDisplay = () =>
+    Number.isInteger(drug.duration)
+      ? t('formulations.drug.duration_in_days', {
+          count: drug.duration,
+        })
+      : drug.duration
 
   if (!drugDose) {
     return <Text>{t('actions.loading')}</Text>
@@ -146,9 +125,7 @@ const Drug = ({ drug, isLast }) => {
 
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>{t('formulations.drug.duration')}:</Text>{' '}
-          {t('formulations.drug.duration_in_days', {
-            count: parseFloat(drug.duration),
-          })}
+          {durationsDisplay()}
         </Text>
 
         {translate(drugDose.dispensing_description) !== '' && (

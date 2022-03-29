@@ -140,6 +140,7 @@ export default {
         no_custom: 'No drugs added manually',
         no_medicines: 'No medicines available',
         indication: 'Indication',
+        duration_invalid: 'Cannot be determined by the algorithm (NaN)', // Added
       },
       formulations: {
         title:
