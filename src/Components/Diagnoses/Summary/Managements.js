@@ -33,7 +33,7 @@ const Managements = () => {
         <Management
           key={`summary_diagnosis_managements-${management.id}`}
           management={management}
-          isLast={i === Object.values(management).length - 1}
+          isLast={i === Object.values(managements).length - 1}
         />
       ))}
     </View>
