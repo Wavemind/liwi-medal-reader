@@ -1,16 +1,11 @@
 /**
- * The external imports
- */
-import orderBy from 'lodash/orderBy'
-
-/**
  * The internal imports
  */
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
 import { translate } from '@/Translations/algorithm'
-import { _keys } from '@/Utils/Object'
+import i18n from '@/Translations/index'
 
 /**
  * Returns all available drugs for a specific final diagnosis
@@ -231,6 +226,11 @@ export const reworkAndOrderDrugs = () => {
                 drugIndex
               ].diagnoses.some(diag => diag.id === diagnosis.id)
               if (!diagnosisExists) {
+                const currentDuration = newDrugs[drugKey][drugIndex].duration
+                newDrugs[drugKey][drugIndex].duration =
+                  drugType === 'agreed'
+                    ? extractDuration(diagnosis.id, drugId, currentDuration)
+                    : currentDuration
                 newDrugs[drugKey][drugIndex].diagnoses.push({
                   id: diagnosis.id,
                   key: diagnosisType,
@@ -289,13 +289,28 @@ const getDrugIndex = (drugs, drugId) => {
   return -1
 }
 
-const extractDuration = (diagnosisId, drugId) => {
-  const nodes = store.getState().algorithm.item.nodes
-  const duration = translate(nodes[diagnosisId].drugs[drugId].duration)
-
-  console.log('in here', diagnosisId)
-  console.log(duration)
-  var reg = new RegExp('^d{1,2}$')
+/**
+ * Extracts the duration from the current diagnosis and checks if readable
+ * @param {*} diagnosisId integer
+ * @param {*} drugId integer
+ * @param {*} currentDuration integer || string
+ * @returns integer || string
+ */
+const extractDuration = (diagnosisId, drugId, currentDuration = 0) => {
+  if (Number.isInteger(currentDuration)) {
+    const nodes = store.getState().algorithm.item.nodes
+    const drugDuration = nodes[diagnosisId].drugs[drugId].duration
+    const result = translate(drugDuration).match(new RegExp(/^\d{1,2}$/g))
+    if (result) {
+      const newDuration = parseInt(result[0], 10)
+      if (newDuration > currentDuration) {
+        return parseInt(result[0], 10)
+      } else {
+        return currentDuration
+      }
+    }
+  }
+  return i18n.t('containers.medical_case.drugs.duration_invalid')
 }
 
 /**
