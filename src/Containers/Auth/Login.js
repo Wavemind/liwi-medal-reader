@@ -56,10 +56,6 @@ const LoginAuthContainer = () => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
-  // TODO: Fix it
-  const isHermes = () => !!global.HermesInternal
-  console.log('HERMES', isHermes())
-
   /**
    * PKCE process to obtain accessToken, accessTokenExpirationDate and refreshToken
    */
