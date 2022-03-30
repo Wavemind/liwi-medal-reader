@@ -285,7 +285,7 @@ export default function () {
   const _buildMedicalCase = remoteMedicalCase => {
     const parsedJson = JSON.parse(remoteMedicalCase.json)
 
-    const medicalCase = {
+    return {
       id: remoteMedicalCase.id,
       activities: [],
       comment: parsedJson.comment,
@@ -308,13 +308,12 @@ export default function () {
       version_id: remoteMedicalCase.version_id,
       patient_id: remoteMedicalCase.patient_id,
     }
-    return medicalCase
   }
 
   const _buildPatient = remotePatient => {
     // Build medicalCases
     const medicalCases = remotePatient.medical_cases.map(remoteMedicalCase =>
-      _buildMedicalCase(remoteMedicalCase, false),
+      _buildMedicalCase(remoteMedicalCase),
     )
 
     // Build patient

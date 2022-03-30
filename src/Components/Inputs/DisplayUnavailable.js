@@ -60,9 +60,13 @@ const DisplayUnavailable = ({ questionId }) => {
     setAnswer(questionId, newAnswer)
   }
 
-  return (
-    <>
-      {additionalUnavailableAnswer ? (
+  /**
+   * Renders the correct component depending on the state
+   * @returns JSX
+   */
+  const renderComponent = () => {
+    if (additionalUnavailableAnswer) {
+      return (
         <>
           {answer !== additionalUnavailableAnswer.id && (
             <InputFactory questionId={questionId} />
@@ -73,11 +77,18 @@ const DisplayUnavailable = ({ questionId }) => {
             onPress={handleUnavailableAnswer}
           />
         </>
-      ) : isUnavailable ? (
-        <Select questionId={questionId} />
-      ) : (
-        <InputFactory questionId={questionId} />
-      )}
+      )
+    } else {
+      if (isUnavailable) {
+        return <Select questionId={questionId} />
+      }
+      return <InputFactory questionId={questionId} />
+    }
+  }
+
+  return (
+    <>
+      {renderComponent()}
       {currentNode.unavailable && !additionalUnavailableAnswer && (
         <Checkbox
           label={translate(currentNode.unavailable_label)}

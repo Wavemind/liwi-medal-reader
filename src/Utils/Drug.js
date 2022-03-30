@@ -1,16 +1,10 @@
 /**
- * The external imports
- */
-import orderBy from 'lodash/orderBy'
-
-/**
  * The internal imports
  */
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
 import { translate } from '@/Translations/algorithm'
-import { _keys } from '@/Utils/Object'
 
 /**
  * Returns all available drugs for a specific final diagnosis

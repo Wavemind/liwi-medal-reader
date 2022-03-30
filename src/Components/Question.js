@@ -61,17 +61,19 @@ const Question = ({ questionId, disabled = false }) => {
     [currentNode],
   )
 
+  // FieldError status
+  const status = useMemo(
+    () => (fieldError ? 'error' : validationType),
+    [fieldError],
+  )
+
   return (
     <View style={question.wrapper(emergency)}>
       <View style={question.container}>
         <View style={question.questionWrapper(isFullLength)}>
           {emergency && <Icon name="alert" color={Colors.red} />}
           <Text
-            style={
-              emergency
-                ? question.emergencyText
-                : question.text(fieldError ? 'error' : validationType)
-            }
+            style={emergency ? question.emergencyText : question.text(status)}
           >
             {questionLabel}&nbsp;
             {currentNode.is_mandatory && '*'}

@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { TouchableOpacity, Text, View } from 'react-native'
 
 /**
@@ -33,9 +33,16 @@ const RoundedButton = ({
   } = useTheme()
 
   // Constants definition
-  const type = filled ? 'filled' : 'outlined'
-  const iconColor =
-    color !== null ? color : filled ? Colors.secondary : Colors.primary
+  const type = useMemo(() => (filled ? 'filled' : 'outlined'), [filled])
+  const iconColor = useMemo(() => {
+    if (color === null) {
+      if (filled) {
+        return Colors.secondary
+      }
+      return Colors.primary
+    }
+    return color
+  }, [color, filled])
 
   return (
     <View style={roundedButton.wrapper(fullWidth)}>

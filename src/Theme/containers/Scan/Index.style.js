@@ -25,7 +25,7 @@ export default function (props) {
       ...Fonts.titleSmall,
       color: 'white',
     },
-    leftScan: error => ({
+    sideScan: error => ({
       height: wp(65),
       width: wp(100),
       backgroundColor:
@@ -39,14 +39,6 @@ export default function (props) {
       width: wp(65),
       backgroundColor: Colors.transparent,
     },
-    rightScan: error => ({
-      height: wp(65),
-      width: wp(100),
-      backgroundColor:
-        error?.status === 'error'
-          ? Colors.redLowOpacity
-          : Colors.primaryLowOpacity,
-    }),
     bottomWrapper: error => ({
       ...Layout.fill,
       height: wp(100),

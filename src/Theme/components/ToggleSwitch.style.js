@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { hp, wp } from '@/Theme/Responsive'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props

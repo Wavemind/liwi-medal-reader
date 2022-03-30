@@ -114,17 +114,16 @@ export const handleNumeric = (mcNode, node, value) => {
  */
 export const handleAnswerId = (node, value) => {
   let answer = null
-  // Set Number only if this is a number
-  if (value === null) {
-    // Set the new answer to null for reset
-    answer = null
-  } else if (/^\d+$/.test(value)) {
-    answer = Number(value)
-    value = node.answers[answer].value
-  } else {
-    answer = Object.values(node.answers).find(
-      nodeAnswer => nodeAnswer.value === value,
-    )
+  if (value !== null) {
+    // Set Number only if this is a number
+    if (/^\d+$/.test(value)) {
+      answer = Number(value)
+      value = node.answers[answer].value
+    } else {
+      answer = Object.values(node.answers).find(
+        nodeAnswer => nodeAnswer.value === value,
+      )
+    }
   }
   return { answer, value }
 }

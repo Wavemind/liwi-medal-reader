@@ -16,6 +16,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import { _keys } from '@/Utils/Object'
+import sortByLabel from '@/Utils/SortByLabel'
 
 const Autocomplete = ({ updateAdditionalDrugs }) => {
   // Theme and style elements deconstruction
@@ -46,19 +47,13 @@ const Autocomplete = ({ updateAdditionalDrugs }) => {
     return [...new Set(diagnosesSelectedDrugs)]
   }, [diagnoses, isFocused])
 
-  const drugList = useMemo(
-    () =>
-      filter(nodes, { category: 'drug' })
-        .filter(item => !alreadySelectedDrugs.includes(item.id))
-        .sort((a, b) => {
-          return translate(a.label) > translate(b.label)
-            ? 1
-            : translate(b.label) > translate(a.label)
-            ? -1
-            : 0
-        }),
-    [diagnoses, isFocused],
-  )
+  const drugList = useMemo(() => {
+    const filteredDrugs = filter(nodes, { category: 'drug' }).filter(
+      item => !alreadySelectedDrugs.includes(item.id),
+    )
+
+    return sortByLabel(filteredDrugs)
+  }, [diagnoses, isFocused])
 
   const [searchTerm, setSearchTerm] = useState('')
   const [searchResults, setSearchResults] = useState([])
