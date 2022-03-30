@@ -23,8 +23,12 @@ export const breakableFraction = drugDose => {
   if (drugDose.doseResult !== null) {
     // Avoid everything for capsule
     if (drugDose.medication_form === Config.MEDICATION_FORMS.capsule) {
-      return drugDose.doseResult
+      return {
+        fractionString: drugDose.doseResult,
+        numberOfFullSolid: drugDose.doseResult,
+      }
     }
+
     numberOfFullSolid = Math.floor(drugDose.doseResult / drugDose.breakable)
 
     // Less than one solid
