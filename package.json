@@ -130,6 +130,5 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!@react-native|react-native)"
     ]
-  },
-  "packageManager": "yarn@3.1.1"
+  }
 }
