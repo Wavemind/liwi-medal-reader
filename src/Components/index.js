@@ -56,7 +56,7 @@ export { default as PatientString } from './Inputs/PatientString'
 export { default as Select } from './Inputs/Select'
 export { default as SquareSelect } from './Inputs/SquareSelect'
 export { default as String } from './Inputs/String'
-export { default as Toggle } from './Inputs/ToggleComplaintCategory'
+export { default as Toggle } from './Inputs/Toggle'
 export { default as ToggleSwitch } from './Inputs/ToggleSwitch'
 export { default as DatePicker } from './Inputs/DatePicker'
 

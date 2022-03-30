@@ -51,7 +51,7 @@ const SynchronizationNavbar = () => {
   /**
    * Handles the synchronization action
    */
-  const handleSynchronization = async () => {
+  const handleSynchronization = () => {
     const groupedMedicalCases = []
     let subMedicalCases = []
     setLoading(true)
