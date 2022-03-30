@@ -3,7 +3,7 @@
  */
 import React, { useState, useEffect } from 'react'
 import { Text, View } from 'react-native'
-import Toggle from 'react-native-toggle-element'
+import RNToggle from 'react-native-toggle-element'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
@@ -16,12 +16,11 @@ import { Icon } from '@/Components'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
 import setAnswer from '@/Utils/SetAnswer'
 
-const ToggleComplaintCategory = ({ questionId }) => {
+const Toggle = ({ questionId }) => {
   // Theme and style elements deconstruction
   const {
-    Components: { toggleComplaintCategory },
     Colors,
-    Layout,
+    Components: { toggleComplaintCategory },
   } = useTheme()
 
   const { t } = useTranslation()
@@ -52,7 +51,7 @@ const ToggleComplaintCategory = ({ questionId }) => {
 
   return (
     <View style={toggleComplaintCategory.wrapper}>
-      <Toggle
+      <RNToggle
         value={toggleValue}
         onPress={newState => setToggleValue(newState)}
         leftComponent={
@@ -85,4 +84,4 @@ const ToggleComplaintCategory = ({ questionId }) => {
   )
 }
 
-export default ToggleComplaintCategory
+export default Toggle

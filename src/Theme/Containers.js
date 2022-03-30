@@ -31,7 +31,6 @@ import consultationsStyles from './containers/Consultations.style'
 
 import consentListStyles from './containers/Consent/List.style'
 import consentPreviewStyles from './containers/Consent/Preview.style'
-import consentCameraStyles from './containers/Consent/Camera.style'
 
 import scanIndexStyles from './containers/Scan/Index.style'
 import filtersIndexStyles from './containers/Filters/Index.style'
@@ -65,7 +64,6 @@ export default function (props) {
     medicalCaseList: medicalCaseListStyles(props),
     synchronization: synchronizationIndexStyles(props),
     consentPreview: consentPreviewStyles(props),
-    consentCamera: consentCameraStyles(props),
     study: studyIndexStyles(props),
     emergency: emergencyIndexStyles(props),
     questionInfo: questionInfoIndexStyles(props),

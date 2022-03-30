@@ -35,42 +35,66 @@ export default function (props) {
         status === 'notDone' ? Colors.mcDrawerNotDone : Colors.whiteToSecondary,
       ...(open ? Gutters.regularBPadding : null),
     }),
-    stage: (open, status) => ({
-      ...Layout.rowHCenter,
-      ...Layout.justifyContentBetween,
-      ...Gutters.smallHPadding,
-      ...Gutters.smallVPadding,
-      backgroundColor:
-        status === 'current'
-          ? Colors.primary
-          : status === 'notDone'
-          ? Colors.mcDrawerNotDone
-          : Colors.whiteToSecondary,
-      borderColor: Colors.grey,
-      borderTopWidth: 1,
-      borderBottomWidth: open ? 1 : 0,
-    }),
-    stageText: status => ({
-      ...Gutters.smallLMargin,
-      ...Fonts.textUppercase,
-      ...Fonts.textLeft,
-      ...Layout.fill,
-      ...Fonts.textBold,
-      color:
-        status === 'current'
-          ? Colors.secondary
-          : status === 'notDone'
-          ? Colors.grey
-          : Colors.primary,
-    }),
-    mainIcon: status => ({
-      color:
-        status === 'current'
-          ? Colors.secondary
-          : status === 'notDone'
-          ? Colors.grey
-          : Colors.primary,
-    }),
+    stage: (open, status) => {
+      let calculatedColor = ''
+      if (status === 'current') {
+        calculatedColor = Colors.primary
+      } else {
+        if (status === 'notDone') {
+          calculatedColor = Colors.mcDrawerNotDone
+        } else {
+          calculatedColor = Colors.whiteToSecondary
+        }
+      }
+
+      return {
+        ...Layout.rowHCenter,
+        ...Layout.justifyContentBetween,
+        ...Gutters.smallHPadding,
+        ...Gutters.smallVPadding,
+        backgroundColor: calculatedColor,
+        borderColor: Colors.grey,
+        borderTopWidth: 1,
+        borderBottomWidth: open ? 1 : 0,
+      }
+    },
+    stageText: status => {
+      let calculatedColor = ''
+      if (status === 'current') {
+        calculatedColor = Colors.secondary
+      } else {
+        if (status === 'notDone') {
+          calculatedColor = Colors.grey
+        } else {
+          calculatedColor = Colors.primary
+        }
+      }
+
+      return {
+        ...Gutters.smallLMargin,
+        ...Fonts.textUppercase,
+        ...Fonts.textLeft,
+        ...Layout.fill,
+        ...Fonts.textBold,
+        color: calculatedColor,
+      }
+    },
+    mainIcon: status => {
+      let calculatedColor = ''
+      if (status === 'current') {
+        calculatedColor = Colors.secondary
+      } else {
+        if (status === 'notDone') {
+          calculatedColor = Colors.grey
+        } else {
+          calculatedColor = Colors.primary
+        }
+      }
+
+      return {
+        color: calculatedColor,
+      }
+    },
     checkedIcon: status => ({
       color: status === 'done' ? Colors.primary : Colors.transparent,
     }),

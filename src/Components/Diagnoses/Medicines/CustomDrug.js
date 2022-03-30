@@ -67,6 +67,9 @@ const CustomDrug = ({ drug }) => {
       <View style={medicines.drugTitleWrapper}>
         <Text style={medicines.drugTitle}>{drug.label}</Text>
         <View style={additionalSelect.durationWrapper}>
+          <Text style={additionalSelect.durationLabel}>
+            {t('formulations.drug.duration')}
+          </Text>
           <TextInput
             style={additionalSelect.durationInput}
             onChangeText={duration => onUpdateDuration(duration)}
@@ -75,7 +78,7 @@ const CustomDrug = ({ drug }) => {
             keyboardType="decimal-pad"
           />
         </View>
-        <TouchableOpacity onPress={() => onRemovePress(drug.id)}>
+        <TouchableOpacity onPress={onRemovePress}>
           <Icon name="delete" size={FontSize.large} />
         </TouchableOpacity>
       </View>

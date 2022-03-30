@@ -41,6 +41,17 @@ export default function Movie(movie) {
     }
   }, [])
 
+  /**
+   * Renders the correct icon
+   * @returns jsx
+   */
+  const renderFullscreen = () => {
+    if (state.fullscreen) {
+      return <Feather name="minimize" style={movieController.icon} />
+    }
+    return <Feather name="maximize" style={movieController.icon} />
+  }
+
   return (
     <View style={movieController.container}>
       <TouchableWithoutFeedback onPress={showControls}>
@@ -70,11 +81,7 @@ export default function Movie(movie) {
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   style={movieController.fullscreenButton}
                 >
-                  {state.fullscreen ? (
-                    <Feather name="minimize" style={movieController.icon} />
-                  ) : (
-                    <Feather name="maximize" style={movieController.icon} />
-                  )}
+                  {renderFullscreen()}
                 </TouchableOpacity>
               ) : null}
 
@@ -106,7 +113,7 @@ export default function Movie(movie) {
    * @param {String} orientation - actual orientation
    */
   function handleOrientation(orientation) {
-    orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
+    return orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
       ? (setState(s => ({ ...s, fullscreen: true })), StatusBar.setHidden(true))
       : (setState(s => ({ ...s, fullscreen: false })),
         StatusBar.setHidden(false))
@@ -116,7 +123,7 @@ export default function Movie(movie) {
    * Update device orientation when user clicked on fullscreen icon
    */
   function handleFullscreen() {
-    state.fullscreen
+    return state.fullscreen
       ? Orientation.unlockAllOrientations()
       : Orientation.lockToLandscapeLeft()
   }

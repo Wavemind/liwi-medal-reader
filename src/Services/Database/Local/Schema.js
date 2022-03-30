@@ -58,7 +58,7 @@ export default appSchema({
         { name: 'step', type: 'string' },
         { name: 'clinician', type: 'string' },
         { name: 'nodes', type: 'string' },
-        { name: 'mac_address', type: 'string' }, // TODO REMOVE IN NEXT RELEASE
+        { name: 'mac_address', type: 'string' },
         { name: 'device_id', type: 'string' },
         { name: 'medical_case_id', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },

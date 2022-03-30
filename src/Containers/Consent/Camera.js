@@ -5,7 +5,6 @@ import React from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import { RNCamera } from 'react-native-camera'
 import * as RNFS from 'react-native-fs'
-import * as _ from 'lodash'
 import ImageResizer from 'react-native-image-resizer'
 import Feather from 'react-native-vector-icons/Feather'
 
@@ -13,7 +12,6 @@ import Feather from 'react-native-vector-icons/Feather'
  * The internal imports
  */
 import { Loader } from '@/Components'
-import consentCamera from '@/Theme/containers/Consent/Camera.style'
 
 export default class CameraConsentContainer extends React.Component {
   state = {

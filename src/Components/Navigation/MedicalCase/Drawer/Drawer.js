@@ -40,6 +40,22 @@ const MedicalCaseDrawer = () => {
     return birth_date ? formatDistanceStrict(createdAt, birth_date) : ''
   }
 
+  /**
+   * Calculates the correct statatus depending on index
+   * @param {*} index
+   * @returns string
+   */
+  const calculateStatus = index => {
+    if (index === stageIndex) {
+      return 'current'
+    } else {
+      if (index > stageIndex) {
+        return 'notDone'
+      }
+      return 'done'
+    }
+  }
+
   return (
     <View style={medicalCaseDrawer.wrapper}>
       <View style={medicalCaseDrawer.header}>
@@ -59,13 +75,7 @@ const MedicalCaseDrawer = () => {
             key={index}
             stage={stage}
             index={index}
-            status={
-              index === stageIndex
-                ? 'current'
-                : index > stageIndex
-                ? 'notDone'
-                : 'done'
-            }
+            status={calculateStatus(index)}
           />
         ))}
       </ScrollView>

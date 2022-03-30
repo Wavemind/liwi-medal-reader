@@ -25,6 +25,7 @@ import { translate } from '@/Translations/algorithm'
 import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import { _keys } from '@/Utils/Object'
+import sortByLabel from '@/Utils/SortByLabel'
 
 const SearchAdditionalDiagnosesMedicalCaseContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
@@ -58,25 +59,18 @@ const SearchAdditionalDiagnosesMedicalCaseContainer = ({ navigation }) => {
   )
 
   // Filters nodes by FinalDiagnosis and then again by NeoNat questions. Then sorts by label
-  const itemList = useMemo(
-    () =>
-      filter(nodes, { type: 'FinalDiagnosis' })
-        .filter(item => {
-          const isNeoNat = nodes[item.cc].is_neonat
-          return (
-            !proposed.includes(item.id) &&
-            ((days <= 59 && isNeoNat) || (days > 59 && !isNeoNat))
-          )
-        })
-        .sort((a, b) => {
-          return translate(a.label) > translate(b.label)
-            ? 1
-            : translate(b.label) > translate(a.label)
-            ? -1
-            : 0
-        }),
-    [birthDate],
-  )
+  const itemList = useMemo(() => {
+    const filteredDiagnoses = filter(nodes, { type: 'FinalDiagnosis' }).filter(
+      item => {
+        const isNeoNat = nodes[item.cc].is_neonat
+        return (
+          !proposed.includes(item.id) &&
+          ((days <= 59 && isNeoNat) || (days > 59 && !isNeoNat))
+        )
+      },
+    )
+    return sortByLabel(filteredDiagnoses)
+  }, [birthDate])
 
   // Local state definitions
   const [numToAdd] = useState(20)

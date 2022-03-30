@@ -8,12 +8,12 @@ import { useSelector, useDispatch } from 'react-redux'
  * The internal imports
  */
 import { SearchRelatedDiagnoses } from '@/Components'
-import { translate } from '@/Translations/algorithm'
 import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
 import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
 import { _keys } from '@/Utils/Object'
+import sortByLabel from '@/Utils/SortByLabel'
 
 const SearchRelatedDiagnosesMedicalCaseContainer = ({
   navigation,
@@ -61,13 +61,7 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
       })
     }
 
-    return diagnosisList.sort((a, b) =>
-      translate(a.label) > translate(b.label)
-        ? 1
-        : translate(b.label) > translate(a.label)
-        ? -1
-        : 0,
-    )
+    return sortByLabel(diagnosisList)
   }, [additional, agreed, custom])
 
   useEffect(() => {

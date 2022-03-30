@@ -24,8 +24,6 @@ import {
   CloseMedicalCaseService,
 } from '@/Services/MedicalCase'
 import { getStages } from '@/Utils/Navigation/GetStages'
-import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
-import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 import { GenerateUpdatePatient } from '@/Utils'
 import UpdatePatient from '@/Store/DatabasePatient/Update'
 import InsertPatientValues from '@/Store/DatabasePatientValues/Insert'

@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
  */
 import { SynchronizationNavbar, StageWrapperNavbar } from '@/Components'
 
-const ActionsNavbar = ({ navigationState }) => {
+const Actions = ({ navigationState }) => {
   const medicalCase = useSelector(state => state.medicalCase.item)
 
   if (medicalCase !== undefined && medicalCase.closedAt === 0) {
@@ -31,4 +31,4 @@ const ActionsNavbar = ({ navigationState }) => {
   }
 }
 
-export default ActionsNavbar
+export default Actions
