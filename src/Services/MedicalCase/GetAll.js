@@ -8,7 +8,7 @@ import { UniqObject } from '@/Utils'
 
 export default async ({ page, reset = false, params }) => {
   const { getAll } = useDatabase()
-  const newMedicalCases = await getAll('MedicalCase', page, params)
+  const newMedicalCases = await getAll('MedicalCase', params, page)
 
   const isLastBatch = newMedicalCases.length < Config.ELEMENT_PER_PAGE
 

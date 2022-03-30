@@ -69,11 +69,14 @@ const SearchAdditionalDiagnosesMedicalCaseContainer = ({ navigation }) => {
           )
         })
         .sort((a, b) => {
-          return translate(a.label) > translate(b.label)
-            ? 1
-            : translate(b.label) > translate(a.label)
-            ? -1
-            : 0
+          if (translate(a.label) > translate(b.label)) {
+            return 1
+          } else {
+            if (translate(b.label) > translate(a.label)) {
+              return -1
+            }
+            return 0
+          }
         }),
     [birthDate],
   )

@@ -15,8 +15,8 @@ const parseHeleneQR = QRData => {
 
   return {
     study_id,
-    group_id: parseInt(digits[0]),
-    uid: parseInt(digits[1]),
+    group_id: parseInt(digits[0], 10),
+    uid: parseInt(digits[1], 10),
   }
 }
 
@@ -32,7 +32,6 @@ const qrCodeNotValid = () => {
 
 /**
  * Reads data from the QRScanner and returns an object with the needed information
- * TODO UNIT TEST waiting for alan's testing data with Helene's Version
  * @param {*} e
  */
 const getQrData = async data => {

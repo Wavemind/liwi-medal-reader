@@ -118,27 +118,39 @@ export const calculateReference = (nodeId, newNodes) => {
 
   // Parse value in correct format
   if (mcQuestionX.value !== '' && mcQuestionY.value !== '') {
-    const x =
-      currentQuestionX.value_format === Config.VALUE_FORMATS.int
-        ? parseInt(mcQuestionX.value)
-        : currentQuestionX.round !== undefined
-        ? mcQuestionX.roundedValue
-        : parseFloat(mcQuestionX.value)
-    const y =
-      currentQuestionY.value_format === Config.VALUE_FORMATS.int
-        ? parseInt(mcQuestionY.value)
-        : currentQuestionY.round !== undefined
-        ? mcQuestionY.roundedValue
-        : parseFloat(mcQuestionY.value)
-    let z
+    let x = null
+    if (currentQuestionX.value_format === Config.VALUE_FORMATS.int) {
+      x = parseInt(mcQuestionX.value, 10)
+    } else {
+      if (currentQuestionX.round !== undefined) {
+        x = mcQuestionX.roundedValue
+      } else {
+        x = parseFloat(mcQuestionX.value)
+      }
+    }
 
+    let y = null
+    if (currentQuestionY.value_format === Config.VALUE_FORMATS.int) {
+      y = parseInt(mcQuestionY.value, 10)
+    } else {
+      if (currentQuestionY.round !== undefined) {
+        y = mcQuestionY.roundedValue
+      } else {
+        y = parseFloat(mcQuestionY.value)
+      }
+    }
+
+    let z
     if (mcQuestionZ !== null) {
-      z =
-        currentQuestionZ.value_format === Config.VALUE_FORMATS.int
-          ? parseInt(mcQuestionZ.value)
-          : currentQuestionZ.round !== undefined
-          ? mcQuestionZ.roundedValue
-          : parseFloat(mcQuestionZ.value)
+      if (currentQuestionZ.value_format === Config.VALUE_FORMATS.int) {
+        z = parseInt(mcQuestionZ.value, 10)
+      } else {
+        if (currentQuestionZ.round !== undefined) {
+          z = mcQuestionZ.roundedValue
+        } else {
+          z = parseFloat(mcQuestionZ.value)
+        }
+      }
     }
 
     const reference = getReferenceTable(currentNode, newNodes)
