@@ -131,6 +131,7 @@ export default {
         drugs: 'Drugs',
         proposed: 'Proposed medicines',
         additional: 'Additional medicines',
+        select_additional: 'Select additional medicines from list',
         custom: 'Custom medicines',
         custom_placeholder: 'Add your drugs',
         related_placeholder: 'Select related diagnoses',

@@ -1,11 +1,12 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
-import { Text, View, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect, useMemo } from 'react'
+import { Text, View, TextInput, TouchableOpacity, Keyboard } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -38,6 +39,11 @@ const CustomDrugs = ({ customDrugs }) => {
     setUnassignedDrugs(newUnassignedDrugs)
   }, [diagnoses])
 
+  const orderedDrugs = useMemo(
+    () => orderBy(customDrugs, drug => drug.addedAt, ['asc']),
+    [customDrugs],
+  )
+
   /**
    * Updates the customDrug in the local state
    */
@@ -48,6 +54,7 @@ const CustomDrugs = ({ customDrugs }) => {
       { id: drugId, label: value, diagnoses: [] },
     ])
     setValue('')
+    Keyboard.dismiss()
   }
 
   /**
@@ -71,12 +78,12 @@ const CustomDrugs = ({ customDrugs }) => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {customDrugs.length === 0 && unassignedDrugs.length === 0 ? (
+        {orderedDrugs.length === 0 && unassignedDrugs.length === 0 ? (
           <Text style={finalDiagnoses.noItemsText}>
             {t('containers.medical_case.drugs.no_custom')}
           </Text>
         ) : (
-          customDrugs.map(drug => (
+          orderedDrugs.map(drug => (
             <CustomDrug key={`customDrug_${drug.id}`} drug={drug} />
           ))
         )}

@@ -68,6 +68,9 @@ const AdditionalDrug = ({ drug }) => {
         <Text style={medicines.drugTitle}>{drug.label}</Text>
         <QuestionInfoButton nodeId={drug.id} />
         <View style={additionalSelect.durationWrapper}>
+          <Text style={additionalSelect.durationLabel}>
+            {t('formulations.drug.duration')}
+          </Text>
           <TextInput
             style={additionalSelect.durationInput}
             onChangeText={duration => onUpdateDuration(duration)}

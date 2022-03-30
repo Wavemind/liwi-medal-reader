@@ -3,7 +3,7 @@
  */
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View, TouchableOpacity, TextInput, Text } from 'react-native'
+import { View, TouchableOpacity, TextInput, Text, Keyboard } from 'react-native'
 import { useSelector } from 'react-redux'
 import filter from 'lodash/filter'
 import debounce from 'lodash/debounce'
@@ -70,7 +70,7 @@ const Autocomplete = ({ updateAdditionalDrugs }) => {
       const filteredDrugList = filter(drugList, drug =>
         translate(drug.label).match(new RegExp(term, 'i')),
       )
-      setSearchResults(filteredDrugList.slice(0, 10))
+      setSearchResults(filteredDrugList.slice(0, 5))
     }, 500),
     [],
   )
@@ -95,6 +95,7 @@ const Autocomplete = ({ updateAdditionalDrugs }) => {
     setOptionSelected(true)
     setSearchTerm('')
     updateAdditionalDrugs(option.id)
+    Keyboard.dismiss()
   }
 
   /**
