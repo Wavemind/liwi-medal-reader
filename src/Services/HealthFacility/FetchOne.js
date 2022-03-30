@@ -11,7 +11,7 @@ import api from '@/Services'
 import { Config } from '@/Config'
 import { store } from '@/Store'
 
-export default async ({}) => {
+export default async () => {
   const state = store.getState()
   const mainDataUrl = state.auth.medAlDataURL
   const currentHealthFacility = state.healthFacility.item

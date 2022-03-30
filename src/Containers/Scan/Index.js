@@ -101,7 +101,7 @@ const IndexScanContainer = () => {
    * Handles navigation after Scan successful
    */
   useEffect(() => {
-    openMedicalCase(scanData)
+    openMedicalCase()
   }, [scanData])
 
   /**

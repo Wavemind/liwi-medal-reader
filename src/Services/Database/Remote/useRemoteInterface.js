@@ -313,7 +313,7 @@ export default function () {
   const _buildPatient = remotePatient => {
     // Build medicalCases
     const medicalCases = remotePatient.medical_cases.map(remoteMedicalCase =>
-      _buildMedicalCase(remoteMedicalCase, false),
+      _buildMedicalCase(remoteMedicalCase),
     )
 
     // Build patient
