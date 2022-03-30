@@ -11,18 +11,14 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import {
-  QuestionInfoButton,
-  DoseCalculation,
-  AmountGiven,
-  Formulation,
-} from '@/Components'
+import { QuestionInfoButton, DoseCalculation, AmountGiven } from '@/Components'
 import { DrugDosesService } from '@/Services/MedicalCase'
 
 const Drug = ({ drug, isLast }) => {
   const { t } = useTranslation()
   const {
     Fonts,
+    Gutters,
     Containers: { summary },
   } = useTheme()
 
@@ -43,7 +39,10 @@ const Drug = ({ drug, isLast }) => {
    * @returns jsx
    */
   const indicationDisplay = () =>
-    drug.diagnoses.map(diagnose => diagnose.label).join(', ')
+    drug.diagnoses
+      .map(diagnose => diagnose.label)
+      .join(', ')
+      .toUpperCase()
 
   /**
    * Display durations
@@ -76,7 +75,7 @@ const Drug = ({ drug, isLast }) => {
           </Text>
         </Text>
 
-        <Text style={summary.drugText}>
+        <Text style={[summary.drugText, Gutters.regularBMargin]}>
           <Text style={Fonts.textBold}>
             {t('formulations.drug.dose_calculation')}:
           </Text>{' '}
@@ -94,7 +93,7 @@ const Drug = ({ drug, isLast }) => {
           <Text style={Fonts.textBold}>
             {t('formulations.drug.formulation')}:
           </Text>{' '}
-          <Formulation drugDose={drugDose} />
+          {translate(drugDose.description)}
         </Text>
 
         <Text style={summary.drugText}>

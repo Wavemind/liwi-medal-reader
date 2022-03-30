@@ -24,13 +24,20 @@ const AmountGiven = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.ointment:
     case Config.MEDICATION_FORMS.cream:
     case Config.MEDICATION_FORMS.lotion:
-    case Config.MEDICATION_FORMS.drops:
     case Config.MEDICATION_FORMS.patch:
       return t('formulations.drug.amount_given_per_application', {
         count: parseFloat(drugDose.unique_dose),
       })
-
     case Config.MEDICATION_FORMS.suppository:
+    case Config.MEDICATION_FORMS.drops:
+      return t('formulations.drug.amount_give', {
+        medicationForm: t(
+          `formulations.medication_form.${drugDose.medication_form}`,
+          {
+            count: parseFloat(drugDose.unique_dose),
+          },
+        ),
+      })
     case Config.MEDICATION_FORMS.pessary:
     case Config.MEDICATION_FORMS.spray:
     case Config.MEDICATION_FORMS.inhaler:
@@ -42,12 +49,11 @@ const AmountGiven = ({ drugDose }) => {
           },
         ),
       })
-
     case Config.MEDICATION_FORMS.suspension:
     case Config.MEDICATION_FORMS.powder_for_injection:
     case Config.MEDICATION_FORMS.solution:
       if (drugDose.uniqDose) {
-        return t('formulations.drug.amount_given_medication_form', {
+        return t('formulations.drug.amount_give', {
           medicationForm: `${parseFloat(drugDose.unique_dose)}ml`,
         })
       }
@@ -74,7 +80,7 @@ const AmountGiven = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.tablet:
     case Config.MEDICATION_FORMS.dispersible_tablet:
       if (drugDose.uniqDose) {
-        return t('formulations.drug.amount_given_medication_form', {
+        return t('formulations.drug.amount_give', {
           medicationForm: t(
             `formulations.medication_form.${drugDose.medication_form}`,
             {
@@ -99,7 +105,7 @@ const AmountGiven = ({ drugDose }) => {
       })
     case Config.MEDICATION_FORMS.syrup:
       if (drugDose.uniqDose) {
-        return t('formulations.drug.amount_given_medication_form', {
+        return t('formulations.drug.amount_give', {
           medicationForm: `${parseFloat(drugDose.unique_dose)}ml`,
         })
       }
