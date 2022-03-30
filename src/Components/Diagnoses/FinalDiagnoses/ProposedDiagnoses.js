@@ -1,12 +1,11 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import orderBy from 'lodash/orderBy'
-import isEqual from 'lodash/isEqual'
 import { useIsFocused } from '@react-navigation/native'
 
 /**

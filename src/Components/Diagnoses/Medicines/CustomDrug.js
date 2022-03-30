@@ -74,7 +74,7 @@ const CustomDrug = ({ drug }) => {
             keyboardType="decimal-pad"
           />
         </View>
-        <TouchableOpacity onPress={() => onRemovePress(drug.id)}>
+        <TouchableOpacity onPress={onRemovePress}>
           <Icon name="delete" size={FontSize.large} />
         </TouchableOpacity>
       </View>

@@ -61,13 +61,16 @@ const SearchRelatedDiagnosesMedicalCaseContainer = ({
       })
     }
 
-    return diagnosisList.sort((a, b) =>
-      translate(a.label) > translate(b.label)
-        ? 1
-        : translate(b.label) > translate(a.label)
-        ? -1
-        : 0,
-    )
+    return diagnosisList.sort((a, b) => {
+      if (translate(a.label) > translate(b.label)) {
+        return 1
+      } else {
+        if (translate(b.label) > translate(a.label)) {
+          return -1
+        }
+        return 0
+      }
+    })
   }, [additional, agreed, custom])
 
   useEffect(() => {
