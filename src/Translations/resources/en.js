@@ -431,10 +431,13 @@ export default {
     },
     medication_form: {
       tablet: '{{- fraction }} tablet',
+      tablet_0: '{{- fraction }} tablet',
       tablet_plural: '{{- fraction }} tablets',
       dispersible_tablet: '{{- fraction }} dispersible tablet',
+      dispersible_tablet_0: '{{- fraction }} dispersible tablet',
       dispersible_tablet_plural: '{{- fraction }} dispersible tablets',
       capsule: '{{ count }} capsule',
+      capsule_0: '{{ count }} capsule',
       capsule_plural: '{{ count }} capsules',
       syrup: 'syrup',
       suspension: '{{ count }} suspension',

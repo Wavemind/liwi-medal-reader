@@ -40,10 +40,13 @@ const Formulation = ({ drugDose }) => {
         return translate(drugDose.description)
       }
 
-      const fractionString = breakableFraction(drugDose)
+      const { fractionString, numberOfFullSolid } = breakableFraction(drugDose)
+
+      // Needed to add context due to english translation not handle 0 as singular
       const fractionTranslated = t('formulations.medication_form.tablet', {
-        count: parseFloat(fractionString),
+        count: numberOfFullSolid,
         fraction: fractionString,
+        context: String(numberOfFullSolid),
       })
       return `${translate(drugDose.description)}: ${fractionTranslated}`
     }

@@ -84,14 +84,16 @@ const AmountGiven = ({ drugDose }) => {
           ),
         })
       }
+      const { fractionString, numberOfFullSolid } = breakableFraction(drugDose)
 
-      const fractionString = breakableFraction(drugDose)
+      // Needed to add context due to english translation not handle 0 as singular
       return t('formulations.drug.amount_give', {
         medicationForm: t(
           `formulations.medication_form.${drugDose.medication_form}`,
           {
-            count: parseFloat(fractionString),
+            count: numberOfFullSolid,
             fraction: fractionString,
+            context: String(numberOfFullSolid),
           },
         ),
       })

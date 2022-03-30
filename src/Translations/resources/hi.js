@@ -431,10 +431,13 @@ export default {
     },
     medication_form: {
       tablet: '{{- fraction }} tablet',
+      tablet_0: '{{- fraction }} tablet',
       tablet_plural: '{{- fraction }} tablets',
       dispersible_tablet: '{{- fraction }} dispersible tablet',
+      dispersible_tablet_0: '{{- fraction }} dispersible tablet',
       dispersible_tablet_plural: '{{- fraction }} dispersible tablets',
       capsule: '{{ count }} capsule',
+      capsule_0: '{{ count }} capsule',
       capsule_plural: '{{ count }} capsules',
       syrup: 'syrup',
       suspension: '{{ count }} suspension',
@@ -468,6 +471,6 @@ export default {
     final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
     medicines_required: 'Please agree or refuse all medicines',
     formulation_required: 'Please choose a formulation for each medicine',
-    duration_required: 'Please provide a duration for each medicines',
+    duration_required: 'Please provide a duration for each medicine',
   },
 }

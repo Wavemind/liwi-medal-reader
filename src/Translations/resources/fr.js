@@ -435,10 +435,13 @@ export default {
     },
     medication_form: {
       tablet: '{{- fraction }} comprimé',
+      tablet_0: '{{- fraction }} comprimé',
       tablet_plural: '{{- fraction }} comprimés',
       dispersible_tablet: '{{- fraction }} comprimé dispersible',
+      dispersible_tablet_0: '{{- fraction }} comprimé dispersible',
       dispersible_tablet_plural: '{{- fraction }} comprimés dispersibles',
       capsule: '{{ count }} capsule',
+      capsule_0: '{{ count }} capsule',
       capsule_plural: '{{ count }} capsules',
       syrup: 'syrop',
       suspension: '{{ count }} de suspension',
