@@ -52,7 +52,6 @@ const AmountGiven = ({ drugDose }) => {
     case Config.MEDICATION_FORMS.suspension:
     case Config.MEDICATION_FORMS.powder_for_injection:
     case Config.MEDICATION_FORMS.solution:
-      console.log(drugDose)
       if (drugDose.uniqDose) {
         return t('formulations.drug.amount_give', {
           medicationForm: `${parseFloat(drugDose.unique_dose)}ml`,
