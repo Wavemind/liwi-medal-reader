@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useState, useEffect, useMemo } from 'react'
-import { Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { Text, View, TextInput, TouchableOpacity, Keyboard } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
@@ -54,6 +54,7 @@ const CustomDrugs = ({ customDrugs }) => {
       { id: drugId, label: value, diagnoses: [] },
     ])
     setValue('')
+    Keyboard.dismiss()
   }
 
   /**
