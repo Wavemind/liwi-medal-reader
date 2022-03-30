@@ -25,7 +25,11 @@ const MedicinesMedicalCaseContainer = () => {
   const drugs = useMemo(reworkAndOrderDrugs, [diagnoses])
 
   return (
-    <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200}>
+    <KeyboardAwareScrollView
+      keyboardShouldPersistTaps="handled"
+      enableOnAndroid={true}
+      extraHeight={200}
+    >
       <CalculatedDrugs calculatedDrugs={drugs.calculated} />
       <AdditionalDrugs additionalDrugs={drugs.additional} />
       <CustomDrugs customDrugs={drugs.custom} />

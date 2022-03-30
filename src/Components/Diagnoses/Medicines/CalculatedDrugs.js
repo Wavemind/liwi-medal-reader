@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Text, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import orderBy from 'lodash/orderBy'
@@ -25,9 +25,10 @@ const CalculatedDrugs = ({ calculatedDrugs }) => {
   } = useTheme()
   const { t } = useTranslation()
 
-  const orderedDrug = orderBy(calculatedDrugs, drug => drug.levelOfUrgency, [
-    'desc',
-  ])
+  const orderedDrugs = useMemo(
+    () => orderBy(calculatedDrugs, drug => drug.levelOfUrgency, ['desc']),
+    [calculatedDrugs],
+  )
 
   return (
     <View style={medicines.wrapper}>
@@ -37,7 +38,7 @@ const CalculatedDrugs = ({ calculatedDrugs }) => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {orderedDrug.map((drug, i) => (
+        {orderedDrugs.map((drug, i) => (
           <View
             key={`calculatedDrugs-${drug.id}`}
             style={medicines.innerWrapper(

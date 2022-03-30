@@ -1,10 +1,11 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -41,6 +42,11 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
     setUnassignedDrugs(newUnassignedDrugs)
   }, [diagnoses])
 
+  const orderedDrugs = useMemo(
+    () => orderBy(additionalDrugs, drug => drug.addedAt, ['asc']),
+    [additionalDrugs],
+  )
+
   /**
    * Updates the additionalDrug in the local state
    * @param drugId
@@ -73,12 +79,12 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {additionalDrugs.length === 0 && unassignedDrugs.length === 0 ? (
+        {orderedDrugs.length === 0 && unassignedDrugs.length === 0 ? (
           <Text style={finalDiagnoses.noItemsText}>
             {t('containers.medical_case.drugs.no_additional')}
           </Text>
         ) : (
-          additionalDrugs.map(drug => (
+          orderedDrugs.map(drug => (
             <AdditionalDrug key={`additionalDrug_${drug.id}`} drug={drug} />
           ))
         )}
@@ -128,6 +134,9 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
         ))}
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
+        <Text style={medicines.indication}>
+          {t('containers.medical_case.drugs.select_additional')}
+        </Text>
         <DrugsAutocomplete updateAdditionalDrugs={updateAdditionalDrugs} />
       </View>
     </View>

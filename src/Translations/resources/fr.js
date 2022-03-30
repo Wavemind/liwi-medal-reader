@@ -133,6 +133,8 @@ export default {
         drugs: 'Médicaments',
         proposed: 'Médicaments proposés',
         additional: 'Médicaments supplémentaires',
+        select_additional:
+          'Sélectionnez les médicaments supplémentaires de la liste',
         custom: 'Ajoutés manuellement',
         custom_placeholder: 'Ajouter des médicaments manuellement',
         related_placeholder: 'Sélectionnez les diagnostiques',

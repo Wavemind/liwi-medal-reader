@@ -31,7 +31,7 @@ export default function (props) {
     }),
     additionalWrapper: {
       ...Gutters.smallVMargin,
-      ...Gutters.smallVPadding,
+      ...Gutters.tinyVPadding,
       borderBottomWidth: 1,
       borderBottomColor: Colors.grey,
     },
@@ -91,6 +91,7 @@ export default function (props) {
     },
     pickerWrapper: {
       ...Layout.justifyContentCenter,
+      ...Gutters.smallTMargin,
       backgroundColor: Colors.secondary,
       height: hp(4.4),
       borderRadius: 20,
