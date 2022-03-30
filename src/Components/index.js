@@ -34,7 +34,6 @@ export { default as Management } from './Diagnoses/Summary/Management'
 export { default as SummaryCustomDrug } from './Diagnoses/Summary/CustomDrug'
 export { default as DoseCalculation } from './Diagnoses/Summary/DoseCalculation'
 export { default as AmountGiven } from './Diagnoses/Summary/AmountGiven'
-export { default as Formulation } from './Diagnoses/Summary/Formulation'
 export { default as FinalDiagnoses } from './Diagnoses/Summary/FinalDiagnoses'
 export { default as SelectedItem } from './Diagnoses/SelectedItem'
 

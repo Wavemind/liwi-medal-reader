@@ -389,7 +389,7 @@ export default {
       pre_referral_duration: 'While arranging referral',
       per_administration: '{{ count }} {{ suffix }} per administration',
       per_application: '{{ count }} application per administration',
-      per_application_plural: '{{count}} applications per administration',
+      per_application_plural: '{{ count }} applications per administration',
       duration_in_days: '{{ count }} day',
       duration_in_days_plural: '{{ count }} days',
       fixed_dose: 'Fixed dose',
@@ -403,9 +403,9 @@ export default {
       amount_given_im_iv_sc:
         'Give {{ doseResult }}ml of {{ liquidConcentration }}mg/{{ doseForm }}ml {{ medicationForm }}',
       frequency_indication:
-        '{{ count }} time per day (every {{ recurrence }} hours)',
+        '{{ count }} time per day (or every {{ recurrence }} hours)',
       frequency_indication_plural:
-        '{{ count }} times per day (every {{ recurrence }} hours)',
+        '{{ count }} times per day (or every {{ recurrence }} hours)',
       fixed_dose_indication_administration:
         'Fixed dose - {{ medicationForm }} per administration',
       fixed_dose_indication_application:
@@ -416,18 +416,18 @@ export default {
         'Dose range ({{ dosage }}mg/kg) x weight ({{ patientWeight }}kg) = {{ total }}mg',
     },
     administration_routes: {
-      orally: 'orally',
-      sublingually: 'sublingually',
-      rectally: 'rectally',
+      orally: 'Orally',
+      sublingually: 'Sublingually',
+      rectally: 'Rectally',
       iv: 'IV',
       im: 'IM',
       sc: 'SC',
-      otic: 'otic',
-      nasally: 'nasally',
-      inhalation: 'inhalation',
-      cutaneous: 'cutaneous',
-      transdermally: 'transdermally',
-      ocular: 'ocular',
+      otic: 'Otic',
+      nasally: 'Nasally',
+      inhalation: 'Inhalation',
+      cutaneous: 'Cutaneous',
+      transdermally: 'Transdermally',
+      ocular: 'Ocular',
     },
     medication_form: {
       tablet: '{{- fraction }} tablet',
