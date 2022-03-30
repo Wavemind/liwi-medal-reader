@@ -4,7 +4,7 @@
 import React, { useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import uuid from 'react-native-uuid'
-import { Text, TextInput, View } from 'react-native'
+import { Keyboard, Text, TextInput, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -53,6 +53,7 @@ const CustomDiagnoses = () => {
       }),
     )
     setValue('')
+    Keyboard.dismiss()
   }
 
   /**
