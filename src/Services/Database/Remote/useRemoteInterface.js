@@ -12,7 +12,7 @@ export default function () {
    * @param { object } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
-  const getAll = async (model, page, params) => {
+  const getAll = async (model, params, page) => {
     let stringFilters = ''
     let stringQuery = ''
 
@@ -28,7 +28,6 @@ export default function () {
     url += '}'
 
     const response = await api.get(url)
-
     return _initClasses(response.data.data, model)
   }
 
