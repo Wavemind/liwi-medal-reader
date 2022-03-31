@@ -18,7 +18,11 @@ const Stack = createStackNavigator()
 
 const AuthNavigator = () => {
   return (
-    <Stack.Navigator headerMode="none" mode="modal">
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen name="Login" component={LoginAuthContainer} />
       <Stack.Screen name="Synchronize" component={SynchronizeAuthContainer} />
       <Stack.Screen name="Pin" component={PinAuthContainer} />
