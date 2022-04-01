@@ -92,7 +92,7 @@ const Numeric = ({ questionId, editable = true }) => {
       <TextInput
         style={numeric.input(editable)}
         onEndEditing={onEndEditing}
-        keyboardType="decimal-pad"
+        keyboardType="number-pad"
         onChangeText={onChange}
         value={String(value)}
         editable={editable}

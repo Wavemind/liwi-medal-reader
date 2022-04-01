@@ -5,6 +5,7 @@ import React, { useMemo } from 'react'
 import { View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useIsFocused } from '@react-navigation/native'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -26,6 +27,12 @@ const Drugs = () => {
     drug => drug.key === 'agreed',
   )
 
+  const orderedDrugs = orderBy(
+    [...agreedDrugs, ...drugPerCategories.additional],
+    drug => drug.levelOfUrgency,
+    ['desc'],
+  )
+
   return (
     <View style={medicines.wrapper}>
       <View style={medicines.headerWrapper}>
@@ -34,18 +41,11 @@ const Drugs = () => {
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {agreedDrugs.map((drug, i) => (
+        {orderedDrugs.map((drug, i) => (
           <Drug
             key={`summary_diagnosis_drugs-${drug.id}`}
             drug={drug}
             isLast={i === agreedDrugs.length - 1}
-          />
-        ))}
-        {drugPerCategories.additional.map((drug, i) => (
-          <Drug
-            key={`summary_diagnosis_drugs-${drug.id}`}
-            drug={drug}
-            isLast={i === drugPerCategories.additional.length - 1}
           />
         ))}
         {drugPerCategories.custom.map((drug, i) => (
