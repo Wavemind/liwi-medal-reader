@@ -75,7 +75,7 @@ const ApplicationNavigator = () => {
       <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
         <NavigationContainer theme={NavigationTheme} ref={navigationRef}>
           <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
-          <Stack.Navigator headerMode="none" mode="modal">
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Startup" component={IndexStartupContainer} />
             <Stack.Screen
               name="PermissionsRequired"

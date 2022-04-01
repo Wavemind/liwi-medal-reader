@@ -126,7 +126,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
       </View>
 
       <Tab.Navigator
-        tabBarOptions={{ scrollEnabled: true }}
+        options={{ scrollEnabled: true }}
         tabBar={tabProps => <PatientTabBar {...tabProps} />}
       >
         <Tab.Screen
