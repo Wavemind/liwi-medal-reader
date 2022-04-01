@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native'
-import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Colors, Fonts, Gutters, Layout } = props
+  const { Colors, Fonts, Layout } = props
 
   return StyleSheet.create({
     wrapper: {

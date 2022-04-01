@@ -11,12 +11,7 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { Icon, ConnectionStatus } from '@/Components'
 
-const Header = ({
-  descriptor: {
-    options: { title },
-    navigation,
-  },
-}) => {
+const Header = ({ navigation, options }) => {
   // Theme and style elements deconstruction
   const {
     Components: { header },
@@ -34,7 +29,7 @@ const Header = ({
         </TouchableOpacity>
       </View>
       <View style={header.titleWrapper}>
-        <Text style={header.title}>{title}</Text>
+        <Text style={header.title}>{options.title}</Text>
       </View>
       <View style={header.connectionStatusWrapper}>
         {architecture === 'client_server' && <ConnectionStatus />}

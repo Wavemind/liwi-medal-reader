@@ -12,7 +12,7 @@ export default function () {
    * @param { object } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
-  const getAll = async (model, page, params) => {
+  const getAll = async (model, params, page) => {
     let stringFilters = ''
     let stringQuery = ''
 
@@ -28,7 +28,6 @@ export default function () {
     url += '}'
 
     const response = await api.get(url)
-
     return _initClasses(response.data.data, model)
   }
 
@@ -216,41 +215,49 @@ export default function () {
    * @returns {Promise<string|Array>}
    */
   const synchronizePatients = async patients => {
-    patients.forEach(async patient => {
-      patient.medical_cases = patient.medicalCases.map(medicalCase => ({
-        id: medicalCase.id,
-        json: {
-          comment: medicalCase.comment,
-          consent: medicalCase.consent,
-          diagnosis: medicalCase.diagnosis,
-          nodes: medicalCase.nodes,
-          metadata: {
-            appVersion: medicalCase.appVersion,
+    // Have to do a "for" because we have an async call https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
+    for (const patient of patients) {
+      const medicalCases = []
+      for (const medicalCase of patient.medicalCases) {
+        medicalCases.push({
+          id: medicalCase.id,
+          json: {
+            comment: medicalCase.comment,
+            consent: medicalCase.consent,
+            diagnosis: medicalCase.diagnosis,
+            nodes: medicalCase.nodes,
+            metadata: {
+              appVersion: medicalCase.appVersion,
+            },
           },
-        },
-        json_version: medicalCase.json_version,
-        advancement: medicalCase.advancement,
-        synchronizedAt: medicalCase.synchronizedAt,
-        closedAt: medicalCase.closedAt,
-        createdAt: medicalCase.createdAt,
-        updatedAt: medicalCase.updatedAt,
-        fail_safe: medicalCase.fail_safe,
-        version_id: medicalCase.version_id,
-      }))
+          json_version: medicalCase.json_version,
+          advancement: medicalCase.advancement,
+          synchronizedAt: medicalCase.synchronizedAt,
+          closedAt: medicalCase.closedAt,
+          createdAt: medicalCase.createdAt,
+          updatedAt: medicalCase.updatedAt,
+          fail_safe: medicalCase.fail_safe,
+          version_id: medicalCase.version_id,
+          activities: await LocalInterface().getActivities(medicalCase.id),
+        })
+      }
+
       delete patient.medicalCases
 
       const data = {
         patient: {
           ...patient,
+          medical_cases: medicalCases,
           patient_values: patient.patientValues,
         },
       }
-      delete data.patientValues
+      delete data.patient.patientValues
+
       const response = await api.post('/api/patients/synchronize', data)
-      if (response.data === 'Synchronize success') {
+      if (response.status === 200) {
         LocalInterface().destroyPatient(patient.id)
       }
-    })
+    }
   }
 
   /**
@@ -277,7 +284,7 @@ export default function () {
   const _buildMedicalCase = remoteMedicalCase => {
     const parsedJson = JSON.parse(remoteMedicalCase.json)
 
-    const medicalCase = {
+    return {
       id: remoteMedicalCase.id,
       activities: [],
       comment: parsedJson.comment,
@@ -300,13 +307,12 @@ export default function () {
       version_id: remoteMedicalCase.version_id,
       patient_id: remoteMedicalCase.patient_id,
     }
-    return medicalCase
   }
 
   const _buildPatient = remotePatient => {
     // Build medicalCases
     const medicalCases = remotePatient.medical_cases.map(remoteMedicalCase =>
-      _buildMedicalCase(remoteMedicalCase, false),
+      _buildMedicalCase(remoteMedicalCase),
     )
 
     // Build patient

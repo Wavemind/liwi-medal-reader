@@ -63,7 +63,8 @@ const SummaryWrapperMedicalCaseContainer = () => {
   // Get kind of consultation
   if (kindOfConsultationId) {
     const kindOfConsultationAnswerId = patient.patientValues.find(
-      patientValue => parseInt(patientValue.node_id) === kindOfConsultationId,
+      patientValue =>
+        parseInt(patientValue.node_id, 10) === kindOfConsultationId,
     ).answer_id
 
     kindOfConsultation =
@@ -73,7 +74,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
 
   // Get gender
   const genderAnswerId = patient.patientValues.find(
-    patientValue => parseInt(patientValue.node_id) === genderNodeId,
+    patientValue => parseInt(patientValue.node_id, 10) === genderNodeId,
   ).answer_id
 
   gender = nodes[genderNodeId].answers[genderAnswerId]
@@ -125,7 +126,7 @@ const SummaryWrapperMedicalCaseContainer = () => {
       </View>
 
       <Tab.Navigator
-        tabBarOptions={{ scrollEnabled: true }}
+        options={{ scrollEnabled: true }}
         tabBar={tabProps => <PatientTabBar {...tabProps} />}
       >
         <Tab.Screen

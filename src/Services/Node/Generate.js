@@ -63,43 +63,6 @@ export const generateQuestionsSequence = node => {
 }
 
 /**
- * Generate new management hash used in medical case
- * @param node
- * @returns {*}
- */
-export const generateManagement = node => {
-  return {
-    ..._generateCommon(node),
-  }
-}
-
-/**
- * Generate new drug hash used in medical case
- * @param node
- * @returns {*}
- */
-export const generateDrug = node => {
-  const { formulationSelected = null } = node
-
-  return {
-    ..._generateCommon(node),
-    formulationSelected,
-    healthCareObject: 'drugs',
-  }
-}
-
-/**
- * Generate new final diagnosis hash used in medical case
- * @param node
- * @returns {*}
- */
-export const generateFinalDiagnosis = node => {
-  return {
-    ..._generateCommon(node),
-  }
-}
-
-/**
  * Generate common values available in all medical case node's
  * @param node
  * @returns {*}

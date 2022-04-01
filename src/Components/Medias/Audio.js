@@ -61,13 +61,14 @@ const Audio = ({ url }) => {
    * @returns {string}
    */
   const getAudioTimeString = seconds => {
-    const h = parseInt(seconds / (60 * 60))
-    const m = parseInt((seconds % (60 * 60)) / 60)
-    const s = parseInt(seconds % 60)
+    const h = parseInt(seconds / (60 * 60), 10)
+    const m = parseInt((seconds % (60 * 60)) / 60, 10)
+    const s = parseInt(seconds % 60, 10)
+    const hour = `0${h}`
+    const min = `0${m}`
+    const sec = `0${s}`
 
-    return `${h < 10 ? `0${h}` : h}:${m < 10 ? `0${m}` : m}:${
-      s < 10 ? `0${s}` : s
-    }`
+    return `${h < 10 ? hour : h}:${m < 10 ? min : m}:${s < 10 ? sec : s}`
   }
 
   /**

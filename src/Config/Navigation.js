@@ -14,14 +14,13 @@ import MedicalHistoryMedicalCaseContainer from '@/Containers/MedicalCase/Consult
 import AssessmentMedicalCaseContainer from '@/Containers/MedicalCase/Assessment/Assessment'
 // Diagnosis
 import FinalDiagnosesMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/FinalDiagnoses'
-import DrugsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Drugs'
+import MedicinesMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Medicines'
 import TreatmentConditionsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/TreatmentConditions'
 import ReferralMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Referral'
-import FormulationsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Formulations'
 import SummaryMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Summary'
 // Arm Control
 import ArmFinalDiagnosesMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/FinalDiagnoses'
-import ArmDrugsMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/Drugs'
+import ArmMedicinesMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/Medicines'
 import AssessmentArmControlMedicalCaseContainer from '@/Containers/ArmControl/Assessment'
 
 //
@@ -43,11 +42,7 @@ const diagnosesStage = {
     },
     {
       label: 'medicines',
-      component: DrugsMedicalCaseContainer,
-    },
-    {
-      label: 'formulations',
-      component: FormulationsMedicalCaseContainer,
+      component: MedicinesMedicalCaseContainer,
     },
     {
       label: 'summary',
@@ -131,7 +126,7 @@ const armControlDiagnosesStage = {
     },
     {
       label: 'medicines',
-      component: ArmDrugsMedicalCaseContainer,
+      component: ArmMedicinesMedicalCaseContainer,
     },
   ],
 }

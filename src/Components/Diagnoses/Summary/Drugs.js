@@ -1,65 +1,61 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Text, View } from 'react-native'
+import React, { useMemo } from 'react'
+import { View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useIsFocused } from '@react-navigation/native'
 import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
  */
+import { Drug, SummaryCustomDrug } from '@/Components'
 import { useTheme } from '@/Theme'
-import { Drug } from '@/Components'
+import { reworkAndOrderDrugs } from '@/Utils/Drug'
 
-const Drugs = ({ diagnosis }) => {
-  // Theme and style elements deconstruction
+const Drugs = () => {
+  const { t } = useTranslation()
+  const isFocused = useIsFocused()
   const {
-    Layout,
-    Containers: { finalDiagnoses, summary },
+    Gutters,
+    Containers: { medicines },
   } = useTheme()
 
-  const { t } = useTranslation()
-  const nodes = useSelector(state => state.algorithm.item.nodes)
-  const [keys] = useState(['agreed', 'additional'])
+  const drugPerCategories = useMemo(reworkAndOrderDrugs, [isFocused])
+  const agreedDrugs = drugPerCategories.calculated.filter(
+    drug => drug.key === 'agreed',
+  )
 
-  /**
-   * Sorts the drugs by level_of_urgency
-   * @returns {*}
-   */
-  const sortDrugsByUrgency = key =>
-    orderBy(
-      Object.values(diagnosis.drugs[key]),
-      drug => nodes[drug.id].level_of_urgency,
-      ['desc', 'asc'],
-    )
+  const orderedDrugs = orderBy(
+    [...agreedDrugs, ...drugPerCategories.additional],
+    drug => drug.levelOfUrgency,
+    ['desc'],
+  )
 
   return (
-    <View>
-      <View style={[Layout.rowHCenter, Layout.justifyContentBetween]}>
-        <Text style={summary.drugsHeader}>
-          {t('containers.medical_case.drugs.drugs')}
+    <View style={medicines.wrapper}>
+      <View style={medicines.headerWrapper}>
+        <Text style={medicines.header}>
+          {t('containers.medical_case.summary.treatments')}
         </Text>
       </View>
-      {Object.keys(diagnosis.drugs.agreed).length +
-        Object.keys(diagnosis.drugs.additional).length ===
-      0 ? (
-        <Text style={finalDiagnoses.noItemsText}>
-          {t('containers.medical_case.drugs.no_medicines')}
-        </Text>
-      ) : (
-        keys.map(key =>
-          sortDrugsByUrgency(key).map((drug, i) => (
-            <Drug
-              key={`summary_diagnosis_drugs-${drug.id}`}
-              drug={drug}
-              diagnosisId={diagnosis.id}
-              isLast={i === Object.keys(diagnosis.drugs[key]).length - 1}
-            />
-          )),
-        )
-      )}
+      <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
+        {orderedDrugs.map((drug, i) => (
+          <Drug
+            key={`summary_diagnosis_drugs-${drug.id}`}
+            drug={drug}
+            isLast={i === agreedDrugs.length - 1}
+          />
+        ))}
+        {drugPerCategories.custom.map((drug, i) => (
+          <SummaryCustomDrug
+            key={`summary_diagnosis_drugs-${drug.id}`}
+            drug={drug}
+            isLast={i === drugPerCategories.custom.length - 1}
+          />
+        ))}
+      </View>
     </View>
   )
 }

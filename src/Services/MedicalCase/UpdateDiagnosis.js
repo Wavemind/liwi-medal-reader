@@ -39,6 +39,7 @@ export default async (diagnosisId, value) => {
             agreed: {},
             refused: [],
             additional: {},
+            custom: {},
           },
         },
       }),

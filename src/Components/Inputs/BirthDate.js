@@ -192,7 +192,7 @@ const BirthDate = () => {
    * @param {Event} e
    */
   const handleEstimatedValue = value => {
-    value = value.replace(/[^0-9]/g, '')
+    value = value.replace(/\D/g, '')
     setEstimatedValue(value)
   }
 
@@ -213,7 +213,7 @@ const BirthDate = () => {
    * Reset the value of the field when we check and store the value in the patient store
    */
   const handleIsEstimated = value => {
-    // TODO Improve it
+    // TODO This will be improved with React 18
     setIsEstimated(value)
     setEstimatedValue('')
     setEstimatedDateType(value ? 'month' : null)

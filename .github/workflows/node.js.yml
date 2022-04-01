@@ -7,6 +7,7 @@ on:
       - develop
       - main
   pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   build:
     runs-on: ubuntu-latest

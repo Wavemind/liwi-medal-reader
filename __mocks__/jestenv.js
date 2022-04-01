@@ -6,23 +6,23 @@ import 'react-native-gesture-handler/jestSetup'
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage)
 jest.mock('@react-native-community/netinfo', () => mockNetInfo)
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage)
-jest.mock('@react-native-picker/picker', () => {})
-jest.mock('@react-native-community/checkbox', () => {})
-jest.mock('lottie-react-native', () => {})
-jest.mock('react-content-loader/native', () => {})
-jest.mock('react-native-webview', () => {})
-jest.mock('@haskkor/react-native-pincode', () => {})
-jest.mock('react-native-toggle-element', () => {})
-jest.mock('@react-native-community/slider', () => {})
-jest.mock('react-native-modal', () => {})
-jest.mock('react-native-video', () => {})
-jest.mock('@react-navigation/material-top-tabs', () => {})
-jest.mock('react-native-camera', () => {})
-jest.mock('react-native-qrcode-scanner', () => {})
-jest.mock('react-native-sound-player', () => {})
-jest.mock('react-native-orientation-locker', () => {})
-jest.mock('react-native-vector-icons/Feather', () => {})
-jest.mock('react-native-blob-util', () => {})
+jest.mock('@react-native-picker/picker', () => jest.fn())
+jest.mock('@react-native-community/checkbox', () => jest.fn())
+jest.mock('lottie-react-native', () => jest.fn())
+jest.mock('react-content-loader/native', () => jest.fn())
+jest.mock('react-native-webview', () => jest.fn())
+jest.mock('@haskkor/react-native-pincode', () => jest.fn())
+jest.mock('react-native-toggle-element', () => jest.fn())
+jest.mock('@react-native-community/slider', () => jest.fn())
+jest.mock('react-native-modal', () => jest.fn())
+jest.mock('react-native-video', () => jest.fn())
+jest.mock('@react-navigation/material-top-tabs', () => jest.fn())
+jest.mock('react-native-camera', () => jest.fn())
+jest.mock('react-native-qrcode-scanner', () => jest.fn())
+jest.mock('react-native-sound-player', () => jest.fn())
+jest.mock('react-native-orientation-locker', () => jest.fn())
+jest.mock('react-native-vector-icons/Feather', () => jest.fn())
+jest.mock('react-native-blob-util', () => jest.fn())
 jest.mock('react-native-date-picker', () => jest.fn())
 jest.mock('redux-persist-filesystem-storage', () => mockAsyncStorage)
 jest.mock('react-native-offline', () => {
@@ -149,7 +149,7 @@ jest.mock('react-native-fs', () => {
   }
 })
 
-jest.mock('react-native-zip-archive', () => {})
+jest.mock('react-native-zip-archive', () => jest.fn())
 
 jest.mock('react-native-gesture-handler', () => {
   return {
@@ -190,7 +190,7 @@ jest.mock('react-native', () => ({
     }),
   },
   StyleSheet: {
-    create: () => {},
+    create: () => jest.fn(),
   },
   View: jest.fn(),
   Platform: {

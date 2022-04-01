@@ -19,7 +19,7 @@ import questionInfoIndexStyles from './containers/QuestionInfo/Index.style'
 import medicalCaseIndexStyles from './containers/MedicalCase/Index.style'
 import medicalCaseListStyles from './containers/MedicalCase/List.style'
 import finalDiagnosesStyles from './containers/MedicalCase/Diagnoses/FinalDiagnoses.style'
-import drugsStyles from './containers/MedicalCase/Diagnoses/Drugs.style'
+import medicinesStyles from './containers/MedicalCase/Diagnoses/Medicines.style'
 import formulationsStyles from './containers/MedicalCase/Diagnoses/Formulations.style'
 import searchAdditionalStyles from './containers/MedicalCase/Diagnoses/SearchAdditional.style'
 import summaryStyles from './containers/MedicalCase/Diagnoses/Summary.style'
@@ -31,7 +31,6 @@ import consultationsStyles from './containers/Consultations.style'
 
 import consentListStyles from './containers/Consent/List.style'
 import consentPreviewStyles from './containers/Consent/Preview.style'
-import consentCameraStyles from './containers/Consent/Camera.style'
 
 import scanIndexStyles from './containers/Scan/Index.style'
 import filtersIndexStyles from './containers/Filters/Index.style'
@@ -65,7 +64,6 @@ export default function (props) {
     medicalCaseList: medicalCaseListStyles(props),
     synchronization: synchronizationIndexStyles(props),
     consentPreview: consentPreviewStyles(props),
-    consentCamera: consentCameraStyles(props),
     study: studyIndexStyles(props),
     emergency: emergencyIndexStyles(props),
     questionInfo: questionInfoIndexStyles(props),
@@ -74,7 +72,7 @@ export default function (props) {
     medicalCase: medicalCaseIndexStyles(props),
     finalDiagnoses: finalDiagnosesStyles(props),
     searchAdditional: searchAdditionalStyles(props),
-    drugs: drugsStyles(props),
+    medicines: medicinesStyles(props),
     formulations: formulationsStyles(props),
     summary: summaryStyles(props),
     summaryWrapper: summaryWrapperStyles(props),

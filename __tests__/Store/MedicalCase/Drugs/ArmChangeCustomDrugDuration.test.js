@@ -1,12 +1,8 @@
 import { store } from '@/Store'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
-import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses'
-import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
-import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
 import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
 import ArmAddCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmAddCustomDrugs'
-import ArmRemoveCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmRemoveCustomDrugs'
 import ArmChangeCustomDrugDuration from '@/Store/MedicalCase/ArmControl/ArmChangeCustomDrugDuration'
 
 beforeAll(async () => {

@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import { wp } from '@/Theme/Responsive'
-import { Icon } from '@/Components'
 import UpdateComment from '@/Store/MedicalCase/UpdateComment'
 
 const Comment = () => {

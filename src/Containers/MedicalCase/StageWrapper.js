@@ -37,10 +37,10 @@ const StageWrapperMedicalCaseContainer = ({ route }) => {
           </Text>
         </View>
         <Tab.Navigator
-          lazy={true}
           swipeEnabled={false}
           initialRouteName={currentStep.label}
-          tabBarOptions={{
+          options={{
+            lazy: true,
             scrollEnabled: true,
             tabStyle: medicalCase.tabBar,
           }}
