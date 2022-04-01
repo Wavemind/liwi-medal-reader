@@ -19,7 +19,7 @@ import questionInfoIndexStyles from './containers/QuestionInfo/Index.style'
 import medicalCaseIndexStyles from './containers/MedicalCase/Index.style'
 import medicalCaseListStyles from './containers/MedicalCase/List.style'
 import finalDiagnosesStyles from './containers/MedicalCase/Diagnoses/FinalDiagnoses.style'
-import drugsStyles from './containers/MedicalCase/Diagnoses/Drugs.style'
+import medicinesStyles from './containers/MedicalCase/Diagnoses/Medicines.style'
 import formulationsStyles from './containers/MedicalCase/Diagnoses/Formulations.style'
 import searchAdditionalStyles from './containers/MedicalCase/Diagnoses/SearchAdditional.style'
 import summaryStyles from './containers/MedicalCase/Diagnoses/Summary.style'
@@ -72,7 +72,7 @@ export default function (props) {
     medicalCase: medicalCaseIndexStyles(props),
     finalDiagnoses: finalDiagnosesStyles(props),
     searchAdditional: searchAdditionalStyles(props),
-    drugs: drugsStyles(props),
+    medicines: medicinesStyles(props),
     formulations: formulationsStyles(props),
     summary: summaryStyles(props),
     summaryWrapper: summaryWrapperStyles(props),

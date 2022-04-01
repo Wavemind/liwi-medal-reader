@@ -1,11 +1,12 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
-import { Text, View, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect, useMemo } from 'react'
+import { Text, View, TextInput, TouchableOpacity, Keyboard } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -20,7 +21,7 @@ const CustomDrugs = ({ customDrugs }) => {
     FontSize,
     Gutters,
     Colors,
-    Containers: { finalDiagnoses, drugs },
+    Containers: { finalDiagnoses, medicines },
     Components: { additionalSelect },
   } = useTheme()
 
@@ -38,6 +39,11 @@ const CustomDrugs = ({ customDrugs }) => {
     setUnassignedDrugs(newUnassignedDrugs)
   }, [diagnoses])
 
+  const orderedDrugs = useMemo(
+    () => orderBy(customDrugs, drug => drug.addedAt, ['asc']),
+    [customDrugs],
+  )
+
   /**
    * Updates the customDrug in the local state
    */
@@ -48,6 +54,7 @@ const CustomDrugs = ({ customDrugs }) => {
       { id: drugId, label: value, diagnoses: [] },
     ])
     setValue('')
+    Keyboard.dismiss()
   }
 
   /**
@@ -64,34 +71,34 @@ const CustomDrugs = ({ customDrugs }) => {
   }
 
   return (
-    <View style={drugs.wrapper}>
-      <View style={drugs.headerWrapper}>
-        <Text style={drugs.header}>
+    <View style={medicines.wrapper}>
+      <View style={medicines.headerWrapper}>
+        <Text style={medicines.header}>
           {t('containers.medical_case.drugs.custom')}
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {customDrugs.length === 0 && unassignedDrugs.length === 0 ? (
+        {orderedDrugs.length === 0 && unassignedDrugs.length === 0 ? (
           <Text style={finalDiagnoses.noItemsText}>
             {t('containers.medical_case.drugs.no_custom')}
           </Text>
         ) : (
-          customDrugs.map(drug => (
+          orderedDrugs.map(drug => (
             <CustomDrug key={`customDrug_${drug.id}`} drug={drug} />
           ))
         )}
       </View>
-      {unassignedDrugs.map(tempDrug => (
+      {unassignedDrugs.map(unassignedDrug => (
         <View
-          key={`tempDrug_${tempDrug.id}`}
+          key={`unassignedDrug_${unassignedDrug.id}`}
           style={additionalSelect.addAdditionalWrapper}
         >
-          <View style={drugs.drugTitleWrapper}>
-            <Text style={drugs.drugTitle}>{tempDrug.label}</Text>
-            <Text style={drugs.selectRelatedDiagnoses}>
+          <View style={medicines.drugTitleWrapper}>
+            <Text style={medicines.drugTitle}>{unassignedDrug.label}</Text>
+            <Text style={medicines.selectRelatedDiagnoses}>
               {t('containers.medical_case.drugs.select_related')}
             </Text>
-            <TouchableOpacity onPress={() => onRemovePress(tempDrug.id)}>
+            <TouchableOpacity onPress={() => onRemovePress(unassignedDrug.id)}>
               <Icon name="delete" size={FontSize.large} />
             </TouchableOpacity>
           </View>
@@ -99,8 +106,8 @@ const CustomDrugs = ({ customDrugs }) => {
             style={additionalSelect.addAdditionalButton}
             onPress={() =>
               navigate('SearchRelatedDiagnoses', {
-                drugId: tempDrug.id,
-                drugName: tempDrug.label,
+                drugId: unassignedDrug.id,
+                drugName: unassignedDrug.label,
                 drugType: 'custom',
               })
             }
@@ -110,7 +117,7 @@ const CustomDrugs = ({ customDrugs }) => {
             </Text>
             <View style={additionalSelect.addAdditionalButtonCountWrapper}>
               <Text style={additionalSelect.addAdditionalButtonCountText}>
-                {tempDrug.diagnoses.length}
+                {unassignedDrug.diagnoses.length}
               </Text>
             </View>
             <Icon

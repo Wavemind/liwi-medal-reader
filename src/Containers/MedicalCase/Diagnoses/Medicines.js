@@ -2,9 +2,9 @@
  * The external imports
  */
 import React, { useEffect, useMemo } from 'react'
-import { ScrollView, KeyboardAvoidingView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 /**
  * The internal imports
@@ -24,15 +24,16 @@ const MedicinesMedicalCaseContainer = () => {
 
   const drugs = useMemo(reworkAndOrderDrugs, [diagnoses])
 
-  // TODO: CHANGE WITH KeyboardAvoidingScrollView IN SUMMARY
   return (
-    <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={200}>
-      <ScrollView>
-        <CalculatedDrugs calculatedDrugs={drugs.calculated} />
-        <AdditionalDrugs additionalDrugs={drugs.additional} />
-        <CustomDrugs customDrugs={drugs.custom} />
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <KeyboardAwareScrollView
+      keyboardShouldPersistTaps="handled"
+      enableOnAndroid={true}
+      extraHeight={200}
+    >
+      <CalculatedDrugs calculatedDrugs={drugs.calculated} />
+      <AdditionalDrugs additionalDrugs={drugs.additional} />
+      <CustomDrugs customDrugs={drugs.custom} />
+    </KeyboardAwareScrollView>
   )
 }
 

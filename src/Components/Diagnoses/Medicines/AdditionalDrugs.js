@@ -1,10 +1,11 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import orderBy from 'lodash/orderBy'
 
 /**
  * The internal imports
@@ -24,7 +25,7 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
   const {
     FontSize,
     Gutters,
-    Containers: { drugs, finalDiagnoses },
+    Containers: { medicines, finalDiagnoses },
     Components: { additionalSelect },
   } = useTheme()
 
@@ -40,6 +41,11 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
     })
     setUnassignedDrugs(newUnassignedDrugs)
   }, [diagnoses])
+
+  const orderedDrugs = useMemo(
+    () => orderBy(additionalDrugs, drug => drug.addedAt, ['asc']),
+    [additionalDrugs],
+  )
 
   /**
    * Updates the additionalDrug in the local state
@@ -66,19 +72,19 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
   }
 
   return (
-    <View style={drugs.wrapper}>
-      <View style={drugs.headerWrapper}>
-        <Text style={drugs.header}>
+    <View style={medicines.wrapper}>
+      <View style={medicines.headerWrapper}>
+        <Text style={medicines.header}>
           {t('containers.medical_case.drugs.additional')}
         </Text>
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-        {additionalDrugs.length === 0 && unassignedDrugs.length === 0 ? (
+        {orderedDrugs.length === 0 && unassignedDrugs.length === 0 ? (
           <Text style={finalDiagnoses.noItemsText}>
             {t('containers.medical_case.drugs.no_additional')}
           </Text>
         ) : (
-          additionalDrugs.map(drug => (
+          orderedDrugs.map(drug => (
             <AdditionalDrug key={`additionalDrug_${drug.id}`} drug={drug} />
           ))
         )}
@@ -87,12 +93,12 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
             key={`unassignedDrug_${unassignedDrug.id}`}
             style={additionalSelect.addAdditionalWrapper}
           >
-            <View style={drugs.drugTitleWrapper}>
-              <Text style={drugs.drugTitle}>
+            <View style={medicines.drugTitleWrapper}>
+              <Text style={medicines.drugTitle}>
                 {translate(nodes[unassignedDrug.id].label)}
               </Text>
               <QuestionInfoButton nodeId={unassignedDrug.id} />
-              <Text style={drugs.selectRelatedDiagnoses}>
+              <Text style={medicines.selectRelatedDiagnoses}>
                 {t('containers.medical_case.drugs.select_related')}
               </Text>
               <TouchableOpacity
@@ -128,6 +134,9 @@ const AdditionalDrugs = ({ additionalDrugs }) => {
         ))}
       </View>
       <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
+        <Text style={medicines.indication}>
+          {t('containers.medical_case.drugs.select_additional')}
+        </Text>
         <DrugsAutocomplete updateAdditionalDrugs={updateAdditionalDrugs} />
       </View>
     </View>

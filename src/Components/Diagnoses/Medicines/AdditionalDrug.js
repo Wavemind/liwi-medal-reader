@@ -16,12 +16,13 @@ import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDru
 import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
 import { formatDuration } from '@/Utils/Drug'
 
+// TODO : If validated by docs, merge with CustomDrug
 const AdditionalDrug = ({ drug }) => {
   // Theme and style elements deconstruction
   const {
     FontSize,
     Gutters,
-    Containers: { formulations, drugs },
+    Containers: { medicines },
     Components: { additionalSelect },
   } = useTheme()
 
@@ -62,17 +63,20 @@ const AdditionalDrug = ({ drug }) => {
   }
 
   return (
-    <View style={drugs.additionalWrapper}>
-      <View style={drugs.drugTitleWrapper}>
-        <Text style={drugs.drugTitle}>{drug.label}</Text>
+    <View style={medicines.additionalWrapper}>
+      <View style={medicines.drugTitleWrapper}>
+        <Text style={medicines.drugTitle}>{drug.label}</Text>
         <QuestionInfoButton nodeId={drug.id} />
         <View style={additionalSelect.durationWrapper}>
+          <Text style={additionalSelect.durationLabel}>
+            {t('formulations.drug.duration')}
+          </Text>
           <TextInput
             style={additionalSelect.durationInput}
             onChangeText={duration => onUpdateDuration(duration)}
             value={drug.duration ? String(drug.duration) : ''}
             textAlign="center"
-            keyboardType="decimal-pad"
+            keyboardType="number-pad"
           />
         </View>
         <TouchableOpacity onPress={onRemovePress}>
@@ -80,13 +84,13 @@ const AdditionalDrug = ({ drug }) => {
         </TouchableOpacity>
       </View>
       <View>
-        <Text style={drugs.indication}>
+        <Text style={medicines.indication}>
           {t('containers.medical_case.drugs.indication')}
         </Text>
         {drug.diagnoses.map(diagnosis => (
           <Text
             key={`diagnosisDrug_${diagnosis.id}`}
-            style={drugs.drugDescription}
+            style={medicines.drugDescription}
           >
             - {diagnosis.label}
           </Text>
@@ -116,7 +120,7 @@ const AdditionalDrug = ({ drug }) => {
           size={FontSize.large}
         />
       </TouchableOpacity>
-      <View style={formulations.pickerWrapper}>
+      <View style={medicines.pickerWrapper}>
         <FormulationsPicker drug={drug} />
       </View>
     </View>

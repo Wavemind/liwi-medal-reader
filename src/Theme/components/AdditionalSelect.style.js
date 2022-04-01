@@ -9,7 +9,11 @@ export default function (props) {
 
   return StyleSheet.create({
     durationWrapper: {
-      height: hp(5),
+      height: hp(8),
+    },
+    durationLabel: {
+      ...Gutters.tinyBMargin,
+      ...Fonts.textCenter,
     },
     durationInput: {
       ...Gutters.smallVPadding,

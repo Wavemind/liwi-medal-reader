@@ -1,5 +1,4 @@
 import { store } from '@/Store'
-import i18n from '@/Translations'
 import { Config } from '@/Config'
 import { roundSup } from '@/Utils/Formulations/RoundSup'
 
@@ -9,7 +8,6 @@ import { roundSup } from '@/Utils/Formulations/RoundSup'
  * @param drugId
  * @returns {
  * { doseResult: null}
- * | {doseResult: null, no_possibility: string}
  * | {recurrence: *, doseResult: *, doseResultMg: *, maxDoseMg: *, minDoseMl: number, maxDoseMl: number, minDoseMg: *}
  * | {recurrence: *, doseResult: *, maxDoseCap: number, maxDoseMg: *, minDoseMg: *, minDoseCap: number}
  * }
@@ -25,6 +23,7 @@ const drugDoses = (formulationIndex, drugId) => {
   let doseResult
   let doseResultMg
   let pillSize
+  let uniqDose = false
 
   const drug = algorithm.nodes[drugId]
 
@@ -32,17 +31,12 @@ const drugDoses = (formulationIndex, drugId) => {
   const formulation = drug.formulations[formulationIndex]
 
   if (formulation === undefined) {
-    return { doseResult: null }
+    return { doseResult: null, uniqDose }
   }
 
   const recurrence = 24 / formulation.doses_per_day
 
-  // Age and weight must be answered to calculate dosage
-  if (
-    mcWeight !== undefined &&
-    mcWeight.value !== null &&
-    !formulation.by_age
-  ) {
+  if (!formulation.by_age) {
     switch (formulation.medication_form) {
       case Config.MEDICATION_FORMS.syrup:
       case Config.MEDICATION_FORMS.suspension:
@@ -94,6 +88,7 @@ const drugDoses = (formulationIndex, drugId) => {
           doseResult,
           doseResultMg,
           recurrence,
+          uniqDose,
           ...formulation,
         }
 
@@ -105,12 +100,13 @@ const drugDoses = (formulationIndex, drugId) => {
           (mcWeight.value * formulation.minimal_dose_per_kg) /
             formulation.doses_per_day,
         )
+
         maxDoseMg = roundSup(
           (mcWeight.value * formulation.maximal_dose_per_kg) /
             formulation.doses_per_day,
         )
-        pillSize = formulation.dose_form // dose form
 
+        pillSize = formulation.dose_form
         if (formulation.breakable !== null) {
           pillSize /= formulation.breakable
         }
@@ -118,16 +114,20 @@ const drugDoses = (formulationIndex, drugId) => {
         // Second calculate min and max dose (cap)
         const minDoseCap = roundSup((1 / pillSize) * minDoseMg)
         const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg)
-        
+
         // Define Dose Result
         doseResult = (minDoseCap + maxDoseCap) / 2
+        const doseResultNotRounded = doseResult
+
         if (maxDoseCap < 1) {
           return {
             ...formulation,
-            no_possibility: i18n.t('formulations.drug.no_options'),
+            uniqDose,
             doseResult: null,
           }
         }
+
+        // Out of range
         if (Math.ceil(doseResult) <= maxDoseCap) {
           // Viable Solution
           doseResult = Math.ceil(doseResult)
@@ -139,20 +139,24 @@ const drugDoses = (formulationIndex, drugId) => {
           // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
           doseResult = Math.floor(minDoseCap)
         }
+
         return {
           minDoseMg,
           maxDoseMg,
           minDoseCap,
           maxDoseCap,
           doseResult,
+          doseResultNotRounded,
           recurrence,
+          uniqDose,
           ...formulation,
         }
       default:
-        break
+        return { doseResult: null, uniqDose: true, recurrence, ...formulation }
     }
   }
-  return { doseResult: null, recurrence, ...formulation }
+
+  return { doseResult: null, uniqDose: true, recurrence, ...formulation }
 }
 
 export default drugDoses

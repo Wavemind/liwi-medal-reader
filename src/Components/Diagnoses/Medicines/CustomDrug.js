@@ -16,12 +16,13 @@ import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
 import ChangeDrugDuration from '@/Store/MedicalCase/Drugs/ChangeDrugDuration'
 import { formatDuration } from '@/Utils/Drug'
 
+// TODO : If validated by docs, merge with AdditionalDrug
 const CustomDrug = ({ drug }) => {
   // Theme and style elements deconstruction
   const {
     FontSize,
     Gutters,
-    Containers: { drugs },
+    Containers: { medicines },
     Components: { additionalSelect },
   } = useTheme()
 
@@ -62,16 +63,19 @@ const CustomDrug = ({ drug }) => {
   }
 
   return (
-    <View style={drugs.additionalWrapper}>
-      <View style={drugs.drugTitleWrapper}>
-        <Text style={drugs.drugTitle}>{drug.label}</Text>
+    <View style={medicines.additionalWrapper}>
+      <View style={medicines.drugTitleWrapper}>
+        <Text style={medicines.drugTitle}>{drug.label}</Text>
         <View style={additionalSelect.durationWrapper}>
+          <Text style={additionalSelect.durationLabel}>
+            {t('formulations.drug.duration')}
+          </Text>
           <TextInput
             style={additionalSelect.durationInput}
             onChangeText={duration => onUpdateDuration(duration)}
             value={drug.duration ? String(drug.duration) : ''}
             textAlign="center"
-            keyboardType="decimal-pad"
+            keyboardType="number-pad"
           />
         </View>
         <TouchableOpacity onPress={onRemovePress}>
@@ -79,13 +83,13 @@ const CustomDrug = ({ drug }) => {
         </TouchableOpacity>
       </View>
       <View>
-        <Text style={drugs.indication}>
+        <Text style={medicines.indication}>
           {t('containers.medical_case.drugs.indication')}
         </Text>
         {drug.diagnoses.map(diagnosis => (
           <Text
             key={`diagnosisDrug_${diagnosis.id}`}
-            style={drugs.drugDescription}
+            style={medicines.drugDescription}
           >
             - {diagnosis.label}
           </Text>

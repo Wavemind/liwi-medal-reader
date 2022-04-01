@@ -5,6 +5,7 @@ import { store } from '@/Store'
 import { Config } from '@/Config'
 import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
 import { translate } from '@/Translations/algorithm'
+import i18n from '@/Translations/index'
 
 /**
  * Returns all available drugs for a specific final diagnosis
@@ -221,7 +222,15 @@ export const reworkAndOrderDrugs = () => {
 
             // Drug already exist
             if (drugIndex > -1) {
-              if (drugType !== 'proposed') {
+              const diagnosisExists = newDrugs[drugKey][
+                drugIndex
+              ].diagnoses.some(diag => diag.id === diagnosis.id)
+              if (!diagnosisExists) {
+                const currentDuration = newDrugs[drugKey][drugIndex].duration
+                newDrugs[drugKey][drugIndex].duration =
+                  drugType === 'agreed'
+                    ? extractDuration(diagnosis.id, drugId, currentDuration)
+                    : currentDuration
                 newDrugs[drugKey][drugIndex].diagnoses.push({
                   id: diagnosis.id,
                   key: diagnosisType,
@@ -249,7 +258,7 @@ export const reworkAndOrderDrugs = () => {
                 ],
                 duration:
                   drugType === 'agreed'
-                    ? translate(nodes[diagnosis.id].drugs[drugId].duration)
+                    ? extractDuration(diagnosis.id, drugId)
                     : drug.duration,
                 addedAt: drug.addedAt,
                 selectedFormulationId: drug.formulation_id,
@@ -278,6 +287,30 @@ const getDrugIndex = (drugs, drugId) => {
     }
   }
   return -1
+}
+
+/**
+ * Extracts the duration from the current diagnosis and checks if readable
+ * @param {*} diagnosisId integer
+ * @param {*} drugId integer
+ * @param {*} currentDuration integer || string
+ * @returns integer || string
+ */
+const extractDuration = (diagnosisId, drugId, currentDuration = 0) => {
+  if (Number.isInteger(currentDuration)) {
+    const nodes = store.getState().algorithm.item.nodes
+    const drugDuration = nodes[diagnosisId].drugs[drugId].duration
+    const result = translate(drugDuration).match(new RegExp(/^\d{1,2}$/g))
+    if (result) {
+      const newDuration = parseInt(result[0], 10)
+      if (newDuration > currentDuration) {
+        return parseInt(result[0], 10)
+      } else {
+        return currentDuration
+      }
+    }
+  }
+  return i18n.t('containers.medical_case.drugs.duration_invalid')
 }
 
 /**

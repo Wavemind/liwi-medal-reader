@@ -44,7 +44,6 @@ const FormulationsPicker = ({ drug }) => {
       )
     })
   }
-
   return (
     <Picker
       style={formulations.picker}
@@ -55,7 +54,7 @@ const FormulationsPicker = ({ drug }) => {
     >
       <Picker.Item
         key="select-placeholder"
-        label={t('actions.select')}
+        label={t('formulations.drug.missing_medicine_formulation')}
         value={null}
       />
       {Object.values(nodes[drug.id].formulations).map((formulation, index) => (
