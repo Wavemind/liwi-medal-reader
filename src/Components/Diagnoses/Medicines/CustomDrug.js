@@ -75,7 +75,7 @@ const CustomDrug = ({ drug }) => {
             onChangeText={duration => onUpdateDuration(duration)}
             value={drug.duration ? String(drug.duration) : ''}
             textAlign="center"
-            keyboardType="decimal-pad"
+            keyboardType="number-pad"
           />
         </View>
         <TouchableOpacity onPress={onRemovePress}>
