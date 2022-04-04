@@ -34,7 +34,7 @@ const ProfileWrapperPatientContainer = () => {
   return (
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
       <Tab.Navigator
-        tabBarOptions={{ scrollEnabled: true }}
+        options={{ scrollEnabled: true }}
         tabBar={tabProps => <PatientTabBar {...tabProps} />}
       >
         <Tab.Screen

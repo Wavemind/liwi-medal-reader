@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View, Text } from 'react-native'
 
 /**
@@ -10,7 +10,7 @@ import { View, Text } from 'react-native'
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
 
-const ErrorNavbar = ({ errors, loading, onPress }) => {
+const Error = ({ errors, loading, onPress }) => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
@@ -19,12 +19,15 @@ const ErrorNavbar = ({ errors, loading, onPress }) => {
     FontSize,
   } = useTheme()
 
-  const message =
-    typeof errors === 'object'
-      ? typeof errors.message === 'string'
-        ? errors.message
-        : Object.values(errors.message)[0]
-      : errors
+  const message = useMemo(() => {
+    if (typeof errors === 'object') {
+      if (typeof errors.message === 'string') {
+        return errors.message
+      }
+      return Object.values(errors.message)[0]
+    }
+    return errors
+  }, [errors])
 
   return (
     <View style={bottomNavbar.errorContainer}>
@@ -47,4 +50,4 @@ const ErrorNavbar = ({ errors, loading, onPress }) => {
   )
 }
 
-export default ErrorNavbar
+export default Error

@@ -32,7 +32,7 @@ const CustomDrawerItem = ({
 
   const dispatch = useDispatch()
 
-  const { index, routes } = navigation.dangerouslyGetState()
+  const { index, routes } = navigation.getState()
 
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
   const closedAt = useSelector(state => state.medicalCase.item.closedAt)

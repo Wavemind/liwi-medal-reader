@@ -101,7 +101,7 @@ const IndexScanContainer = () => {
    * Handles navigation after Scan successful
    */
   useEffect(() => {
-    openMedicalCase(scanData)
+    openMedicalCase()
   }, [scanData])
 
   /**
@@ -148,13 +148,13 @@ const IndexScanContainer = () => {
           </View>
 
           <View style={Layout.row}>
-            <View style={scan.leftScan(handleQrError)} />
+            <View style={scan.sideScan(handleQrError)} />
 
             <View style={scan.centerScan}>
               <Icon name="qr-scan" size={WIDTH * 0.5} />
             </View>
 
-            <View style={scan.rightScan(handleQrError)} />
+            <View style={scan.sideScan(handleQrError)} />
           </View>
 
           <View style={scan.bottomWrapper(handleQrError)}>

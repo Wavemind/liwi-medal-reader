@@ -10,10 +10,11 @@ assignees: ''
 ## Environment
 
 Server : [dev/staging/prod]
-Version ID or URL : 
-Health facility ID or URL : 
+Version ID or medAl-Creator URL: 
+Health facility ID or medAl-Data URL : 
 Architecture : [standalone/client-server]
-App version : 
+Device ID : 
+App version : [displayed in settings view]
 
 ## Describe the bug
 A clear and concise description of what the bug is.

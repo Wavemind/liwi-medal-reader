@@ -38,7 +38,6 @@ import pictureStyles from './components/Picture.style'
 import audioStyles from './components/Audio.style'
 import numericStyles from './components/Numeric.style'
 import stringStyles from './components/String.style'
-import dateStyles from './components/Date.style'
 import toggleStyles from './components/Toggle.style'
 import consentStyles from './components/Consent.style'
 import diagnosisItemStyles from './components/DiagnosisItem.style'
@@ -93,7 +92,6 @@ export default function (props) {
     audio: audioStyles(props),
     numeric: numericStyles(props),
     string: stringStyles(props),
-    date: dateStyles(props),
     toggleComplaintCategory: toggleStyles(props),
     consent: consentStyles(props),
     diagnosisItem: diagnosisItemStyles(props),

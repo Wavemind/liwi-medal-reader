@@ -8,22 +8,12 @@ export default function (props) {
   const inputWidth = wp(18)
 
   return StyleSheet.create({
-    headerWrapper: {
-      ...Layout.row,
-      ...Gutters.regularHPadding,
-    },
-    headerSpacer: {
-      ...Gutters.regularRMargin,
-      width: labelWidth,
+    durationWrapper: {
+      height: hp(8),
     },
     durationLabel: {
-      ...Fonts.textTiny,
+      ...Gutters.tinyBMargin,
       ...Fonts.textCenter,
-      color: Colors.grey,
-      width: inputWidth,
-    },
-    durationWrapper: {
-      height: hp(5),
     },
     durationInput: {
       ...Gutters.smallVPadding,
@@ -49,9 +39,14 @@ export default function (props) {
       color: Colors.primary,
       width: wp(40),
     },
+    addAdditionalWrapper: {
+      ...Gutters.regularHPadding,
+      ...Gutters.regularVPadding,
+      borderBottomColor: Colors.grey,
+      borderBottomWidth: 1,
+    },
     addAdditionalButton: {
       ...Gutters.smallTMargin,
-      ...Gutters.regularBMargin,
       ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,
       ...Layout.row,

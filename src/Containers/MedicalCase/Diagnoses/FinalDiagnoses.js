@@ -2,9 +2,10 @@
  * The external imports
  */
 import React, { useEffect } from 'react'
-import { View, ScrollView } from 'react-native'
+import { View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 /**
  * The internal imports
@@ -33,7 +34,11 @@ const FinalDiagnosesMedicalCaseContainer = () => {
   }, [])
 
   return (
-    <ScrollView style={Gutters.regularHPadding}>
+    <KeyboardAwareScrollView
+      style={Gutters.regularHPadding}
+      keyboardShouldPersistTaps="handled"
+      enableOnAndroid={true}
+    >
       <SectionHeader
         label={t('containers.medical_case.diagnoses.proposed_title', {
           version_name: versionName,
@@ -52,7 +57,7 @@ const FinalDiagnosesMedicalCaseContainer = () => {
         />
         <CustomDiagnoses />
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   )
 }
 

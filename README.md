@@ -1,4 +1,4 @@
-# MedAl-reader [![CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml/badge.svg?branch=develop)](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)
+# MedAl-Reader [![CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml/badge.svg?branch=develop)](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)
 
 React native application used by clinician and feed by MedAl-creator
 
@@ -10,7 +10,7 @@ Below you'll find information about performing common tasks.
 
 ## Table of contents
 
-- [MedAl-reader](#medal-reader-) [CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)
+- [MedAl-Reader](#medal-Reader) [CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)
   - [Setup](#setup)
   - [Table of contents](#table-of-contents)
   - [Available scripts](#available-scripts)
@@ -23,6 +23,7 @@ Below you'll find information about performing common tasks.
   - [Customizing app display name and icons](#customizing-app-display-name-and-icon)
   - [Data structure](#data-structure)
     - [Medical case](#medical-case)
+    - [Diagnoses](#diagnosis)
   - [Icons available](#icons-available)
   - [Date](#date)
     - [ColoredIcon](#coloredicon)
@@ -67,7 +68,6 @@ Please refer to [TheCodingMachine React Native boilerplate](https://github.com/t
 ## Data structure
 
 ### Medical case
-
 | Field           | type                         | Description                                                                  |
 | --------------- | ---------------------------- | ---------------------------------------------------------------------------- |
 | activities      | Array<[Activity](#activity)> | Array of all activities related                                              |
@@ -82,6 +82,71 @@ Please refer to [TheCodingMachine React Native boilerplate](https://github.com/t
 | updated_at      | `string (UUID)`              | Date & Time when the patient was updated for the last time                   |
 | version_id      | `integer`                    | Medal-Creator's id of the version used                                       |
 | json_version    | `integer`                    | Medal-Creator's incremental of the version used                              |
+
+### Diagnoses
+`{
+	"proposed": [(array of node id)],
+	"excluded": [(array of node id)],
+	"refused": [(array of node id)],
+	"additional": {
+		"1" : {
+			"id": "1",
+			"managements": [(array of node id)]
+			"drugs": {
+				"agreed": {
+					"14" : {
+						"id": 14
+						"formulation_id" : 4
+          }
+				},
+				"refused": [(array of node id)],
+				"additional": {
+					"15" : {
+						"formulation_id" : 4
+            "duration": 5 # in days
+            "addedAt": 1689546123 # unix timestamp
+          }
+				}
+			}
+		}
+	},
+	"agreed": {
+		"1" : {
+			"id": "1",
+			"managements": [(array of node id)]
+			"drugs": {
+				"agreed": {
+					"14" : {
+						"id": 14
+						"formulation_id" : 4
+          }
+				},
+				"refused": [(array of node id)],
+				"additional": {
+					"15" : {
+						"formulation_id" : 4
+            "duration": 5 # in days
+            "addedAt": 1689546123 # unix timestamp
+          }
+				}
+			}
+		}
+	},
+	"custom": {
+		"uid" :	{	
+			"id": uid,
+			"name": "My name",
+			"drugs": {
+				"uid" : {
+					"id": uid
+					"name": "my custom drug",
+					"duration": 5 # in days
+				}
+			}
+		}
+	}
+}`
+
 
 ## Icons available
 

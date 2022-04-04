@@ -1,4 +1,3 @@
-import { hp } from '@/Theme/Responsive'
 /**
  * This file contains the application's variables.
  *

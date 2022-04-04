@@ -43,11 +43,9 @@ beforeAll(async () => {
     AddAdditionalDrugs.action({
       diagnosisKey: 'agreed',
       diagnosisId,
-      newAdditionalDrugs: {
-        [drugId]: {
-          id: drugId,
-          duration: '',
-        },
+      newAdditionalDrug: {
+        id: drugId,
+        duration: '',
       },
     }),
   )
@@ -55,11 +53,9 @@ beforeAll(async () => {
     AddAdditionalDrugs.action({
       diagnosisKey: 'additional',
       diagnosisId,
-      newAdditionalDrugs: {
-        [drugId]: {
-          id: drugId,
-          duration: '',
-        },
+      newAdditionalDrug: {
+        id: drugId,
+        duration: '',
       },
     }),
   )

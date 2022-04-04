@@ -47,7 +47,7 @@ export default function (props) {
       ...Gutters.smallBMargin,
     },
     drugTitle: {
-      ...Fonts.textSmall,
+      ...Fonts.textRegular,
       ...Fonts.textBold,
       maxWidth: wp(70),
       color: Colors.primary,
@@ -55,6 +55,7 @@ export default function (props) {
     drugText: {
       ...Fonts.textSmall,
       color: Colors.primary,
+      lineHeight: 27,
     },
     managementWrapper: (isLast, isReferral) => ({
       backgroundColor: isReferral ? Colors.emergency : '',

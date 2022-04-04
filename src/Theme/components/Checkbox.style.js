@@ -14,7 +14,7 @@ export default function (props) {
       ...Gutters.smallHMargin,
       ...Gutters.smallVMargin,
       ...Fonts.textSmall,
-      color: disabled ? Colors.primary : Colors.primary,
+      color: Colors.primary,
       opacity: disabled ? 0.3 : 1,
     }),
     tintColors: disabled => ({

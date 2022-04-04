@@ -3,6 +3,7 @@
  */
 import { store } from '@/Store'
 import i18n from '@/Translations/index'
+import { reworkAndOrderDrugs } from '@/Utils/Drug'
 
 export default async errors => {
   const state = store.getState()
@@ -33,6 +34,24 @@ export default async errors => {
         errors[proposedNode] = i18n.t('validation.medicines_required')
       }
     })
+
+    const allDrugs = reworkAndOrderDrugs()
+    Object.values(allDrugs)
+      .flat()
+      .forEach(drug => {
+        if (
+          ['agreed', 'additional'].includes(drug.key) &&
+          !drug.selectedFormulationId
+        ) {
+          errors[drug.id] = i18n.t('validation.formulation_required')
+        }
+        if (
+          ['additional', 'custom'].includes(drug.key) &&
+          drug.duration === ''
+        ) {
+          errors[drug.id] = i18n.t('validation.duration_required')
+        }
+      })
   }
 
   return errors

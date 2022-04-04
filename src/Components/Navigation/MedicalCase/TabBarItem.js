@@ -28,7 +28,7 @@ const TabBarItem = ({ status, route, index, navigation }) => {
           disabled={status !== 'done'}
           style={[Layout.fill, tabBar.tab]}
         >
-          {!(index === 0) && (
+          {index !== 0 && (
             <Icon
               style={Layout.fill}
               size={FontSize.small}

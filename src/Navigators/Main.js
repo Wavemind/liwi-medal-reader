@@ -74,9 +74,8 @@ const MainNavigator = ({ route, navigation }) => {
           )
           await dispatch(ToggleVisibility.action({}))
         } else if (
-          navigation.dangerouslyGetState()?.routes[0]?.state?.index &&
-          !navigation.dangerouslyGetState()?.routes[0]?.state?.index !==
-            route.key
+          navigation.getState()?.routes[0]?.state?.index &&
+          !navigation.getState()?.routes[0]?.state?.index !== route.key
         ) {
           navigation.goBack()
         } else {
@@ -99,10 +98,10 @@ const MainNavigator = ({ route, navigation }) => {
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
-        drawerStyle={Layout.fullWidth}
         screenOptions={{
           headerShown: true,
-          header: ({ scene }) => <Header {...scene} />,
+          drawerStyle: Layout.fullWidth,
+          header: props => <Header {...props} />,
         }}
       >
         <Drawer.Screen

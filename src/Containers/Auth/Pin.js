@@ -3,7 +3,7 @@
  */
 import React, { useEffect, useState, useRef } from 'react'
 import PINCode from '@haskkor/react-native-pincode'
-import { View, Text, Animated, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 import { useTranslation } from 'react-i18next'
@@ -126,67 +126,63 @@ const PinAuthContainer = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior="height" style={global.wrapper}>
-      <Animated.ScrollView style={global.animation(fadeAnim)}>
-        <Text style={auth.header}>
-          {currentClinician.first_name} {currentClinician.last_name}
-          {'\n'}
-          <Text style={authPin.secondTitle}>
-            {t(`health_facility.roles.${currentClinician.role}`)}
-          </Text>
+    <Animated.View style={[global.animation(fadeAnim), global.wrapper]}>
+      <Text style={auth.header}>
+        {currentClinician.first_name} {currentClinician.last_name}
+        {'\n'}
+        <Text style={authPin.secondTitle}>
+          {t(`health_facility.roles.${currentClinician.role}`)}
         </Text>
-        {algorithmFetchOneError && (
-          <Text style={auth.errorMessage}>
-            {algorithmFetchOneError.message}
+      </Text>
+      {algorithmFetchOneError && (
+        <Text style={auth.errorMessage}>{algorithmFetchOneError.message}</Text>
+      )}
+      {emergencyContentFetchOneError && (
+        <Text style={auth.errorMessage}>
+          {emergencyContentFetchOneError.message}
+        </Text>
+      )}
+      <View style={authPin.messageWrapper}>
+        {messageTypes.map(messageType => (
+          <Text style={authPin.secondTitle} key={messageType}>
+            {t(`containers.auth.pin.${messageType}`)}
           </Text>
-        )}
-        {emergencyContentFetchOneError && (
-          <Text style={auth.errorMessage}>
-            {emergencyContentFetchOneError.message}
-          </Text>
-        )}
-        <View style={authPin.messageWrapper}>
-          {messageTypes.map(messageType => (
-            <Text style={authPin.secondTitle} key={messageType}>
-              {t(`containers.auth.pin.${messageType}`)}
-            </Text>
-          ))}
-        </View>
-        <View style={authPin.wrapper}>
-          <PINCode
-            passwordLength={pinCode.length}
-            endProcessFunction={handlePin}
-            disableLockScreen
-            status="enter"
-            pinStatus={status}
-            titleComponent={() =>
-              loading ? (
-                <Loader height={Math.round(heightPercentageToDP(11))} />
-              ) : (
-                <Text style={authPin.title}>
-                  {t('containers.auth.pin.unlock')}
-                </Text>
-              )
-            }
-            storedPin={pinCode}
-            buttonDeleteText={t('containers.auth.pin.delete')}
-            colorCircleButtons={Colors.grey}
-            colorPassword={Colors.red}
-            stylePinCodeButtonNumber={Colors.secondary}
-            numbersButtonOverlayColor={Colors.red}
-            stylePinCodeDeleteButtonColorShowUnderlay={Colors.red}
-            stylePinCodeDeleteButtonColorHideUnderlay={Colors.grey}
-            stylePinCodeColorTitle={Colors.red}
-            stylePinCodeDeleteButtonSize={Math.round(heightPercentageToDP(3.8))}
-            stylePinCodeDeleteButtonText={authPin.delete}
-            stylePinCodeRowButtons={authPin.codeButtons}
-          />
-        </View>
-        <View style={auth.themeToggleWrapper}>
-          <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
-        </View>
-      </Animated.ScrollView>
-    </KeyboardAvoidingView>
+        ))}
+      </View>
+      <View style={authPin.wrapper}>
+        <PINCode
+          passwordLength={pinCode.length}
+          endProcessFunction={handlePin}
+          disableLockScreen
+          status="enter"
+          pinStatus={status}
+          titleComponent={() =>
+            loading ? (
+              <Loader height={Math.round(heightPercentageToDP(11))} />
+            ) : (
+              <Text style={authPin.title}>
+                {t('containers.auth.pin.unlock')}
+              </Text>
+            )
+          }
+          storedPin={pinCode}
+          buttonDeleteText={t('containers.auth.pin.delete')}
+          colorCircleButtons={Colors.grey}
+          colorPassword={Colors.red}
+          stylePinCodeButtonNumber={Colors.secondary}
+          numbersButtonOverlayColor={Colors.red}
+          stylePinCodeDeleteButtonColorShowUnderlay={Colors.red}
+          stylePinCodeDeleteButtonColorHideUnderlay={Colors.grey}
+          stylePinCodeColorTitle={Colors.red}
+          stylePinCodeDeleteButtonSize={Math.round(heightPercentageToDP(3.8))}
+          stylePinCodeDeleteButtonText={authPin.delete}
+          stylePinCodeRowButtons={authPin.codeButtons}
+        />
+      </View>
+      <View style={auth.themeToggleWrapper}>
+        <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
+      </View>
+    </Animated.View>
   )
 }
 
