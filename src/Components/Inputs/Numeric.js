@@ -90,6 +90,7 @@ const Numeric = ({ questionId, editable = true }) => {
   return (
     <View>
       <TextInput
+        autoCapitalize="words"
         style={numeric.input(editable)}
         onEndEditing={onEndEditing}
         keyboardType="decimal-pad"
