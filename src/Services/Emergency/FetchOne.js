@@ -12,6 +12,8 @@ import {
 import { unzip } from 'react-native-zip-archive'
 import ReactNativeBlobUtil from 'react-native-blob-util'
 import { checkInternetConnection } from 'react-native-offline'
+import * as Keychain from 'react-native-keychain'
+import { showMessage } from 'react-native-flash-message'
 
 /**
  * The internal imports
@@ -19,6 +21,8 @@ import { checkInternetConnection } from 'react-native-offline'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { RefreshTokenAuthService } from '@/Services/Auth'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
+import i18n from '@/Translations/index'
 
 export default async ({ emergencyContentVersion }) => {
   const state = store.getState()
@@ -54,7 +58,7 @@ export default async ({ emergencyContentVersion }) => {
       `${mainDataUrl}/api/v1/emergency-content?json_version=${emergencyContentVersion}`,
       {
         'Content-Type': 'multipart/form-data',
-        Accept: 'application/zip',
+        Accept: 'application/json',
         Authorization: bearToken,
       },
     )
@@ -67,6 +71,27 @@ export default async ({ emergencyContentVersion }) => {
   // If emergency content doesn't change. Load current stored.
   if (response === undefined || response.respInfo.status === 204) {
     return oldEmergencyContent
+  }
+
+  // Token revoked, so we need to logout and redirect to login screen
+  if (response.respInfo.status === 401) {
+    // device token revoke, so disconnect
+    showMessage({
+      message: i18n.t('errors.token.title'),
+      description: i18n.t('errors.token.description'),
+      type: 'danger',
+      duration: 5000,
+    })
+
+    // Remove tokens
+    await Keychain.resetInternetCredentials('accessToken')
+    await Keychain.resetInternetCredentials('accessTokenExpirationDate')
+    await Keychain.resetInternetCredentials('refreshToken')
+
+    // Ask user to enrol again
+    navigateAndSimpleReset('Auth', { screen: 'Login' })
+
+    return Promise.reject({ message: i18n.t('errors.token.description') })
   }
 
   //////////////////////////////////////////////////////////////////////////////

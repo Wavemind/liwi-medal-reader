@@ -3,6 +3,7 @@
  */
 import axios from 'axios'
 import { showMessage } from 'react-native-flash-message'
+import * as Keychain from 'react-native-keychain'
 
 /**
  * The internal imports
@@ -55,6 +56,29 @@ instance.interceptors.response.use(
   },
   async function (error) {
     if (error.response) {
+      const originalRequest = error.config
+      // The request was made and the server responded with a 401 status code
+      // which means access_token is expired or token is revoke, so we try to get a new access_token
+      // from the refresh_token and retry request
+      if (error.response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true
+        const bearToken = await RefreshTokenAuthService(true)
+        originalRequest.headers.Authorization = bearToken
+        return instance(originalRequest)
+      } else if (error.response.status === 401 && originalRequest._retry) {
+        // device token revoke, so disconnect
+        showMessage({
+          message: i18n.t('errors.token.title'),
+          description: i18n.t('errors.token.description'),
+          type: 'danger',
+          duration: 5000,
+        })
+
+        // Remove tokens. It will force user to enrol again
+        await Keychain.resetInternetCredentials('accessToken')
+        await Keychain.resetInternetCredentials('accessTokenExpirationDate')
+        await Keychain.resetInternetCredentials('refreshToken')
+      }
       // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'
       // Response given by the application
@@ -85,13 +109,6 @@ instance.interceptors.response.use(
         type: 'danger',
         duration: 5000,
       })
-
-      // Avoid raise an error if request was for getting an algorithm when tablet doesn't have any internet connection
-      if (error.request._url.search('algorithm') === -1) {
-        return handleError({
-          message: 'No response received (' + error.message + ')',
-        })
-      }
     } else {
       // Something happened in setting up the request that triggered an Error
       showMessage({

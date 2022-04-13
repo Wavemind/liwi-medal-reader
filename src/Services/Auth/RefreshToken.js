@@ -3,15 +3,37 @@
  */
 import * as Keychain from 'react-native-keychain'
 import { refresh } from 'react-native-app-auth'
-import { showMessage } from 'react-native-flash-message'
 
 /**
  * The internal imports
  */
 import { Config } from '@/Config'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
-import i18n from '@/Translations/index'
 import { store } from '@/Store'
+
+export default async (forceRefresh = false) => {
+  const bearToken = await Keychain.getInternetCredentials('accessToken')
+
+  // Force get new token
+  if (forceRefresh) {
+    return getRefreshToken()
+  }
+
+  const accessTokenExpirationDate = await Keychain.getInternetCredentials(
+    'accessTokenExpirationDate',
+  )
+
+  // Check token validity before getting new one
+  if (
+    accessTokenExpirationDate.password &&
+    new Date(accessTokenExpirationDate.password).getTime() >
+      new Date().getTime()
+  ) {
+    return `Bearer ${bearToken.password}`
+  } else {
+    return getRefreshToken()
+  }
+}
 
 /**
  * Generate config based on user selection
@@ -36,67 +58,47 @@ const createConfig = async () => {
   }
 }
 
-export default async () => {
-  const bearToken = await Keychain.getInternetCredentials('accessToken')
-  const accessTokenExpirationDate = await Keychain.getInternetCredentials(
-    'accessTokenExpirationDate',
-  )
+/**
+ * Get new access token from refresh token
+ * @returns {Promise<unknown>}
+ */
+const getRefreshToken = async () => {
+  // Token expired
+  const refreshToken = await Keychain.getInternetCredentials('refreshToken')
+  const newConfig = await createConfig()
 
-  // Test if token is valid and don't need to be refreshed
-  if (
-    accessTokenExpirationDate.password &&
-    new Date(accessTokenExpirationDate.password).getTime() >
-      new Date().getTime()
-  ) {
-    return `Bearer ${bearToken.password}`
-  } else {
-    // Token expired
-    const refreshToken = await Keychain.getInternetCredentials('refreshToken')
-    const newConfig = await createConfig()
+  try {
+    // Get new token with refresh token
+    const response = await refresh(newConfig, {
+      refreshToken: refreshToken.password,
+    })
 
-    try {
-      // Get new token with refresh token
-      const response = await refresh(newConfig, {
-        refreshToken: refreshToken.password,
-      })
+    // Set new access token, refresh token and token expiration date
+    await Keychain.setInternetCredentials(
+      'accessToken',
+      'accessToken',
+      response.accessToken,
+    )
+    await Keychain.setInternetCredentials(
+      'accessTokenExpirationDate',
+      'accessTokenExpirationDate',
+      response.accessTokenExpirationDate,
+    )
+    await Keychain.setInternetCredentials(
+      'refreshToken',
+      'refreshToken',
+      response.refreshToken,
+    )
 
-      // Set new access token, refresh token and token expiration date
-      await Keychain.setInternetCredentials(
-        'accessToken',
-        'accessToken',
-        response.accessToken,
-      )
-      await Keychain.setInternetCredentials(
-        'accessTokenExpirationDate',
-        'accessTokenExpirationDate',
-        response.accessTokenExpirationDate,
-      )
-      await Keychain.setInternetCredentials(
-        'refreshToken',
-        'refreshToken',
-        response.refreshToken,
-      )
+    // Reset access token and continue with requested request
+    return `Bearer ${response.accessToken}`
+  } catch (error) {
+    // Remove tokens
+    await Keychain.resetInternetCredentials('accessToken')
+    await Keychain.resetInternetCredentials('accessTokenExpirationDate')
+    await Keychain.resetInternetCredentials('refreshToken')
 
-      // Reset access token and continue with requested request
-      return `Bearer ${response.accessToken}`
-    } catch (error) {
-      // Error while trying to refresh access token, so disconnect
-      showMessage({
-        message: i18n.t('errors.offline.title', {
-          serverName: 'MedAL-Data',
-        }),
-        description: i18n.t('errors.offline.description'),
-        type: 'danger',
-        duration: 5000,
-      })
-
-      // Remove tokens
-      await Keychain.resetInternetCredentials('accessToken')
-      await Keychain.resetInternetCredentials('accessTokenExpirationDate')
-      await Keychain.resetInternetCredentials('refreshToken')
-
-      // Ask user to enrol again
-      navigateAndSimpleReset('Auth', { screen: 'Login' })
-    }
+    // Ask user to enrol again
+    navigateAndSimpleReset('Auth', { screen: 'Login' })
   }
 }

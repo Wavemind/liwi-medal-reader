@@ -311,6 +311,10 @@ export default {
       title: 'Erreur de communication avec {{ serverName }}',
       description: 'Serveur introuvable',
     },
+    token: {
+      title: "Erreur d'authentification",
+      description: 'Token invalid',
+    },
     unknown: {
       title: 'Erreur de communication',
       description: 'Un problème inconnu est survenu',
