@@ -10,7 +10,7 @@ import {
 import ReactNativeBlobUtil from 'react-native-blob-util'
 import { zip } from 'react-native-zip-archive'
 import { checkInternetConnection } from 'react-native-offline'
-
+import * as Keychain from 'react-native-keychain'
 import { showMessage } from 'react-native-flash-message'
 
 /**
@@ -21,6 +21,7 @@ import useDatabase from '../Database/useDatabase'
 import { store } from '@/Store'
 import { RefreshTokenAuthService } from '@/Services/Auth'
 import UpdateDatabaseMedicalCase from '@/Store/DatabaseMedicalCase/Update'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 
 /**
  * Transforms file path into usable path
@@ -96,6 +97,10 @@ export default async medicalCasesToSync => {
     return Promise.reject({ message: i18n.t('errors.offline.description') })
   }
 
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
   const bearToken = await RefreshTokenAuthService()
 
   // Upload process
@@ -134,6 +139,24 @@ export default async medicalCasesToSync => {
         }),
       )
     })
+  } else if (requestResult.respInfo.status === 401) {
+    // device token revoke, so disconnect
+    showMessage({
+      message: i18n.t('errors.token.title'),
+      description: i18n.t('errors.token.description'),
+      type: 'danger',
+      duration: 5000,
+    })
+
+    // Remove tokens
+    await Keychain.resetInternetCredentials('accessToken')
+    await Keychain.resetInternetCredentials('accessTokenExpirationDate')
+    await Keychain.resetInternetCredentials('refreshToken')
+
+    // Ask user to enrol again
+    navigateAndSimpleReset('Auth', { screen: 'Login' })
+
+    return Promise.reject({ message: i18n.t('errors.token.description') })
   } else {
     return Promise.reject({ message: requestResult.data })
   }

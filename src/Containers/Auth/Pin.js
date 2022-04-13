@@ -151,7 +151,7 @@ const PinAuthContainer = () => {
       </View>
       <View style={authPin.wrapper}>
         <PINCode
-          passwordLength={pinCode.length}
+          passwordLength={pinCode?.length}
           endProcessFunction={handlePin}
           disableLockScreen
           status="enter"

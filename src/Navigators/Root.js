@@ -31,7 +31,6 @@ export function navigateAndSimpleReset(name, params = {}, index = 0) {
   )
 }
 
-
 export function navigateToStage(stageIndex, stepIndex = 0) {
   navigationRef.current?.dispatch(
     CommonActions.reset({
