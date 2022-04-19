@@ -84,10 +84,14 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
   // Regroup all agreed drugs for exclusions
   Object.values(finalDiagnoses).forEach(finalDiagnosis => {
     Object.values(finalDiagnosis.drugs.agreed).forEach(drug => {
-      newAgreed[drug.id] = {
-        ...drug,
-        formulation_id: drug.formulation_id || null,
-        finalDiagnosisId: finalDiagnosis.id,
+      if (drug.id in newAgreed) {
+        newAgreed[drug.id].finalDiagnosesId.push(finalDiagnosis.id)
+      } else {
+        newAgreed[drug.id] = {
+          ...drug,
+          formulation_id: drug.formulation_id || null,
+          finalDiagnosesId: [finalDiagnosis.id],
+        }
       }
     })
   })
@@ -123,7 +127,7 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
 
     // Pre select formulation with there is only one
     Object.values(newAgreed).forEach(drug => {
-      if (drug.finalDiagnosisId === finalDiagnosis.id) {
+      if (drug.finalDiagnosesId.includes(finalDiagnosis.id)) {
         const drugFormulations = nodes[drug.id].formulations
         agreedWithFormulations[drug.id] = {
           ...drug,

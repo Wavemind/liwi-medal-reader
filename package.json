@@ -15,7 +15,7 @@
     "coverage": "jest --verbose --coverage && open ./coverage/lcov-report/index.html"
   },
   "repository": {
-    "type": "git",
+    "type": "git", 
     "url": "git@github.com:Wavemind/liwi-medal-reader.git"
   },
   "dependencies": {
