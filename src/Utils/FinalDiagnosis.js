@@ -79,6 +79,18 @@ const searchFinalDiagnoses = (
 export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
   const nodes = store.getState().algorithm.item.nodes
   const newFinalDiagnoses = {}
+  const newAgreed = {}
+
+  // Regroup all agreed drugs for exclusions
+  Object.values(finalDiagnoses).forEach(finalDiagnosis => {
+    Object.values(finalDiagnosis.drugs.agreed).forEach(drug => {
+      newAgreed[drug.id] = {
+        ...drug,
+        formulation_id: drug.formulation_id || null,
+        finalDiagnosisId: finalDiagnosis.id,
+      }
+    })
+  })
 
   // Find for all final diagnosis the proposed drug
   Object.values(finalDiagnoses).map(finalDiagnosis => {
@@ -87,21 +99,19 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
       'drugs',
       false,
     )
-    let newProposed = availableDrugs
-    const newAgreed = JSON.parse(JSON.stringify(finalDiagnosis.drugs.agreed))
     const newAdditional = JSON.parse(
       JSON.stringify(finalDiagnosis.drugs.additional),
     )
 
     if (removeDrugs) {
       const drugToRemove = Object.keys(finalDiagnosis.drugs.agreed).filter(
-        agreedDrugId => !newProposed.includes(Number(agreedDrugId)),
+        agreedDrugId => !availableDrugs.includes(Number(agreedDrugId)),
       )
 
       drugToRemove.forEach(drugId => delete newAgreed[drugId])
     }
 
-    newProposed = newProposed.filter(
+    const newProposed = availableDrugs.filter(
       drugId =>
         !isHealthcareExcluded(
           drugId,
@@ -111,17 +121,21 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
 
     const agreedWithFormulations = {}
 
+    // Pre select formulation with there is only one
     Object.values(newAgreed).forEach(drug => {
-      const drugFormulations = nodes[drug.id].formulations
-      agreedWithFormulations[drug.id] = {
-        ...drug,
-        formulation_id:
-          drugFormulations.length === 1
-            ? drugFormulations[0].id
-            : finalDiagnosis.drugs.agreed[drug.id]?.formulation_id,
+      if (drug.finalDiagnosisId === finalDiagnosis.id) {
+        const drugFormulations = nodes[drug.id].formulations
+        agreedWithFormulations[drug.id] = {
+          ...drug,
+          formulation_id:
+            drugFormulations.length === 1
+              ? drugFormulations[0].id
+              : finalDiagnosis.drugs.agreed[drug.id]?.formulation_id,
+        }
       }
     })
 
+    // Pre select formulation with there is only one
     const additionalWithFormulations = {}
     Object.values(newAdditional).forEach(drug => {
       const drugFormulations = nodes[drug.id].formulations
@@ -152,6 +166,7 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
       managements,
     }
   })
+
   return newFinalDiagnoses
 }
 
