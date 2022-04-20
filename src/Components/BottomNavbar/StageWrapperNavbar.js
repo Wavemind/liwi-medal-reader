@@ -19,6 +19,7 @@ import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
 import UpdateFieldPatient from '@/Store/Patient/UpdateField'
 import UpdateFieldMedicalCase from '@/Store/MedicalCase/UpdateField'
+
 import {
   SaveMedicalCaseService,
   CloseMedicalCaseService,

@@ -107,7 +107,7 @@ const ApplicationNavigator = () => {
               <Stack.Screen name="Auth" component={AuthNavigator} />
             )}
             {isApplicationLoaded && MainNavigator != null && (
-              <Stack.Screen name="Home" component={MainNavigator} />
+              <Stack.Screen name="Main" component={MainNavigator} />
             )}
           </Stack.Navigator>
           <CustomModal />

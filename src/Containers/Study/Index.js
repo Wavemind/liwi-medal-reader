@@ -49,7 +49,7 @@ const IndexStudyContainer = ({
       if (navigation.canGoBack()) {
         navigation.goBack()
       } else {
-        navigateAndSimpleReset('Home')
+        navigateAndSimpleReset('Main')
       }
     }
   }

@@ -50,15 +50,24 @@ const MainNavigator = ({ route, navigation }) => {
     state => state.medicalCase.item.createdAt,
   )
 
-  // Destroy medical case in store after closing a medical case
+  // Destroy medical case in store after closing it
   useEffect(() => {
-    if (route.state?.routes[0].params?.destroyCurrentConsultation) {
+    if (
+      navigation.getState().routes[0]?.state?.routes[0]?.params
+        ?.destroyCurrentConsultation &&
+      medicalCaseId
+    ) {
       dispatch(DestroyMedicalCase.action())
       dispatch(DestroyPatient.action())
       dispatch(ResetValidation.action())
-      delete route.state?.routes[0].params?.destroyCurrentConsultation
+      delete navigation.getState().routes[0]?.state?.routes[0]?.params
+        ?.destroyCurrentConsultation
     }
-  }, [route.state?.routes[0].params?.destroyCurrentConsultation, medicalCaseId])
+  }, [
+    navigation.getState().routes[0]?.state?.routes[0]?.params
+      ?.destroyCurrentConsultation,
+    medicalCaseId,
+  ])
 
   // Adds an event listener to tablet back button press
   useFocusEffect(

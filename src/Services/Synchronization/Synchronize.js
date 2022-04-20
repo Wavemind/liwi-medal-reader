@@ -58,7 +58,7 @@ export default async medicalCasesToSync => {
 
       delete tempMedicalCaseJson.patient.savedInDatabase
 
-      medicalCaseJson = JSON.stringify(tempMedicalCaseJson, (key, value) =>
+      medicalCaseJson = JSON.stringify(tempMedicalCaseJson, (_key, value) =>
         typeof value === 'undefined' ? null : value,
       )
 

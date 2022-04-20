@@ -55,8 +55,8 @@ const ExitMedicalCase = () => {
     }
 
     await dispatch(UnlockMedicalCase.action({ medicalCaseId }))
-
     await dispatch(ToggleVisibility.action({}))
+
     navigateAndSimpleReset(routeName, {
       ...routeParams,
       destroyCurrentConsultation: true,
@@ -83,8 +83,8 @@ const ExitMedicalCase = () => {
             await dispatch(ChangeClinician.action({ clinician: {} }))
           }
           await dispatch(UnlockMedicalCase.action({ medicalCaseId }))
-
           await dispatch(ToggleVisibility.action({}))
+
           navigateAndSimpleReset(routeName, {
             ...routeParams,
             destroyCurrentConsultation: true,

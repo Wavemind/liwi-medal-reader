@@ -4,40 +4,50 @@
  *
  * You can add other navigation functions that you need and export them
  */
-import * as React from 'react'
-import { CommonActions } from '@react-navigation/native'
+import {
+  CommonActions,
+  createNavigationContainerRef,
+} from '@react-navigation/native'
 
-export const navigationRef = React.createRef()
+export const navigationRef = createNavigationContainerRef()
 
-export function navigate(name, params) {
-  navigationRef.current?.navigate(name, params)
+export const navigate = (name, params) => {
+  if (navigationRef.isReady()) {
+    navigationRef.navigate(name, params)
+  }
 }
 
-export function navigateAndReset(routes = [], index = 0) {
-  navigationRef.current?.dispatch(
-    CommonActions.reset({
-      index,
-      routes,
-    }),
-  )
+export const navigateAndReset = (routes = [], index = 0) => {
+  if (navigationRef.isReady()) {
+    navigationRef.dispatch(
+      CommonActions.reset({
+        index,
+        routes,
+      }),
+    )
+  }
 }
 
-export function navigateAndSimpleReset(name, params = {}, index = 0) {
-  navigationRef.current?.dispatch(
-    CommonActions.reset({
-      index,
-      routes: [{ name, params: { ...params } }],
-    }),
-  )
+export const navigateAndSimpleReset = (name, params = {}, index = 0) => {
+  if (navigationRef.isReady()) {
+    navigationRef.dispatch(
+      CommonActions.reset({
+        index,
+        routes: [{ name, params: { ...params } }],
+      }),
+    )
+  }
 }
 
 export function navigateToStage(stageIndex, stepIndex = 0) {
-  navigationRef.current?.dispatch(
-    CommonActions.reset({
-      index: 0,
-      routes: [{ name: 'StageWrapper', params: { stageIndex, stepIndex } }],
-    }),
-  )
+  if (navigationRef.isReady()) {
+    navigationRef.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'StageWrapper', params: { stageIndex, stepIndex } }],
+      }),
+    )
+  }
 }
 
 export function navigateNestedAndSimpleReset(
@@ -46,15 +56,17 @@ export function navigateNestedAndSimpleReset(
   nestedParams = {},
   index = 0,
 ) {
-  navigationRef.current?.dispatch(
-    CommonActions.reset({
-      index,
-      routes: [
-        {
-          name: name,
-          state: { routes: [{ name: nestedName, params: nestedParams }] },
-        },
-      ],
-    }),
-  )
+  if (navigationRef.isReady()) {
+    navigationRef.dispatch(
+      CommonActions.reset({
+        index,
+        routes: [
+          {
+            name: name,
+            state: { routes: [{ name: nestedName, params: nestedParams }] },
+          },
+        ],
+      }),
+    )
+  }
 }

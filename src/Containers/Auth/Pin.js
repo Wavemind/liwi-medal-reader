@@ -109,12 +109,12 @@ const PinAuthContainer = () => {
           medicalCase.closedAt === 0 &&
           medicalCase.version_id === algorithm.version_id
         ) {
-          navigateNestedAndSimpleReset('Home', 'StageWrapper', {
+          navigateNestedAndSimpleReset('Main', 'StageWrapper', {
             stageIndex: medicalCase.advancement.stage,
             stepIndex: medicalCase.advancement.step,
           })
         } else {
-          navigateAndSimpleReset('Home')
+          navigateAndSimpleReset('Main')
         }
       } else {
         setStatus('failure')
