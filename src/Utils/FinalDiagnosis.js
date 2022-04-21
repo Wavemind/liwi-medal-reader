@@ -109,7 +109,12 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
 
     if (removeDrugs) {
       const drugToRemove = Object.keys(finalDiagnosis.drugs.agreed).filter(
-        agreedDrugId => !availableDrugs.includes(Number(agreedDrugId)),
+        agreedDrugId =>
+          !availableDrugs.includes(Number(agreedDrugId)) ||
+          isHealthcareExcluded(
+            agreedDrugId,
+            Object.values(newAgreed).map(drug => drug.id),
+          ),
       )
 
       drugToRemove.forEach(drugId => delete newAgreed[drugId])

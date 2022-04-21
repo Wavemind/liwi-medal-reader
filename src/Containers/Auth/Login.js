@@ -69,8 +69,8 @@ const LoginAuthContainer = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior="height" style={global.wrapper}>
-      <Animated.ScrollView style={global.animation(fadeAnim)}>
+    <KeyboardAvoidingView behavior="height">
+      <Animated.View style={[global.wrapper, global.animation(fadeAnim)]}>
         <Text style={auth.header}>{t('containers.auth.login.title')}</Text>
 
         <View style={authLogin.formWrapper}>
@@ -107,7 +107,7 @@ const LoginAuthContainer = () => {
             <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
           </View>
         </SafeAreaView>
-      </Animated.ScrollView>
+      </Animated.View>
     </KeyboardAvoidingView>
   )
 }
