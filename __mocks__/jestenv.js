@@ -74,6 +74,7 @@ jest.mock('@react-navigation/native', () => {
     createMaterialTopTabNavigator: jest.fn(),
     createStackNavigator: jest.fn(),
     createSwitchNavigator: jest.fn(),
+    createNavigationContainerRef: jest.fn(),
     withNavigation: component => component,
     StackActions: {
       push: jest
