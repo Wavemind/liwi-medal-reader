@@ -8733,10 +8733,10 @@ react-native-flash-message@^0.1.23:
     prop-types "^15.7.2"
     react-native-iphone-x-helper "^1.3.0"
 
-react-native-flipper@^0.103.0:
-  version "0.103.0"
-  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.103.0.tgz#32cc1d9afd5c04a56b4f54b8aad08c07ea854fdf"
-  integrity sha512-F49O8FAPLt9BsuKQYre3ATJ8oaghc9xJu/S4WFhKqAboesFoUyB3i8EAkBFbXEgA1+Foolct3QTWQLc7KTI/tA==
+react-native-flipper@^0.127.0:
+  version "0.127.0"
+  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.127.0.tgz#4d4040c0d0a45136b9bbabdc801d3e32d385de73"
+  integrity sha512-qloUyUOs9MoMVncIDDWeOxAPbomWJ3e4y0SgyCgq8joJEOXC7RvPWeEfUXp0EPyNhHGQV9a4RwzF6BWKFCR3Kg==
 
 react-native-fs@^2.19.0:
   version "2.19.0"
@@ -9124,10 +9124,10 @@ redent@^3.0.0:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
 
-redux-flipper@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/redux-flipper/-/redux-flipper-1.4.2.tgz#da765a675136e9893a002730703ec58d2f0e359b"
-  integrity sha512-VfSdmWATaZD2BHAiMOEzxk+KSiSTAv/N5AyY64+dU+qif/KfinSHWW3+YVMCO+5rxne1Fr92YwsYJl8l9injDA==
+redux-flipper@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/redux-flipper/-/redux-flipper-2.0.1.tgz#a43603a13e6f06a48c627ae7c144579bd4f1fa54"
+  integrity sha512-JqgnL+fUp3h2fPQRszItLkarTbIf5gjU4Sn0IY/ZxUo6oUUmMh4Lx2J7BBy78cE8KEW9prRRpvJ6NH2uc/QktA==
   dependencies:
     cycle "^1.0.3"
     dayjs "^1.8.29"

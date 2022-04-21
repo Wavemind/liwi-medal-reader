@@ -59,6 +59,11 @@ const Drug = ({ drug, isLast }) => {
     return <Text>{t('actions.loading')}</Text>
   }
 
+  // Avoid crash if formulation is not selected for proposed drug
+  if (!drug.selectedFormulationId) {
+    return null
+  }
+
   return (
     <View style={summary.drugWrapper(isLast)}>
       <View style={summary.drugTitleWrapper}>
