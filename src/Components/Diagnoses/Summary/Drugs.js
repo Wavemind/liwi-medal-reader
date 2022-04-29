@@ -40,7 +40,7 @@ const Drugs = () => {
           {t('containers.medical_case.summary.treatments')}
         </Text>
       </View>
-      <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
+      <View style={Gutters.regularVMargin}>
         {orderedDrugs.map((drug, i) => (
           <Drug
             key={`summary_diagnosis_drugs-${drug.id}`}
