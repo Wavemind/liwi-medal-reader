@@ -278,6 +278,9 @@ export default {
     media: {
       file_not_supported: 'File not supported',
     },
+    referral_warning: {
+      title: 'Refer urgently',
+    },
   },
   device: {
     name: 'Name',

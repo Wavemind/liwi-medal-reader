@@ -282,6 +282,9 @@ export default {
     media: {
       file_not_supported: 'Format de fichier non pris en charge',
     },
+    referral_warning: {
+      title: "Transérer d'urgence",
+    },
   },
   device: {
     name: 'Nom',

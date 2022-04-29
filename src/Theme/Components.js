@@ -48,6 +48,7 @@ import errorStyles from './components/Error.style'
 import medicalCaseListItemStyles from './components/MedicalCaseListItem.style'
 import sectionSubHeaderStyles from './components/SectionSubHeader.style'
 import metadataStyles from './components/Metadata.style'
+import referralWarningStyles from './components/ReferralWarning.style'
 
 /**
  *
@@ -101,5 +102,6 @@ export default function (props) {
     error: errorStyles(props),
     medicalCaseListItem: medicalCaseListItemStyles(props),
     metadata: metadataStyles(props),
+    referralWarning: referralWarningStyles(props),
   }
 }
