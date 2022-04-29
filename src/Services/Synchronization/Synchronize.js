@@ -28,9 +28,8 @@ import { navigateAndSimpleReset } from '@/Navigators/Root'
  * @param path
  * @returns {*}
  */
-const normalizeFilePath = path => {
-  return path.startsWith('file://') ? path.slice(7) : path
-}
+const normalizeFilePath = path =>
+  path.startsWith('file://') ? path.slice(7) : path
 
 export default async medicalCasesToSync => {
   const { getActivities, findBy } = useDatabase()
@@ -67,11 +66,13 @@ export default async medicalCasesToSync => {
   )
 
   // Generate archive
-  const path = await zip([normalizeFilePath(folder)], targetPath).catch(
-    error => {
-      console.log(error)
-    },
-  )
+  let path = null
+  try {
+    path = await zip([normalizeFilePath(folder)], targetPath)
+  } catch (error) {
+    return Promise.reject({ message: i18n.t('errors.zip.archived') })
+  }
+
   await Promise.all(
     medicalCasesToSync.map(async medicalCase => {
       await unlink(`${folder}/${medicalCase.id}.json`)

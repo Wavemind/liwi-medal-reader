@@ -319,6 +319,9 @@ export default {
       title: 'Erreur de communication',
       description: 'Un problème inconnu est survenu',
     },
+    zip: {
+      archived: "Un problème est survenu lors de l'archivage du fichier",
+    },
     timeout: 'Connexion au serveur interrompue',
   },
   health_facility: {

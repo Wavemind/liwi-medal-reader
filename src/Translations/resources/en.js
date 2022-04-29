@@ -314,6 +314,9 @@ export default {
       title: 'Communication error',
       description: 'An unknown error occurred',
     },
+    zip: {
+      archived: 'An error occurred while archiving the file',
+    },
     timeout: 'Server connection aborted',
   },
   health_facility: {
