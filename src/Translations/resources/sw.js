@@ -306,9 +306,16 @@ export default {
       title: 'Communication error with {{ serverName }}',
       description: 'Server not accessible',
     },
+    token: {
+      title: 'Authentication error',
+      description: 'Token revoke',
+    },
     unknown: {
       title: 'Communication error',
       description: 'An unknown error occurred',
+    },
+    zip: {
+      archived: 'An error occurred while archiving the file',
     },
     timeout: 'Server connection aborted',
   },
