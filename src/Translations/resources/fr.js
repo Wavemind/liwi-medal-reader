@@ -320,7 +320,7 @@ export default {
       description: 'Un problème inconnu est survenu',
     },
     zip: {
-      archived: "Un problème est survenu lors de l'archivage du fichier",
+      archived: 'Un problème est survenu lors de la compression du fichier',
     },
     timeout: 'Connexion au serveur interrompue',
   },
