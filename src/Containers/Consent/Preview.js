@@ -35,7 +35,7 @@ const PreviewConsentContainer = ({
     await dispatch(
       UpdateField.action({ field: 'consent_file', value: consent }),
     )
-    navigation.navigate('Home')
+    navigation.navigate('Main')
   }
 
   return (
