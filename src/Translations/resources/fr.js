@@ -285,6 +285,9 @@ export default {
     referral_warning: {
       title: "Transérer d'urgence",
     },
+    drug: {
+      expand: 'Agrandir pour lire les instructions',
+    },
   },
   device: {
     name: 'Nom',

@@ -281,6 +281,9 @@ export default {
     referral_warning: {
       title: 'Refer urgently',
     },
+    drug: {
+      expand: 'Please expand for instructions',
+    },
   },
   device: {
     name: 'Name',

@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import { Text, View, TouchableWithoutFeedback } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 /**
  * The internal imports
@@ -16,11 +15,9 @@ import {
   QuestionInfoButton,
   DoseCalculation,
   AmountGiven,
-  Icon as Tamere,
+  Icon as CustomIcon,
 } from '@/Components'
-
 import { DrugDosesService } from '@/Services/MedicalCase'
-import { hp } from '@/Theme/Responsive'
 
 const Drug = ({ drug, isLast }) => {
   const { t } = useTranslation()
@@ -38,6 +35,10 @@ const Drug = ({ drug, isLast }) => {
   const [open, setOpen] = useState(false)
 
   const expand = () => (open ? { flex: 1 } : { height: 0 })
+  const parenteralRoutes = () =>
+    ['im', 'iv', 'sc'].includes(
+      drugDose.administration_route_name.toLowerCase(),
+    )
 
   useEffect(() => {
     const formulations = currentDrug.formulations
@@ -84,20 +85,28 @@ const Drug = ({ drug, isLast }) => {
         <View style={drugStyle.buttonWrapper}>
           <View style={drugStyle.buttonTextWrapper}>
             <Text style={drugStyle.buttonText}>{translate(drug.label)}</Text>
-            <Text style={drugStyle.drugText}>
-              {translate(drugDose.description)}
-            </Text>
-            <Text style={drugStyle.drugText}>
-              <AmountGiven drugDose={drugDose} /> |{' '}
-              {t('formulations.drug.frequency_indication', {
-                count: drugDose.doses_per_day,
-                recurrence: drugDose.recurrence,
-              })}{' '}
-              | {durationsDisplay()}
-            </Text>
+            {!parenteralRoutes() ? (
+              <Text style={drugStyle.drugText}>
+                {t('components.drug.expand')}
+              </Text>
+            ) : (
+              <>
+                <Text style={drugStyle.drugText}>
+                  {translate(drugDose.description)}
+                </Text>
+                <Text style={drugStyle.drugText}>
+                  <AmountGiven drugDose={drugDose} /> |{' '}
+                  {t('formulations.drug.frequency_indication', {
+                    count: drugDose.doses_per_day,
+                    recurrence: drugDose.recurrence,
+                  })}{' '}
+                  | {durationsDisplay()}
+                </Text>
+              </>
+            )}
           </View>
           <View style={drugStyle.iconWrapper}>
-            <Tamere
+            <CustomIcon
               name="right-arrow"
               size={35}
               color={Colors.primary}
@@ -133,12 +142,14 @@ const Drug = ({ drug, isLast }) => {
           )}
         </Text>
 
-        <Text style={summary.drugText}>
-          <Text style={Fonts.textBold}>
-            {t('formulations.drug.formulation')}:
-          </Text>{' '}
-          {translate(drugDose.description)}
-        </Text>
+        {parenteralRoutes() && (
+          <Text style={summary.drugText}>
+            <Text style={Fonts.textBold}>
+              {t('formulations.drug.formulation')}:
+            </Text>{' '}
+            {translate(drugDose.description)}
+          </Text>
+        )}
 
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>
