@@ -7,11 +7,18 @@ import { ScrollView } from 'react-native'
 /**
  * The internal imports
  */
-import { Comment, Drugs, FinalDiagnoses, Managements } from '@/Components'
+import {
+  Comment,
+  Drugs,
+  FinalDiagnoses,
+  Managements,
+  ReferralWarning,
+} from '@/Components'
 
 const SummaryMedicalCaseContainer = () => {
   return (
     <ScrollView>
+      <ReferralWarning />
       <FinalDiagnoses />
       <Drugs />
       <Managements />

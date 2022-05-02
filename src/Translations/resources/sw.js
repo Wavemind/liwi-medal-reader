@@ -278,6 +278,12 @@ export default {
     media: {
       file_not_supported: 'File not supported',
     },
+    referral_warning: {
+      title: 'Refer urgently',
+    },
+    drug: {
+      expand: 'Please expand for instructions',
+    },
   },
   device: {
     name: 'Name',

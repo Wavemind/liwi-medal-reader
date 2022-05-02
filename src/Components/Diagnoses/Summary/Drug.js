@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useEffect, useState } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, TouchableWithoutFeedback } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -11,7 +11,12 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import { QuestionInfoButton, DoseCalculation, AmountGiven } from '@/Components'
+import {
+  QuestionInfoButton,
+  DoseCalculation,
+  AmountGiven,
+  Icon as CustomIcon,
+} from '@/Components'
 import { DrugDosesService } from '@/Services/MedicalCase'
 
 const Drug = ({ drug, isLast }) => {
@@ -19,11 +24,21 @@ const Drug = ({ drug, isLast }) => {
   const {
     Fonts,
     Gutters,
+    Colors,
+    Layout,
+    Components: { drug: drugStyle },
     Containers: { summary },
   } = useTheme()
 
   const currentDrug = useSelector(state => state.algorithm.item.nodes[drug.id])
   const [drugDose, setDrugDose] = useState(null)
+  const [open, setOpen] = useState(false)
+
+  const expand = () => (open ? { flex: 1 } : { height: 0 })
+  const parenteralRoutes = () =>
+    ['im', 'iv', 'sc'].includes(
+      drugDose.administration_route_name.toLowerCase(),
+    )
 
   useEffect(() => {
     const formulations = currentDrug.formulations
@@ -65,15 +80,48 @@ const Drug = ({ drug, isLast }) => {
   }
 
   return (
-    <View style={summary.drugWrapper(isLast)}>
-      <View style={summary.drugTitleWrapper}>
-        <Text style={summary.drugTitle}>{drug.label}</Text>
-        {(translate(currentDrug.description) !== '' ||
-          currentDrug.medias?.length > 0) && (
-          <QuestionInfoButton nodeId={drug.id} />
-        )}
-      </View>
-      <>
+    <View style={drugStyle.wrapper(isLast)}>
+      <TouchableWithoutFeedback onPress={() => setOpen(prev => !prev)}>
+        <View style={drugStyle.buttonWrapper}>
+          <View style={drugStyle.buttonTextWrapper}>
+            <Text style={drugStyle.buttonText}>{translate(drug.label)}</Text>
+            {parenteralRoutes() ? (
+              <Text style={drugStyle.drugText}>
+                {t('components.drug.expand')}
+              </Text>
+            ) : (
+              <>
+                <Text style={drugStyle.drugText}>
+                  {translate(drugDose.description)}
+                </Text>
+                <Text style={drugStyle.drugText}>
+                  <AmountGiven drugDose={drugDose} /> |{' '}
+                  {t('formulations.drug.frequency_indication', {
+                    count: drugDose.doses_per_day,
+                    recurrence: drugDose.recurrence,
+                  })}{' '}
+                  | {durationsDisplay()}
+                </Text>
+              </>
+            )}
+          </View>
+          <View style={drugStyle.iconWrapper}>
+            <CustomIcon
+              name="right-arrow"
+              size={35}
+              color={Colors.primary}
+              style={open && Layout.rotate90}
+            />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <View style={[drugStyle.contentWrapper, expand()]}>
+        <View style={drugStyle.buttonInfo}>
+          {(translate(currentDrug.description) !== '' ||
+            currentDrug.medias?.length > 0) && (
+            <QuestionInfoButton nodeId={drug.id} />
+          )}
+        </View>
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>
             {t('formulations.drug.indication')}: {indicationDisplay()}
@@ -94,12 +142,14 @@ const Drug = ({ drug, isLast }) => {
           )}
         </Text>
 
-        <Text style={summary.drugText}>
-          <Text style={Fonts.textBold}>
-            {t('formulations.drug.formulation')}:
-          </Text>{' '}
-          {translate(drugDose.description)}
-        </Text>
+        {parenteralRoutes() && (
+          <Text style={summary.drugText}>
+            <Text style={Fonts.textBold}>
+              {t('formulations.drug.formulation')}:
+            </Text>{' '}
+            {translate(drugDose.description)}
+          </Text>
+        )}
 
         <Text style={summary.drugText}>
           <Text style={Fonts.textBold}>
@@ -140,7 +190,7 @@ const Drug = ({ drug, isLast }) => {
             {translate(drugDose.dispensing_description)}
           </Text>
         )}
-      </>
+      </View>
     </View>
   )
 }

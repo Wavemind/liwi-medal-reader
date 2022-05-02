@@ -31,6 +31,7 @@ export default () => {
           managements[managementId] = {
             id: managementId,
             diagnoses: [relatedDiagnosis],
+            isReferral: nodes[managementId].is_referral
           }
         }
       })
