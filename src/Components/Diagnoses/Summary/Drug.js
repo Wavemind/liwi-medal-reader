@@ -85,7 +85,7 @@ const Drug = ({ drug, isLast }) => {
         <View style={drugStyle.buttonWrapper}>
           <View style={drugStyle.buttonTextWrapper}>
             <Text style={drugStyle.buttonText}>{translate(drug.label)}</Text>
-            {!parenteralRoutes() ? (
+            {parenteralRoutes() ? (
               <Text style={drugStyle.drugText}>
                 {t('components.drug.expand')}
               </Text>
