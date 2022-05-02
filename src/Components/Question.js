@@ -19,7 +19,7 @@ import {
 } from '@/Components'
 import { Config } from '@/Config'
 
-const Question = ({ questionId, disabled = false }) => {
+const Question = ({ questionId }) => {
   // Theme and style elements deconstruction
   const {
     Components: { question },
