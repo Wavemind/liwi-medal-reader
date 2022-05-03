@@ -14,7 +14,7 @@ const CustomDrug = ({ drug, isLast }) => {
   const { t } = useTranslation()
   const {
     Fonts,
-    Containers: { summary },
+    Components: { drug: drugStyle },
   } = useTheme()
 
   /**
@@ -28,23 +28,27 @@ const CustomDrug = ({ drug, isLast }) => {
       .toUpperCase()
 
   return (
-    <View style={summary.drugWrapper(isLast)}>
-      <View style={summary.drugTitleWrapper}>
-        <Text style={summary.drugTitle}>{drug.label}</Text>
-      </View>
-      <View>
-        <Text style={summary.drugText}>
-          <Text style={Fonts.textBold}>
-            {t('formulations.drug.indication')}: {indicationDisplay()}
+    <View style={drugStyle.border(isLast)}>
+      <View style={drugStyle.customContainer}>
+        <View style={drugStyle.drugTitleWrapper}>
+          <Text style={drugStyle.buttonText}>{drug.label}</Text>
+        </View>
+        <View>
+          <Text style={drugStyle.drugText}>
+            <Text style={Fonts.textBold}>
+              {t('formulations.drug.indication')}: {indicationDisplay()}
+            </Text>
           </Text>
-        </Text>
 
-        <Text style={summary.drugText}>
-          <Text style={Fonts.textBold}>{t('formulations.drug.duration')}:</Text>{' '}
-          {t('formulations.drug.duration_in_days', {
-            count: parseFloat(drug.duration),
-          })}
-        </Text>
+          <Text style={drugStyle.drugText}>
+            <Text style={Fonts.textBold}>
+              {t('formulations.drug.duration')}:
+            </Text>{' '}
+            {t('formulations.drug.duration_in_days', {
+              count: parseFloat(drug.duration),
+            })}
+          </Text>
+        </View>
       </View>
     </View>
   )

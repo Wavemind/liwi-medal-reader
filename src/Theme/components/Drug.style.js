@@ -5,7 +5,7 @@ export default function (props) {
   const { Gutters, Colors, Layout, Fonts } = props
 
   return StyleSheet.create({
-    wrapper: isLast => ({
+    border: isLast => ({
       borderBottomColor: Colors.grey,
       borderBottomWidth: isLast ? 0 : 1,
     }),
@@ -15,6 +15,11 @@ export default function (props) {
       ...Layout.justifyContentBetween,
       ...Layout.alignItemsCenter,
       ...Layout.row,
+    },
+    customContainer: {
+      ...Gutters.regularVPadding,
+      ...Gutters.regularHPadding,
+      ...Layout.justifyContentBetween,
     },
     buttonTextWrapper: {
       width: wp(75),

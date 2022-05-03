@@ -420,6 +420,8 @@ export default {
         '{{ count }} time per day (or every {{ recurrence }} hours)',
       frequency_indication_plural:
         '{{ count }} times per day (or every {{ recurrence }} hours)',
+      frequency_indication_short: '{{ count }} time per day',
+      frequency_indication_short_plural: '{{ count }} times per day',
       fixed_dose_indication_administration:
         'Fixed dose - {{ medicationForm }} per administration',
       fixed_dose_indication_application:

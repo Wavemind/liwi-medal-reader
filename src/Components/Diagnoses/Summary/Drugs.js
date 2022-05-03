@@ -20,9 +20,11 @@ const Drugs = () => {
   const {
     Gutters,
     Containers: { medicines },
+    Components: { drug: drugStyle },
   } = useTheme()
 
   const drugPerCategories = useMemo(reworkAndOrderDrugs, [isFocused])
+
   const agreedDrugs = drugPerCategories.calculated.filter(
     drug => drug.key === 'agreed',
   )
@@ -45,9 +47,10 @@ const Drugs = () => {
           <Drug
             key={`summary_diagnosis_drugs-${drug.id}`}
             drug={drug}
-            isLast={i === agreedDrugs.length - 1}
+            isLast={i === orderedDrugs.length - 1}
           />
         ))}
+        <View style={drugStyle.border(false)} />
         {drugPerCategories.custom.map((drug, i) => (
           <SummaryCustomDrug
             key={`summary_diagnosis_drugs-${drug.id}`}

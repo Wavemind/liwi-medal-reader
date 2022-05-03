@@ -425,6 +425,7 @@ export default {
         'Donner {{ doseResult }}ml à {{ liquidConcentration }}mg/{{ doseForm }}ml {{ medicationForm}}',
       frequency_indication:
         '{{ count }} fois par jour (toutes les {{ recurrence }} heures)',
+      frequency_indication_short: '{{ count }} fois par jour',
       fixed_dose_indication_administration:
         'Dose fixe - {{ medicationForm }} par administration',
       fixe_dose_indication_application:

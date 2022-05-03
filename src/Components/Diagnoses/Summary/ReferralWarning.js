@@ -4,6 +4,7 @@
 import React, { useMemo } from 'react'
 import { View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -13,13 +14,14 @@ import { useTheme } from '@/Theme'
 
 const ReferralWarning = () => {
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
   const {
     Components: { referralWarning },
   } = useTheme()
 
   const anyManagementReferral = useMemo(
     () => ExtractManagement().some(management => management.isReferral),
-    [],
+    [isFocused],
   )
 
   if (!anyManagementReferral) {

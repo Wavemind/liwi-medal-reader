@@ -18,7 +18,7 @@ import {
   Icon as CustomIcon,
 } from '@/Components'
 import { DrugDosesService } from '@/Services/MedicalCase'
-
+ 
 const Drug = ({ drug, isLast }) => {
   const { t } = useTranslation()
   const {
@@ -80,7 +80,7 @@ const Drug = ({ drug, isLast }) => {
   }
 
   return (
-    <View style={drugStyle.wrapper(isLast)}>
+    <View style={drugStyle.border(isLast)}>
       <TouchableWithoutFeedback onPress={() => setOpen(prev => !prev)}>
         <View style={drugStyle.buttonWrapper}>
           <View style={drugStyle.buttonTextWrapper}>
@@ -96,9 +96,8 @@ const Drug = ({ drug, isLast }) => {
                 </Text>
                 <Text style={drugStyle.drugText}>
                   <AmountGiven drugDose={drugDose} /> |{' '}
-                  {t('formulations.drug.frequency_indication', {
+                  {t('formulations.drug.frequency_indication_short', {
                     count: drugDose.doses_per_day,
-                    recurrence: drugDose.recurrence,
                   })}{' '}
                   | {durationsDisplay()}
                 </Text>
