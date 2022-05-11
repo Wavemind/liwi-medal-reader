@@ -112,8 +112,8 @@ const drugDoses = (formulationIndex, drugId) => {
         }
 
         // Second calculate min and max dose (cap)
-        const minDoseCap = roundSup((1 / pillSize) * minDoseMg)
-        const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg)
+        const minDoseCap = (1 / pillSize) * minDoseMg
+        const maxDoseCap = (1 / pillSize) * maxDoseMg
 
         // Define Dose Result
         doseResult = (minDoseCap + maxDoseCap) / 2

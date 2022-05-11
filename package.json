@@ -10,6 +10,7 @@
     "test": "jest --verbose --coverage",
     "test:update": "jest --verbose --coverage --updateSnapshot",
     "test:watch": "jest --verbose --watch",
+    "w-build": "cd android && .\\gradlew.bat assembleRelease",
     "np": "np --no-publish",
     "postversion": "react-native-version -t android",
     "coverage": "jest --verbose --coverage && open ./coverage/lcov-report/index.html"

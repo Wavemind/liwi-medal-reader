@@ -37,9 +37,9 @@ const DoseCalculation = ({ drugDose }) => {
         })
       }
       return t('formulations.drug.dose_indication', {
-        dosage: drugDose.doseResultMg / mcWeight.value,
+        dosage: (drugDose.doseResultMg / mcWeight.value).toFixed(1),
         patientWeight: mcWeight.value,
-        total: drugDose.doseResultMg,
+        total: drugDose.doseResultMg.toFixed(1),
       })
     case Config.MEDICATION_FORMS.gel:
     case Config.MEDICATION_FORMS.ointment:
