@@ -4,7 +4,7 @@
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import i18n from '@/Translations/index'
-
+ 
 /**
  * Parse value returned by reference table and make it readable
  * @param value
@@ -260,6 +260,7 @@ const findValueInReferenceTable = (referenceTable, reference) => {
     return parseInt(scopedRange[scopedRange.length - 1])
   }
 
+  // TODO IF SAME VALUE, GIVE PREVIOUS KEY. WAITING ON UNISANTE TO GO ON
   scopedRange.some(key => {
     if (referenceTable[key] === reference) {
       value = Number(key)
