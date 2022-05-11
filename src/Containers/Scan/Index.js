@@ -72,7 +72,7 @@ const IndexScanContainer = () => {
             }),
           )
           if (isFulfilled(medicalCaseResult)) {
-            navigation.navigate('Home', {
+            navigation.navigate('Main', {
               screen: 'StageWrapper',
               ...scanData.navigationParams,
             })
