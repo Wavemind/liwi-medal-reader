@@ -4,6 +4,7 @@
 import React, { useMemo } from 'react'
 import { FlatList } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -14,7 +15,11 @@ import { ComplaintCategoryQuestionsService } from '@/Services/Steps'
 const ComplaintCategoryMedicalCaseContainer = () => {
   const { t } = useTranslation()
 
-  const questions = useMemo(() => ComplaintCategoryQuestionsService(), [])
+  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
+  const questions = useMemo(
+    () => ComplaintCategoryQuestionsService(),
+    [mcNodes],
+  )
 
   return (
     <FlatList

@@ -82,6 +82,7 @@ export const handleManagements = (children, questionsToDisplay, instances) => {
     }
   })
 }
+
 /**
  * Recursive function tha will find all available drugs for a final diagnosis
  * @param {Instance} children : The Treatment condition / drug that we are testing
@@ -184,8 +185,9 @@ export const drugIsRefused = drug => {
  * @returns object of drugs
  */
 export const reworkAndOrderDrugs = () => {
-  const nodes = store.getState().algorithm.item.nodes
-  const diagnoses = store.getState().medicalCase.item.diagnosis
+  const state = store.getState()
+  const nodes = state.algorithm.item.nodes
+  const diagnoses = state.medicalCase.item.diagnosis
 
   const diagnosisTypes = ['agreed', 'additional', 'custom']
   const drugTypes = ['agreed', 'proposed', 'additional', 'custom']
@@ -297,15 +299,17 @@ const getDrugIndex = (drugs, drugId) => {
  * @returns integer || string
  */
 const extractDuration = (diagnosisId, drugId, currentDuration = 0) => {
-  const nodes = store.getState().algorithm.item.nodes
-  const drugInstance = nodes[diagnosisId].drugs[drugId]
+  const drugInstance =
+    store.getState().algorithm.item.nodes[diagnosisId].drugs[drugId]
 
   if (drugInstance.is_pre_referral) {
     return i18n.t('formulations.drug.pre_referral_duration')
   }
 
   if (Number.isInteger(currentDuration)) {
-    const result = translate(drugInstance.duration).match(new RegExp(/^\d{1,2}$/g))
+    const result = translate(drugInstance.duration).match(
+      new RegExp(/^\d{1,2}$/g),
+    )
     if (result) {
       const newDuration = parseInt(result[0], 10)
       if (newDuration > currentDuration) {
