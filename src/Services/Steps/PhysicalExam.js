@@ -45,7 +45,6 @@ export default () => {
   })
 
   const mcNodes = store.getState().medicalCase.item.nodes
-
   const updatedSystems = {}
   physicalExamStep.forEach(system => {
     const newQuestions = system.data.filter(

@@ -183,6 +183,7 @@ const addQuestionToSystem = (
 ) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
+  const mcNodes = state.medicalCase.item.nodes
 
   const lastSystemUpdated = state.medicalCase.item.lastSystemUpdated
 
@@ -198,10 +199,13 @@ const addQuestionToSystem = (
       .map(system => system)
       .flat()
     const isAlreadyDisplayed = visibleNodes.includes(questionId)
+    const isNodesAlreadyAnswered = visibleNodes.some(
+      nodeId => mcNodes[nodeId].answer !== null || mcNodes[nodeId].value !== '',
+    )
 
     if (
       (!isAlreadyDisplayed &&
-        visibleNodes.length > 0 &&
+        isNodesAlreadyAnswered &&
         currentQuestionSystemIndex < oldSystemIndex) ||
       currentSystems?.follow_up_questions?.includes(questionId)
     ) {
