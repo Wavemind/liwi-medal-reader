@@ -297,10 +297,15 @@ const getDrugIndex = (drugs, drugId) => {
  * @returns integer || string
  */
 const extractDuration = (diagnosisId, drugId, currentDuration = 0) => {
+  const nodes = store.getState().algorithm.item.nodes
+  const drugInstance = nodes[diagnosisId].drugs[drugId]
+
+  if (drugInstance.is_pre_referral) {
+    return i18n.t('formulations.drug.pre_referral_duration')
+  }
+
   if (Number.isInteger(currentDuration)) {
-    const nodes = store.getState().algorithm.item.nodes
-    const drugDuration = nodes[diagnosisId].drugs[drugId].duration
-    const result = translate(drugDuration).match(new RegExp(/^\d{1,2}$/g))
+    const result = translate(drugInstance.duration).match(new RegExp(/^\d{1,2}$/g))
     if (result) {
       const newDuration = parseInt(result[0], 10)
       if (newDuration > currentDuration) {
