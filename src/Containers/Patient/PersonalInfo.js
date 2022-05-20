@@ -47,9 +47,8 @@ const PersonalInfoPatientContainer = () => {
 
   const filteredPatientValues = useMemo(
     () =>
-      patient.patientValues.filter(patientValue => nodes[patientValue.node_id])[
-        patient.patientValues
-      ],
+      patient.patientValues.filter(patientValue => nodes[patientValue.node_id]),
+    [patient.patientValues],
   )
 
   /**
@@ -96,12 +95,19 @@ const PersonalInfoPatientContainer = () => {
                 value={renderAnswer(patientValue)}
               />
             ))}
-            <Text style={[Fonts.textCenter, Fonts.textSmall]}>
-              {t('containers.patient.personal_info.some_question_not_display', {
-                count:
-                  patient.patientValues.length - filteredPatientValues.length,
-              })}
-            </Text>
+            {patient.patientValues.length - filteredPatientValues.length >
+              0 && (
+              <Text style={[Fonts.textCenter, Fonts.textSmall]}>
+                {t(
+                  'containers.patient.personal_info.some_question_not_display',
+                  {
+                    count:
+                      patient.patientValues.length -
+                      filteredPatientValues.length,
+                  },
+                )}
+              </Text>
+            )}
           </>
         )}
       </View>
