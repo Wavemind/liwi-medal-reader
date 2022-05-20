@@ -41,17 +41,15 @@ const PersonalInfoPatientContainer = () => {
 
   const isDiplayable = useMemo(
     () =>
-      patient.patientValues.every(
-        patientValue => nodes[patientValue.node_id] === undefined,
-      ),
+      patient.patientValues.every(patientValue => !nodes[patientValue.node_id]),
     [patient.patientValues],
   )
 
   const filteredPatientValues = useMemo(
     () =>
-      patient.patientValues.filter(
-        patientValue => nodes[patientValue.node_id] !== undefined,
-      )[patient.patientValues],
+      patient.patientValues.filter(patientValue => nodes[patientValue.node_id])[
+        patient.patientValues
+      ],
   )
 
   /**
