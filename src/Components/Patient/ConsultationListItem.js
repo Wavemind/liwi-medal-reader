@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -32,6 +32,9 @@ const ConsultationListItem = ({ item }) => {
   const navigation = useNavigation()
 
   const nodes = useSelector(state => state.algorithm.item.nodes)
+  const currentVersionId = useSelector(state => state.algorithm.item.version_id)
+
+  const disabled = useMemo(() => item.version_id !== currentVersionId, [item])
 
   const [allDiagnoses] = useState({
     ...item.diagnosis.agreed,
@@ -66,8 +69,9 @@ const ConsultationListItem = ({ item }) => {
 
   return (
     <TouchableOpacity
-      style={consultationListItem.wrapper}
+      style={consultationListItem.wrapper(disabled)}
       onPress={handlePress}
+      disabled={disabled}
     >
       <View style={consultationListItem.container}>
         {!item.synchronizedAt && (

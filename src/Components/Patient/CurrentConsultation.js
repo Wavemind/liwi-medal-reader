@@ -1,10 +1,10 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
@@ -35,6 +35,12 @@ const CurrentConsultation = ({ navigation, medicalCase }) => {
   const [stepIndex] = useState(medicalCase.advancement.step)
   const [locked] = useState(isLocked(medicalCase))
 
+  const currentVersionId = useSelector(state => state.algorithm.item.version_id)
+  const disabled = useMemo(
+    () => medicalCase.version_id !== currentVersionId,
+    [medicalCase],
+  )
+
   /**
    * Loads the current medical case in store and navigates to the stage wrapper
    * @returns {Promise<void>}
@@ -49,7 +55,11 @@ const CurrentConsultation = ({ navigation, medicalCase }) => {
   }
 
   return (
-    <TouchableOpacity style={currentConsultation.wrapper} onPress={handlePress}>
+    <TouchableOpacity
+      style={currentConsultation.wrapper(disabled)}
+      onPress={handlePress}
+      disabled={disabled}
+    >
       {locked && (
         <View style={[Layout.column, Gutters.regularRMargin]}>
           <Icon name="lock" size={FontSize.large} color={Colors.red} />

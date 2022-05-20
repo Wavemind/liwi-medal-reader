@@ -20,7 +20,10 @@ const SummaryQuestionItem = ({ nodeId }) => {
   const currentNode = useSelector(state => state.algorithm.item.nodes[nodeId])
   const mcNode = useSelector(state => state.medicalCase.item.nodes[nodeId])
 
-  if (mcNode.answer === null && mcNode.value === '') {
+  if (
+    mcNode === undefined ||
+    (mcNode?.answer === null && mcNode?.value === '')
+  ) {
     return null
   }
 

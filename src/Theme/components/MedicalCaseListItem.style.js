@@ -5,13 +5,14 @@ export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
 
   return StyleSheet.create({
-    wrapper: {
+    wrapper: disabled => ({
       ...Layout.fill,
       ...Gutters.smallTPadding,
       ...Gutters.regularHMargin,
       borderBottomWidth: 1,
       borderColor: Colors.grey,
-    },
+      opacity: disabled ? 0.5 : 1,
+    }),
     container: {
       ...Layout.alignItemsCenter,
       ...Layout.row,
