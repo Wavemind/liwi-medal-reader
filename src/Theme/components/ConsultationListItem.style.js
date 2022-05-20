@@ -40,7 +40,7 @@ export default function (props) {
     date: {
       ...Fonts.textTiny,
       ...Gutters.regularRMargin,
-      color: Colors.primary
+      color: Colors.primary,
     },
   })
 }
