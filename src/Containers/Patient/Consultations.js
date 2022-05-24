@@ -47,7 +47,11 @@ const ConsultationPatientContainer = ({ navigation }) => {
 
   // Local state definition
   const [currentConsultation, setCurrentConsultation] = useState(
-    patient.medicalCases.find(medicalCase => medicalCase.closedAt === 0),
+    patient.medicalCases.find(
+      medicalCase =>
+        medicalCase.closedAt === 0 &&
+        medicalCase.version_id === algorithm.version_id,
+    ),
   )
   const [closedCases, setClosedCases] = useState(
     orderBy(
@@ -62,7 +66,11 @@ const ConsultationPatientContainer = ({ navigation }) => {
    */
   useEffect(() => {
     setCurrentConsultation(
-      patient.medicalCases.find(medicalCase => medicalCase.closedAt === 0),
+      patient.medicalCases.find(
+        medicalCase =>
+          medicalCase.closedAt === 0 &&
+          medicalCase.version_id === algorithm.version_id,
+      ),
     )
     setClosedCases(
       orderBy(
