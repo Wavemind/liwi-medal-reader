@@ -4,7 +4,7 @@
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import i18n from '@/Translations/index'
- 
+
 /**
  * Parse value returned by reference table and make it readable
  * @param value
@@ -13,10 +13,6 @@ import i18n from '@/Translations/index'
  * @return string readable value
  */
 export const displayResult = (value, nodeId) => {
-  if (value === 0) {
-    return 0
-  }
-
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   const mcNodes = state.medicalCase.item.nodes
@@ -28,7 +24,7 @@ export const displayResult = (value, nodeId) => {
   if (currentNode.reference_table_z_id === null) {
     switch (value) {
       case 5:
-        return i18n.t('reference_table.above', { number: 5 })
+        return i18n.t('reference_table.more', { number: 5 })
       case 4:
         if (5 in Object.values(reference)[0]) {
           return i18n.t('reference_table.between', {
@@ -36,7 +32,7 @@ export const displayResult = (value, nodeId) => {
             number_2: 5,
           })
         } else {
-          return i18n.t('reference_table.above', { number: 4 })
+          return i18n.t('reference_table.more', { number: 4 })
         }
       case 3:
         if (4 in Object.values(reference)[0]) {
@@ -45,7 +41,7 @@ export const displayResult = (value, nodeId) => {
             number_2: 4,
           })
         } else {
-          return i18n.t('reference_table.above', { number: 3 })
+          return i18n.t('reference_table.more', { number: 3 })
         }
       case 2:
         return i18n.t('reference_table.between', {
@@ -57,30 +53,35 @@ export const displayResult = (value, nodeId) => {
           number_1: 1,
           number_2: 2,
         })
+      case 0:
+        return i18n.t('reference_table.between', {
+          number_1: -1,
+          number_2: 1,
+        })
       case -5:
-        return i18n.t('reference_table.lower', { number: -5 })
+        return i18n.t('reference_table.less', { number: -5 })
       case -4:
         if (-5 in Object.values(reference)[0]) {
           return i18n.t('reference_table.between', {
-            number_1: -4,
-            number_2: -5,
+            number_1: -5,
+            number_2: -4,
           })
         } else {
-          return i18n.t('reference_table.lower', { number: -4 })
+          return i18n.t('reference_table.less', { number: -4 })
         }
       case -3:
         if (-4 in Object.values(reference)[0]) {
           return i18n.t('reference_table.between', {
-            number_1: -3,
-            number_2: -4,
+            number_1: -4,
+            number_2: -3,
           })
         } else {
-          return i18n.t('reference_table.lower', { number: -3 })
+          return i18n.t('reference_table.less', { number: -3 })
         }
       case -2:
-        return i18n.t('reference_table.between', { number_1: -2, number_2: -3 })
+        return i18n.t('reference_table.between', { number_1: -3, number_2: -2 })
       case -1:
-        return i18n.t('reference_table.between', { number_1: -1, number_2: -2 })
+        return i18n.t('reference_table.between', { number_1: -2, number_2: -1 })
     }
   }
 
@@ -248,7 +249,18 @@ const findValueInReferenceTable = (referenceTable, reference) => {
   let previousKey = null
   let value = null
 
+  // Please refer to issue https://github.com/Wavemind/liwi-medal-reader/issues/491 for new z-score rules
   const scopedRange = Object.keys(referenceTable).sort((a, b) => a - b)
+
+  // If reference is the same value of the latest value, give higher key
+  if (reference === referenceTable[scopedRange[0]]) {
+    return parseInt(scopedRange[1])
+  }
+
+  // If reference is the same value of the highest value, give lower key
+  if (reference === referenceTable[scopedRange[scopedRange.length - 1]]) {
+    return parseInt(scopedRange[scopedRange.length - 2])
+  }
 
   // If reference is smaller than the smallest value
   if (reference < referenceTable[scopedRange[0]]) {
@@ -260,10 +272,19 @@ const findValueInReferenceTable = (referenceTable, reference) => {
     return parseInt(scopedRange[scopedRange.length - 1])
   }
 
-  // TODO IF SAME VALUE, GIVE PREVIOUS KEY. WAITING ON UNISANTE TO GO ON
   scopedRange.some(key => {
     if (referenceTable[key] === reference) {
-      value = Number(key)
+      const currentIndex = scopedRange.indexOf(key)
+
+      if (Number(key) === 0) {
+        value = Number(scopedRange[currentIndex])
+        return true
+      }
+
+      value =
+        parseInt(key) < 0
+          ? Number(scopedRange[currentIndex + 1])
+          : Number(scopedRange[currentIndex - 1])
       return true
     }
 

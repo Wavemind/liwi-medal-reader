@@ -486,8 +486,8 @@ export default {
     },
   },
   reference_table: {
-    above: '{{number}} ou supérieur',
-    lower: '{{number}} ou inférieur',
+    more: 'supérieur à {{number}}',
+    less: 'inférieur à {{number}}',
     between: 'Entre {{number_1}} et {{number_2}}',
   },
   validation: {
