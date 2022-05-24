@@ -276,8 +276,8 @@ const findValueInReferenceTable = (referenceTable, reference) => {
     if (referenceTable[key] === reference) {
       const currentIndex = scopedRange.indexOf(key)
 
-      if (key === 0) {
-        Number(scopedRange[currentIndex])
+      if (Number(key) === 0) {
+        value = Number(scopedRange[currentIndex])
         return true
       }
 
