@@ -20,7 +20,7 @@ export const displayResult = (value, nodeId) => {
 
   // Get reference table for male or female
   const reference = getReferenceTable(currentNode, mcNodes)
-  console.log('display', value)
+
   if (currentNode.reference_table_z_id === null) {
     switch (value) {
       case 5:
@@ -250,8 +250,6 @@ const findValueInReferenceTable = (referenceTable, reference) => {
   let value = null
 
   // Please refer to issue https://github.com/Wavemind/liwi-medal-reader/issues/491 for new z-score rules
-
-  console.log('findValueInReferenceTable', reference)
   const scopedRange = Object.keys(referenceTable).sort((a, b) => a - b)
 
   // If reference is the same value of the latest value, give higher key
@@ -297,7 +295,6 @@ const findValueInReferenceTable = (referenceTable, reference) => {
 
     previousKey = key
   })
-  console.log('HERE', value)
   return value
 }
 
