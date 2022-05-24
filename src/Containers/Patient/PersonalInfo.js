@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { ScrollView, View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -17,6 +17,7 @@ import { formatDate } from '@/Utils/Date'
 const PersonalInfoPatientContainer = () => {
   const {
     Gutters,
+    Fonts,
     Containers: { patientPersonalInfo },
   } = useTheme()
 
@@ -37,6 +38,18 @@ const PersonalInfoPatientContainer = () => {
       value: birthDateValue,
     },
   ]
+
+  const isDiplayable = useMemo(
+    () =>
+      patient.patientValues.every(patientValue => !nodes[patientValue.node_id]),
+    [patient.patientValues],
+  )
+
+  const filteredPatientValues = useMemo(
+    () =>
+      patient.patientValues.filter(patientValue => nodes[patientValue.node_id]),
+    [patient.patientValues],
+  )
 
   /**
    * Renders the correct answer depending on whether answer_id is null or not
@@ -69,13 +82,34 @@ const PersonalInfoPatientContainer = () => {
         <SectionHeader
           label={t('containers.patient.personal_info.consultations_info')}
         />
-        {patient.patientValues.map(patientValue => (
-          <PatientPersonalInfoItem
-            key={`patient_information_${patientValue.node_id}`}
-            label={translate(nodes[patientValue.node_id].label)}
-            value={renderAnswer(patientValue)}
-          />
-        ))}
+        {isDiplayable ? (
+          <Text style={[Fonts.textCenter, Fonts.textSmall]}>
+            {t('containers.patient.personal_info.no_questions')}
+          </Text>
+        ) : (
+          <>
+            {filteredPatientValues.map(patientValue => (
+              <PatientPersonalInfoItem
+                key={`patient_information_${patientValue.node_id}`}
+                label={translate(nodes[patientValue.node_id].label)}
+                value={renderAnswer(patientValue)}
+              />
+            ))}
+            {patient.patientValues.length - filteredPatientValues.length >
+              0 && (
+              <Text style={[Fonts.textCenter, Fonts.textSmall]}>
+                {t(
+                  'containers.patient.personal_info.some_question_not_display',
+                  {
+                    count:
+                      patient.patientValues.length -
+                      filteredPatientValues.length,
+                  },
+                )}
+              </Text>
+            )}
+          </>
+        )}
       </View>
     </ScrollView>
   )

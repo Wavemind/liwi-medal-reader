@@ -45,20 +45,22 @@ const SummaryQuestions = ({ zScoreReferenceTableQuestions }) => {
   const medicalHistoryStep = useSelector(
     state => state.algorithm.item.config.full_order.medical_history_step,
   )
+
   const physicalExamStep = useSelector(
     state => state.algorithm.item.config.full_order.physical_exam_step,
   )
+
   const basicMeasurements = BasicMeasurementQuestionsService()
   const assessments = AssessmentQuestionsService()
 
   const assessmentsResult = assessments.filter(
     nodeId =>
-      !(mcNodes[nodeId].answer === null && mcNodes[nodeId].value === ''),
+      !(mcNodes[nodeId]?.answer === null && mcNodes[nodeId].value === ''),
   )
 
   const basicMeasurementResult = basicMeasurements.filter(
     nodeId =>
-      !(mcNodes[nodeId].answer === null && mcNodes[nodeId].value === '') &&
+      !(mcNodes[nodeId]?.answer === null && mcNodes[nodeId].value === '') &&
       !zScoreReferenceTableQuestions.includes(nodeId),
   )
 
@@ -114,7 +116,7 @@ const SummaryQuestions = ({ zScoreReferenceTableQuestions }) => {
       )}
       <SectionHeader label={t('medical_case.comment')} />
       {comment ? (
-        <Text style={[Fonts.textSmall]}>{comment}</Text>
+        <Text style={Fonts.textSmall}>{comment}</Text>
       ) : (
         <Text style={[Fonts.textCenter, Fonts.textSmall]}>
           {t('components.summary.no_comments')}

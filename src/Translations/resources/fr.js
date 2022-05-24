@@ -188,6 +188,11 @@ export default {
       personal_info: {
         patient_info: 'Patient·e',
         consultations_info: 'Détails admission',
+        no_questions: "Données d'admission pas disponible pour ce patient",
+        some_question_not_display:
+          "{{ count }} ligne supplémentaire n'a pas pu être affichée (car l'algorithme a changé depuis la création du patient)",
+        some_question_not_display_plural:
+          "{{ count }} lignes supplémentaires n'ont pas pu être affichées (car l'algorithme a changé depuis la création du patient)",
       },
     },
     consent: {

@@ -4,13 +4,14 @@ export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
 
   return StyleSheet.create({
-    wrapper: {
+    wrapper: disabled => ({
       ...Gutters.regularHMargin,
       ...Layout.rowHCenter,
       ...Layout.justifyContentBetween,
       borderBottomWidth: 1,
       borderColor: Colors.grey,
-    },
+      opacity: disabled ? 0.5 : 1,
+    }),
     titleWrapper: {
       ...Layout.column,
       ...Gutters.smallVMargin,

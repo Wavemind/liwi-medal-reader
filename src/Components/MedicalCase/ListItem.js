@@ -1,9 +1,9 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
 
@@ -12,14 +12,14 @@ import { useNavigation } from '@react-navigation/native'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import { getStages } from '@/Utils/Navigation/GetStages'
+import { isLocked } from '@/Utils/MedicalCase'
+import { formatDate } from '@/Utils/Date'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
 import LoadPatient from '@/Store/Patient/Load'
 import LockMedicalCase from '@/Store/DatabaseMedicalCase/Lock'
-import { getStages } from '@/Utils/Navigation/GetStages'
-import { isLocked } from '@/Utils/MedicalCase'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import SetParams from '@/Store/Modal/SetParams'
-import { formatDate } from '@/Utils/Date'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
@@ -34,9 +34,11 @@ const ListItem = ({ item }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigation = useNavigation()
+  const currentVersionId = useSelector(state => state.algorithm.item.version_id)
 
   const [stages] = useState(getStages())
   const [locked, setLocked] = useState(isLocked(item))
+  const disabled = useMemo(() => item.version_id !== currentVersionId, [item])
 
   useEffect(() => {
     setLocked(isLocked(item))
@@ -65,7 +67,11 @@ const ListItem = ({ item }) => {
   }
 
   return (
-    <TouchableOpacity style={medicalCaseListItem.wrapper} onPress={handlePress}>
+    <TouchableOpacity
+      style={medicalCaseListItem.wrapper(disabled)}
+      onPress={handlePress}
+      disabled={disabled}
+    >
       <View style={medicalCaseListItem.container}>
         {locked && (
           <View style={[Layout.column, Gutters.regularRMargin]}>

@@ -186,6 +186,11 @@ export default {
       personal_info: {
         patient_info: 'Patient information',
         consultations_info: 'Registration data',
+        no_questions: 'Registration data not available for this patient',
+        some_question_not_display:
+          '{{ count }} more line could not be displayed for this patient (due to a change in algorithms after the patient was registered)',
+        some_question_not_display_plural:
+          '{{ count }} more lines could not be displayed for this patient (due to a change in algorithms after the patient was registered)',
       },
     },
     consent: {
