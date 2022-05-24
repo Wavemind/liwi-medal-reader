@@ -477,8 +477,8 @@ export default {
     },
   },
   reference_table: {
-    above: '{{number}} or above',
-    lower: '{{number}} or lower',
+    more: 'more than {{number}}',
+    less: 'less than {{number}}',
     between: 'Between {{number_1}} and {{number_2}}',
   },
   validation: {
