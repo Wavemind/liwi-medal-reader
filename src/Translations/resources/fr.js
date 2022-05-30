@@ -453,6 +453,7 @@ export default {
       cutaneous: 'Cutanée',
       transdermally: 'Transdermique',
       ocular: 'Ophtalmique',
+      vaginally: 'Vaginale',
     },
     medication_form: {
       tablet: '{{- fraction }} comprimé',
