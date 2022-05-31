@@ -449,6 +449,7 @@ export default {
       cutaneous: 'Cutaneous',
       transdermally: 'Transdermally',
       ocular: 'Ocular',
+      vaginally: 'Vaginal',
     },
     medication_form: {
       tablet: '{{- fraction }} tablet',
