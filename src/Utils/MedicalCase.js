@@ -334,7 +334,7 @@ export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
 }
 
 /**
- * Calculate node from bottom to top
+ * Calculate node from bottom to top for version diagram
  * @param {Instances} conditions,
  * @param {Instances} mcNodes,
  * @returns true/false
@@ -342,7 +342,6 @@ export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
 export const calculateConditionInverse = (conditions, mcNodes) => {
   const state = store.getState()
   const instances = state.algorithm.item.diagram.instances
-
   if (conditions === undefined || conditions.length === 0) {
     return true
   }
@@ -354,6 +353,36 @@ export const calculateConditionInverse = (conditions, mcNodes) => {
       return calculateConditionInverse(
         instances[condition.node_id].conditions,
         mcNodes,
+      )
+    } else {
+      return false
+    }
+  })
+}
+
+/**
+ * Calculate node from bottom to top for a final diagnosis
+ * @param {Instances} conditions,
+ * @param {Instances} mcNodes,
+ * @returns true/false
+ */
+export const calculateConditionInverseFinalDiagnosis = (
+  conditions,
+  mcNodes,
+  instances,
+) => {
+  if (conditions === undefined || conditions.length === 0) {
+    return true
+  }
+
+  return conditions.some(condition => {
+    const conditionValue =
+      mcNodes[condition.node_id].answer === condition.answer_id
+    if (conditionValue) {
+      return calculateConditionInverseFinalDiagnosis(
+        instances[condition.node_id].conditions,
+        mcNodes,
+        instances,
       )
     } else {
       return false
