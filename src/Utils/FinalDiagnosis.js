@@ -107,7 +107,6 @@ export const getNewDiagnoses = (finalDiagnoses, removeDrugs = false) => {
       JSON.stringify(finalDiagnosis.drugs.additional),
     )
 
-    // FIXE DAD SHIT
     if (removeDrugs) {
       const drugToRemove = Object.keys(finalDiagnosis.drugs.agreed).filter(
         agreedDrugId =>
