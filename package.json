@@ -1,6 +1,6 @@
 {
   "name": "medAL-reader",
-  "version": "1.1.0-0",
+  "version": "1.1.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -16,7 +16,7 @@
     "coverage": "jest --verbose --coverage && open ./coverage/lcov-report/index.html"
   },
   "repository": {
-    "type": "git", 
+    "type": "git",
     "url": "git@github.com:Wavemind/liwi-medal-reader.git"
   },
   "dependencies": {
