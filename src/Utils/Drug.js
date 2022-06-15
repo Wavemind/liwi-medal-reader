@@ -3,7 +3,11 @@
  */
 import { store } from '@/Store'
 import { Config } from '@/Config'
-import { uniq, getTopConditions, calculateCondition } from '@/Utils/MedicalCase'
+import {
+  uniq,
+  calculateCondition,
+  calculateConditionInverseFinalDiagnosis,
+} from '@/Utils/MedicalCase'
 import { translate } from '@/Translations/algorithm'
 import i18n from '@/Translations/index'
 
@@ -18,6 +22,7 @@ export const getAvailableHealthcare = (
   exclusion = true,
 ) => {
   const state = store.getState()
+  const nodes = state.algorithm.item.nodes
   let instances =
     state.algorithm.item.diagnoses[finalDiagnosis.diagnosis_id].final_diagnoses[
       finalDiagnosis.id
@@ -25,12 +30,17 @@ export const getAvailableHealthcare = (
 
   instances = { ...instances, ...finalDiagnosis[key] }
 
-  const topConditions = getTopConditions(instances, true)
   const questionsToDisplay = []
   if (key === 'drugs') {
-    handleDrugs(topConditions, questionsToDisplay, instances, exclusion)
+    const allDrugs = Object.values(instances).filter(
+      instance => nodes[instance.id].category === Config.CATEGORIES.drug,
+    )
+    handleDrugs(allDrugs, questionsToDisplay, instances, exclusion)
   } else {
-    handleManagements(topConditions, questionsToDisplay, instances)
+    const allManagements = Object.values(instances).filter(
+      instance => nodes[instance.id].category === Config.CATEGORIES.management,
+    )
+    handleManagements(allManagements, questionsToDisplay, instances)
   }
 
   return uniq(questionsToDisplay)
@@ -51,10 +61,22 @@ export const isHealthcareExcluded = (healthCareId, agreedHealthCares) => {
   )
 }
 
-export const handleManagements = (children, questionsToDisplay, instances) => {
+/**
+ * Recursive function tha will find all available managements for a final diagnosis
+ * @param {Instance} managementInstances : management that we are testing
+ * @param {*} questionsToDisplay : list of available managements we are updating
+ * @param {Array<Instance>} instances : All the nodes in the final Diagnosis diagram
+ */
+export const handleManagements = (
+  managementInstances,
+  questionsToDisplay,
+  instances,
+) => {
   const state = store.getState()
+  const mcNodes = state.medicalCase.item.nodes
   const nodes = state.algorithm.item.nodes
   const agreedFinalDiagnoses = state.medicalCase.item.diagnosis.agreed
+
   const managements = Object.values(agreedFinalDiagnoses)
     .map(agreedFinalDiagnosis =>
       Object.values(nodes[agreedFinalDiagnosis.id].managements)
@@ -67,17 +89,18 @@ export const handleManagements = (children, questionsToDisplay, instances) => {
     )
     .flat()
 
-  children.forEach(instance => {
-    if (calculateCondition(instance)) {
+  managementInstances.forEach(instance => {
+    if (
+      calculateConditionInverseFinalDiagnosis(
+        instance.conditions,
+        mcNodes,
+        instances,
+      )
+    ) {
       if (nodes[instance.id].category === Config.CATEGORIES.management) {
         if (!isHealthcareExcluded(instance.id, managements)) {
           questionsToDisplay.push(instance.id)
         }
-      } else if (instance.children && instance.children.length > 0) {
-        const childrenInstance = instance.children
-          .filter(childId => nodes[childId].category !== Config.CATEGORIES.drug)
-          .map(childId => instances[childId])
-        handleManagements(childrenInstance, questionsToDisplay, instances)
       }
     }
   })
@@ -85,19 +108,19 @@ export const handleManagements = (children, questionsToDisplay, instances) => {
 
 /**
  * Recursive function tha will find all available drugs for a final diagnosis
- * @param {Instance} children : The Treatment condition / drug that we are testing
+ * @param {Instance} drugInstances : drug instance
  * @param {*} questionsToDisplay : list of available drug we are updating
  * @param {Array<Instance>} instances : All the nodes in the final Diagnosis diagram
  */
 export const handleDrugs = (
-  children,
+  drugInstances,
   questionsToDisplay,
   instances,
   exclusion,
 ) => {
   const state = store.getState()
-  const nodes = state.algorithm.item.nodes
   const agreedFinalDiagnoses = state.medicalCase.item.diagnosis.agreed
+  const mcNodes = state.medicalCase.item.nodes
 
   let agreedDrugs = []
   if (exclusion) {
@@ -108,23 +131,20 @@ export const handleDrugs = (
       .flat()
   }
 
-  children.forEach(instance => {
-    if (calculateCondition(instance)) {
-      if (nodes[instance.id].category === Config.CATEGORIES.drug) {
-        if (exclusion) {
-          if (!isHealthcareExcluded(instance.id, agreedDrugs)) {
-            questionsToDisplay.push(instance.id)
-          }
-        } else {
+  drugInstances.forEach(instance => {
+    if (
+      calculateConditionInverseFinalDiagnosis(
+        instance.conditions,
+        mcNodes,
+        instances,
+      )
+    ) {
+      if (exclusion) {
+        if (!isHealthcareExcluded(instance.id, agreedDrugs)) {
           questionsToDisplay.push(instance.id)
         }
-      } else if (instance.children && instance.children.length > 0) {
-        const childrenInstance = instance.children
-          .filter(
-            childId => nodes[childId].category !== Config.CATEGORIES.management,
-          )
-          .map(childId => instances[childId])
-        handleDrugs(childrenInstance, questionsToDisplay, instances, exclusion)
+      } else {
+        questionsToDisplay.push(instance.id)
       }
     }
   })
