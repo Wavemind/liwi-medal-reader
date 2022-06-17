@@ -98,7 +98,7 @@ const getRefreshToken = async () => {
     await Keychain.resetInternetCredentials('accessTokenExpirationDate')
     await Keychain.resetInternetCredentials('refreshToken')
 
-    // Ask user to enrol again
+    // Ask user to enroll again
     navigateAndSimpleReset('Auth', { screen: 'Login' })
   }
 }

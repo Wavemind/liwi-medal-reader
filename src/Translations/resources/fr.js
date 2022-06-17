@@ -324,7 +324,7 @@ export default {
     },
     token: {
       title: "Erreur d'authentification",
-      description: 'Token invalid',
+      description: "Jeton de sécurité révoqué. Veuillez demander à votre répondant informatique d'enroller le device  dans le centre de santé {{ healthFacility }} sur medAL-data {{- server }}",
     },
     unknown: {
       title: 'Erreur de communication',

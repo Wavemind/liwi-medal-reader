@@ -9,6 +9,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
 import { useTranslation } from 'react-i18next'
 import { heightPercentageToDP } from 'react-native-responsive-screen'
 import { HF_TOKEN } from 'env'
+import * as Keychain from 'react-native-keychain'
 
 /**
  * The internal imports
@@ -22,13 +23,14 @@ import {
 } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
-import { ToggleSwitchDarkMode, Loader } from '@/Components'
+import { ToggleSwitchDarkMode, Loader, SquareButton } from '@/Components'
 
 const PinAuthContainer = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
     Colors,
+    Layout,
     Containers: { auth, authPin, global },
   } = useTheme()
 
@@ -125,30 +127,54 @@ const PinAuthContainer = () => {
     }
   }
 
+  const enrollDevice = async () => {
+    // Remove tokens
+    await Keychain.resetInternetCredentials('accessToken')
+    await Keychain.resetInternetCredentials('accessTokenExpirationDate')
+    await Keychain.resetInternetCredentials('refreshToken')
+
+    navigateAndSimpleReset('Auth', { screen: 'Login' })
+  }
+
   return (
     <Animated.View style={[global.animation(fadeAnim), global.wrapper]}>
-      <Text style={auth.header}>
-        {currentClinician.first_name} {currentClinician.last_name}
-        {'\n'}
-        <Text style={authPin.secondTitle}>
-          {t(`health_facility.roles.${currentClinician.role}`)}
-        </Text>
-      </Text>
-      {algorithmFetchOneError && (
-        <Text style={auth.errorMessage}>{algorithmFetchOneError.message}</Text>
-      )}
-      {emergencyContentFetchOneError && (
-        <Text style={auth.errorMessage}>
-          {emergencyContentFetchOneError.message}
-        </Text>
-      )}
-      <View style={authPin.messageWrapper}>
-        {messageTypes.map(messageType => (
-          <Text style={authPin.secondTitle} key={messageType}>
-            {t(`containers.auth.pin.${messageType}`)}
+      <View style={[Layout.fill, Layout.justifyContentBetween]}>
+        <Text style={auth.header}>
+          {currentClinician.first_name} {currentClinician.last_name}
+          {'\n'}
+          <Text style={authPin.secondTitle}>
+            {t(`health_facility.roles.${currentClinician.role}`)}
           </Text>
-        ))}
+        </Text>
+
+        {algorithmFetchOneError && (
+          <Text style={auth.errorMessage}>
+            {algorithmFetchOneError.message}
+          </Text>
+        )}
+
+        {algorithmFetchOneError === '' && emergencyContentFetchOneError && (
+          <Text style={auth.errorMessage}>
+            {emergencyContentFetchOneError.message}
+          </Text>
+        )}
+
+        {(algorithmFetchOneError || emergencyContentFetchOneError) &&
+          !loading && (
+            <SquareButton label="Connect" filled onPress={enrollDevice} />
+          )}
       </View>
+
+      {!(algorithmFetchOneError || emergencyContentFetchOneError) ||
+        (loading && (
+          <View style={authPin.messageWrapper}>
+            {messageTypes.map(messageType => (
+              <Text style={authPin.secondTitle} key={messageType}>
+                {t(`containers.auth.pin.${messageType}`)}
+              </Text>
+            ))}
+          </View>
+        ))}
       <View style={authPin.wrapper}>
         <PINCode
           passwordLength={pinCode?.length}

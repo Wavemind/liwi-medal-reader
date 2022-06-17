@@ -12,8 +12,6 @@ import {
 import { unzip } from 'react-native-zip-archive'
 import ReactNativeBlobUtil from 'react-native-blob-util'
 import { checkInternetConnection } from 'react-native-offline'
-import * as Keychain from 'react-native-keychain'
-import { showMessage } from 'react-native-flash-message'
 
 /**
  * The internal imports
@@ -21,14 +19,13 @@ import { showMessage } from 'react-native-flash-message'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { RefreshTokenAuthService } from '@/Services/Auth'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
 import i18n from '@/Translations/index'
 
 export default async ({ json_version = '' }) => {
   const state = store.getState()
   const mainDataUrl = state.auth.medAlDataURL
   const oldAlgorithm = state.algorithm.item
-
+  console.log(state)
   // Test if medAL-Data is reachable.
   const isConnected = await checkInternetConnection(mainDataUrl)
 
@@ -62,9 +59,7 @@ export default async ({ json_version = '' }) => {
         Authorization: bearToken,
       },
     )
-    .catch(err => {
-      return Promise.reject({ message: `Algorithm - ${err}` })
-    })
+    .catch(err => Promise.reject({ message: `Algorithm - ${err}` }))
 
   clearTimeout(timeout)
 
@@ -73,25 +68,24 @@ export default async ({ json_version = '' }) => {
     return { ...oldAlgorithm, updated: false }
   }
 
-  // Token revoked, so we need to logout and redirect to login screen
-  if (response.respInfo.status === 401) {
-    // device token revoke, so disconnect
-    showMessage({
-      message: i18n.t('errors.token.title'),
-      description: i18n.t('errors.token.description'),
-      type: 'danger',
-      duration: 5000,
+  if (response.respInfo.status !== 200) {
+    // Token revoked, so we need to logout and redirect to login screen
+    if (response.respInfo.status === 401) {
+      return Promise.reject({
+        message: i18n.t('errors.token.description', {
+          healthFacility: state.healthFacility.item.name,
+          server: state.auth.medAlDataURL,
+        }),
+      })
+    }
+
+    console.log(response)
+    return Promise.reject({
+      message: i18n.t('errors.token.description', {
+        healthFacility: state.healthFacility.item.name,
+        server: state.auth.medAlDataURL,
+      }),
     })
-
-    // Remove tokens
-    await Keychain.resetInternetCredentials('accessToken')
-    await Keychain.resetInternetCredentials('accessTokenExpirationDate')
-    await Keychain.resetInternetCredentials('refreshToken')
-
-    // Ask user to enrol again
-    navigateAndSimpleReset('Auth', { screen: 'Login' })
-
-    return Promise.reject({ message: i18n.t('errors.token.description') })
   }
 
   //////////////////////////////////////////////////////////////////////////////

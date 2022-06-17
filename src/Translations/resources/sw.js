@@ -319,7 +319,8 @@ export default {
     },
     token: {
       title: 'Authentication error',
-      description: 'Token revoke',
+      description:
+        'Security token revoked. Please ask your IT manager to enroll device in health facility {{ healthFacility }} on medAL-data {{- server }}',
     },
     unknown: {
       title: 'Communication error',

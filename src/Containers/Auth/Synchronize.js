@@ -44,6 +44,9 @@ const SynchronizeAuthContainer = () => {
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
+  const emergencyContentFetchOneError = useSelector(
+    state => state.emergency.emergency.error,
+  )
 
   useEffect(() => {
     fadeIn(fadeAnim)
@@ -63,7 +66,9 @@ const SynchronizeAuthContainer = () => {
     if (isFulfilled(fetchOneHealthFacility)) {
       // Register device in medAl-creator
       const fetchOneAlgorithm = await dispatch(FetchOneAlgorithm.action({}))
+      console.log("BEFORE HERE", fetchOneAlgorithm)
       if (isFulfilled(fetchOneAlgorithm)) {
+        console.log("HERE", fetchOneAlgorithm)
         // Get emergency content
         const fetchOneEmergency = await dispatch(
           FetchOneEmergency.action({
@@ -115,6 +120,11 @@ const SynchronizeAuthContainer = () => {
             {algorithmFetchOneError && (
               <Text style={auth.errorMessage}>
                 {algorithmFetchOneError.message}
+              </Text>
+            )}
+            {emergencyContentFetchOneError && (
+              <Text style={auth.errorMessage}>
+                {emergencyContentFetchOneError.message}
               </Text>
             )}
           </View>

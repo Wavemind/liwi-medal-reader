@@ -88,7 +88,7 @@ export default async ({ emergencyContentVersion }) => {
     await Keychain.resetInternetCredentials('accessTokenExpirationDate')
     await Keychain.resetInternetCredentials('refreshToken')
 
-    // Ask user to enrol again
+    // Ask user to enroll again
     navigateAndSimpleReset('Auth', { screen: 'Login' })
 
     return Promise.reject({ message: i18n.t('errors.token.description') })
