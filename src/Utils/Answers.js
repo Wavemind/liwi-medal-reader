@@ -37,6 +37,7 @@ export const getNoAnswer = node => {
 
   return Object.values(answers)[noAnswerIndex]
 }
+
 /**
  * Round number
  * @param {integer} value : value to round
@@ -45,7 +46,7 @@ export const getNoAnswer = node => {
  */
 export const round = (value, step) => {
   step || (step = 1.0)
-  var inv = 1.0 / step
+  let inv = 1.0 / step
   return Math.round(value * inv) / inv
 }
 

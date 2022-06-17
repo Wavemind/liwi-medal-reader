@@ -5,7 +5,7 @@ import { store } from '@/Store'
 import { Config } from '@/Config'
 import { setNodeValue } from '@/Utils/Answers'
 
-export default props => {
+export default () => {
   let newValues = {}
 
   const {

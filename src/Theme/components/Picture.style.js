@@ -1,7 +1,14 @@
+/**
+ * The external imports
+ */
 import { StyleSheet } from 'react-native'
+
+/**
+ * The internal imports
+ */
 import { hp, wp } from '@/Theme/Responsive'
 
-export default function (props) {
+export default function () {
   return StyleSheet.create({
     wrapper: {
       height: hp(40),
