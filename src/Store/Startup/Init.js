@@ -20,7 +20,7 @@ import FetchOneHealthFacility from '@/Store/HealthFacility/FetchOne'
 
 export default {
   initialState: buildAsyncState(),
-  action: buildAsyncActions('startup/init', async (args, { dispatch }) => {
+  action: buildAsyncActions('startup/init', async (_args, { dispatch }) => {
     const state = store.getState()
 
     // Set default language
