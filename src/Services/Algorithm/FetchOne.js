@@ -25,7 +25,7 @@ export default async ({ json_version = '' }) => {
   const state = store.getState()
   const mainDataUrl = state.auth.medAlDataURL
   const oldAlgorithm = state.algorithm.item
-  console.log(state)
+
   // Test if medAL-Data is reachable.
   const isConnected = await checkInternetConnection(mainDataUrl)
 
@@ -68,6 +68,7 @@ export default async ({ json_version = '' }) => {
     return { ...oldAlgorithm, updated: false }
   }
 
+  // TODO WAITING SYLVAIN'S ANSWER
   if (response.respInfo.status !== 200) {
     // Token revoked, so we need to logout and redirect to login screen
     if (response.respInfo.status === 401) {
@@ -79,11 +80,9 @@ export default async ({ json_version = '' }) => {
       })
     }
 
-    console.log(response)
     return Promise.reject({
-      message: i18n.t('errors.token.description', {
-        healthFacility: state.healthFacility.item.name,
-        server: state.auth.medAlDataURL,
+      message: i18n.t('errors.unknown.description', {
+        message: response.respInfo.status,
       }),
     })
   }

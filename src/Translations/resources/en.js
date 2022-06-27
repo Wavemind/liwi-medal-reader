@@ -324,7 +324,7 @@ export default {
     },
     unknown: {
       title: 'Communication error',
-      description: 'An unknown error occurred',
+      description: 'Response status code <> 200 ( {{ message }} )',
     },
     zip: {
       archived: 'An error occurred while archiving the file',

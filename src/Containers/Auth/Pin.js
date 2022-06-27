@@ -127,6 +127,7 @@ const PinAuthContainer = () => {
     }
   }
 
+  // Clear credentials en redirect user to login screen
   const enrollDevice = async () => {
     // Remove tokens
     await Keychain.resetInternetCredentials('accessToken')
@@ -153,7 +154,7 @@ const PinAuthContainer = () => {
           </Text>
         )}
 
-        {algorithmFetchOneError === '' && emergencyContentFetchOneError && (
+        {emergencyContentFetchOneError && (
           <Text style={auth.errorMessage}>
             {emergencyContentFetchOneError.message}
           </Text>
@@ -175,6 +176,7 @@ const PinAuthContainer = () => {
             ))}
           </View>
         ))}
+
       <View style={authPin.wrapper}>
         <PINCode
           passwordLength={pinCode?.length}
