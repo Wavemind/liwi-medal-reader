@@ -48,6 +48,10 @@ const SynchronizeAuthContainer = () => {
     state => state.emergency.emergency.error,
   )
 
+  console.log('healthFacilityFetchOneError', healthFacilityFetchOneError)
+  console.log('algorithmFetchOneError', algorithmFetchOneError)
+  console.log('emergencyContentFetchOneError', emergencyContentFetchOneError)
+
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
@@ -63,12 +67,13 @@ const SynchronizeAuthContainer = () => {
       FetchOneHealthFacility.action({}),
     )
 
+    console.log('fetchOneHealthFacility', fetchOneHealthFacility)
+
     if (isFulfilled(fetchOneHealthFacility)) {
       // Register device in medAl-creator
       const fetchOneAlgorithm = await dispatch(FetchOneAlgorithm.action({}))
-      console.log("BEFORE HERE", fetchOneAlgorithm)
+      console.log("fetchOneAlgorithm", fetchOneAlgorithm)
       if (isFulfilled(fetchOneAlgorithm)) {
-        console.log("HERE", fetchOneAlgorithm)
         // Get emergency content
         const fetchOneEmergency = await dispatch(
           FetchOneEmergency.action({

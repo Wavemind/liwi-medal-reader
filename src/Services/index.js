@@ -50,7 +50,6 @@ instance.interceptors.request.use(
 // Add a response interceptor
 instance.interceptors.response.use(
   function (response) {
-    console.log(response)
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response
@@ -87,11 +86,11 @@ instance.interceptors.response.use(
       })
 
       // Response given by the application
-      if (error.response.data.message) {
-        if (Array.isArray(error.response.data.message)) {
-          errorMessage = error.response.data.message[0]
+      if (error.response.data) {
+        if (Array.isArray(error.response.data)) {
+          errorMessage = error.response.data[0]
         } else {
-          errorMessage = error.response.data.message
+          errorMessage = error.response.data
         }
       }
 

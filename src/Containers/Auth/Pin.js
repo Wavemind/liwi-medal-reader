@@ -56,6 +56,9 @@ const PinAuthContainer = () => {
   )
   const dispatch = useDispatch()
 
+  console.log("emergencyContentFetchOneError", emergencyContentFetchOneError)
+  console.log("algorithmFetchOneError", algorithmFetchOneError)
+
   useEffect(() => {
     fadeIn(fadeAnim)
 

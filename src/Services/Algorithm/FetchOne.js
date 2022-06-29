@@ -80,6 +80,8 @@ export default async ({ json_version = '' }) => {
       })
     }
 
+    console.log("algorithm", response.respInfo)
+
     return Promise.reject({
       message: i18n.t('errors.unknown.description', {
         message: response.respInfo.status,
