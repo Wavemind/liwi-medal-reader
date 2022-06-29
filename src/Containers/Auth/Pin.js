@@ -24,6 +24,7 @@ import {
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { ToggleSwitchDarkMode, Loader, SquareButton } from '@/Components'
+import { translate } from '@/Translations/system'
 
 const PinAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -39,31 +40,33 @@ const PinAuthContainer = () => {
   const [messageTypes, setMessageTypes] = useState([])
   const [loading, setLoading] = useState(false)
 
+  const dispatch = useDispatch()
+
   // Get values from the store
   const fadeAnim = useRef(new Animated.Value(0)).current
   const pinCode = useSelector(state => state.healthFacility.item.pin_code)
   const currentClinician = useSelector(state => state.healthFacility.clinician)
   const medicalCase = useSelector(state => state.medicalCase.item)
+  const algorithm = useSelector(state => state.algorithm.item)
   const emergencyContentVersion = useSelector(
     state => state.emergency.item.emergency_content_version,
   )
-  const algorithm = useSelector(state => state.algorithm.item)
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
   const emergencyContentFetchOneError = useSelector(
     state => state.emergency.emergency.error,
   )
-  const dispatch = useDispatch()
 
-  console.log("emergencyContentFetchOneError", emergencyContentFetchOneError)
-  console.log("algorithmFetchOneError", algorithmFetchOneError)
+  // console.log('emergencyContentFetchOneError', emergencyContentFetchOneError)
+  console.log('algorithmFetchOneError', algorithmFetchOneError)
 
   useEffect(() => {
     fadeIn(fadeAnim)
 
     if (__DEV__) {
-      handlePin(HF_TOKEN)
+      // handlePin(HF_TOKEN)
+      handlePin("1052")
     }
   }, [fadeAnim])
 
@@ -153,13 +156,13 @@ const PinAuthContainer = () => {
 
         {algorithmFetchOneError && (
           <Text style={auth.errorMessage}>
-            {algorithmFetchOneError.message}
+            {translate(algorithmFetchOneError.message)}
           </Text>
         )}
 
         {emergencyContentFetchOneError && (
           <Text style={auth.errorMessage}>
-            {emergencyContentFetchOneError.message}
+            {translate(emergencyContentFetchOneError.message)}
           </Text>
         )}
 

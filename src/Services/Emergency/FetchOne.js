@@ -70,7 +70,6 @@ export default async ({ emergencyContentVersion }) => {
     return oldEmergencyContent
   }
 
-  // TODO WAITING SYLVAIN'S ANSWER
   if (response.respInfo.status !== 200) {
     // Token revoked, so we need to logout and redirect to login screen
     if (response.respInfo.status === 401) {
@@ -82,10 +81,10 @@ export default async ({ emergencyContentVersion }) => {
       })
     }
 
+    const jsonResponse = await response.json()
+
     return Promise.reject({
-      message: i18n.t('errors.unknown.description', {
-        message: response.respInfo.status,
-      }),
+      message: jsonResponse,
     })
   }
 

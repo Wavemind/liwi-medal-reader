@@ -68,7 +68,6 @@ export default async ({ json_version = '' }) => {
     return { ...oldAlgorithm, updated: false }
   }
 
-  // TODO WAITING SYLVAIN'S ANSWER
   if (response.respInfo.status !== 200) {
     // Token revoked, so we need to logout and redirect to login screen
     if (response.respInfo.status === 401) {
@@ -80,12 +79,10 @@ export default async ({ json_version = '' }) => {
       })
     }
 
-    console.log("algorithm", response.respInfo)
+    const jsonResponse = await response.json()
 
     return Promise.reject({
-      message: i18n.t('errors.unknown.description', {
-        message: response.respInfo.status,
-      }),
+      message: jsonResponse,
     })
   }
 

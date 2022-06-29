@@ -23,6 +23,7 @@ import FetchOneHealthFacility from '@/Store/HealthFacility/FetchOne'
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 import FetchOneEmergency from '@/Store/Emergency/FetchOne'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
+import { translate } from '@/Translations/system'
 
 const SynchronizeAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -48,10 +49,6 @@ const SynchronizeAuthContainer = () => {
     state => state.emergency.emergency.error,
   )
 
-  console.log('healthFacilityFetchOneError', healthFacilityFetchOneError)
-  console.log('algorithmFetchOneError', algorithmFetchOneError)
-  console.log('emergencyContentFetchOneError', emergencyContentFetchOneError)
-
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
@@ -60,6 +57,9 @@ const SynchronizeAuthContainer = () => {
     fetchData()
   }, [])
 
+  /**
+   * Fetch health facility, algorithm and emergency content. If all succedded we continue the process
+   */
   const fetchData = async () => {
     setLoading(true)
     // Get health facility info
@@ -67,12 +67,9 @@ const SynchronizeAuthContainer = () => {
       FetchOneHealthFacility.action({}),
     )
 
-    console.log('fetchOneHealthFacility', fetchOneHealthFacility)
-
     if (isFulfilled(fetchOneHealthFacility)) {
       // Register device in medAl-creator
       const fetchOneAlgorithm = await dispatch(FetchOneAlgorithm.action({}))
-      console.log("fetchOneAlgorithm", fetchOneAlgorithm)
       if (isFulfilled(fetchOneAlgorithm)) {
         // Get emergency content
         const fetchOneEmergency = await dispatch(
@@ -119,17 +116,17 @@ const SynchronizeAuthContainer = () => {
           <View style={authLogin.buttonWrapper}>
             {healthFacilityFetchOneError && (
               <Text style={auth.errorMessage}>
-                {healthFacilityFetchOneError.message}
+                {translate(healthFacilityFetchOneError.message)}
               </Text>
             )}
             {algorithmFetchOneError && (
               <Text style={auth.errorMessage}>
-                {algorithmFetchOneError.message}
+                {translate(algorithmFetchOneError.message)}
               </Text>
             )}
             {emergencyContentFetchOneError && (
               <Text style={auth.errorMessage}>
-                {emergencyContentFetchOneError.message}
+                {translate(emergencyContentFetchOneError.message)}
               </Text>
             )}
           </View>
