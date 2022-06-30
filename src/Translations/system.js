@@ -20,8 +20,8 @@ export const translate = translation => {
   }
 
   // Fallback in english
-  if (translation.hasOwnProperty('EN')) {
-    return translation.EN
+  if (translation.hasOwnProperty('en')) {
+    return translation.en
   }
 
   return ''

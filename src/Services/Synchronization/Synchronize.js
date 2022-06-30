@@ -130,7 +130,6 @@ export default async medicalCasesToSync => {
 
   if (requestResult !== null && requestResult.respInfo.status === 200) {
     await unlink(path)
-
     // Reset medicalCases to sync if request success
     medicalCasesToSync.forEach(async medicalCase => {
       await store.dispatch(
@@ -159,6 +158,10 @@ export default async medicalCasesToSync => {
 
     return Promise.reject({ message: i18n.t('errors.token.description') })
   } else {
-    return Promise.reject({ message: requestResult.data })
+    const jsonResponse = await requestResult.json()
+
+    return Promise.reject({
+      message: jsonResponse,
+    })
   }
 }

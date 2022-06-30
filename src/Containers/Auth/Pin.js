@@ -58,9 +58,6 @@ const PinAuthContainer = () => {
     state => state.emergency.emergency.error,
   )
 
-  // console.log('emergencyContentFetchOneError', emergencyContentFetchOneError)
-  console.log('algorithmFetchOneError', algorithmFetchOneError)
-
   useEffect(() => {
     fadeIn(fadeAnim)
 
@@ -133,9 +130,10 @@ const PinAuthContainer = () => {
     }
   }
 
-  // Clear credentials en redirect user to login screen
+  /**
+   * Clear credentials en redirect user to login screen
+   */
   const enrollDevice = async () => {
-    // Remove tokens
     await Keychain.resetInternetCredentials('accessToken')
     await Keychain.resetInternetCredentials('accessTokenExpirationDate')
     await Keychain.resetInternetCredentials('refreshToken')
