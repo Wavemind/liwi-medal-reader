@@ -1,4 +1,14 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
 import Synchronize from './Synchronize'
+import ChangeStatus from './ChangeStatus'
 
-export default buildSlice('synchronization', [Synchronize]).reducer
+const sliceInitialState = {
+  item: {},
+  status: null,
+}
+
+export default buildSlice(
+  'synchronization',
+  [Synchronize, ChangeStatus],
+  sliceInitialState,
+).reducer

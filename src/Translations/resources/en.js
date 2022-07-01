@@ -202,6 +202,10 @@ export default {
       not_synchronized: 'Medical cases not synchronized yet',
       synchronize: 'Synchronize',
       warning: 'You have not synchronized for over 7 days',
+      status: {
+        file_generations: 'Setting up medical cases...',
+        zip_send: 'Zip {{ zip }} / {{totalZip}} received by medAl-data',
+      },
     },
     settings: {
       general: {

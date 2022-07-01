@@ -205,6 +205,10 @@ export default {
       not_synchronized: 'Consultations en attente de synchronisation',
       warning:
         "Vous n'avez pas syncrhonisé les consultations avec le serveur medAL-data depuis plus de 7 jours",
+      status: {
+        file_generations: 'Préparation des cas médicaux...',
+        zip_send: 'Archive {{ zip }} / {{totalZip}} reçu par medAl-data',
+      },
     },
     settings: {
       general: {

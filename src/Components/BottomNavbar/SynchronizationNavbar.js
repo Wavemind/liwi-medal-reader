@@ -51,22 +51,9 @@ const SynchronizationNavbar = () => {
   /**
    * Handles the synchronization action
    */
-  const handleSynchronization = () => {
-    const groupedMedicalCases = []
-    let subMedicalCases = []
+  const handleSynchronization = async () => {
     setLoading(true)
-    unSynced.forEach((medicalCase, index) => {
-      subMedicalCases.push(medicalCase)
-      if ((index + 1) % 5 === 0 || index === unSynced.length - 1) {
-        groupedMedicalCases.push(subMedicalCases)
-        subMedicalCases = []
-      }
-    })
-    groupedMedicalCases.forEach((medicalCases, index) => {
-      setTimeout(() => {
-        dispatch(Synchronize.action(medicalCases))
-      }, 2000 * index)
-    })
+    await dispatch(Synchronize.action())
     setLoading(false)
   }
 
