@@ -19,7 +19,7 @@ export default async ({ algorithm, patientId }) => {
     consent: true,
     createdAt: new Date().getTime(),
     forceClosed: false,
-    closedAt: new Date().getTime(),
+    closedAt: 0,
     diagnosis: {
       proposed: [],
       excluded: [],

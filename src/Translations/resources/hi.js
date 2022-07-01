@@ -202,6 +202,10 @@ export default {
       not_synchronized: 'Medical cases not synchronized yet',
       synchronize: 'Synchronize',
       warning: 'You have not synchronized for over 7 days',
+      status: {
+        file_generations: 'Setting up medical cases...',
+        zip_send: 'Zip {{ zip }} / {{totalZip}} received by medAl-data',
+      },
     },
     settings: {
       general: {
@@ -324,7 +328,7 @@ export default {
     },
     unknown: {
       title: 'Communication error',
-      description: 'An unknown error occurred',
+      description: 'Response status code <> 200 ( {{ message }} )',
     },
     zip: {
       archived: 'An error occurred while archiving the file',

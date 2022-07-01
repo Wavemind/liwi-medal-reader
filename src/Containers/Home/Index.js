@@ -27,7 +27,6 @@ import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import GetAllMedicalCaseDB from '@/Store/DatabaseMedicalCase/GetAll'
 import ForceCloseMedicalCaseDB from '@/Store/DatabaseMedicalCase/ForceClose'
-import LocalInterface from '@/Services/Database/Local/useLocalInterface'
 
 const IndexHomeContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
@@ -130,27 +129,6 @@ const IndexHomeContainer = ({ navigation }) => {
     navigateAndSimpleReset('StageWrapper')
   }
 
-  const test = async () => {
-    const patient = await dispatch(
-      CreatePatient.action({
-        patientId: null,
-        newMedicalCase: true,
-        facility: {
-          study_id: String(algorithm.study.id),
-          group_id: String(healthFacility.id),
-          uid: uuid.v4(),
-        },
-        otherFacility: {},
-      }),
-    )
-    const medicalCase = await dispatch(
-      CreateMedicalCase.action({ algorithm, patientId: uuid.v4() }),
-    )
-
-    await LocalInterface().insertPatient(patient.payload, medicalCase.payload)
-    console.log("TERMINE")
-  }
-
   return (
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
       <View style={home.buttonsWrapper}>
@@ -169,7 +147,7 @@ const IndexHomeContainer = ({ navigation }) => {
               label={t('actions.new_patient')}
               icon="add"
               big
-              onPress={test}
+              onPress={newPatient}
               filled
             />
           </View>
