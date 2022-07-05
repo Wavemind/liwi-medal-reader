@@ -19,7 +19,7 @@ import { ApplicationNavigator } from '@/Navigators'
 import './Translations'
 
 const appsignal = new Appsignal({ key: '9c0f7538-551f-41a5-b331-864ba2e04705' })
-const FallbackComponent = error => (
+const FallbackComponent = () => (
   <ScrollView style={{ flex: 1 }}>
     <Text style={{ fontSize: 20, color: 'white', marginBottom: 50 }}>
       AN ERROR OCCURED

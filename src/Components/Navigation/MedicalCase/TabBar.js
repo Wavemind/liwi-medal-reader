@@ -25,11 +25,15 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
   const dispatch = useDispatch()
 
   const stages = getStages()
-  const clinician = useSelector(state => state.healthFacility.clinician)
-  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
-  const deviceId = useSelector(state => state.auth.item.deviceId)
+  const clinician = useSelector(
+    storeState => storeState.healthFacility.clinician,
+  )
+  const medicalCaseId = useSelector(
+    storeState => storeState.medicalCase.item.id,
+  )
+  const deviceId = useSelector(storeState => storeState.auth.item.deviceId)
   const medicalCaseFailSafe = useSelector(
-    state => state.medicalCase.item.fail_safe,
+    storeState => storeState.medicalCase.item.fail_safe,
   )
 
   /**

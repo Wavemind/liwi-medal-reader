@@ -38,7 +38,7 @@ const SquareSelect = ({
           style={squareSelect.picker}
           prompt={prompt}
           selectedValue={value}
-          onValueChange={(itemValue, itemIndex) => handleOnSelect(itemValue)}
+          onValueChange={(itemValue, _itemIndex) => handleOnSelect(itemValue)}
           dropdownIconColor={Colors.black}
         >
           <Picker.Item
@@ -49,17 +49,15 @@ const SquareSelect = ({
             style={Fonts.textSmall}
             fontFamily="ZeitungPro"
           />
-          {items.map(item => {
-            return (
-              <Picker.Item
-                key={`select-${item.value}`}
-                label={item.label}
-                value={item.value}
-                style={Fonts.textSmall}
-                fontFamily="ZeitungPro"
-              />
-            )
-          })}
+          {items.map(item => (
+            <Picker.Item
+              key={`select-${item.value}`}
+              label={item.label}
+              value={item.value}
+              style={Fonts.textSmall}
+              fontFamily="ZeitungPro"
+            />
+          ))}
         </Picker>
       </View>
     </View>

@@ -200,7 +200,6 @@ export const findExcludedFinalDiagnoses = diagnosis => {
   }))
 }
 
-// TODO AT SOME POINT WHEN DIAGNOSES ARE MISSING IN EXCLUDED
 /**
  * Looks for a final diagnosis in a diagram and will give its status
  * @param {Instance} instance : The instance we are testing
