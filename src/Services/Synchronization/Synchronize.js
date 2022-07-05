@@ -220,8 +220,7 @@ export default async () => {
       if (requestResult.data) {
         message = requestResult.data
       } else {
-        const jsonResponse = await requestResult.json()
-        message = jsonResponse
+        message = await requestResult.json()
       }
 
       return Promise.reject({ message })
