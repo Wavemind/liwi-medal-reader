@@ -8669,18 +8669,10 @@ react-native-base64@0.0.2:
   resolved "https://registry.yarnpkg.com/react-native-base64/-/react-native-base64-0.0.2.tgz#c28463c2c6779ac3ec5fdd12979ebc8c5f9b410a"
   integrity sha512-Fu/J1a2y0X22EJDWqJR2oEa1fpP4gTFjYxk8ElJdt1Yak3HOXmFJ7EohLVHU2DaQkgmKfw8qb7u/48gpzveRbg==
 
-react-native-blob-util@^0.13.12:
-  version "0.13.18"
-  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.13.18.tgz#7b924d55607bda380d6e9862b621ed1ac0c007ec"
-  integrity sha512-f9NyydQKMd24QiyW+LZmDg2rjCTi4GBff3UJzP1BDgEQ8aoHMs4MZmPs5erNH4E577qhEFp5v7HGzXVRQL8SnQ==
-  dependencies:
-    base-64 "0.1.0"
-    glob "^7.1.6"
-
-react-native-blob-util@^0.14.1:
-  version "0.14.1"
-  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.14.1.tgz#2c75816888439d8062b46dd6d703f5f41e38d35a"
-  integrity sha512-Rf2aURRqM7j96fFdO5tbiVlAsfLOkSyBqrAPlG4VcJj9jT6G7bVHebwJg7BBfTKWTFwPjiOIAdUjsjkGaUUOyQ==
+react-native-blob-util@^0.16.0, react-native-blob-util@^0.16.1:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.16.1.tgz#bc15e4fc279a5c1a0a6e53ef24a29864a9cdca63"
+  integrity sha512-mhdkUDlwNnF0aUTlFd8qjmYnbrHJHKeuDH4ocnM38wBu7ZC5R+68rqZC2VuHFQ/U+q0SDf/wO4XVaSm6/a940A==
   dependencies:
     base-64 "0.1.0"
     glob "^7.1.6"
@@ -9132,12 +9124,12 @@ redux-flipper@^2.0.1:
     cycle "^1.0.3"
     dayjs "^1.8.29"
 
-redux-persist-filesystem-storage@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/redux-persist-filesystem-storage/-/redux-persist-filesystem-storage-4.0.0.tgz#a2461807ccbc59f7e198a9bd7b79a5510e44e600"
-  integrity sha512-NuiMhziWU5XkJeR5e4trxTIEpgAMR7X6hubwAAIFnaDKCPhLG5V1sO1sDKe7L6GgbZzYbTLXp/C3hKFkJ99ICw==
+redux-persist-filesystem-storage@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/redux-persist-filesystem-storage/-/redux-persist-filesystem-storage-4.1.0.tgz#bfe62aa2287d980e43a7987de04fa443d0c62337"
+  integrity sha512-ufwl883C68aoOzOBc4so5cx0ka4atcXp5VW4S0o/MyykxwgKB976NuNYp723zx/3aAAk3llFMfdbDnhcroju2Q==
   dependencies:
-    react-native-blob-util "^0.13.12"
+    react-native-blob-util "^0.16.0"
 
 redux-persist@^6.0.0:
   version "6.0.0"

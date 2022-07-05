@@ -23,6 +23,7 @@ import FetchOneHealthFacility from '@/Store/HealthFacility/FetchOne'
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 import FetchOneEmergency from '@/Store/Emergency/FetchOne'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
+import { translate } from '@/Translations/system'
 
 const SynchronizeAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -44,6 +45,9 @@ const SynchronizeAuthContainer = () => {
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
+  const emergencyContentFetchOneError = useSelector(
+    state => state.emergency.emergency.error,
+  )
 
   useEffect(() => {
     fadeIn(fadeAnim)
@@ -53,6 +57,9 @@ const SynchronizeAuthContainer = () => {
     fetchData()
   }, [])
 
+  /**
+   * Fetch health facility, algorithm and emergency content. If all succedded we continue the process
+   */
   const fetchData = async () => {
     setLoading(true)
     // Get health facility info
@@ -109,12 +116,17 @@ const SynchronizeAuthContainer = () => {
           <View style={authLogin.buttonWrapper}>
             {healthFacilityFetchOneError && (
               <Text style={auth.errorMessage}>
-                {healthFacilityFetchOneError.message}
+                {translate(healthFacilityFetchOneError.message)}
               </Text>
             )}
             {algorithmFetchOneError && (
               <Text style={auth.errorMessage}>
-                {algorithmFetchOneError.message}
+                {translate(algorithmFetchOneError.message)}
+              </Text>
+            )}
+            {emergencyContentFetchOneError && (
+              <Text style={auth.errorMessage}>
+                {translate(emergencyContentFetchOneError.message)}
               </Text>
             )}
           </View>

@@ -205,6 +205,10 @@ export default {
       not_synchronized: 'Consultations en attente de synchronisation',
       warning:
         "Vous n'avez pas syncrhonisé les consultations avec le serveur medAL-data depuis plus de 7 jours",
+      status: {
+        file_generations: 'Préparation des cas médicaux...',
+        zip_send: 'Archive {{ zip }} / {{totalZip}} reçu par medAl-data',
+      },
     },
     settings: {
       general: {
@@ -324,7 +328,7 @@ export default {
     },
     token: {
       title: "Erreur d'authentification",
-      description: 'Token invalid',
+      description: "Jeton de sécurité révoqué. Veuillez demander à votre répondant informatique d'enroller le device  dans le centre de santé {{ healthFacility }} sur medAL-data {{- server }}",
     },
     unknown: {
       title: 'Erreur de communication',

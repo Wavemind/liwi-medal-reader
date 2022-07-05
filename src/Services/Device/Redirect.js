@@ -5,8 +5,9 @@ import { store } from '@/Store'
 
 export default () => {
   const state = store.getState()
-  // Check auth status
+  // Check auth and health facility status
   const isAuthenticated = state.auth.item
+  const healthFacilityFetched = state.healthFacility.item
   const clinicianSelected = state.healthFacility.clinician.hasOwnProperty('id')
   let route = {}
 
@@ -24,7 +25,12 @@ export default () => {
       if (Object.values(res).every(result => result === 'granted')) {
         if (!isAuthenticated) {
           route = 'Login'
-        } else if (!clinicianSelected) {
+        } else if (!healthFacilityFetched.hasOwnProperty('id')) {
+          route = 'Synchronize'
+        } else if (
+          !clinicianSelected &&
+          healthFacilityFetched.hasOwnProperty('id')
+        ) {
           route = 'ClinicianSelection'
         } else {
           route = 'Pin'

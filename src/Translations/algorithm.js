@@ -4,7 +4,7 @@ import { store } from '@/Store'
  * Translate algorithm value
  * @param translation
  * @param fallback - Possibility to not fallback for drug instance (used in displayDrugDescription)
- * @returns {*}
+ * @returns {String}
  */
 export const translate = (translation, fallback = true) => {
   const algorithmTranslation =

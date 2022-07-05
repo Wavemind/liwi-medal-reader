@@ -79,14 +79,18 @@ instance.interceptors.response.use(
         await Keychain.resetInternetCredentials('accessTokenExpirationDate')
         await Keychain.resetInternetCredentials('refreshToken')
       }
+
       // Default response
-      let errorMessage = 'Response status code <> 200 (' + error.message + ')'
+      let errorMessage = i18n.t('errors.unknown.description', {
+        message: JSON.stringify(error.message),
+      })
+
       // Response given by the application
-      if (error.response.data.message) {
-        if (Array.isArray(error.response.data.message)) {
-          errorMessage = error.response.data.message[0]
+      if (error.response.data) {
+        if (Array.isArray(error.response.data)) {
+          errorMessage = error.response.data[0]
         } else {
-          errorMessage = error.response.data.message
+          errorMessage = error.response.data
         }
       }
 
@@ -113,13 +117,17 @@ instance.interceptors.response.use(
       // Something happened in setting up the request that triggered an Error
       showMessage({
         message: i18n.t('errors.unknown.title'),
-        description: i18n.t('errors.unknown.description'),
+        description: i18n.t('errors.unknown.description', {
+          message: JSON.stringify(error.message),
+        }),
         type: 'danger',
         duration: 5000,
       })
 
       return handleError({
-        message: 'Unknown error (' + error.message + ')',
+        message: i18n.t('errors.unknown.description', {
+          message: JSON.stringify(error.message),
+        }),
       })
     }
   },
