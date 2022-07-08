@@ -348,7 +348,8 @@ export const calculateConditionInverse = (conditions, mcNodes) => {
 
   return conditions.some(condition => {
     const conditionValue =
-      mcNodes[condition.node_id].answer === condition.answer_id
+      mcNodes[condition.node_id].answer === condition.answer_id &&
+      respectsCutOff(condition.cut_off_start, condition.cut_off_end)
     if (conditionValue) {
       return calculateConditionInverse(
         instances[condition.node_id].conditions,
@@ -377,7 +378,8 @@ export const calculateConditionInverseFinalDiagnosis = (
 
   return conditions.some(condition => {
     const conditionValue =
-      mcNodes[condition.node_id].answer === condition.answer_id
+      mcNodes[condition.node_id].answer === condition.answer_id &&
+      respectsCutOff(condition.cut_off_start, condition.cut_off_end)
     if (conditionValue) {
       return calculateConditionInverseFinalDiagnosis(
         instances[condition.node_id].conditions,
