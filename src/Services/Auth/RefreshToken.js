@@ -3,6 +3,7 @@
  */
 import * as Keychain from 'react-native-keychain'
 import { refresh } from 'react-native-app-auth'
+import axios from 'axios'
 
 /**
  * The internal imports
@@ -13,22 +14,28 @@ import { store } from '@/Store'
 
 export default async (forceRefresh = false) => {
   const bearToken = await Keychain.getInternetCredentials('accessToken')
+  const state = store.getState()
 
   // Force get new token
   if (forceRefresh) {
     return getRefreshToken()
   }
 
-  const accessTokenExpirationDate = await Keychain.getInternetCredentials(
-    'accessTokenExpirationDate',
-  )
+  let tokenValidity = false
+
+  // Request data to know token status (valid or expired)
+  await axios
+    .get(`${state.auth.medAlDataURL}/api/v1/tokeninfo`, {
+      headers: {
+        Authorization: `Bearer ${bearToken.password}`,
+        Accept: 'application/json',
+      },
+    })
+    .then(_tokenInfoResponse => (tokenValidity = true))
+    .catch(_error => (tokenValidity = false))
 
   // Check token validity before getting new one
-  if (
-    accessTokenExpirationDate.password &&
-    new Date(accessTokenExpirationDate.password).getTime() >
-      new Date().getTime()
-  ) {
+  if (tokenValidity) {
     return `Bearer ${bearToken.password}`
   } else {
     return getRefreshToken()
