@@ -328,7 +328,8 @@ export default {
     },
     token: {
       title: "Erreur d'authentification",
-      description: "Jeton de sécurité révoqué. Veuillez demander à votre répondant informatique d'enroller le device  dans le centre de santé {{ healthFacility }} sur medAL-data {{- server }}",
+      description:
+        "Jeton de sécurité révoqué. Veuillez demander à votre répondant informatique d'enroller le device  dans le centre de santé {{ healthFacility }} sur medAL-data {{- server }}",
     },
     unknown: {
       title: 'Erreur de communication',
@@ -336,6 +337,8 @@ export default {
     },
     zip: {
       archived: 'Un problème est survenu lors de la compression du fichier',
+      generate_json:
+        'Un problème est survenu lors de la génération du fichier du fichier',
     },
     timeout: 'Connexion au serveur interrompue',
   },

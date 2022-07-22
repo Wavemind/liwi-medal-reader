@@ -332,6 +332,7 @@ export default {
     },
     zip: {
       archived: 'An error occurred while archiving the file',
+      generate_json: 'An error occurred while generating JSON File',
     },
     timeout: 'Server connection aborted',
   },
