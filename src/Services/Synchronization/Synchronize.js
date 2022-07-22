@@ -60,7 +60,13 @@ const createJSON = async (medicalCase, folder) => {
     typeof value === 'undefined' ? null : value,
   )
 
-  await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson)
+  try {
+    await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson)
+  } catch (error) {
+    return Promise.reject({
+      message: i18n.t('errors.zip.generate_json') + error,
+    })
+  }
 }
 
 export default async () => {
@@ -119,7 +125,7 @@ export default async () => {
         zipPaths = { ...zipPaths, [path]: groupedMedicalCaseIds }
       } catch (error) {
         return Promise.reject({
-          message: i18n.t('errors.zip.archived'),
+          message: i18n.t('errors.zip.archived') + error,
         })
       }
       // Create new folder for next directory
