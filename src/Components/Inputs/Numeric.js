@@ -42,7 +42,12 @@ const Numeric = ({ questionId, editable = true }) => {
    * @param {Event} e
    */
   const onEndEditing = async e => {
-    const newValue = e.nativeEvent.text
+    let newValue = e.nativeEvent.text
+
+    // Remove last char if it's a dot
+    newValue = newValue.replace(/\.$/, '')
+
+    newValue = onChange(newValue)
 
     if (question.value !== newValue) {
       setAnswer(question.id, newValue)
@@ -70,6 +75,8 @@ const Numeric = ({ questionId, editable = true }) => {
     }
 
     setValue(newValue)
+
+    return newValue
   }
 
   /**
