@@ -84,7 +84,7 @@ const IndexHomeContainer = ({ navigation }) => {
   }, [isFocused])
 
   /**
-   * Force close medical case after 36 hours
+   * Force close medical case after 12 hours
    */
   const closeMedicalCase = () => {
     dispatch(ForceCloseMedicalCaseDB.action())
