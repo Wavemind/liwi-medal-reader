@@ -36,10 +36,10 @@ const LoginAuthContainer = () => {
 
   // Local state definition
   const [serverAddress, setServerAddress] = useState(
-    __DEV__ ? 'http://195.15.219.241:8082' : '',
+    __DEV__ ? 'http://195.15.219.241' : '',
   )
 
-  const [clientId, setClientId] = useState(__DEV__ ? '126' : '')
+  const [clientId, setClientId] = useState(__DEV__ ? '1335' : '')
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current

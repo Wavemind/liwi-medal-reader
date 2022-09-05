@@ -49,6 +49,10 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   const [loading, setLoading] = useState(false)
 
   const stageNavigation = getStages()
+  const isConnected = useSelector(state => state.network.isConnected)
+  const architecture = useSelector(
+    state => state.healthFacility.item.architecture,
+  )
   const advancement = useSelector(state => state.medicalCase.item.advancement)
   const patient = useSelector(state => state.patient.item)
   const isArmControl = useSelector(state => state.algorithm.item.is_arm_control)
@@ -114,7 +118,12 @@ const StageWrapperNavbar = ({ stageIndex }) => {
       (isFulfilled(validation) &&
         Object.values(validation.payload).length === 0)
     ) {
-      if (advancement.stage === 0 && !patientSavedInDatabase) {
+      // New patient or patient already exist but not in fale safe mode
+      if (
+        advancement.stage === 0 &&
+        (!patientSavedInDatabase ||
+          (!isConnected && architecture === 'client_server'))
+      ) {
         const patientInsert = await dispatch(InsertPatient.action())
 
         if (isFulfilled(patientInsert)) {
