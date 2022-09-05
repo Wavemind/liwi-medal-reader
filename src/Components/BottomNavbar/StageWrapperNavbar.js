@@ -118,7 +118,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
       (isFulfilled(validation) &&
         Object.values(validation.payload).length === 0)
     ) {
-      // New patient or patient already exist but not in fale safe mode
+      // New patient or patient already exist but not in local database (fale safe mode)
       if (
         advancement.stage === 0 &&
         (!patientSavedInDatabase ||
