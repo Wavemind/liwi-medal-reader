@@ -67,6 +67,7 @@ export default function () {
       device_id: activity.device_id,
       medical_case_id: activity.medical_case_id,
       fail_safe: activity.fail_safe,
+      created_at: activity.createdAt,
     }))
   }
 
@@ -233,6 +234,7 @@ export default function () {
             record.device_id = activity.device_id
             record.medical_case_id = medicalCaseId
             record.fail_safe = failSafe
+            record.created_at = activity?.created_at
           }),
         )
       })

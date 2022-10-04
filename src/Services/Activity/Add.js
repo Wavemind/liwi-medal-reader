@@ -18,6 +18,7 @@ export default ({ medicalCase, nodeId, value }) => {
             newValue: value,
           },
         ],
+        created_at: new Date().getTime(),
       }
     } else {
       return activity

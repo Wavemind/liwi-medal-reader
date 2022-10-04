@@ -193,14 +193,14 @@ export default async () => {
           }),
         }),
       )
-      for await (let medicalCaseId of zipPaths[path]) {
-        await store.dispatch(
-          UpdateDatabaseMedicalCase.action({
-            medicalCaseId: medicalCaseId,
-            fields: [{ name: 'synchronizedAt', value: new Date().getTime() }],
-          }),
-        )
-      }
+      // for await (let medicalCaseId of zipPaths[path]) {
+      //   await store.dispatch(
+      //     UpdateDatabaseMedicalCase.action({
+      //       medicalCaseId: medicalCaseId,
+      //       fields: [{ name: 'synchronizedAt', value: new Date().getTime() }],
+      //     }),
+      //   )
+      // }
       zipIndex++
     } else if (requestResult.respInfo.status === 401) {
       // device token revoke, so disconnect
