@@ -18,6 +18,7 @@ export default ({ medicalCase, nodeId, value }) => {
             newValue: value,
           },
         ],
+        createdAt: new Date().getTime(), // Needed for hub
       }
     } else {
       return activity
