@@ -39,7 +39,7 @@ const LoginAuthContainer = () => {
     __DEV__ ? 'http://195.15.219.241' : '',
   )
 
-  const [clientId, setClientId] = useState(__DEV__ ? '1713' : '')
+  const [clientId, setClientId] = useState(__DEV__ ? '1817' : '')
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
