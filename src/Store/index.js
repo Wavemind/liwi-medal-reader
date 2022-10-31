@@ -1,3 +1,6 @@
+/**
+ * The external imports
+ */
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import FilesystemStorage from 'redux-persist-filesystem-storage'
 import { combineReducers } from 'redux'
@@ -16,6 +19,9 @@ import {
 } from 'redux-persist'
 import isEmpty from 'lodash/isEmpty'
 
+/**
+ * The internal imports
+ */
 import algorithm from './Algorithm'
 import auth from './Auth'
 import databaseActivity from './DatabaseActivity'
@@ -35,6 +41,7 @@ import scan from './Scan'
 import theme from './Theme'
 import validation from './Validation'
 import synchronization from './Synchronization'
+import loader from './Loader'
 
 const reducers = combineReducers({
   algorithm,
@@ -46,6 +53,7 @@ const reducers = combineReducers({
   emergency,
   filters,
   healthFacility,
+  loader,
   medicalCase,
   modal,
   network,

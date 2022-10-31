@@ -24,7 +24,7 @@ import { transformPatientValues } from '@/Utils/MedicalCase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import ImportPatientValues from '@/Store/MedicalCase/ImportPatientValues'
 import LoadPatient from '@/Store/Patient/Load'
-import ToggleOverlayLoader from '@/Store/System/ToggleOverlayLoader'
+import ToggleOverlayLoader from '@/Store/Loader/ToggleOverlayLoader'
 
 const ConsultationPatientContainer = ({ navigation }) => {
   const {
