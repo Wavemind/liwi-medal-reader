@@ -24,6 +24,7 @@ import { transformPatientValues } from '@/Utils/MedicalCase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import ImportPatientValues from '@/Store/MedicalCase/ImportPatientValues'
 import LoadPatient from '@/Store/Patient/Load'
+import ToggleOverlayLoader from '@/Store/System/ToggleOverlayLoader'
 
 const ConsultationPatientContainer = ({ navigation }) => {
   const {
@@ -53,7 +54,6 @@ const ConsultationPatientContainer = ({ navigation }) => {
         medicalCase.version_id === algorithm.version_id,
     ),
   )
-  const [loading, setLoading] = useState(false)
   const [closedCases, setClosedCases] = useState(
     orderBy(
       patient.medicalCases.filter(medicalCase => medicalCase.closedAt > 0),
@@ -94,7 +94,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
    * @returns {Promise<void>}
    */
   const handleAddConsultation = async () => {
-    setLoading(true)
+    await dispatch(ToggleOverlayLoader.action())
     const createMedicalCase = await dispatch(
       CreateMedicalCase.action({ algorithm, patientId: patient.id }),
     )
@@ -107,6 +107,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
         }),
       )
       navigation.navigate('StageWrapper')
+      await dispatch(ToggleOverlayLoader.action())
     }
   }
 
@@ -128,7 +129,6 @@ const ConsultationPatientContainer = ({ navigation }) => {
             label={t('actions.new_medical_case')}
             icon="add"
             onPress={handleAddConsultation}
-            disabled={loading}
           />
           {medicalCaseCreateError && (
             <View style={[question.messageWrapper('error')]}>

@@ -45,7 +45,7 @@
     "lottie-react-native": "^5.0.1",
     "react": "17.0.2",
     "react-content-loader": "^6.0.3",
-    "react-devtools": "^4.13.5",
+    "react-devtools": "^4.26.1",
     "react-i18next": "^11.8.10",
     "react-native": "0.67.3",
     "react-native-app-auth": "^6.4.0",
