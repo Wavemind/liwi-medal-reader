@@ -4,11 +4,11 @@
 import 'react-native-gesture-handler'
 import React, { useRef, useEffect } from 'react'
 import { Provider } from 'react-redux'
-import { AppState, ScrollView, Text } from 'react-native'
+import { AppState } from 'react-native'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import FlashMessage from 'react-native-flash-message'
-import Appsignal from '@appsignal/javascript'
-import { ErrorBoundary } from '@appsignal/react'
+import * as Sentry from '@sentry/react-native'
+import ErrorBoundary from 'react-native-error-boundary'
 
 /**
  * The internal imports
@@ -16,16 +16,15 @@ import { ErrorBoundary } from '@appsignal/react'
 import { RedirectService } from '@/Services/Device'
 import { store, persistor } from '@/Store'
 import { ApplicationNavigator } from '@/Navigators'
+import { SENTRY_API_KEY } from 'env'
 import './Translations'
 
-const appsignal = new Appsignal({ key: '9c0f7538-551f-41a5-b331-864ba2e04705' })
-const FallbackComponent = () => (
-  <ScrollView style={{ flex: 1 }}>
-    <Text style={{ fontSize: 20, color: 'white', marginBottom: 50 }}>
-      AN ERROR OCCURED
-    </Text>
-  </ScrollView>
-)
+Sentry.init({
+  dsn: SENTRY_API_KEY,
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
+})
 
 const App = () => {
   const appState = useRef(AppState.currentState)
@@ -54,10 +53,7 @@ const App = () => {
   }
 
   return (
-    <ErrorBoundary
-      instance={appsignal}
-      fallback={error => <FallbackComponent error={error} />}
-    >
+    <ErrorBoundary>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <ApplicationNavigator />
@@ -76,4 +72,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Sentry.wrap(App)
