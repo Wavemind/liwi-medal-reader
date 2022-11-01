@@ -109,6 +109,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
       navigation.navigate('StageWrapper')
       await dispatch(ToggleOverlayLoader.action())
     }
+    await dispatch(ToggleOverlayLoader.action())
   }
 
   return (

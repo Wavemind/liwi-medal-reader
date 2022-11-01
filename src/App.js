@@ -7,7 +7,6 @@ import { Provider } from 'react-redux'
 import { AppState } from 'react-native'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import FlashMessage from 'react-native-flash-message'
-import * as Sentry from '@sentry/react-native'
 import ErrorBoundary from 'react-native-error-boundary'
 
 /**
@@ -16,15 +15,7 @@ import ErrorBoundary from 'react-native-error-boundary'
 import { RedirectService } from '@/Services/Device'
 import { store, persistor } from '@/Store'
 import { ApplicationNavigator } from '@/Navigators'
-import { SENTRY_API_KEY } from 'env'
 import './Translations'
-
-Sentry.init({
-  dsn: SENTRY_API_KEY,
-  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-  // We recommend adjusting this value in production.
-  tracesSampleRate: 1.0,
-})
 
 const App = () => {
   const appState = useRef(AppState.currentState)
@@ -72,4 +63,4 @@ const App = () => {
   )
 }
 
-export default Sentry.wrap(App)
+export default App
