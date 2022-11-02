@@ -64,6 +64,7 @@ export { default as DatePicker } from './Inputs/DatePicker'
 // Loaders
 export { default as Loader } from './Loaders/Loader'
 export { default as LoaderList } from './Loaders/LoaderList'
+export { default as OverlayLoader } from './Loaders/OverlayLoader'
 
 // Media
 export { default as Movie } from './Medias/Movie/Movie'

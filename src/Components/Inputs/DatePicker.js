@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { TextInput, TouchableOpacity } from 'react-native'
-import * as RNDatePicker from 'react-native-date-picker'
+import DatePicker from 'react-native-date-picker'
 
 /**
  * The internal imports
@@ -15,7 +15,7 @@ import setAnswer from '@/Utils/SetAnswer'
 import { translate } from '@/Translations/algorithm'
 import { formatDate } from '@/Utils/Date'
 
-const DatePicker = ({ questionId }) => {
+const CustomDatePicker = ({ questionId }) => {
   // Theme and style elements deconstruction
   const {
     Components: { string },
@@ -65,7 +65,7 @@ const DatePicker = ({ questionId }) => {
           pointerEvents="none"
         />
       </TouchableOpacity>
-      <RNDatePicker
+      <DatePicker
         modal
         mode="date"
         open={open}
@@ -81,4 +81,4 @@ const DatePicker = ({ questionId }) => {
   )
 }
 
-export default DatePicker
+export default CustomDatePicker
