@@ -45,7 +45,7 @@
     "react-content-loader": "^6.0.3",
     "react-devtools": "^4.26.1",
     "react-i18next": "^11.8.10",
-    "react-native": "0.67.3",
+    "react-native": "0.67.5",
     "react-native-app-auth": "^6.4.0",
     "react-native-blob-util": "^0.16.1",
     "react-native-camera": "^3.43.9",
