@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -10,13 +10,13 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
+import { ReferralQuestionsService } from '@/Services/Steps'
 
 const ReferralMedicalCaseContainer = () => {
   const { t } = useTranslation()
 
-  const questions = useSelector(
-    state => state.algorithm.item.config.full_order.referral_step,
-  )
+  const mcNodes = useSelector(state => state.medicalCase.item.nodes)
+  const questions = useMemo(() => ReferralQuestionsService(), [mcNodes])
 
   return (
     <FlatList
