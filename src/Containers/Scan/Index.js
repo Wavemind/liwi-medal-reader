@@ -2,7 +2,6 @@
  * The external imports
  */
 import React, { useEffect, useState } from 'react'
-import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, Text, Dimensions } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -88,9 +87,8 @@ const IndexScanContainer = () => {
 
         if (isFulfilled(loadPatientResult)) {
           navigation.navigate('PatientProfile', {
-            title: `${loadPatientResult.payload.first_name} ${
-              loadPatientResult.payload.last_name
-            } - ${formatDate(loadPatientResult.payload.birth_date)}`,
+            title: `${loadPatientResult.payload.first_name} ${loadPatientResult.payload.last_name
+              } - ${formatDate(loadPatientResult.payload.birth_date)}`,
           })
         }
       }
@@ -134,51 +132,41 @@ const IndexScanContainer = () => {
   }
 
   return (
-    <QRCodeScanner
-      showMarker
-      vibrate
-      reactivate
-      reactivateTimeout={2000}
-      onRead={handleScan}
-      cameraStyle={{ height: HEIGHT }}
-      customMarker={
-        <View style={scan.wrapper}>
-          <View style={scan.titleWrapper(handleQrError)}>
-            <Text style={scan.title}>{t('containers.scan.scan')}</Text>
-          </View>
+    <View style={scan.wrapper}>
+      <View style={scan.titleWrapper(handleQrError)}>
+        <Text style={scan.title}>{t('containers.scan.scan')}</Text>
+      </View>
 
-          <View style={Layout.row}>
-            <View style={scan.sideScan(handleQrError)} />
+      <View style={Layout.row}>
+        <View style={scan.sideScan(handleQrError)} />
 
-            <View style={scan.centerScan}>
-              <Icon name="qr-scan" size={WIDTH * 0.5} />
-            </View>
+        <View style={scan.centerScan}>
+          <Icon name="qr-scan" size={WIDTH * 0.5} />
+        </View>
 
-            <View style={scan.sideScan(handleQrError)} />
-          </View>
+        <View style={scan.sideScan(handleQrError)} />
+      </View>
 
-          <View style={scan.bottomWrapper(handleQrError)}>
-            {(handleQrError || medicalCaseError || patientLoadError) && (
-              <View style={scan.errorWrapper}>
-                {handleQrError && (
-                  <Text style={scan.errorTitle}>{handleQrError.message}</Text>
-                )}
-                {medicalCaseError && (
-                  <Text style={scan.errorTitle}>
-                    {medicalCaseError.message}
-                  </Text>
-                )}
-                {patientLoadError && (
-                  <Text style={scan.errorTitle}>
-                    {patientLoadError.message}
-                  </Text>
-                )}
-              </View>
+      <View style={scan.bottomWrapper(handleQrError)}>
+        {(handleQrError || medicalCaseError || patientLoadError) && (
+          <View style={scan.errorWrapper}>
+            {handleQrError && (
+              <Text style={scan.errorTitle}>{handleQrError.message}</Text>
+            )}
+            {medicalCaseError && (
+              <Text style={scan.errorTitle}>
+                {medicalCaseError.message}
+              </Text>
+            )}
+            {patientLoadError && (
+              <Text style={scan.errorTitle}>
+                {patientLoadError.message}
+              </Text>
             )}
           </View>
-        </View>
-      }
-    />
+        )}
+      </View>
+    </View>
   )
 }
 

@@ -1,97 +1,171 @@
 /**
  * The external imports
  */
-import React from 'react'
-import { View, TouchableOpacity } from 'react-native'
-import { RNCamera } from 'react-native-camera'
+import React, { useRef, useState, useMemo, useCallback } from 'react'
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import * as RNFS from 'react-native-fs'
-import ImageResizer from 'react-native-image-resizer'
 import Feather from 'react-native-vector-icons/Feather'
+import IonIcon from 'react-native-vector-icons/Ionicons'
+import { useCameraDevices, Camera } from 'react-native-vision-camera'
+import { useIsFocused } from '@react-navigation/native'
 
 /**
  * The internal imports
  */
 import { Loader } from '@/Components'
+import { useTheme } from '@/Theme'
 
-export default class CameraConsentContainer extends React.Component {
-  state = {
-    loading: false,
-  }
+const CameraConsentContainer = ({ navigation }) => {
+  // Theme and style elements deconstruction
+  const {
+    Containers: { camera },
+  } = useTheme()
+
+  const cameraRef = useRef(null)
+  const isFocused = useIsFocused()
+
+  const [_isCameraInitialized, setIsCameraInitialized] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [cameraPosition, setCameraPosition] = useState('back')
+  const [flash, setFlash] = useState('off')
+
+  // Camera format settings
+  const devices = useCameraDevices()
+  const device = devices[cameraPosition]
 
   /**
-   * Takes a picture and stores the image in the patient when the picture is processed and resized
-   * @returns {Promise<void>}
+   * Supports camera flip ?
    */
-  takePicture = async function () {
-    if (this.camera) {
-      this.setState({ loading: true })
-      const data = await this.camera.takePictureAsync()
-      const { navigation } = this.props
-      ImageResizer.createResizedImage(data.uri, 720, 960, 'JPEG', 93)
-        .then(response => {
-          RNFS.readFile(response.uri.substring(7), 'base64').then(newFile => {
-            this.setState({ loading: false })
-            navigation.navigate('Preview', {
-              consent: newFile,
-              retake: true,
-            })
-          })
-        })
-        .catch(err => {
-          console.log(err)
-        })
+  const supportsCameraFlipping = useMemo(
+    () => devices.back != null && devices.front != null,
+    [devices.back, devices.front],
+  )
+
+  /**
+   * Camera configuration
+   */
+  const takePhotoOptions = useMemo(
+    () => ({
+      photoCodec: 'jpeg',
+      qualityPrioritization: 'speed',
+      flash: flash,
+      quality: 90,
+      skipMetadata: true,
+    }),
+    [flash],
+  )
+
+  const onError = useCallback(error => {
+    console.error(error)
+  }, [])
+
+  /**
+   * Flip camera
+   */
+  const onFlipCameraPressed = useCallback(() => {
+    setCameraPosition(p => (p === 'back' ? 'front' : 'back'))
+  }, [])
+
+  /**
+   * Set flash
+   */
+  const onFlashPressed = useCallback(() => {
+    setFlash(f => (f === 'off' ? 'on' : 'off'))
+  }, [])
+
+  /**
+   * Initialize camera on screen focus
+   */
+  const onInitialized = useCallback(() => {
+    setIsCameraInitialized(true)
+  }, [isFocused])
+
+  /**
+   * Take picture
+   */
+  const takePhoto = useCallback(async () => {
+    setLoading(true)
+    try {
+      if (cameraRef.current == null) {
+        throw new Error('Camera ref is null')
+      }
+
+      const photo = await cameraRef.current.takePhoto(takePhotoOptions)
+      onMediaCaptured(photo, 'photo')
+    } catch (e) {
+      setLoading(false)
+      console.error('Failed to take photo', e)
     }
+  }, [cameraRef, onMediaCaptured, takePhotoOptions])
+
+  /**
+   * Process picture, convert to base64 and navigate to preview
+   */
+  const onMediaCaptured = useCallback(
+    media =>
+      RNFS.readFile(media.path, 'base64').then(newFile => {
+        setLoading(false)
+        navigation.navigate('Preview', {
+          consent: newFile,
+          retake: true,
+        })
+      }),
+    [navigation],
+  )
+
+  if (device == null) {
+    return <Loader />
   }
 
-  render() {
-    const { loading } = this.state
+  return (
+    <View style={camera.container}>
+      <Camera
+        ref={cameraRef}
+        device={device}
+        onError={onError}
+        enableZoomGesture={true}
+        style={camera.camera}
+        photo={true}
+        audio={false}
+        isActive={isFocused}
+        onInitialized={onInitialized}
+      />
 
-    return (
-      <RNCamera
-        ref={ref => {
-          this.camera = ref
-        }}
-        style={{
-          flex: 1,
-          paddingTop: 10,
-          backgroundColor: '#000',
-        }}
-        type={RNCamera.Constants.Type.back}
-        flashMode={RNCamera.Constants.FlashMode.off}
-        autoFocus={RNCamera.Constants.AutoFocus.on}
-        ratio="16:9"
-        captureAudio={false}
-        focusDepth={0}
+      <TouchableOpacity
+        onPress={takePhoto}
+        disabled={loading}
+        style={camera.takePhotoButton}
       >
-        <View
-          style={{
-            height: 75,
-            flexDirection: 'row',
-            bottom: 15,
-            position: 'absolute',
-            alignSelf: 'center',
-          }}
-        >
-          {loading ? (
-            <View style={{ width: 200 }}>
-              <Loader />
-            </View>
-          ) : (
-            <TouchableOpacity
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              onPress={e => this.takePicture(e)}
-            >
-              <Feather
-                name="camera"
-                style={{ color: 'white', fontSize: 75, opacity: 0.7 }}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-      </RNCamera>
-    )
-  }
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <Feather name="circle" style={camera.takePhotoIcon} />
+        )}
+      </TouchableOpacity>
+
+      <View style={camera.buttonWrapper}>
+        {supportsCameraFlipping && (
+          <TouchableOpacity
+            onPress={onFlipCameraPressed}
+            style={camera.actionButtons}
+          >
+            <IonIcon name="camera-reverse" style={camera.sideIcon} />
+          </TouchableOpacity>
+        )}
+        {device.hasFlash && (
+          <TouchableOpacity
+            onPress={onFlashPressed}
+            style={camera.actionButtons}
+          >
+            <IonIcon
+              name={flash === 'on' ? 'flash' : 'flash-off'}
+              style={camera.sideIcon}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
+  )
 }
+
+export default CameraConsentContainer

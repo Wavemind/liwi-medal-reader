@@ -35,6 +35,7 @@ export const Colors = {
   redLowOpacity: '#d2073044',
   transparent: 'rgba(0,0,0,0)',
   primaryLowOpacity: '#00000088',
+  greyTransparent: 'rgba(140, 140, 140, 0.3)',
 }
 
 export const NavigationColors = {
