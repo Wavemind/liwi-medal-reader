@@ -37,7 +37,7 @@ export default function () {
    */
   const getConsentsFile = async page => {
     const response = await api.get(`/api/patients/consent_files?page=${page}`)
-    return response.data.data
+    return _initClasses(response.data.data, 'Patient')
   }
 
   /**

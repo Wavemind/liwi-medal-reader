@@ -23,19 +23,17 @@ const ConsentListItem = ({ item }) => {
 
   const navigation = useNavigation()
 
+  const navigatePreview = () => {
+    navigation.navigate('Preview', {
+      consent: item.consent_file,
+    })
+  }
+
   // medicalCases already sorted by updatedAt (service call)
-  const lastVisit =
-    item.medical_cases[item.medical_cases.length - 1]?.updated_at
+  const lastVisit = item.medicalCases[item.medicalCases.length - 1]?.updated_at
 
   return (
-    <TouchableOpacity
-      style={consentListItem.wrapper}
-      onPress={() =>
-        navigation.navigate('Preview', {
-          consent: item.consent_file,
-        })
-      }
-    >
+    <TouchableOpacity style={consentListItem.wrapper} onPress={navigatePreview}>
       <View style={consentListItem.container}>
         <View style={consentListItem.titleWrapper}>
           <Text style={consentListItem.title}>
