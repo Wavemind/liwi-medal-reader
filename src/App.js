@@ -2,6 +2,7 @@
  * The external imports
  */
 import 'react-native-gesture-handler'
+import 'react-native-reanimated'
 import React, { useRef, useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { AppState } from 'react-native'

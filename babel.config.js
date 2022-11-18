@@ -28,6 +28,13 @@ plugins.push([
   },
 ])
 
+plugins.push([
+  'react-native-reanimated/plugin',
+  {
+    globals: ['__scanCodes'],
+  },
+])
+
 module.exports = {
   presets,
   plugins,
