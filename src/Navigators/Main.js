@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -77,7 +77,7 @@ const MainNavigator = ({ route, navigation }) => {
 
   // Adds an event listener to tablet back button press
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const onBackPress = async () => {
         // Opens the existMedicalCase modal and redirects to the Home screen
         if (medicalCaseId && medicalCaseClosedAt === 0) {

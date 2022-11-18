@@ -65,6 +65,13 @@ const IndexScanContainer = () => {
   })
 
   /**
+   * Reset values in store for HandleQr
+   */
+  useEffect(() => {
+    dispatch(HandleQr.action({ reset: true }))
+  }, [])
+
+  /**
    * Initialize camera on screen focus
    */
   const onInitialized = useCallback(() => {
@@ -85,18 +92,13 @@ const IndexScanContainer = () => {
     if (!scanning) {
       toggleActiveState()
     }
-    return () => {
-      barcodes
-    }
   }, [barcodes])
 
   /**
    * Handles navigation after Scan successful
    */
   useEffect(() => {
-    if (scanData.navigate) {
-      openMedicalCase()
-    }
+    openMedicalCase()
   }, [scanData])
 
   /**
@@ -140,38 +142,40 @@ const IndexScanContainer = () => {
    * Will navigate to the medical case with the appropriate params
    */
   const openMedicalCase = async () => {
-    if (scanData.navigationParams.newMedicalCase) {
-      const patientResult = await dispatch(
-        CreatePatient.action({ ...scanData.navigationParams }),
-      )
-      if (isFulfilled(patientResult)) {
-        const medicalCaseResult = await dispatch(
-          CreateMedicalCase.action({
-            algorithm,
-            patientId: patientResult.payload.id,
+    if (scanData.navigate) {
+      if (scanData.navigationParams.newMedicalCase) {
+        const patientResult = await dispatch(
+          CreatePatient.action({ ...scanData.navigationParams }),
+        )
+        if (isFulfilled(patientResult)) {
+          const medicalCaseResult = await dispatch(
+            CreateMedicalCase.action({
+              algorithm,
+              patientId: patientResult.payload.id,
+            }),
+          )
+          if (isFulfilled(medicalCaseResult)) {
+            navigation.navigate('Main', {
+              screen: 'StageWrapper',
+              ...scanData.navigationParams,
+            })
+          }
+        }
+      } else {
+        // Load patient in store
+        const loadPatientResult = await dispatch(
+          LoadPatient.action({
+            patientId: scanData.navigationParams.patientId,
           }),
         )
-        if (isFulfilled(medicalCaseResult)) {
-          navigation.navigate('Main', {
-            screen: 'StageWrapper',
-            ...scanData.navigationParams,
+
+        if (isFulfilled(loadPatientResult)) {
+          navigation.navigate('PatientProfile', {
+            title: `${loadPatientResult.payload.first_name} ${
+              loadPatientResult.payload.last_name
+            } - ${formatDate(loadPatientResult.payload.birth_date)}`,
           })
         }
-      }
-    } else {
-      // Load patient in store
-      const loadPatientResult = await dispatch(
-        LoadPatient.action({
-          patientId: scanData.navigationParams.patientId,
-        }),
-      )
-
-      if (isFulfilled(loadPatientResult)) {
-        navigation.navigate('PatientProfile', {
-          title: `${loadPatientResult.payload.first_name} ${
-            loadPatientResult.payload.last_name
-          } - ${formatDate(loadPatientResult.payload.birth_date)}`,
-        })
       }
     }
   }
