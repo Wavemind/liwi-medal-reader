@@ -53,7 +53,7 @@
     "react-native-dotenv": "^3.2.0",
     "react-native-error-boundary": "^1.1.16",
     "react-native-flash-message": "^0.3.1",
-    "react-native-flipper": "^0.127.0",
+    "react-native-flipper": "^0.174.0",
     "react-native-fs": "^2.19.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-pan-zoom": "^2.1.12",
