@@ -1,32 +1,40 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
-import QRCodeScanner from 'react-native-qrcode-scanner'
-import { View, Text, Dimensions } from 'react-native'
-import { useTranslation } from 'react-i18next'
+import React, { useRef, useCallback, useEffect, useState } from 'react'
+import {
+  View,
+  StyleSheet,
+  Text,
+  Vibration,
+  ActivityIndicator,
+} from 'react-native'
+import { useCameraDevices, Camera } from 'react-native-vision-camera'
+import { useScanBarcodes, BarcodeFormat } from 'vision-camera-code-scanner'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
-import { useNavigation } from '@react-navigation/native'
 import isEqual from 'lodash/isEqual'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Icon } from '@/Components'
+import { Loader, Icon } from '@/Components'
+import HandleQr from '@/Store/Scan/HandleQr'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
-import HandleQr from '@/Store/Scan/HandleQr'
 import LoadPatient from '@/Store/Patient/Load'
 import { formatDate } from '@/Utils/Date'
+import { wp } from '@/Theme/Responsive'
 
-const HEIGHT = Dimensions.get('window').height
-const WIDTH = Dimensions.get('window').width
 const IndexScanContainer = () => {
-  const { t } = useTranslation()
+  const cameraRef = useRef(null)
   const dispatch = useDispatch()
+  const isFocused = useIsFocused()
   const navigation = useNavigation()
+  const { t } = useTranslation()
 
   // Theme and style elements deconstruction
   const {
@@ -34,26 +42,101 @@ const IndexScanContainer = () => {
     Containers: { scan },
   } = useTheme()
 
-  // Get values from the store
-  const healthFacility = useSelector(state => state.healthFacility.item)
-  const algorithm = useSelector(state => state.algorithm.item)
-  const handleQrError = useSelector(state => state.scan.handleQr.error)
-  const medicalCaseError = useSelector(state => state.medicalCase.create.error)
-  const scanData = useSelector(state => state.scan.item)
-  const patientLoadError = useSelector(state => state.patient.load.error)
-
   // Local state definition
   const [generateNewQR, setGenerateNewQR] = useState(false)
+  const [scanning, setScanning] = useState(false)
   const [otherQR, setOtherQR] = useState({})
-  const [lastScan, setLastScan] = useState({})
+  const [barcode, setBarcode] = useState('')
+  const [_isCameraInitialized, setIsCameraInitialized] = useState(false)
 
+  // Get values from the store
+  const algorithm = useSelector(state => state.algorithm.item)
+  const healthFacility = useSelector(state => state.healthFacility.item)
+  const scanData = useSelector(state => state.scan.item)
+  const handleQrError = useSelector(state => state.scan.handleQr.error)
+  const medicalCaseError = useSelector(state => state.medicalCase.create.error)
+  const patientLoadError = useSelector(state => state.patient.load.error)
+
+  // Camera config
+  const devices = useCameraDevices()
+  const device = devices.back
+  const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
+    checkInverted: true,
+  })
+
+  /**
+   * Reset values in store for HandleQr
+   */
   useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () =>
-      dispatch(HandleQr.action({ reset: true })),
-    )
+    dispatch(HandleQr.action({ reset: true }))
+  }, [])
 
-    return unsubscribe
-  }, [navigation])
+  /**
+   * Initialize camera on screen focus
+   */
+  const onInitialized = useCallback(() => {
+    setIsCameraInitialized(true)
+  }, [isFocused])
+
+  /**
+   * Handle camera error
+   */
+  const onError = useCallback(error => {
+    console.error(error)
+  }, [])
+
+  /**
+   * Toggle QR code activation
+   */
+  useEffect(() => {
+    if (!scanning) {
+      toggleActiveState()
+    }
+  }, [barcodes])
+
+  /**
+   * Handles navigation after Scan successful
+   */
+  useEffect(() => {
+    openMedicalCase()
+  }, [scanData])
+
+  /**
+   * Retrieves needed data in cas of error. and sets them in local state
+   */
+  useEffect(() => {
+    if (handleQrError?.data) {
+      setOtherQR(handleQrError?.data.QRData)
+      setGenerateNewQR(handleQrError?.data.generateNewQr)
+      setScanning(false)
+    }
+  }, [handleQrError?.data])
+
+  /**
+   * Handle QR scan and process scanning
+   */
+  const toggleActiveState = async () => {
+    if (barcodes && barcodes.length > 0) {
+      Vibration.vibrate()
+      setScanning(true)
+      barcodes.forEach(async scannedBarcode => {
+        if (
+          scannedBarcode.rawValue !== '' &&
+          !isEqual(scannedBarcode.rawValue, barcode)
+        ) {
+          setBarcode(scannedBarcode.rawValue)
+          await dispatch(
+            HandleQr.action({
+              QrRawData: scannedBarcode.rawValue,
+              healthFacilityId: healthFacility.id,
+              generateNewQR,
+              otherQR,
+            }),
+          )
+        }
+      })
+    }
+  }
 
   /**
    * Will navigate to the medical case with the appropriate params
@@ -97,88 +180,55 @@ const IndexScanContainer = () => {
     }
   }
 
-  /**
-   * Handles navigation after Scan successful
-   */
-  useEffect(() => {
-    openMedicalCase()
-  }, [scanData])
-
-  /**
-   * Retrieves needed data in cas of error. and sets them in local state
-   */
-  useEffect(() => {
-    if (handleQrError?.data) {
-      setOtherQR(handleQrError?.data.QRData)
-      setGenerateNewQR(handleQrError?.data.generateNewQr)
-    }
-  }, [handleQrError?.data])
-
-  /**
-   * Handle scan process
-   */
-  const handleScan = async e => {
-    // If the QR code is the same as the one that has been scanned before
-    if (isEqual(lastScan, e.data)) {
-      return
-    }
-    setLastScan(e.data)
-    await dispatch(
-      HandleQr.action({
-        QrRawData: e.data,
-        healthFacilityId: healthFacility.id,
-        generateNewQR,
-        otherQR,
-      }),
-    )
+  if (device == null) {
+    return <Loader />
   }
 
   return (
-    <QRCodeScanner
-      showMarker
-      vibrate
-      reactivate
-      reactivateTimeout={2000}
-      onRead={handleScan}
-      cameraStyle={{ height: HEIGHT }}
-      customMarker={
-        <View style={scan.wrapper}>
-          <View style={scan.titleWrapper(handleQrError)}>
-            <Text style={scan.title}>{t('containers.scan.scan')}</Text>
-          </View>
-
-          <View style={Layout.row}>
-            <View style={scan.sideScan(handleQrError)} />
-
-            <View style={scan.centerScan}>
-              <Icon name="qr-scan" size={WIDTH * 0.5} />
-            </View>
-
-            <View style={scan.sideScan(handleQrError)} />
-          </View>
-
-          <View style={scan.bottomWrapper(handleQrError)}>
-            {(handleQrError || medicalCaseError || patientLoadError) && (
-              <View style={scan.errorWrapper}>
-                {handleQrError && (
-                  <Text style={scan.errorTitle}>{handleQrError.message}</Text>
-                )}
-                {medicalCaseError && (
-                  <Text style={scan.errorTitle}>
-                    {medicalCaseError.message}
-                  </Text>
-                )}
-                {patientLoadError && (
-                  <Text style={scan.errorTitle}>
-                    {patientLoadError.message}
-                  </Text>
-                )}
-              </View>
-            )}
-          </View>
+    <>
+      <Camera
+        ref={cameraRef}
+        device={device}
+        onError={onError}
+        style={StyleSheet.absoluteFill}
+        isActive={isFocused}
+        onInitialized={onInitialized}
+        frameProcessor={frameProcessor}
+        frameProcessorFps={5}
+      />
+      <View style={scan.wrapper}>
+        <View style={scan.titleWrapper(handleQrError)}>
+          <Text style={scan.title}>{t('containers.scan.scan')}</Text>
         </View>
-      }
-    />
+
+        <View style={Layout.row}>
+          <View style={scan.sideScan(handleQrError)} />
+
+          <View style={scan.centerScan}>
+            <Icon name="qr-scan" size={wp(50)} />
+          </View>
+
+          <View style={scan.sideScan(handleQrError)} />
+        </View>
+
+        <View style={scan.bottomWrapper(handleQrError)}>
+          {scanning && <ActivityIndicator size="large" />}
+          {(handleQrError || medicalCaseError || patientLoadError) && (
+            <View style={scan.errorWrapper}>
+              {handleQrError && (
+                <Text style={scan.errorTitle}>{handleQrError.message}</Text>
+              )}
+              {medicalCaseError && (
+                <Text style={scan.errorTitle}>{medicalCaseError.message}</Text>
+              )}
+              {patientLoadError && (
+                <Text style={scan.errorTitle}>{patientLoadError.message}</Text>
+              )}
+            </View>
+          )}
+        </View>
+      </View>
+    </>
   )
 }
 

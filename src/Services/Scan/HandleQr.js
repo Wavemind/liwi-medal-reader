@@ -1,5 +1,6 @@
 import i18n from '@/Translations/index'
 import useDatabase from '@/Services/Database/useDatabase'
+
 /**
  * Parse TIMCI QR code data because they didn't want to use the existing format just to piss us off
  * @param QRData : String value coming from QRCODE

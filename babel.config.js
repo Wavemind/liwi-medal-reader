@@ -28,7 +28,19 @@ plugins.push([
   },
 ])
 
+plugins.push([
+  'react-native-reanimated/plugin',
+  {
+    globals: ['__scanCodes'],
+  },
+])
+
 module.exports = {
   presets,
+  env: {
+    production: {
+      plugins: ['transform-remove-console'], //removing consoles.log from app during release (production) versions
+    },
+  },
   plugins,
 }
