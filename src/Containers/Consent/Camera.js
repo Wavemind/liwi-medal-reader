@@ -90,7 +90,7 @@ const CameraConsentContainer = ({ navigation }) => {
         throw new Error('Camera ref is null')
       }
 
-      const photo = await cameraRef.current.takePhoto(takePhotoOptions)
+      const photo = await cameraRef.current.takeSnapshot(takePhotoOptions)
       onMediaCaptured(photo, 'photo')
     } catch (e) {
       setLoading(false)
