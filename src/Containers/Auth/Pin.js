@@ -73,7 +73,6 @@ const PinAuthContainer = () => {
    */
   const handlePin = async value => {
     setMessageTypes([])
-
     if (value === pinCode) {
       setLoading(true)
       setMessageTypes(prev => [...prev, 'retrieving_algorithm'])
