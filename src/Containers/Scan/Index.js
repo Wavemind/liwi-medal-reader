@@ -111,7 +111,6 @@ const IndexScanContainer = () => {
    * Handle QR scan and process scanning
    */
   const toggleActiveState = async () => {
-    // TODO Avoid double call.
     if (barcodes && barcodes.length > 0 && !handleQrLoading) {
       Vibration.vibrate()
       setScanning(true)
