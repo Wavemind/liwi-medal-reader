@@ -61,7 +61,7 @@ export default function (props) {
       borderRadius: 20,
     },
     errorTitle: {
-      ...Fonts.textRegular,
+      ...Fonts.textSmall,
       color: Colors.secondary,
     },
   })

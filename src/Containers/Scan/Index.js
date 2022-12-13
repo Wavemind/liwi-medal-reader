@@ -54,8 +54,10 @@ const IndexScanContainer = () => {
   const healthFacility = useSelector(state => state.healthFacility.item)
   const scanData = useSelector(state => state.scan.item)
   const handleQrError = useSelector(state => state.scan.handleQr.error)
+  const handleQrLoading = useSelector(state => state.scan.handleQr.loading)
   const medicalCaseError = useSelector(state => state.medicalCase.create.error)
   const patientLoadError = useSelector(state => state.patient.load.error)
+  const patientLoadLoading = useSelector(state => state.patient.load.loading)
 
   // Camera config
   const devices = useCameraDevices()
@@ -63,13 +65,6 @@ const IndexScanContainer = () => {
   const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
     checkInverted: true,
   })
-
-  /**
-   * Reset values in store for HandleQr
-   */
-  useEffect(() => {
-    dispatch(HandleQr.action({ reset: true }))
-  }, [])
 
   /**
    * Initialize camera on screen focus
@@ -116,7 +111,8 @@ const IndexScanContainer = () => {
    * Handle QR scan and process scanning
    */
   const toggleActiveState = async () => {
-    if (barcodes && barcodes.length > 0) {
+    // TODO Avoid double call.
+    if (barcodes && barcodes.length > 0 && !handleQrLoading) {
       Vibration.vibrate()
       setScanning(true)
       barcodes.forEach(async scannedBarcode => {
@@ -155,13 +151,15 @@ const IndexScanContainer = () => {
             }),
           )
           if (isFulfilled(medicalCaseResult)) {
+            const tmpScanData = scanData.navigationParams
+            await dispatch(HandleQr.action({ reset: true }))
             navigation.navigate('Main', {
               screen: 'StageWrapper',
-              ...scanData.navigationParams,
+              ...tmpScanData,
             })
           }
         }
-      } else {
+      } else if (!patientLoadLoading) {
         // Load patient in store
         const loadPatientResult = await dispatch(
           LoadPatient.action({
@@ -170,10 +168,14 @@ const IndexScanContainer = () => {
         )
 
         if (isFulfilled(loadPatientResult)) {
-          navigation.navigate('PatientProfile', {
-            title: `${loadPatientResult.payload.first_name} ${
-              loadPatientResult.payload.last_name
-            } - ${formatDate(loadPatientResult.payload.birth_date)}`,
+          await dispatch(HandleQr.action({ reset: true }))
+          navigation.navigate('Main', {
+            screen: 'PatientProfile',
+            params: {
+              title: `${loadPatientResult.payload.first_name} ${
+                loadPatientResult.payload.last_name
+              } - ${formatDate(loadPatientResult.payload.birth_date)}`,
+            },
           })
         }
       }
