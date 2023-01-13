@@ -15,7 +15,7 @@ import setAnswer from '@/Utils/SetAnswer'
 import { translate } from '@/Translations/algorithm'
 import { formatDate } from '@/Utils/Date'
 
-const CustomDatePicker = ({ questionId }) => {
+function CustomDatePicker({ questionId }) {
   // Theme and style elements deconstruction
   const {
     Components: { string },

@@ -115,6 +115,7 @@ const store = configureStore({
   middleware: getDefaultMiddleware => {
     const middlewares = getDefaultMiddleware({
       serializableCheck: false,
+      immutableCheck: false,
     })
 
     if (__DEV__ && !process.env.JEST_WORKER_ID) {

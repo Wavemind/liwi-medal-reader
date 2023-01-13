@@ -10,13 +10,13 @@ import CheckBox from '@react-native-community/checkbox'
  */
 import { useTheme } from '@/Theme'
 
-const Checkbox = ({
+function Checkbox({
   label,
   onPress = () => console.log('Add action !'),
   defaultValue = false,
   nodeId = null,
   disabled = false,
-}) => {
+}) {
   // Theme and style elements deconstruction
   const {
     Components: { checkbox },

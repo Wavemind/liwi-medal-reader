@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import setAnswer from '@/Utils/SetAnswer'
 import { translate } from '@/Translations/algorithm'
 
-const Select = ({ questionId, disabled = false }) => {
+function Select({ questionId, disabled = false }) {
   // Theme and style elements deconstruction
   const {
     Components: { select },

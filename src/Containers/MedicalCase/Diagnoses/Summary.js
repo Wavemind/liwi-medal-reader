@@ -15,7 +15,7 @@ import {
   ReferralWarning,
 } from '@/Components'
 
-const SummaryMedicalCaseContainer = () => {
+function SummaryMedicalCaseContainer() {
   return (
     <ScrollView>
       <ReferralWarning />

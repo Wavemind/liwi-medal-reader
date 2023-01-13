@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import BirthDate from './BirthDate'
 
-const PatientBirthDate = () => {
+function PatientBirthDate() {
   // Theme and style elements deconstruction
   const {
     Components: { question },

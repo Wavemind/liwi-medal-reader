@@ -14,7 +14,7 @@ import isEqual from 'lodash/isEqual'
 import { Question, EmptyList } from '@/Components'
 import { TreatmentConditionsQuestionsService } from '@/Services/Steps'
 
-const TreatmentConditionsMedicalCaseContainer = () => {
+function TreatmentConditionsMedicalCaseContainer() {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
 

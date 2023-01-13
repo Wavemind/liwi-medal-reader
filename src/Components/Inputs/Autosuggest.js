@@ -11,7 +11,7 @@ import { View, TouchableOpacity, TextInput } from 'react-native'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const Autosuggest = ({ searchTerm, setSearchTerm, handleReset, autofocus }) => {
+function Autosuggest({ searchTerm, setSearchTerm, handleReset, autofocus }) {
   // Theme and style elements deconstruction
   const {
     Layout,

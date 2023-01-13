@@ -24,9 +24,9 @@ import { transformPatientValues } from '@/Utils/MedicalCase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import ImportPatientValues from '@/Store/MedicalCase/ImportPatientValues'
 import LoadPatient from '@/Store/Patient/Load'
-import ToggleOverlayLoader from '@/Store/Loader/ToggleOverlayLoader'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 
-const ConsultationPatientContainer = ({ navigation }) => {
+function ConsultationPatientContainer({ navigation }) {
   const {
     Gutters,
     FontSize,
@@ -45,6 +45,8 @@ const ConsultationPatientContainer = ({ navigation }) => {
   const medicalCaseCreateError = useSelector(
     state => state.medicalCase.create.error,
   )
+
+  const [isLoading, setIsLoading] = useState(false)
 
   // Local state definition
   const [currentConsultation, setCurrentConsultation] = useState(
@@ -94,7 +96,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
    * @returns {Promise<void>}
    */
   const handleAddConsultation = async () => {
-    await dispatch(ToggleOverlayLoader.action())
+    setIsLoading(true)
     const createMedicalCase = await dispatch(
       CreateMedicalCase.action({ algorithm, patientId: patient.id }),
     )
@@ -106,16 +108,14 @@ const ConsultationPatientContainer = ({ navigation }) => {
           currentNodes: algorithm.nodes,
         }),
       )
-      navigation.navigate('StageWrapper')
-      await dispatch(ToggleOverlayLoader.action())
-    } else {
-      await dispatch(ToggleOverlayLoader.action())
+      await navigateAndSimpleReset('StageWrapper')
     }
+    setIsLoading(false)
   }
 
   return (
     <View style={patientConsultations.sectionWrapper}>
-      {currentConsultation ? (
+      {!currentConsultation ? (
         <View>
           <SectionHeader
             label={t('containers.patient.consultations.current_consultation')}
@@ -131,6 +131,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
             label={t('actions.new_medical_case')}
             icon="add"
             onPress={handleAddConsultation}
+            disabled={isLoading}
           />
           {medicalCaseCreateError && (
             <View style={[question.messageWrapper('error')]}>

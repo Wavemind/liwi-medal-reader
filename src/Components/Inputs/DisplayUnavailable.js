@@ -14,7 +14,7 @@ import { store } from '@/Store'
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 import setAnswer from '@/Utils/SetAnswer'
 
-const DisplayUnavailable = ({ questionId }) => {
+function DisplayUnavailable({ questionId }) {
   // Theme and style elements deconstruction
   const dispatch = useDispatch()
 

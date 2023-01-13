@@ -9,7 +9,7 @@ import { Text, View, Switch } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 
-const ToggleSwitch = ({ label, handleToggle, value }) => {
+function ToggleSwitch({ label, handleToggle, value }) {
   // Theme and style elements deconstruction
   const {
     Components: { toggleSwitch },

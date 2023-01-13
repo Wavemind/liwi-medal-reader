@@ -13,7 +13,7 @@ import { CalculatedDrugs, AdditionalDrugs, CustomDrugs } from '@/Components'
 import { reworkAndOrderDrugs } from '@/Utils/Drug'
 import SetDrugs from '@/Store/MedicalCase/Drugs/SetDrugs'
 
-const MedicinesMedicalCaseContainer = () => {
+function MedicinesMedicalCaseContainer() {
   const dispatch = useDispatch()
   const isFocused = useIsFocused()
   const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)

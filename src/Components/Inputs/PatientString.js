@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import UpdateField from '@/Store/Patient/UpdateField'
 
-const PatientString = ({ field }) => {
+function PatientString({ field }) {
   // Theme and style elements deconstruction
   const {
     Components: { question, string },
