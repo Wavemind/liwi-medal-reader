@@ -115,7 +115,7 @@ function ConsultationPatientContainer({ navigation }) {
 
   return (
     <View style={patientConsultations.sectionWrapper}>
-      {!currentConsultation ? (
+      {currentConsultation ? (
         <View>
           <SectionHeader
             label={t('containers.patient.consultations.current_consultation')}
