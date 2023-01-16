@@ -18,7 +18,7 @@ import {
 } from '@/Components'
 import { RegistrationQuestionsService } from '@/Services/Steps'
 
-const RegistrationMedicalCaseContainer = () => {
+function RegistrationMedicalCaseContainer() {
   const { t } = useTranslation()
 
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)

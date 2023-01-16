@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import { wp } from '@/Theme/Responsive'
 import UpdateComment from '@/Store/MedicalCase/UpdateComment'
 
-const Comment = () => {
+function Comment() {
   // Theme and style elements deconstruction
   const {
     Components: { toggleComplaintCategory, autocomplete, question },

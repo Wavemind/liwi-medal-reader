@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { TabBar, SideBar } from '@/Components'
 import { getStages } from '@/Utils/Navigation/GetStages'
 
-const StageWrapperMedicalCaseContainer = ({ route }) => {
+function StageWrapperMedicalCaseContainer({ route }) {
   const { t } = useTranslation()
   const Tab = createMaterialTopTabNavigator()
 

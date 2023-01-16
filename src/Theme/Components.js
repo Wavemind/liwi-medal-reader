@@ -50,7 +50,6 @@ import sectionSubHeaderStyles from './components/SectionSubHeader.style'
 import metadataStyles from './components/Metadata.style'
 import referralWarningStyles from './components/ReferralWarning.style'
 import drugStyles from './components/Drug.style'
-import overlayLoader from './components/OverlayLoader.style'
 
 /**
  *
@@ -106,6 +105,5 @@ export default function (props) {
     metadata: metadataStyles(props),
     referralWarning: referralWarningStyles(props),
     drug: drugStyles(props),
-    overlayLoader: overlayLoader(props),
   }
 }

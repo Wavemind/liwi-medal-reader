@@ -14,7 +14,7 @@ import setAnswer from '@/Utils/SetAnswer'
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 import { translate } from '@/Translations/algorithm'
 
-const Numeric = ({ questionId, editable = true }) => {
+function Numeric({ questionId, editable = true }) {
   // Theme and style elements deconstruction
   const {
     Components: { numeric, booleanButton },

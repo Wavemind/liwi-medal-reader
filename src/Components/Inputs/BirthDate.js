@@ -28,7 +28,7 @@ import UpdateField from '@/Store/Patient/UpdateField'
 import HandleComplaintCategories from '@/Store/MedicalCase/HandleComplaintCategories'
 import HandleDateFormulas from '@/Store/MedicalCase/HandleDateFormulas'
 
-const BirthDate = () => {
+function BirthDate() {
   // Theme and style elements deconstruction
   const {
     Components: { select, numeric },

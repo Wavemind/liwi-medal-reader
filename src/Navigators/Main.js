@@ -11,12 +11,7 @@ import { BackHandler } from 'react-native'
 /**
  * The internal imports
  */
-import {
-  Header,
-  CustomDrawerContent,
-  BottomNavbar,
-  OverlayLoader,
-} from '@/Components'
+import { Header, CustomDrawerContent, BottomNavbar } from '@/Components'
 import {
   IndexHomeContainer,
   IndexSettingsContainer,
@@ -47,7 +42,6 @@ const MainNavigator = ({ route, navigation }) => {
 
   const clinician = useSelector(state => state.healthFacility.clinician)
   const patient = useSelector(state => state.patient.item)
-  const overlayLoader = useSelector(state => state.loader.overlayLoader)
   const medicalCaseId = useSelector(state => state.medicalCase.item.id)
   const medicalCaseClosedAt = useSelector(
     state => state.medicalCase.item.closedAt,
@@ -110,7 +104,6 @@ const MainNavigator = ({ route, navigation }) => {
 
   return (
     <>
-      {overlayLoader && <OverlayLoader />}
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}

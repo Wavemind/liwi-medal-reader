@@ -18,7 +18,7 @@ import { translate } from '@/Translations/algorithm'
 import { _keys } from '@/Utils/Object'
 import sortByLabel from '@/Utils/SortByLabel'
 
-const Autocomplete = ({ updateAdditionalDrugs }) => {
+function Autocomplete({ updateAdditionalDrugs }) {
   // Theme and style elements deconstruction
   const {
     Colors,

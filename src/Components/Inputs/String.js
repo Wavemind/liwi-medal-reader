@@ -14,7 +14,7 @@ import { translate } from '@/Translations/algorithm'
 import { displayResult } from '@/Utils/ReferenceTable'
 import { Config } from '@/Config'
 
-const String = ({ questionId, editable = true }) => {
+function String({ questionId, editable = true }) {
   // Theme and style elements deconstruction
   const {
     Components: { string },

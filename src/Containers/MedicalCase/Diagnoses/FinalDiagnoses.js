@@ -19,7 +19,7 @@ import {
 import { useTheme } from '@/Theme'
 import SetDiagnoses from '@/Store/MedicalCase/Diagnoses/SetDiagnoses'
 
-const FinalDiagnosesMedicalCaseContainer = () => {
+function FinalDiagnosesMedicalCaseContainer() {
   // Theme and style elements deconstruction
   const { Gutters } = useTheme()
   const dispatch = useDispatch()

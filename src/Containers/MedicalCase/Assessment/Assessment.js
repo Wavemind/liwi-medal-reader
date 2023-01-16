@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux'
 import { Question, EmptyList } from '@/Components'
 import { AssessmentQuestionsService } from '@/Services/Steps'
 
-const AssessmentMedicalCaseContainer = () => {
+function AssessmentMedicalCaseContainer() {
   const { t } = useTranslation()
 
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)

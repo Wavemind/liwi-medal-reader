@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { Question, EmptyList } from '@/Components'
 import { ReferralQuestionsService } from '@/Services/Steps'
 
-const ReferralMedicalCaseContainer = () => {
+function ReferralMedicalCaseContainer() {
   const { t } = useTranslation()
 
   const mcNodes = useSelector(state => state.medicalCase.item.nodes)

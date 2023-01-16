@@ -15,7 +15,7 @@ import SetParams from '@/Store/Modal/SetParams'
 import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import setAnswer from '@/Utils/SetAnswer'
 
-const Boolean = ({ questionId, disabled = false }) => {
+function Boolean({ questionId, disabled = false }) {
   // Theme and style elements deconstruction
   const {
     Components: { booleanButton },

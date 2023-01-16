@@ -15,7 +15,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import setAnswer from '@/Utils/SetAnswer'
 
-const Autocomplete = ({ questionId }) => {
+function Autocomplete({ questionId }) {
   // Theme and style elements deconstruction
   const {
     Colors,

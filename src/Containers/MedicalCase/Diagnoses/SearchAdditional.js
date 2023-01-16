@@ -27,7 +27,7 @@ import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses
 import { _keys } from '@/Utils/Object'
 import sortByLabel from '@/Utils/SortByLabel'
 
-const SearchAdditionalDiagnosesMedicalCaseContainer = ({ navigation }) => {
+function SearchAdditionalDiagnosesMedicalCaseContainer({ navigation }) {
   // Theme and style elements deconstruction
   const {
     Colors,

@@ -12,7 +12,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { System, Loader } from '@/Components'
 import MedicalHistory from '@/Store/QuestionsPerSystem/MedicalHistory'
 
-const MedicalHistoryMedicalCaseContainer = () => {
+function MedicalHistoryMedicalCaseContainer() {
   const isFocused = useIsFocused()
   const dispatch = useDispatch()
 

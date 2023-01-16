@@ -16,7 +16,7 @@ import { Icon } from '@/Components'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
 import setAnswer from '@/Utils/SetAnswer'
 
-const Toggle = ({ questionId }) => {
+function Toggle({ questionId }) {
   // Theme and style elements deconstruction
   const {
     Colors,

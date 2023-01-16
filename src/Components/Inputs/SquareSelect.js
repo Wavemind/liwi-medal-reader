@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
-const SquareSelect = ({
+function SquareSelect({
   label,
   prompt,
   items,
@@ -20,7 +20,7 @@ const SquareSelect = ({
   withBorder = false,
   fullWidth = true,
   pickerGrow = false,
-}) => {
+}) {
   // Theme and style elements deconstruction
   const {
     Colors,

@@ -47,6 +47,7 @@ const IndexHomeContainer = ({ navigation }) => {
   // Local state definition
   const [page, setPage] = useState(1)
   const [firstLoading, setFirstLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   const algorithm = useSelector(state => state.algorithm.item)
   const healthFacility = useSelector(state => state.healthFacility.item)
@@ -111,6 +112,7 @@ const IndexHomeContainer = ({ navigation }) => {
    * Create patient without scanning QR code
    */
   const newPatient = async () => {
+    setIsLoading(true)
     await dispatch(
       CreatePatient.action({
         patientId: null,
@@ -127,6 +129,7 @@ const IndexHomeContainer = ({ navigation }) => {
       CreateMedicalCase.action({ algorithm, patientId: uuid.v4() }),
     )
     navigateAndSimpleReset('StageWrapper')
+    setIsLoading(false)
   }
 
   return (
@@ -149,6 +152,7 @@ const IndexHomeContainer = ({ navigation }) => {
               big
               onPress={newPatient}
               filled
+              disabled={isLoading}
             />
           </View>
         </View>
