@@ -6,17 +6,7 @@ import FilesystemStorage from 'redux-persist-filesystem-storage'
 import { combineReducers } from 'redux'
 import { reducer as network } from 'react-native-offline'
 import { configureStore } from '@reduxjs/toolkit'
-import {
-  getStoredState,
-  persistReducer,
-  persistStore,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from 'redux-persist'
+import { getStoredState, persistReducer, persistStore } from 'redux-persist'
 import isEmpty from 'lodash/isEmpty'
 
 /**
@@ -41,7 +31,6 @@ import scan from './Scan'
 import theme from './Theme'
 import validation from './Validation'
 import synchronization from './Synchronization'
-import loader from './Loader'
 
 const reducers = combineReducers({
   algorithm,
@@ -53,7 +42,6 @@ const reducers = combineReducers({
   emergency,
   filters,
   healthFacility,
-  loader,
   medicalCase,
   modal,
   network,
