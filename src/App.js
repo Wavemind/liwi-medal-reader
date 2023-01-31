@@ -19,15 +19,13 @@ import { RedirectService } from '@/Services/Device'
 import { store, persistor } from '@/Store'
 import { ApplicationNavigator } from '@/Navigators'
 import './Translations'
+import { SENTRY_DSN } from '.env'
 
-// const routingInstrumentation = new Sentry.ReactNavigationV5Instrumentation()
-
-// initialisez Sentry avec votre clé d'API et votre projet
 Sentry.init({
-  dsn: 'https://784668a0131b414e903863d5386ab1e5@o4503940862377984.ingest.sentry.io/4504569918062592',
+  dsn: SENTRY_DSN,
   // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
   // We recommend adjusting this value in production.
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 0.8,
   environment: __DEV__ ? 'developpment' : 'production',
   integrations: [
     new Sentry.ReactNativeTracing({
@@ -35,7 +33,6 @@ Sentry.init({
       // ... other options
     }),
   ],
-  debug: true,
 })
 
 const App = () => {
@@ -46,9 +43,6 @@ const App = () => {
     AppState.addEventListener('change', handleAppStateChange)
 
     return () => {
-      // Sentry.flush({
-      //   timeout: 5000, // give it 5s to complete the request
-      // })
       AppState.remove('change', handleAppStateChange)
     }
   }, [])
@@ -74,10 +68,6 @@ const App = () => {
       port: 8097,
     })
   }
-
-  // Sentry.configureScope(scope => {
-  //   scope.setTag('app_start_finished', true)
-  // })
 
   return (
     <ErrorBoundary>

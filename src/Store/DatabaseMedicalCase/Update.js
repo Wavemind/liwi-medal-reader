@@ -6,7 +6,7 @@ import {
   buildAsyncReducers,
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
- 
+
 /**
  * The internal imports
  */

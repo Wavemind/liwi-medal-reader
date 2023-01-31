@@ -3,6 +3,7 @@
  */
 import { isFulfilled } from '@reduxjs/toolkit'
 import { showMessage } from 'react-native-flash-message'
+import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -17,8 +18,12 @@ export default async ({ stageIndex, stepIndex }) => {
   const medicalCase = store.getState().medicalCase.item
   const activities = store.getState().medicalCase.item.activities
 
-  // TODO: medicalCase.id is empty throw an error
- 
+  // Send medicalCase info if there is no id
+  if (medicalCase.id === undefined) {
+    Sentry.captureMessage(JSON.stringify(medicalCase))
+    Sentry.flush()
+  }
+
   // Update medical case
   const medicalCaseUpdateAdvancement = await store.dispatch(
     UpdateDatabaseMedicalCase.action({

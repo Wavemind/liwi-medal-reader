@@ -34,14 +34,12 @@ const LoginAuthContainer = () => {
     Containers: { auth, authLogin, global },
   } = useTheme()
 
-  // throw new Error('My first Sentry error!')
-
   // Local state definition
   const [serverAddress, setServerAddress] = useState(
     __DEV__ ? 'http://195.15.219.241' : '',
   )
 
-  const [clientId, setClientId] = useState(__DEV__ ? '1742' : '')
+  const [clientId, setClientId] = useState(__DEV__ ? '1810' : '')
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
