@@ -17,6 +17,8 @@ export default async ({ stageIndex, stepIndex }) => {
   const medicalCase = store.getState().medicalCase.item
   const activities = store.getState().medicalCase.item.activities
 
+  // TODO: medicalCase.id is empty throw an error
+ 
   // Update medical case
   const medicalCaseUpdateAdvancement = await store.dispatch(
     UpdateDatabaseMedicalCase.action({
