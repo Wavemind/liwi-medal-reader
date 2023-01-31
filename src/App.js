@@ -10,6 +10,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react'
 import FlashMessage from 'react-native-flash-message'
 import ErrorBoundary from 'react-native-error-boundary'
 import { connectToDevTools } from 'react-devtools-core'
+import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -18,6 +19,25 @@ import { RedirectService } from '@/Services/Device'
 import { store, persistor } from '@/Store'
 import { ApplicationNavigator } from '@/Navigators'
 import './Translations'
+import { SENTRY_DSN } from 'env'
+
+// Construct a new instrumentation instance. This is needed to communicate between the integration and React
+export const routingInstrumentation =
+  new Sentry.ReactNavigationInstrumentation()
+
+Sentry.init({
+  dsn: SENTRY_DSN,
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 0.8,
+  environment: __DEV__ ? 'developpment' : 'production',
+  integrations: [
+    new Sentry.ReactNativeTracing({
+      tracingOrigins: ['localhost', /^\//],
+      routingInstrumentation,
+    }),
+  ],
+})
 
 const App = () => {
   const appState = useRef(AppState.currentState)
@@ -73,4 +93,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Sentry.wrap(App)
