@@ -22,6 +22,7 @@ jest.mock('react-native-orientation-locker', () => jest.fn())
 jest.mock('react-native-vector-icons/Feather', () => jest.fn())
 jest.mock('react-native-blob-util', () => jest.fn())
 jest.mock('react-native-date-picker', () => jest.fn())
+jest.mock('@sentry/react-native', () => ({ init: () => jest.fn() }))
 jest.mock('redux-persist-filesystem-storage', () => mockAsyncStorage)
 jest.mock('react-native-offline', () => {
   return {
