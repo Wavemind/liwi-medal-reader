@@ -19,7 +19,11 @@ import { RedirectService } from '@/Services/Device'
 import { store, persistor } from '@/Store'
 import { ApplicationNavigator } from '@/Navigators'
 import './Translations'
-import { SENTRY_DSN } from '.env'
+import { SENTRY_DSN } from 'env'
+
+// Construct a new instrumentation instance. This is needed to communicate between the integration and React
+export const routingInstrumentation =
+  new Sentry.ReactNavigationInstrumentation()
 
 Sentry.init({
   dsn: SENTRY_DSN,
@@ -30,7 +34,7 @@ Sentry.init({
   integrations: [
     new Sentry.ReactNativeTracing({
       tracingOrigins: ['localhost', /^\//],
-      // ... other options
+      routingInstrumentation,
     }),
   ],
 })

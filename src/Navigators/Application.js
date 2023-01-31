@@ -29,6 +29,7 @@ import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
 import { CustomModal } from '@/Components'
+import { routingInstrumentation } from '../App'
 
 const Stack = createStackNavigator()
 
@@ -73,7 +74,14 @@ const ApplicationNavigator = () => {
       pingInterval={Config.PING_INTERVAL}
     >
       <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
-        <NavigationContainer theme={NavigationTheme} ref={navigationRef}>
+        <NavigationContainer
+          theme={NavigationTheme}
+          ref={navigationRef}
+          onReady={() => {
+            // Register the navigation container with the instrumentation
+            routingInstrumentation.registerNavigationContainer(navigationRef)
+          }}
+        >
           <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Startup" component={IndexStartupContainer} />
