@@ -5,6 +5,7 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { useTranslation } from 'react-i18next'
+import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -63,4 +64,4 @@ function StageWrapperMedicalCaseContainer({ route }) {
   )
 }
 
-export default StageWrapperMedicalCaseContainer
+export default Sentry.withProfiler(StageWrapperMedicalCaseContainer)
