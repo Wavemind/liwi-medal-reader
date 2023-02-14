@@ -67,6 +67,7 @@ const PinAuthContainer = () => {
   }, [fadeAnim])
 
   /**
+   *
    * Manages the pin entry and navigation if pin is correct
    * @param pinCode
    * @returns {}

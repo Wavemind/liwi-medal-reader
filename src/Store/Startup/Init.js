@@ -7,6 +7,7 @@ import {
   buildAsyncReducers,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 import { DocumentDirectoryPath, exists, readFile } from 'react-native-fs'
+import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -41,10 +42,24 @@ export default {
           newAlgorithm: JSON.parse(algorithm),
         }),
       )
+
+      Sentry.setContext('algorithm', {
+        algorithm_id: algorithm.id,
+        algorithm_name: algorithm.algorithm_name,
+        version_id: algorithm.version_id,
+        version_name: algorithm.version_name,
+        study_id: algorithm.study.id,
+        study_name: algorithm.study.label,
+        is_arm_control: algorithm.is_arm_control,
+      })
     }
 
     // Get health facility update
     if (state.healthFacility.item.id) {
+      console.log(state.healthFacility)
+      Sentry.setContext('heath faciliity', {
+        ...state.healthFacility.item,
+      })
       await dispatch(FetchOneHealthFacility.action({}))
     }
 
