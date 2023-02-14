@@ -198,3 +198,14 @@ This project is set up to use [jest](https://facebook.github.io/jest/) for tests
 
 ## Publishing
 We're using [sementic](https://semver.org) for version number. We have set up [react-native-version-setter](https://github.com/tj-mc/react-native-version-setter) to manage version number
+
+## Uploading sourcemaps to Sentry using sentry-cli
+
+Use the following code in the terminal replacing the "files" information with the current release number :
+
+`sentry-cli releases \
+    --org wavemind --project medal-reader \
+    files 1.3.0-1 \
+    upload-sourcemaps \
+    --strip-prefix . \
+    index.android.bundle index.android.bundle.map`
