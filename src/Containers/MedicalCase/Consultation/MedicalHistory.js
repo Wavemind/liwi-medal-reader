@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
+import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -49,4 +50,4 @@ function MedicalHistoryMedicalCaseContainer() {
   )
 }
 
-export default MedicalHistoryMedicalCaseContainer
+export default Sentry.withProfiler(MedicalHistoryMedicalCaseContainer)

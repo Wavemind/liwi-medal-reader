@@ -12,6 +12,7 @@ import {
 import { unzip } from 'react-native-zip-archive'
 import ReactNativeBlobUtil from 'react-native-blob-util'
 import { checkInternetConnection } from 'react-native-offline'
+import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -134,6 +135,16 @@ export default async ({ json_version = '' }) => {
   if (algorithmFileExist) {
     await unlink(algorithmTargetPath)
   }
+
+  Sentry.setContext('Algorithm', {
+    algorithm_id: algorithm.id,
+    algorithm_name: algorithm.algorithm_name,
+    version_id: algorithm.version_id,
+    version_name: algorithm.version_name,
+    study_id: algorithm.study.id,
+    study_name: algorithm.study.label,
+    is_arm_control: algorithm.is_arm_control,
+  })
 
   await writeFile(algorithmTargetPath, JSON.stringify(algorithm))
   return algorithm
