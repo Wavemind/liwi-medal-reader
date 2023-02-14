@@ -136,7 +136,7 @@ export default async ({ json_version = '' }) => {
     await unlink(algorithmTargetPath)
   }
 
-  Sentry.setContext('algorithm', {
+  Sentry.setContext('Algorithm', {
     algorithm_id: algorithm.id,
     algorithm_name: algorithm.algorithm_name,
     version_id: algorithm.version_id,

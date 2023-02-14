@@ -64,4 +64,5 @@ function StageWrapperMedicalCaseContainer({ route }) {
   )
 }
 
+// TODO: Check if sub component need Sentry.withProfiler or this one is enought
 export default Sentry.withProfiler(StageWrapperMedicalCaseContainer)
