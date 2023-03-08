@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 import { Icon, SquareButton, ActionsNavbar } from '@/Components'
 import { CheckSynchronizationService } from '@/Services/MedicalCase'
+import { useSelector } from 'react-redux'
 
 const BottomNavbar = () => {
   // Theme and style elements deconstruction
@@ -32,6 +33,9 @@ const BottomNavbar = () => {
   const navigationState = useNavigationState(state => state)
   const route = useRoute()
   const routeName = getFocusedRouteNameFromRoute(route)
+  const architecture = useSelector(
+    state => state.healthFacility.item.architecture,
+  )
 
   const [syncRequired, setSyncRequired] = useState(false)
 
@@ -43,7 +47,9 @@ const BottomNavbar = () => {
         setSyncRequired(required)
       }
     }
-    checkSynchronization()
+    if (architecture === 'standalone') {
+      checkSynchronization()
+    }
   }, [route])
 
   return (
