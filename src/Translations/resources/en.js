@@ -330,6 +330,10 @@ export default {
       title: 'Communication error',
       description: 'Response status code <> 200 ( {{ message }} )',
     },
+    patient: {
+      title: 'Database issue',
+      not_found: 'Patient not found',
+    },
     zip: {
       archived: 'An error occurred while archiving the file',
       generate_json: 'An error occurred while generating JSON File',
