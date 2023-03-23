@@ -54,7 +54,7 @@ const ListItem = ({ item }) => {
       type: 'warning',
       duration: 5000,
     })
-    Sentry.captureMessage(JSON.stringify(data))
+    Sentry.captureMessage('MEDICAL_CASE_LIST: ' + JSON.stringify(data))
     Sentry.flush()
   }
   /**
@@ -65,9 +65,7 @@ const ListItem = ({ item }) => {
     await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
       const patientLoaded = await dispatch(
-        LoadPatient.action({
-          patientId: 'fc95da8e-4c31-441f-8bae-772b0708ac11',
-        }),
+        LoadPatient.action({ patientId: item.patient.id }),
       )
 
       if (isFulfilled(patientLoaded)) {
