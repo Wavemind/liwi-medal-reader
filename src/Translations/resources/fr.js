@@ -337,7 +337,8 @@ export default {
     },
     patient: {
       title: 'Erreur de base de données',
-      not_found: 'Patient introuvable',
+      not_found:
+        "Le patient n'a pas pu être récupéré. Veuillez réessayer dans quelques secondes",
     },
     zip: {
       archived: 'Un problème est survenu lors de la compression du fichier',

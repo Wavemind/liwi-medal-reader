@@ -54,7 +54,11 @@ const ListItem = ({ item }) => {
       type: 'warning',
       duration: 5000,
     })
-    Sentry.captureMessage('MEDICAL_CASE_LIST: ' + JSON.stringify(data))
+    Sentry.captureMessage(
+      `MEDICAL_CASE_LIST: ${JSON.stringify(data)} | PATIENT_ID: ${
+        item.patient.id
+      }`,
+    )
     Sentry.flush()
   }
   /**

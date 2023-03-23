@@ -332,7 +332,8 @@ export default {
     },
     patient: {
       title: 'Database issue',
-      not_found: 'Patient not found',
+      not_found:
+        'The patient could not be retrieved. Please try again in a few seconds',
     },
     zip: {
       archived: 'An error occurred while archiving the file',
