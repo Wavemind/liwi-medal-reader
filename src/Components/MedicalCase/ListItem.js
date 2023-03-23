@@ -6,6 +6,9 @@ import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
+import { isFulfilled } from '@reduxjs/toolkit'
+import { showMessage } from 'react-native-flash-message'
+import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -44,6 +47,16 @@ const ListItem = ({ item }) => {
     setLocked(isLocked(item))
   }, [item.device_id])
 
+  const reportError = data => {
+    showMessage({
+      message: t('errors.patient.title'),
+      description: t('errors.patient.not_found'),
+      type: 'warning',
+      duration: 5000,
+    })
+    Sentry.captureMessage('MEDICAL_CASE_LIST: ' + JSON.stringify(data))
+    Sentry.flush()
+  }
   /**
    * Will load the Medical case in the store then navigate to the Medical Case
    * @returns {Promise<void>}
@@ -51,18 +64,31 @@ const ListItem = ({ item }) => {
   const handlePress = async () => {
     await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     if (item.closedAt > 0) {
-      await dispatch(LoadPatient.action({ patientId: item.patient.id }))
-      navigation.navigate('MedicalCaseSummary')
+      const patientLoaded = await dispatch(
+        LoadPatient.action({ patientId: item.patient.id }),
+      )
+
+      if (isFulfilled(patientLoaded)) {
+        navigation.navigate('MedicalCaseSummary')
+      } else {
+        reportError(patientLoaded)
+      }
     } else if (locked) {
       await dispatch(SetParams.action({ type: 'lock' }))
       await dispatch(ToggleVisibility.action({}))
     } else {
       await dispatch(LockMedicalCase.action({ medicalCaseId: item.id }))
-      await dispatch(LoadPatient.action({ patientId: item.patient.id }))
-      navigation.navigate('StageWrapper', {
-        stageIndex: item.advancement.stage,
-        stepIndex: item.advancement.step,
-      })
+      const patientLoaded = await dispatch(
+        LoadPatient.action({ patientId: item.patient.id }),
+      )
+      if (isFulfilled(patientLoaded)) {
+        navigation.navigate('StageWrapper', {
+          stageIndex: item.advancement.stage,
+          stepIndex: item.advancement.step,
+        })
+      } else {
+        reportError(patientLoaded)
+      }
     }
   }
 

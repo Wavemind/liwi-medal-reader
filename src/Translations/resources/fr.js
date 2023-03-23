@@ -335,6 +335,10 @@ export default {
       title: 'Erreur de communication',
       description: 'Un problème inconnu est survenu',
     },
+    patient: {
+      title: 'Erreur de base de données',
+      not_found: 'Patient introuvable',
+    },
     zip: {
       archived: 'Un problème est survenu lors de la compression du fichier',
       generate_json:
