@@ -27,7 +27,7 @@ export default {
     }
 
     Sentry.setContext('Algorithm', {
-      algorithm_id: algorithm.id,
+      algorithm_id: algorithm.algorithm_id,
       algorithm_name: algorithm.algorithm_name,
       version_id: algorithm.version_id,
       version_name: algorithm.version_name,

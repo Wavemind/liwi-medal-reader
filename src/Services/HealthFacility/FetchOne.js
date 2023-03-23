@@ -83,10 +83,7 @@ export default async () => {
     })
   }
 
-  Sentry.setContext('Health facility', {
-    ...response.data,
-    medical_staffs: medicalStaffs,
-  })
+  Sentry.setContext('Health facility', response.data)
 
   return {
     ...response.data,
