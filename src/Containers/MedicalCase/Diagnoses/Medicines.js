@@ -5,7 +5,6 @@ import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -38,4 +37,4 @@ function MedicinesMedicalCaseContainer() {
   )
 }
 
-export default Sentry.withProfiler(MedicinesMedicalCaseContainer)
+export default MedicinesMedicalCaseContainer

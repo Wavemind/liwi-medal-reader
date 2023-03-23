@@ -6,7 +6,6 @@ import { View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -62,4 +61,4 @@ function FinalDiagnosesMedicalCaseContainer() {
   )
 }
 
-export default Sentry.withProfiler(FinalDiagnosesMedicalCaseContainer)
+export default FinalDiagnosesMedicalCaseContainer
