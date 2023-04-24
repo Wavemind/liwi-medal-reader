@@ -101,8 +101,6 @@ export const handleNumeric = (mcNode, node, value) => {
     }
   }
 
-  console.log('=================================')
-  console.log('la response', response)
   return response
 }
 
