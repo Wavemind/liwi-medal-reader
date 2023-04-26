@@ -65,7 +65,7 @@ export const handleNumeric = (mcNode, node, value) => {
   const response = { answer: null, value: value }
   const unavailableAnswer = find(node.answers, a => a.value === 'not_available')
 
-  if (value === null) {
+  if (value === null || value === '') {
     response.answer = null
     response.value = ''
   } else if (
@@ -100,6 +100,7 @@ export const handleNumeric = (mcNode, node, value) => {
       response.roundedValue = round(value, node?.round)
     }
   }
+
   return response
 }
 
