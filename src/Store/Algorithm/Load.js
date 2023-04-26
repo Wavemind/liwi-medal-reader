@@ -2,7 +2,6 @@
  * The external imports
  */
 import { createAction } from '@reduxjs/toolkit'
-import * as Sentry from '@sentry/react-native'
 
 export default {
   initialState: {},
@@ -25,16 +24,6 @@ export default {
       updated: false,
       nodes: { ...nodes },
     }
-
-    Sentry.setContext('Algorithm', {
-      algorithm_id: algorithm.algorithm_id,
-      algorithm_name: algorithm.algorithm_name,
-      version_id: algorithm.version_id,
-      version_name: algorithm.version_name,
-      study_id: algorithm.study.id,
-      study_name: algorithm.study.label,
-      is_arm_control: algorithm.is_arm_control,
-    })
 
     state.item = algorithm
   },
