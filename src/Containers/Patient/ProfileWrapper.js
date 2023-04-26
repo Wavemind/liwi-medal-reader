@@ -5,7 +5,6 @@ import React, { useEffect, useRef } from 'react'
 import { Animated } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { useTranslation } from 'react-i18next'
-import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -57,4 +56,4 @@ const ProfileWrapperPatientContainer = () => {
   )
 }
 
-export default Sentry.withProfiler(ProfileWrapperPatientContainer)
+export default ProfileWrapperPatientContainer

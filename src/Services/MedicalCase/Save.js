@@ -3,7 +3,6 @@
  */
 import { isFulfilled } from '@reduxjs/toolkit'
 import { showMessage } from 'react-native-flash-message'
-import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -20,8 +19,7 @@ export default async ({ stageIndex, stepIndex }) => {
 
   // Send medicalCase info if there is no id
   if (medicalCase.id === undefined) {
-    Sentry.captureMessage(JSON.stringify(medicalCase))
-    Sentry.flush()
+    throw new Error('Medical case is corrupred. Please report it')
   }
 
   // Update medical case

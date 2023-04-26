@@ -3,7 +3,6 @@
  */
 import axios from 'axios'
 import { checkInternetConnection } from 'react-native-offline'
-import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -82,11 +81,6 @@ export default async () => {
       }
     })
   }
-
-  Sentry.setContext('Health facility', {
-    ...response.data,
-    medical_staffs: medicalStaffs,
-  })
 
   return {
     ...response.data,
