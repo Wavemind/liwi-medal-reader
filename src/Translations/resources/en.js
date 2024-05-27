@@ -500,6 +500,7 @@ export default {
   },
   validation: {
     is_required: 'Field "{{ field }}" is mandatory',
+    unknown_autocomplete: 'Please select a value from the list',
     consent_file_blank: "The data processing consent can't be blank",
     final_diagnoses_required: 'Please agree or refuse all proposed diagnoses',
     medicines_required: 'Please agree or refuse all medicines',

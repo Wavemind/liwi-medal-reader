@@ -139,4 +139,5 @@ export const Config = {
     authEndpoint: '/oauth/authorize',
     tokenEndpoint: '/oauth/token',
   },
+  UNKNOWN_AUTOCOMPLETE: 'Unknown',
 }

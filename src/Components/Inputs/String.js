@@ -14,7 +14,7 @@ import { translate } from '@/Translations/algorithm'
 import { displayResult } from '@/Utils/ReferenceTable'
 import { Config } from '@/Config'
 
-function String({ questionId, editable = true }) {
+function String({ questionId, editable = true, round = false}) {
   // Theme and style elements deconstruction
   const {
     Components: { string },
@@ -38,7 +38,11 @@ function String({ questionId, editable = true }) {
     } else if (currentNode.display_format === Config.DISPLAY_FORMAT.reference) {
       setValue(displayResult(question.value, questionId))
     } else {
-      setValue(question.value.toString())
+      if (typeof question.value == 'number' && round) {
+        setValue(Math.round(question.value * 10) / 10)
+      } else {
+        setValue(question.value.toString())
+      }
     }
   }, [question.value])
 

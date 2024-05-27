@@ -17,8 +17,6 @@ export default () => {
   try {
     PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.CAMERA,
-      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
     ]).then(res => {
       if (Object.values(res).every(result => result === 'granted')) {
         if (!isAuthenticated) {
