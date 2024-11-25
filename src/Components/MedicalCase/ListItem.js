@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
 import { isFulfilled } from '@reduxjs/toolkit'
 import { showMessage } from 'react-native-flash-message'
-import * as Sentry from '@sentry/react-native'
 
 /**
  * The internal imports
@@ -54,13 +53,8 @@ const ListItem = ({ item }) => {
       type: 'warning',
       duration: 5000,
     })
-    Sentry.captureMessage(
-      `MEDICAL_CASE_LIST: ${JSON.stringify(data)} | PATIENT_ID: ${
-        item.patient.id
-      }`,
-    )
-    Sentry.flush()
   }
+
   /**
    * Will load the Medical case in the store then navigate to the Medical Case
    * @returns {Promise<void>}
