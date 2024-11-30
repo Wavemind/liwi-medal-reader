@@ -17,9 +17,11 @@ export default async errors => {
   const state = store.getState()
 
   const algorithm = state.algorithm.item
+  const medicalCase = state.medicalCase.item
   const patient = state.patient.item
   const medicalCaseCreatedAt = state.medicalCase.item.createdAt
-
+  const villageQuestionId = algorithm.config.optional_basic_questions.village_question_id
+  const villages = algorithm.village_json
   const questions = RegistrationQuestionsService().filter(
     question => typeof question === 'number',
   )
@@ -68,6 +70,15 @@ export default async errors => {
       errors.birth_date = translate(algorithm.config.age_limit_message)
     }
   }
+
+  // Village
+  if(villageQuestionId && questions.includes(villageQuestionId)){
+    villageValues = villages.map(village => Object.values(village)[0])
+    
+    if (medicalCase.nodes[villageQuestionId].value != Config.UNKNOWN_AUTOCOMPLETE && !villageValues.includes(medicalCase.nodes[villageQuestionId].value)) {
+      errors[villageQuestionId] = i18n.t('validation.unknown_autocomplete')
+    }
+  } 
 
   // Questions
   errors = QuestionStepValidation(questions, errors, true)

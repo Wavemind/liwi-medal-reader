@@ -505,6 +505,7 @@ export default {
   },
   validation: {
     is_required: 'La question « {{ field }} » est obligatoire',
+    unknown_autocomplete: 'Veuillez sélectionner une valeur de la liste',
     consent_file_blank:
       'La réponse au consentement du traitement des données est obligatoire',
     final_diagnoses_required:

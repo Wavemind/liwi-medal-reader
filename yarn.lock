@@ -8867,6 +8867,11 @@ prettier@^2.0.2:
   resolved "https://registry.npmjs.org/prettier/-/prettier-2.5.0.tgz"
   integrity sha512-FM/zAKgWTxj40rH03VxzIPdXmj39SwSjwG0heUcNFwI+EMZJnY93yAiKXM3dObIKAM5TA88werc8T/EwhB45eg==
 
+prettier@^3.2.5:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.2.5.tgz#e52bc3090586e824964a8813b09aba6233b28368"
+  integrity sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==
+
 pretty-format@^26.0.1, pretty-format@^26.5.2, pretty-format@^26.6.2:
   version "26.6.2"
   resolved "https://registry.npmjs.org/pretty-format/-/pretty-format-26.6.2.tgz"
@@ -9363,10 +9368,10 @@ react-native-vision-camera@^2.15.0:
   resolved "https://registry.npmjs.org/react-native-vision-camera/-/react-native-vision-camera-2.15.2.tgz"
   integrity sha512-pkVj0r2nbZaj3+bB9CGPNistCUyoCgS2SmawzugrZs5oMlFWlgZYuJj+6s3Q98xTGgV/8/ST0njohB6soDi0VA==
 
-react-native-webview@^11.13.1:
-  version "11.17.2"
-  resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-11.17.2.tgz"
-  integrity sha512-7Sac02xq11qFACJmSUuCnH0aUFtSWUvSRC09EZ2qwNXq4IvT05xlX6978nlKUXf2ljw/0qZIzqbKzuXnu6Wq8Q==
+react-native-webview@^13.8.7:
+  version "13.8.7"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-13.8.7.tgz#f75f7bb2fe880c2cc62e37266cd33f1f8e704444"
+  integrity sha512-r8y+qlyh2+mtuPhOvgPB9Ccn2itDXacvaVFuB61AYTfisz1YhJ57iFEE8j32DfDpvl6NhaaFIzzHsumwJk92bQ==
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"

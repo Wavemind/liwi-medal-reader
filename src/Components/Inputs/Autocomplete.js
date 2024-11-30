@@ -13,6 +13,7 @@ import debounce from 'lodash/debounce'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import { Config } from '@/Config'
 import setAnswer from '@/Utils/SetAnswer'
 
 function Autocomplete({ questionId }) {
@@ -42,7 +43,12 @@ function Autocomplete({ questionId }) {
       const filteredVillageList = filter(villageList, village =>
         Object.values(village)[0].match(new RegExp(term, 'i')),
       )
-      setSearchResults(filteredVillageList.slice(0, 10))
+      if(filteredVillageList.length > 0) {
+        setSearchResults(filteredVillageList.slice(0, 10))
+      }
+      else {
+        setSearchResults([{ 'Unknown': Config.UNKNOWN_AUTOCOMPLETE }])
+      }
     }, 500),
     [],
   )

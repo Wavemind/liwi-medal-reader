@@ -6,7 +6,7 @@ import { Text } from 'react-native'
 import { useSelector } from 'react-redux'
 
 /**
- * The internal importsN
+ * The internal imports
  */
 import { translate } from '@/Translations/algorithm'
 import {
@@ -41,8 +41,9 @@ function Factory({ questionId }) {
     case Config.DISPLAY_FORMAT.dropDownList:
       return <Select questionId={questionId} />
     case Config.DISPLAY_FORMAT.reference:
-    case Config.DISPLAY_FORMAT.formula:
       return <String questionId={questionId} editable={false} />
+    case Config.DISPLAY_FORMAT.formula:
+      return <String questionId={questionId} editable={false} round={true} />
     case Config.DISPLAY_FORMAT.date:
       return <DatePicker questionId={questionId} />
     default:
